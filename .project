@@ -14,4 +14,26 @@
 	<natures>
 		<nature>org.eclipse.dltk.ruby.core.nature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>generic_rgrb.rb</name>
+			<type>1</type>
+			<location>D:/eclipse-workspace/rgrb/generic_rgrb.rb</location>
+		</link>
+		<link>
+			<name>ircbot.rb</name>
+			<type>1</type>
+			<location>D:/eclipse-workspace/rgrb/ircbot.rb</location>
+		</link>
+		<link>
+			<name>plugins</name>
+			<type>2</type>
+			<location>D:/eclipse-workspace/rgrb/plugins</location>
+		</link>
+		<link>
+			<name>stdout.rb</name>
+			<type>1</type>
+			<location>D:/eclipse-workspace/rgrb/stdout.rb</location>
+		</link>
+	</linkedResources>
 </projectDescription>

@@ -7,8 +7,7 @@ bot = Cinch::Bot.new do
   configure do |c|
     c.server = 'irc.cre.ne.jp'
     c.channels = [] # テスト用チャンネル
-    c.nick = 'hello_ocha'
-    c.realname = c.nick
+    c.nick = c.realname = c.user = 'hello_ocha'
   end
 
   on :message, "hello" do |m|

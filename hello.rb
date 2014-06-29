@@ -5,8 +5,9 @@ require 'cinch'
 
 bot = Cinch::Bot.new do
   configure do |c|
-    c.server = 'irc.cre.ne.jp'
-    c.channels = [] # テスト用チャンネル
+    # c.server = '' # IRC サーバ
+    # c.port = 6667
+    # c.password = '' # パスワード
     c.nick = c.realname = c.user = 'hello_ocha'
   end
 

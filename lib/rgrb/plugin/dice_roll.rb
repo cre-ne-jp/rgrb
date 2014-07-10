@@ -10,12 +10,22 @@ module RGRB
     class DiceRoll
       include Cinch::Plugin
 
+      match /([1-9]\d*)d([1-9]\d*)/, method: :basic_dice
+
       private
       # ダイスロールの結果を返す
       # @param [Fixnum] n ダイスの個数
       # @param [Fixnum] max ダイスの最大値
       # @return [Fixnum]
-      def dice_roll(n, max)
+      def dice_roll(m, n_dice, max)
+        m.channel.notice basicdice(n_dice, max)
+      end
+
+      def basicdice(n_dice, max)
+        values = Array.new(n_dice) {rand(max) + 1}
+        sum = values.reduce(0, :+)
+
+        return "dice -> #{n_dice}d#{max} = #{values} = #{sum}"
       end
     end
   end

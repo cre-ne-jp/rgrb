@@ -18,14 +18,16 @@ module RGRB
       # @param [Fixnum] max ダイスの最大値
       # @return [Fixnum]
       def dice_roll(m, n_dice, max)
-        m.channel.notice basicdice(n_dice, max)
+        result = basicdice(n_dice, max)
+        m.channel.notice
+          "dice -> #{n_dice}d#{max} = #{result[:values]} = #{result[:max]}"
       end
 
       def basicdice(n_dice, max)
         values = Array.new(n_dice) {rand(max) + 1}
         sum = values.reduce(0, :+)
 
-        return "dice -> #{n_dice}d#{max} = #{values} = #{sum}"
+        return {values: values, sum: sum}
       end
     end
   end

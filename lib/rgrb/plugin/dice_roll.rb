@@ -10,7 +10,7 @@ module RGRB
     class DiceRoll
       include Cinch::Plugin
 
-      match /([1-9]\d*)d([1-9]\d*)/, method: :basic_dice
+      match /([1-9]\d*)d([1-9]\d*)/, method: :dice_roll, :use_prefix:false
 
       private
       # ダイスロールの結果を返す

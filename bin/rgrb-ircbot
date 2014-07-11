@@ -9,6 +9,7 @@ require 'cinch'
 
 require 'rgrb/plugin/hello'
 require 'rgrb/plugin/keyword'
+require 'rgrb/plugin/dice_roll'
 
 bot = Cinch::Bot.new do
   configure do |c|
@@ -20,7 +21,8 @@ bot = Cinch::Bot.new do
 
     c.plugins.plugins = [
       RGRB::Plugin::Hello,
-      RGRB::Plugin::Keyword
+      RGRB::Plugin::Keyword,
+      RGRB::Plugin::DiceRoll
     ]
     c.plugins.prefix = /^\./
   end

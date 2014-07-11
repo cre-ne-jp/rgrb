@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'cinch', '~> 2.1.0'
 gem 'redis', '~> 3.1.0'
 
 group :development, :test do

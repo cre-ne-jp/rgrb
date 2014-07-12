@@ -16,7 +16,7 @@ module RGRB
       def basic_dice(m, n_dice, max)
         result = dice_roll(n_dice.to_i, max.to_i)
         m.channel.notice(
-          "dice -> #{n_dice}d#{max} = #{result[:values]} = #{result[:sum]}"
+          "#{m.user.nick} -> #{n_dice}d#{max} = #{result[:values]} = #{result[:sum]}"
         )
       end
 

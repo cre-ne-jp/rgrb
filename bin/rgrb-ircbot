@@ -25,7 +25,7 @@ bot = Cinch::Bot.new do
       RGRB::Plugin::Keyword,
       RGRB::Plugin::DiceRoll,
       RGRB::Plugin::RandomGenerator
-]
+    ]
     c.plugins.prefix = /^\./
   end
 end

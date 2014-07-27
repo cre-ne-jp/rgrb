@@ -10,38 +10,36 @@ module RGRB
     class RandomGenerator
       include Cinch::Plugin
 
-      # 基本的な結果書式
-      # 例) rg[koi-chan]: ハートの6 ですわ☆
-      RESULT_MESSAGE = 'rg[%s]: %sですわ☆'
-
-      # Redis 接続用変数(インスタンス)
-      #@redis = Redis.new
-
       # .rg にマッチ
-      match /rg[ 　]+(.+)/, method: :rg
+      match /rg[ 　]+([-_0-9A-Za-z]+(?: +[-_0-9A-Za-z]+)*)/, method: :rg
 
       def initialize(*args)
+        super
+
         @redis = Redis.new
       end
 
-      # NOTICE で ジェネレート結果を返す
-      def rg(m, command)
-        return m.channel.notice(
-	  "#{command} なんて表名は使っちゃダメですのっ"
-	  ) unless command =~ /^[0-9A-Za-z_-]+$/
-	return m.channel.notice(
-          "#{command} なんて表はないのですわっ"
-	  ) if @redis.hexists('command', command) == 0
-	
-	m.channel.notice RESULT_MESSAGE % m.user.nick, random_generator(command)
+      # NOTICE でジェネレート結果を返す
+      def rg(m, tables_str)
+        tables_str.split(' ').each do |table|
+          result = get_value_from(table)
+          message = result ?
+            "rg[#{m.user.nick}]<#{table}>: #{result} ですわ☆" :
+            "「#{table}」なんて表は見つからないのですわっ。"
+
+          m.channel.notice message
+
+          sleep 1
+        end
       end
 
       private
 
-      # 与えられたコマンドを元にDBから結果を生成する
-      def random_generator(command)
+      # 与えられた表名を使って DB から値を取得する
+      def get_value_from(table)
+        # テスト用：必ず「見つからない」
+        nil
       end
-
     end
   end
 end

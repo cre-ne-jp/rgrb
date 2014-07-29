@@ -9,7 +9,7 @@ require 'cinch'
 require 'rgrb/plugin/hello'
 require 'rgrb/plugin/keyword'
 require 'rgrb/plugin/dice_roll'
-require 'rgrb/plugin/random_generator.rb'
+require 'rgrb/plugin/random_generator'
 
 bot = Cinch::Bot.new do
   configure do |c|

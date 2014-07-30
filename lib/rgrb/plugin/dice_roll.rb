@@ -10,14 +10,15 @@ module RGRB
     class DiceRoll
       include Cinch::Plugin
 
-      match /^([1-9]\d*)d([1-9]\d*)/i, method: :basic_dice, use_prefix: false
+      match(/^([1-9]\d*)d([1-9]\d*)/i,
+            method: :basic_dice,
+            use_prefix: false)
 
       # NOTICE で基本的なダイスロールの結果を返す
       def basic_dice(m, n_dice, max)
         result = dice_roll(n_dice.to_i, max.to_i)
-        m.channel.notice(
-          "#{m.user.nick} -> #{n_dice}d#{max} = #{result[:values]} = #{result[:sum]}"
-        )
+        m.channel.notice("#{m.user.nick} -> #{n_dice}d#{max} =" \
+                         "#{result[:values]} = #{result[:sum]}")
       end
 
       private

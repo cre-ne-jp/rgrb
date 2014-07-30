@@ -12,7 +12,7 @@ module RGRB
       include Cinch::Plugin
 
       # .rg にマッチ
-      match /rg[ 　]+([-_0-9A-Za-z]+(?: +[-_0-9A-Za-z]+)*)/, method: :rg
+      match(/rg[ 　]+([-_0-9A-Za-z]+(?: +[-_0-9A-Za-z]+)*)/, method: :rg)
 
       def initialize(*args)
         super
@@ -27,9 +27,12 @@ module RGRB
       def rg(m, tables_str)
         tables_str.split(' ').each do |table|
           result = get_value_from(table)
-          message = result ?
-            "rg[#{m.user.nick}]<#{table}>: #{result} ですわ☆" :
-            "rg[#{m.user.nick}]: 「#{table}」なんて表は見つからないのですわっ。"
+          message =
+            if result
+              "rg[#{m.user.nick}]<#{table}>: #{result} ですわ☆"
+            else
+              "rg[#{m.user.nick}]: 「#{table}」なんて表は見つからないのですわっ。"
+            end
 
           m.channel.notice message
 

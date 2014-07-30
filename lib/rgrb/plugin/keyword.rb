@@ -13,12 +13,13 @@ module RGRB
       CRE_SEARCH_URL = 'http://cre.jp/search/?sw=%s'
       # Amazon.co.jp 検索ページの URL
       AMAZON_SEARCH_URL =
-        'http://www.amazon.co.jp/gp/search?ie=UTF8&tag=koubou-22&keywords=%s'
+        'http://www.amazon.co.jp/gp/search?' \
+        'ie=UTF8&tag=koubou-22&keywords=%s'
 
       # .k にマッチ
-      match /k[ 　]+(.+)/, method: :cre_search
+      match(/k[ 　]+(.+)/, method: :cre_search)
       # .a にマッチ
-      match /a[ 　]+(.+)/, method: :amazon_search
+      match(/a[ 　]+(.+)/, method: :amazon_search)
 
       # NOTICE で cre.jp 検索ページを返す
       def cre_search(m, keyword)

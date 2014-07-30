@@ -4,29 +4,7 @@
 require 'rubygems'
 require 'bundler/setup'
 
-require 'cinch'
+require 'rgrb/exec/irc_bot'
 
-require 'rgrb/plugin/hello'
-require 'rgrb/plugin/keyword'
-require 'rgrb/plugin/dice_roll'
-require 'rgrb/plugin/random_generator'
-
-bot = Cinch::Bot.new do
-  configure do |c|
-    # c.server = '' # IRC サーバ
-    # c.port = 6667
-    # c.password = '' # パスワード
-    c.nick = c.user = 'rgrb_cinch'
-    c.realname = '汎用ダイスボット RGRB'
-
-    c.plugins.plugins = [
-      RGRB::Plugin::Hello,
-      RGRB::Plugin::Keyword,
-      RGRB::Plugin::DiceRoll,
-      RGRB::Plugin::RandomGenerator
-    ]
-    c.plugins.prefix = /^\./
-  end
-end
-
-bot.start
+rgrb_root_path = File.expand_path('..', File.dirname(__FILE__))
+RGRB::Exec::IRCBot.new(rgrb_root_path, ARGV).execute

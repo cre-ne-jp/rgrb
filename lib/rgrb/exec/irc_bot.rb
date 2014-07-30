@@ -37,6 +37,17 @@ module RGRB
           end
         end
 
+        # シグナルを捕捉し、ボットを終了させる処理
+        # trap 内で普通に bot.quit すると ThreadError が出るので
+        # Thread で包む
+        %i[INT TERM].each do |signal|
+          Signal.trap(signal) do
+            Thread.new do
+              bot.quit
+            end
+          end
+        end
+
         bot.start
       end
     end

@@ -1,7 +1,6 @@
 require 'optparse'
 require 'cinch'
 
-require 'rgrb/plugin/hello'
 require 'rgrb/plugin/keyword'
 require 'rgrb/plugin/dice_roll'
 require 'rgrb/plugin/random_generator'
@@ -30,7 +29,6 @@ module RGRB
             c.realname = '汎用ダイスボット RGRB'
 
             c.plugins.plugins = [
-              RGRB::Plugin::Hello,
               RGRB::Plugin::Keyword,
               RGRB::Plugin::DiceRoll,
               RGRB::Plugin::RandomGenerator

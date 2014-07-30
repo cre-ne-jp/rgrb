@@ -7,6 +7,7 @@ gem 'redis-namespace', '~> 1.5.0'
 group :development, :test do
   gem 'pry', '~> 0.10'
   gem 'rspec', '~> 3.0.0'
+  gem 'rubocop', '~> 0.24.1'
 end
 
 # パス設定

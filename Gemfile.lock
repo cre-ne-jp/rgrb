@@ -39,6 +39,7 @@ GEM
       ruby-progressbar (~> 1.4)
     ruby-progressbar (1.5.1)
     slop (3.6.0)
+    sysexits (1.1.0)
 
 PLATFORMS
   ruby
@@ -50,3 +51,4 @@ DEPENDENCIES
   redis-namespace (~> 1.5.0)
   rspec (~> 3.0.0)
   rubocop (~> 0.24.1)
+  sysexits (~> 1.1.0)

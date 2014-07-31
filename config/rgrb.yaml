@@ -1,0 +1,17 @@
+IRCBot:
+  Host: irc.example.net
+  Port: 6667
+  Password: pa$$word
+  Nick: rgrb_cinch
+  User: rgrb_cinch
+  RealName: 汎用ダイスボット RGRB
+
+Redis:
+  Host: example.net
+  Port: 6379
+  Database: 0
+
+Plugins:
+  - DiceRoll
+  - Keyword
+  - RandomGenerator

@@ -1,5 +1,7 @@
 # vim: fileencoding=utf-8
 
+require 'yaml'
+
 module RGRB
   # RGRB の設定を表すクラス
   class Config
@@ -15,11 +17,21 @@ module RGRB
     # @return [RGRB::Config]
     def self.load_yaml_file(path)
       config_data = YAML.load_file(path)
+      irc_bot, redis, plugin_names = %w[IRCBot Redis Plugins].map {|key|
+        config_data[key]
+      }
+
+      new(irc_bot, redis, plugin_names)
     end
 
-    def initialize(irc_bot, redis, plugin_names)
-      @irc_bot = irc_bot
-      @redis = redis
+    # 新しい RGRB::Config インスタンスを返す
+    # @param [Hash] irc_bot_config IRC ボットの設定のハッシュ
+    # @param [Hash] redis_config Redis の設定のハッシュ
+    # @param [Array<String>] plugin_names プラグイン名の配列
+    # @return [RGRB::Config]
+    def initialize(irc_bot_config, redis_config, plugin_names)
+      @irc_bot = irc_bot_config
+      @redis = redis_config
       @plugins = plugin_names.map {|plugin_name|
         name_snakecase = snakecase(plugin_name)
 

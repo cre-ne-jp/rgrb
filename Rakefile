@@ -7,6 +7,6 @@ end
 
 desc 'ドキュメント生成'
 task :doc do
-  rm_r 'doc', :force => true
+  rm_r 'doc', force: true
   sh 'yardoc lib --locale ja'
 end

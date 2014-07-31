@@ -11,7 +11,7 @@ module RGRB
 end
 
 describe RGRB::Config do
-  let(:irc_bot_config) {
+  let(:irc_bot_config) do
     {
       'Host' => 'irc.example.net',
       'Port' => 6667,
@@ -20,20 +20,20 @@ describe RGRB::Config do
       'User' => 'rgrb_cinch',
       'Realname' => '汎用ダイスボット RGRB'
     }
-  }
-  let(:redis_config) {
+  end
+  let(:redis_config) do
     {
       'Host' => 'example.net',
       'Port' => 6379,
       'Database' => 0
     }
-  }
-  let(:plugin_names) {%w[DiceRoll Keyword RandomGenerator]}
+  end
+  let(:plugin_names) {%w(DiceRoll Keyword RandomGenerator)}
 
   let(:config_empty) {described_class.new({}, {}, [])}
-  let(:config) {
+  let(:config) do
     described_class.new(irc_bot_config, redis_config, plugin_names)
-  }
+  end
 
   describe '#irc_bot' do
     it 'IRC ボット設定のハッシュと等しい' do
@@ -50,7 +50,7 @@ describe RGRB::Config do
   describe '#plugins' do
     context '正常に指定した場合' do
       it '指定したプラグインのクラスの配列と等しい' do
-        %w[dice_roll keyword random_generator].each do |plugin_name|
+        %w(dice_roll keyword random_generator).each do |plugin_name|
           require "rgrb/plugin/#{plugin_name}"
         end
 

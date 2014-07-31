@@ -17,9 +17,9 @@ module RGRB
     # @return [RGRB::Config]
     def self.load_yaml_file(path)
       config_data = YAML.load_file(path)
-      irc_bot, redis, plugin_names = %w[IRCBot Redis Plugins].map {|key|
+      irc_bot, redis, plugin_names = %w(IRCBot Redis Plugins).map do |key|
         config_data[key]
-      }
+      end
 
       new(irc_bot, redis, plugin_names)
     end
@@ -32,12 +32,12 @@ module RGRB
     def initialize(irc_bot_config, redis_config, plugin_names)
       @irc_bot = irc_bot_config
       @redis = redis_config
-      @plugins = plugin_names.map {|plugin_name|
+      @plugins = plugin_names.map do |plugin_name|
         name_snakecase = snakecase(plugin_name)
 
         require "rgrb/plugin/#{name_snakecase}"
         RGRB::Plugin.const_get(plugin_name)
-      }
+      end
     end
 
     # プラグインを表すクラスの配列を返す
@@ -53,11 +53,11 @@ module RGRB
     # @param [String] s 変換する文字列
     # @return [String]
     def snakecase(s)
-      return "" if s.empty?
+      return '' if s.empty?
 
-      words_downcase = s.scan(/[A-Z\s]*[^A-Z]*/)[0..-2].map {|word|
+      words_downcase = s.scan(/[A-Z\s]*[^A-Z]*/)[0..-2].map do |word|
         word.gsub(/[\s:]+/, '_').downcase
-      }
+      end
       words_downcase.join('_').gsub(/__+/, '_')
     end
   end

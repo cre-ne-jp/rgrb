@@ -30,7 +30,7 @@ module RGRB
         # シグナルを捕捉し、ボットを終了させる処理
         # trap 内で普通に bot.quit すると ThreadError が出るので
         # 新しい Thread で包む
-        %i[INT TERM].each do |signal|
+        %i(INT TERM).each do |signal|
           Signal.trap(signal) do
             Thread.new do
               bot.quit
@@ -47,14 +47,14 @@ module RGRB
       # @param [String] message エラーメッセージ
       # @return [void]
       def print_error(message)
-        $stderr.puts "#{File.basename($0, '.*')}: #{message}"
+        $stderr.puts "#{File.basename($PROGRAM_NAME, '.*')}: #{message}"
       end
 
       # 設定を読み込む
       # @return [void]
       # @todo ファイル名を指定して読み込めるようにする
       def load_config
-        yaml_path = File.join(@root_path, 'config', 'rgrb.yaml')
+        yaml_path = "#{@root_path}/config/rgrb.yaml"
         @config = RGRB::Config.load_yaml_file(yaml_path)
       rescue => e
         print_error "設定ファイルの読み込みに失敗しました (#{e})"
@@ -80,7 +80,7 @@ module RGRB
           c.plugins.prefix = /^\./
           c.plugins.plugins = rgrb_plugins
           c.plugins.options = Hash[
-            rgrb_plugins.map {|plugin_class|
+            rgrb_plugins.map do |plugin_class|
               [
                 plugin_class,
                 {
@@ -88,14 +88,14 @@ module RGRB
                   rgrb_config: @config
                 }
               ]
-            }
+            end
           ]
         end
 
         bot
       rescue => e
         print_error "IRC ボットの生成に失敗しました (#{e})"
-        $stderr.puts "再度設定を確認してください"
+        $stderr.puts '再度設定を確認してください'
         Sysexits.exit :config_error
       end
     end

@@ -15,6 +15,7 @@ module RGRB
             use_prefix: false)
 
       # NOTICE で基本的なダイスロールの結果を返す
+      # @return [void]
       def basic_dice(m, n_dice, max)
         result = dice_roll(n_dice.to_i, max.to_i)
         m.channel.notice("#{m.user.nick} -> #{n_dice}d#{max} =" \
@@ -24,7 +25,7 @@ module RGRB
       private
 
       # ダイスロールの結果を返す
-      # @param [Fixnum] n ダイスの個数
+      # @param [Fixnum] n_dice ダイスの個数
       # @param [Fixnum] max ダイスの最大値
       # @return [Fixnum]
       def dice_roll(n_dice, max)

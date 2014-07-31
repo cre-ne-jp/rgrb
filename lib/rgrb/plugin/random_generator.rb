@@ -24,6 +24,7 @@ module RGRB
       end
 
       # NOTICE でジェネレート結果を返す
+      # @return [void]
       def rg(m, tables_str)
         tables_str.split(' ').each do |table|
           result = get_value_from(table)
@@ -43,10 +44,15 @@ module RGRB
       private
 
       # 与えられた表名を使って DB から値を取得する
+      # @param [String] table 表名
+      # @return [String]
+      # @return [nil]
       def get_value_from(table)
         @redis_rg.srandmember(table)
       end
 
+      # 表のデータを読み込む
+      # @return [void]
       def load_data
         @redis.flushdb
 

@@ -17,8 +17,8 @@ module RGRB
       def initialize(*args)
         super
 
-        @redis = Redis.new
-        @redis_rg = Redis::Namespace.new('rg', redis: @redis)
+        @rgrb_root_path = config[:rgrb_root_path]
+        @redis_rg = Redis::Namespace.new('rg', redis: config[:redis])
 
         load_data
       end
@@ -54,9 +54,7 @@ module RGRB
       # 表のデータを読み込む
       # @return [void]
       def load_data
-        @redis.flushdb
-
-        pattern = "#{File.expand_path('../../../data/rg', File.dirname(__FILE__))}/*.txt"
+        pattern = "#{@rgrb_root_path}/data/rg/*.txt"
         Dir.glob(pattern) do |path|
           key = File.basename(path, '.txt')
 

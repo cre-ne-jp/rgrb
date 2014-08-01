@@ -1,6 +1,7 @@
 # vim: fileencoding=utf-8
 
 require 'optparse'
+require 'redis'
 require 'cinch'
 require 'sysexits'
 
@@ -25,6 +26,7 @@ module RGRB
       # @return [void]
       def execute
         load_config
+        prepare_redis_client
         bot = new_bot
 
         # シグナルを捕捉し、ボットを終了させる処理
@@ -34,6 +36,7 @@ module RGRB
           Signal.trap(signal) do
             Thread.new do
               bot.quit
+              @redis.flushdb
             end
           end
         end
@@ -61,11 +64,25 @@ module RGRB
         Sysexits.exit :config_error
       end
 
+      # Redis クライアントを準備する
+      # @return [void]
+      def prepare_redis_client
+        redis_config = @config.redis
+        @redis = Redis.new(
+          host: redis_config['Host'],
+          port: redis_config['Port'],
+          db: redis_config['Database']
+        )
+        @redis.flushdb
+      rescue => e
+        print_error "Redis クライアントの生成に失敗しました (#{e})"
+        $stderr.puts '再度設定を確認してください'
+      end
+
       # IRC ボットを作り、設定して返す
       # @return [Cinch::Bot]
       def new_bot
         bot_config = @config.irc_bot
-        redis_config = @config.redis
         rgrb_plugins = @config.plugins
 
         bot = Cinch::Bot.new
@@ -85,7 +102,7 @@ module RGRB
                 plugin_class,
                 {
                   rgrb_root_path: @root_path,
-                  rgrb_config: @config
+                  redis: @redis
                 }
               ]
             end

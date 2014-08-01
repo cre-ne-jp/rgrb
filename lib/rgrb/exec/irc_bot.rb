@@ -1,6 +1,5 @@
 # vim: fileencoding=utf-8
 
-require 'optparse'
 require 'redis'
 require 'cinch'
 require 'sysexits'

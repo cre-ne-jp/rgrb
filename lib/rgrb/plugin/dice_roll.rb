@@ -29,10 +29,10 @@ module RGRB
       # @param [Fixnum] max ダイスの最大値
       # @return [Fixnum]
       def dice_roll(n_dice, max)
-        values = Array.new(n_dice) {rand(max) + 1}
+        values = Array.new(n_dice) { rand(max) + 1 }
         sum = values.reduce(0, :+)
 
-        {values: values, sum: sum}
+        { values: values, sum: sum }
       end
     end
   end

@@ -3,9 +3,14 @@
 require_relative '../spec_helper'
 
 require 'rgrb/config'
+require 'rgrb/plugin/dice_roll'
+require 'rgrb/plugin/keyword'
+require 'rgrb/plugin/random_generator'
 
 module RGRB
+  # 設定クラス
   class Config
+    # snakecase を外から呼び出せるようにする
     def snakecase_public(s)
       snakecase(s)
     end
@@ -30,9 +35,9 @@ describe RGRB::Config do
       'Database' => 0
     }
   end
-  let(:plugin_names) {%w(DiceRoll Keyword RandomGenerator)}
+  let(:plugin_names) { %w(DiceRoll Keyword RandomGenerator) }
 
-  let(:config_empty) {described_class.new({}, {}, [])}
+  let(:config_empty) { described_class.new({}, {}, []) }
   let(:config) do
     described_class.new(irc_bot_config, redis_config, plugin_names)
   end
@@ -52,10 +57,6 @@ describe RGRB::Config do
   describe '#plugins' do
     context '正常に指定した場合' do
       it '指定したプラグインのクラスの配列と等しい' do
-        %w(dice_roll keyword random_generator).each do |plugin_name|
-          require "rgrb/plugin/#{plugin_name}"
-        end
-
         expect(config.plugins).to eq(
           [
             RGRB::Plugin::DiceRoll,
@@ -67,31 +68,31 @@ describe RGRB::Config do
     end
 
     context '存在しないプラグインを指定した場合' do
-      it 'エラーが発生する' do
-        expect {described_class.new({}, {}, ['hoge'])}.to raise_error
+      it do
+        expect { described_class.new({}, {}, ['hoge']) }.to raise_error
       end
     end
   end
 
   describe '#snakecase (private)' do
     context 'empty string' do
-      subject {config_empty.snakecase_public('')}
-      it {should eq('')}
+      subject { config_empty.snakecase_public('') }
+      it { should eq('') }
     end
 
     context 'cre' do
-      subject {config_empty.snakecase_public('cre')}
-      it {should eq('cre')}
+      subject { config_empty.snakecase_public('cre') }
+      it { should eq('cre') }
     end
 
     context 'RandomGenerator' do
-      subject {config_empty.snakecase_public('RandomGenerator')}
-      it {should eq('random_generator')}
+      subject { config_empty.snakecase_public('RandomGenerator') }
+      it { should eq('random_generator') }
     end
 
     context 'IRCBot' do
-      subject {config_empty.snakecase_public('IRCBot')}
-      it {should eq('ircbot')}
+      subject { config_empty.snakecase_public('IRCBot') }
+      it { should eq('ircbot') }
     end
   end
 end

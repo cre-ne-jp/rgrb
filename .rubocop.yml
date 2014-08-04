@@ -1,0 +1,13 @@
+AllCops:
+  Include:
+    - '**/Rakefile'
+    - '**/config.ru'
+  Exclude:
+    - 'bin/**/*'
+    - 'vendor/**/*'
+
+Style/AsciiComments:
+  Enabled: false
+
+Style/LineLength:
+  Max: 76

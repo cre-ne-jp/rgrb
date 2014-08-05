@@ -11,3 +11,6 @@ Style/AsciiComments:
 
 Style/LineLength:
   Max: 76
+
+Style/IfUnlessModifier:
+  Enabled: false

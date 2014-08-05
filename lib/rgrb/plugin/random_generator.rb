@@ -70,7 +70,11 @@ module RGRB
               result = get_value_from(table)
               "rg[#{m.user.nick}]<#{table}>: #{result} ですわ☆"
             rescue TableNotFound => not_found
-              message_for_table_not_found(m.user.nick, not_found.table)
+              "rg[#{m.user.nick}]: 「#{not_found.table}」なんて" \
+                '表は見つからないのですわっ。'
+            rescue CircularReference => circular_reference
+              "rg[#{m.user.nick}]: 表「#{circular_reference.table}」で" \
+                '循環参照が起こりました。#next でご報告ください。'
             end
           m.channel.notice message
 
@@ -79,14 +83,6 @@ module RGRB
       end
 
       private
-
-      # 表が見つからない場合のメッセージを返す
-      # @param [String] nick ニックネーム
-      # @param [String] table 表名
-      # @return [String]
-      def message_for_table_not_found(nick, table)
-        "rg[#{nick}]: 「#{table}」なんて表は見つからないのですわっ。"
-      end
 
       # 与えられた表名を使って DB から値を取得する
       # @param [String] table 表名
@@ -99,7 +95,7 @@ module RGRB
         value_content = value[1..-1]
 
         if determine_need_to_rec_get(value[0])
-          get_value_recursively(value_content)
+          get_value_recursively(value_content, table => true)
         else
           value_content
         end
@@ -107,16 +103,21 @@ module RGRB
 
       # 表から値を再帰的に取得する
       # @param [String] str 変数が含まれている、表から取得した値
+      # @param [Hash] getting 値を取得している表を格納するハッシュ
       # @return [String]
-      def get_value_recursively(str)
+      # @raise [TableNotFound] 表が見つからない場合
+      # @raise [CircularReference] 循環参照が起こった場合
+      def get_value_recursively(str, getting)
         scanner = StringScanner.new(str)
         intermediate_expression = []
         variables = []
 
+        # 中間表現を生成する
         until scanner.eos?
           if scanner.skip(VARIABLE_RE)
             name = scanner[1]
             fail TableNotFound, name unless @exist_table[name]
+            fail CircularReference, name if getting[name]
 
             variable = Variable.new(name)
             intermediate_expression << variable
@@ -128,6 +129,7 @@ module RGRB
           end
         end
 
+        # Redis から値を取得する
         values = @redis_rg.pipelined do
           variables.each do |var|
             @redis_rg.srandmember(var.name)
@@ -138,9 +140,14 @@ module RGRB
           var.value = value
         end
 
+        # 結果を生成する
         result = intermediate_expression.map(&:to_s).join
         if variables.any?(&:needs_recursive_get?)
-          get_value_recursively(result)
+          variables.map(&:name).uniq.each do |var_name|
+            getting[var_name] = true
+          end
+
+          get_value_recursively(result, getting)
         else
           result
         end
@@ -189,7 +196,7 @@ module RGRB
         # 同時に「再帰取り出しが必要か」も設定される
         # @param [String] value Redis から得た値
         # @return [String] Redis から得た値
-        # @raise [ArgumentError] +v+ から再帰取り出しが必要か
+        # @raise [ArgumentError] +value+ から再帰取り出しが必要か
         #   判断できない場合
         def value=(value)
           @needs_recursive_get = determine_need_to_rec_get(value[0])
@@ -231,7 +238,21 @@ module RGRB
       end
 
       # 循環参照エラーを示すクラス
-      class CircularReference < StandardError; end
+      class CircularReference < StandardError
+        # 循環参照が起こった表名
+        # @return [String]
+        attr_reader :table
+
+        def initialize(table = nil, error_message = nil)
+          if !error_message && table
+            error_message = "表 #{table} で循環参照が起こりました"
+          end
+
+          super error_message
+
+          @table = table
+        end
+      end
     end
   end
 end

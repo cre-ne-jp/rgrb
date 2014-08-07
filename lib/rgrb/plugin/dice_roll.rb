@@ -10,9 +10,7 @@ module RGRB
     class DiceRoll
       include Cinch::Plugin
 
-      match(/^([1-9]\d*)d([1-9]\d*)/i,
-            method: :basic_dice,
-            use_prefix: false)
+      match(/roll[ 　]+([1-9]\d*)d([1-9]\d*)/i, method: :basic_dice)
 
       # NOTICE で基本的なダイスロールの結果を返す
       # @return [void]

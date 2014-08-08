@@ -5,7 +5,7 @@ require 'uri'
 
 module RGRB
   module Plugin
-    # cre 検索プラグイン
+    # キーワード検索プラグイン
     class Keyword
       include Cinch::Plugin
 

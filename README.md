@@ -79,9 +79,9 @@ Plugins:
 
 ### プラグイン一覧
 
-* [DiceRoll](plugins/dice_roll.md)：ダイスロール
-* [Keyword](plugins/keyword.md)：キーワード検索
-* [RandomGenerator](plugins/random_generator.md)：ランダムジェネレータ
+* [DiceRoll](doc/plugins/dice_roll.md)：ダイスロール
+* [Keyword](doc/plugins/keyword.md)：キーワード検索
+* [RandomGenerator](doc/plugins/random_generator.md)：ランダムジェネレータ
 
 IRC ボットの起動
 ----------------

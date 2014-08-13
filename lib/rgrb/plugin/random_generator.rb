@@ -18,6 +18,7 @@ module RGRB
     #
     # 上記の接頭辞を除去してメッセージを生成する。
     class RandomGenerator
+      include Cinch::Plugin
       # 再帰取り出しの必要性判定のモジュール
       module DetermineNeedToRecGet
         private
@@ -37,9 +38,6 @@ module RGRB
           end
         end
       end
-
-      include Cinch::Plugin
-      include DetermineNeedToRecGet
 
       # 表名を表す正規表現
       TABLE_RE = /(?:[-_0-9A-Za-z]+)/

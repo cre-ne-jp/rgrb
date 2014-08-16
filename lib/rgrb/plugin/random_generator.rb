@@ -34,7 +34,7 @@ module RGRB
           when 'N'
             false
           else
-            fail ArgumentError, '再帰取り出しが必要か不明'
+            fail(ArgumentError, '再帰取り出しが必要か不明')
           end
         end
       end
@@ -74,9 +74,9 @@ module RGRB
               "rg[#{m.user.nick}]: 表「#{circular_reference.table}」で" \
                 '循環参照が起こりました。#next でご報告ください。'
             end
-          m.channel.notice message
+          m.channel.notice(message)
 
-          sleep 1
+          sleep(1)
         end
       end
 
@@ -87,7 +87,7 @@ module RGRB
       # @return [String]
       # @raise [TableNotFound] 表が見つからなかった場合
       def get_value_from(table)
-        fail TableNotFound, table unless @exist_table[table]
+        fail(TableNotFound, table) unless @exist_table[table]
 
         value = @redis_rg.srandmember(table)
         value_content = value[1..-1]
@@ -114,8 +114,8 @@ module RGRB
         until scanner.eos?
           if scanner.skip(VARIABLE_RE)
             name = scanner[1]
-            fail TableNotFound, name unless @exist_table[name]
-            fail CircularReference, name if getting[name]
+            fail(TableNotFound, name) unless @exist_table[name]
+            fail(CircularReference, name) if getting[name]
 
             variable = Variable.new(name)
             intermediate_expression << variable
@@ -206,13 +206,13 @@ module RGRB
         # @raise [RuntimeError] 値が設定されていない場合
         def needs_recursive_get?
           if @needs_recursive_get.nil?
-            fail "変数 #{@name}: 値が設定されていません"
+            fail("変数 #{@name}: 値が設定されていません")
           end
 
           @needs_recursive_get
         end
 
-        alias_method :to_s, :value
+        alias_method(:to_s, :value)
       end
 
       # 表が見つからない場合のエラーを示すクラス
@@ -229,7 +229,7 @@ module RGRB
             error_message = "表 #{table} が見つかりません"
           end
 
-          super error_message
+          super(error_message)
 
           @table = table
         end
@@ -246,7 +246,7 @@ module RGRB
             error_message = "表 #{table} で循環参照が起こりました"
           end
 
-          super error_message
+          super(error_message)
 
           @table = table
         end

@@ -49,7 +49,7 @@ module RGRB
       # @param [String] message エラーメッセージ
       # @return [void]
       def print_error(message)
-        $stderr.puts "#{File.basename($PROGRAM_NAME, '.*')}: #{message}"
+        $stderr.puts("#{File.basename($PROGRAM_NAME, '.*')}: #{message}")
       end
 
       # 設定を読み込む
@@ -59,8 +59,8 @@ module RGRB
         yaml_path = "#{@root_path}/config/rgrb.yaml"
         @config = RGRB::Config.load_yaml_file(yaml_path)
       rescue => e
-        print_error "設定ファイルの読み込みに失敗しました (#{e})"
-        Sysexits.exit :config_error
+        print_error("設定ファイルの読み込みに失敗しました (#{e})")
+        Sysexits.exit(:config_error)
       end
 
       # Redis クライアントを準備する
@@ -74,8 +74,8 @@ module RGRB
         )
         @redis.flushdb
       rescue => e
-        print_error "Redis クライアントの生成に失敗しました (#{e})"
-        $stderr.puts '再度設定を確認してください'
+        print_error("Redis クライアントの生成に失敗しました (#{e})")
+        $stderr.puts('再度設定を確認してください')
       end
 
       # IRC ボットを作り、設定して返す
@@ -110,9 +110,9 @@ module RGRB
 
         bot
       rescue => e
-        print_error "IRC ボットの生成に失敗しました (#{e})"
-        $stderr.puts '再度設定を確認してください'
-        Sysexits.exit :config_error
+        print_error("IRC ボットの生成に失敗しました (#{e})")
+        $stderr.puts('再度設定を確認してください')
+        Sysexits.exit(:config_error)
       end
     end
   end

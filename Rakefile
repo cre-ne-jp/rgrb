@@ -5,7 +5,6 @@ require 'yard'
 YARD::Rake::YardocTask.new do |t|
   t.options = [
     '--title', '汎用ダイスボット RGRB',
-    '--readme', 'doc/README.md'
   ]
   t.files = [
     'lib/**/*.rb',

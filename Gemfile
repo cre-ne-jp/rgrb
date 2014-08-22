@@ -1,13 +1,13 @@
 source 'https://rubygems.org'
 
 gem 'cinch', '~> 2.1.0'
-gem 'redis', '~> 3.1.0'
-gem 'redis-namespace', '~> 1.5.0'
 gem 'sysexits', '~> 1.1.0'
 
 group :development, :test do
   gem 'pry', '~> 0.10'
   gem 'rspec', '~> 3.0.0'
+  gem 'yard', '~> 0.8.7.4'
+  gem 'redcarpet', '~> 3.1.2' # YARD での Markdown 解析に必要
   gem 'rubocop', '~> 0.24.1'
 end
 

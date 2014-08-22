@@ -14,7 +14,7 @@ module RGRB
       # 表名を表す正規表現
       TABLE_RE = /[-_0-9A-Za-z]+/
       # 変数を表す正規表現
-      VARIABLE_RE = /(?:%%(#{TABLE_RE})%%)/o
+      VARIABLE_RE = /%%(#{TABLE_RE})%%/o
 
       # .rg にマッチ
       match(/rg[ 　]+(#{TABLE_RE}(?: +#{TABLE_RE})*)/o, method: :rg)

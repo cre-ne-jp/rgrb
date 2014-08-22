@@ -18,17 +18,6 @@ IRCBot:
   # リアルネーム
   RealName: 汎用ダイスボット RGRB
 
-# Redis の設定
-Redis:
-  # 接続する Redis サーバーのホスト
-  Host: example.net
-
-  # 接続する Redis サーバーのポート
-  Port: 6379
-
-  # 使用するデーターベースの番号
-  Database: 0
-
 # 使用するプラグインを列挙する。大文字小文字を区別するので注意
 Plugins:
   - DiceRoll

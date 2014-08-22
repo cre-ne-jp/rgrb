@@ -12,14 +12,11 @@ RGRB は Ruby で実装されている汎用ダイスボットです。プラグ
 * Linux または OSX
     * 現在のところ Windows には未対応。
 * Ruby 2.0.0 以降
-* Redis
-    * ランダムジェネレータのデータ保持に使われています。
 
 インストール
 ------------
 
-1. [Ruby](http://www.ruby-lang.org/), [Redis](http://redis.io) をインストールしていない場合はインストールしてください。
-    * 別のサーバーのものを使う場合、Redis のインストールは不要。
+1. [Ruby](http://www.ruby-lang.org/) をインストールしていない場合はインストールしてください。
 2. [Bundler](http://bundler.io/) をインストールしていない場合は以下を実行してください。
 
     ```bash
@@ -58,17 +55,6 @@ IRCBot:
 
   # リアルネーム
   RealName: 汎用ダイスボット RGRB
-
-# Redis の設定
-Redis:
-  # 接続する Redis サーバーのホスト
-  Host: example.net
-
-  # 接続する Redis サーバーのポート
-  Port: 6379
-
-  # 使用するデーターベースの番号
-  Database: 0
 
 # 使用するプラグインを列挙する。大文字小文字を区別するので注意
 Plugins:

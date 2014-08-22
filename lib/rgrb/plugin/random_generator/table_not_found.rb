@@ -10,7 +10,7 @@ module RGRB
         attr_reader :table
 
         # 新しい TableNotFound インスタンスを返す
-        # @param [String] table_name 表名
+        # @param [String] table 表名
         # @param [String] error_message エラーメッセージ
         def initialize(table = nil, error_message = nil)
           if !error_message && table

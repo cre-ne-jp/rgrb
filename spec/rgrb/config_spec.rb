@@ -75,22 +75,22 @@ describe RGRB::Config do
   end
 
   describe '#snakecase (private)' do
-    context 'empty string' do
+    context '""' do
       subject { config_empty.snakecase_public('') }
       it { should eq('') }
     end
 
-    context 'cre' do
+    context '"cre"' do
       subject { config_empty.snakecase_public('cre') }
       it { should eq('cre') }
     end
 
-    context 'RandomGenerator' do
+    context '"RandomGenerator"' do
       subject { config_empty.snakecase_public('RandomGenerator') }
       it { should eq('random_generator') }
     end
 
-    context 'IRCBot' do
+    context '"IRCBot"' do
       subject { config_empty.snakecase_public('IRCBot') }
       it { should eq('ircbot') }
     end

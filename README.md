@@ -35,6 +35,8 @@ RGRB は Ruby で実装されている汎用ダイスボットです。プラグ
 
 `config/rgrb.yaml` を編集して設定します。
 
+複数の設定を使う場合は、上記のファイルをコピーして適当な場所に設置します。
+
 ```yaml
 # IRC ボットの設定
 IRCBot:
@@ -79,6 +81,13 @@ cd /path/to/rgrb
 bin/rgrb-ircbot
 ```
 
+`-c`（`--config`）オプションで、使用する設定ファイルを指定することができます。
+
+```bash
+cd /path/to/rgrb
+bin/rgrb-ircbot -c /path/to/config_file
+```
+
 開発者向けドキュメントの生成
 ----------------------------
 
@@ -109,3 +118,5 @@ ToDo
 
 * 鯉（[@koi-chan](https://github.com/koi-chan)）
 * ocha（[@ochaochaocha3](https://github.com/ochaochaocha3)）
+* らぁ（[@raa0121](https://github.com/raa0121)）
+* risou（[@risou](https://github.com/risou)）

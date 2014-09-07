@@ -91,6 +91,7 @@ module RGRB
                 plugin_class,
                 {
                   rgrb_root_path: @root_path,
+                  rgrb_config: @config
                 }
               ]
             end

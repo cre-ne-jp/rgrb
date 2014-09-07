@@ -10,37 +10,29 @@ module RGRB
     class CreTwitterCitation
       include Cinch::Plugin
 
+      # http://t.co/〜 の URL のパターン
       T_CO_PATTERN = %r{(?<!\w)(?=\w)http://t\.co/[0-9A-Za-z]+}
-      INTERVAL = 30
-      CHANNEL_TO_SEND = ''
-
-      ACCOUNT = 'cre_ne_jp'
-      CONSUMER_KEY = ''
-      CONSUMER_SECRET = ''
-      ACCESS_TOKEN = ''
-      ACCESS_TOKEN_SECRET = ''
 
       def initialize(*args)
         super
 
-        @twitter = Twitter::REST::Client.new do |config|
-          config.consumer_key = CONSUMER_KEY
-          config.consumer_secret = CONSUMER_SECRET
-          config.access_token = ACCESS_TOKEN
-          config.access_token_secret = ACCESS_TOKEN_SECRET
-        end
+        load_config
 
+        # Twitter クライアント
+        @twitter = new_twitter_client
         # 最後の引用日時
         # 初期化時は非常に前（UNIX エポック：1970 年）になるようにする
         @last_cited = Time.at(0)
 
-        Timer(INTERVAL, method: :cite_from_twitter).start
+        Timer(@check_interval, method: :cite_from_twitter).start
       end
 
+      # ツイートを引用し、NOTICE する
+      # @return [void]
       def cite_from_twitter
         uncited_tweets = @twitter.user_timeline(
-          ACCOUNT,
-          count: 3,
+          @twitter_id,
+          count: @max_tweets_per_check,
           include_rts: false
         ).select { |tweet| tweet.created_at > @last_cited }
 
@@ -51,15 +43,45 @@ module RGRB
             Hugeurl.get(url)
           end
 
-          Channel(CHANNEL_TO_SEND).safe_notice(
-            "お知らせ：#{url_expanded_text} (" \
-              "#{tweet.created_at.strftime('%F %T')}; " \
-              "#{tweet.url})"
-          )
+          @channels_to_send.each do |channel_name|
+            Channel(channel_name).safe_notice(
+              "【お知らせ】#{url_expanded_text} (" \
+                "#{tweet.created_at.strftime('%F %T')}; " \
+                "#{tweet.url})"
+            )
 
-          sleep 1
+            sleep 1
+          end
         end
       end
+
+      # 設定を読み込む
+      def load_config
+        plugin_config = config[:rgrb_config].plugin_config(self.class)
+        twitter_config = plugin_config['Twitter']
+
+        @check_interval = plugin_config['CheckInterval']
+        @max_tweets_per_check = plugin_config['MaxTweetsPerCheck']
+        @channels_to_send = plugin_config['ChannelsToSend']
+        @twitter_id = twitter_config['ID']
+
+        @consumer_key = twitter_config['APIKey']
+        @consumer_secret = twitter_config['APISecret']
+        @access_token = twitter_config['AccessToken']
+        @access_token_secret = twitter_config['AccessTokenSecret']
+      end
+      private :load_config
+
+      # 新しい Twitter クライアントを返す
+      def new_twitter_client
+        Twitter::REST::Client.new do |config|
+          config.consumer_key = @consumer_key
+          config.consumer_secret = @consumer_secret
+          config.access_token = @access_token
+          config.access_token_secret = @access_token_secret
+        end
+      end
+      private :new_twitter_client
     end
   end
 end

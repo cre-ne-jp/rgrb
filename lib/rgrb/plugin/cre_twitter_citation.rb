@@ -2,6 +2,7 @@
 
 require 'cinch'
 require 'twitter'
+require 'hugeurl'
 
 module RGRB
   module Plugin
@@ -9,6 +10,7 @@ module RGRB
     class CreTwitterCitation
       include Cinch::Plugin
 
+      T_CO_PATTERN = %r{(?<!\w)(?=\w)http://t\.co/[0-9A-Za-z]+}
       INTERVAL = 30
       CHANNEL_TO_SEND = ''
 
@@ -38,16 +40,23 @@ module RGRB
       def cite_from_twitter
         uncited_tweets = @twitter.user_timeline(
           ACCOUNT,
-          count: 4, # 3 件 + 1
+          count: 3,
           include_rts: false
         ).select { |tweet| tweet.created_at > @last_cited }
 
         @last_cited = Time.now
 
         uncited_tweets.sort_by { |tweet| tweet.created_at }.each do |tweet|
+          url_expanded_text = tweet.full_text.gsub(T_CO_PATTERN) do |url|
+            Hugeurl.get(url)
+          end
+
           Channel(CHANNEL_TO_SEND).safe_notice(
-            "お知らせ：#{tweet.full_text}"
+            "お知らせ：#{url_expanded_text} (" \
+              "#{tweet.created_at.strftime('%F %T')}; " \
+              "#{tweet.url})"
           )
+
           sleep 1
         end
       end

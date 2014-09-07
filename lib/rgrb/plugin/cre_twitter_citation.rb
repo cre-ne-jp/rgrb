@@ -1,5 +1,6 @@
 # vim: fileencoding=utf-8
 
+require 'time'
 require 'cinch'
 require 'twitter'
 require 'hugeurl'
@@ -20,9 +21,9 @@ module RGRB
 
         # Twitter クライアント
         @twitter = new_twitter_client
-        # 最後の引用日時
-        # 初期化時は非常に前（UNIX エポック：1970 年）になるようにする
-        @last_cited = Time.at(0)
+        # 最終引用日時を記録するファイルのパス
+        @last_cited_path = "#{config[:rgrb_root_path]}/data/" \
+          'cre_twitter_citation/last_cited.txt'
 
         Timer(@check_interval, method: :cite_from_twitter).start
       end
@@ -30,13 +31,13 @@ module RGRB
       # ツイートを引用し、NOTICE する
       # @return [void]
       def cite_from_twitter
+        last_cited = read_last_cited
         uncited_tweets = @twitter.user_timeline(
           @twitter_id,
           count: @max_tweets_per_check,
           include_rts: false
-        ).select { |tweet| tweet.created_at > @last_cited }
-
-        @last_cited = Time.now
+        ).select { |tweet| tweet.created_at > last_cited }
+        write_last_cited
 
         uncited_tweets.sort_by { |tweet| tweet.created_at }.each do |tweet|
           url_expanded_text = tweet.full_text.gsub(T_CO_PATTERN) do |url|
@@ -54,6 +55,28 @@ module RGRB
           end
         end
       end
+
+      # 最終引用日時を読み込む
+      # @return [Time] 最終引用日時。
+      #   読み込みに失敗した場合、UNIX エポック
+      def read_last_cited
+        File.open(@last_cited_path) do |f|
+          Time.parse(f.gets)
+        end
+      rescue => e
+        log(e.message, :exception, :error)
+        Time.at(0)
+      end
+      private :read_last_cited
+
+      # 最終引用日時を書き込む
+      # @return [void]
+      def write_last_cited
+        File.open(@last_cited_path, 'w') do |f|
+          f.puts(Time.now)
+        end
+      end
+      private :write_last_cited
 
       # 設定を読み込む
       def load_config

@@ -30,7 +30,7 @@ CreTwitterCitation:
   # タイムライン監視の間隔（秒）
   # あまり短いとアクセス規制になるので注意
   # 60 以上を推奨
-  CheckInterval: 30
+  CheckInterval: 300
 
   # チェックごとに取得するツイートの最大数
   MaxTweetsPerCheck: 3

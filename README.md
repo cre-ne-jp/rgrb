@@ -70,6 +70,8 @@ Plugins:
 * [DiceRoll](doc/plugins/dice_roll.md)：ダイスロール
 * [Keyword](doc/plugins/keyword.md)：キーワード検索
 * [RandomGenerator](doc/plugins/random_generator.md)：ランダムジェネレータ
+* [CreTwitterCitation](doc/plugins/cre_twitter_citation.md)：Twitter @cre_ne_jp の引用
+* [CreBotHelp](doc/plugins/cre_bot_help.md)：クリエイターズネットワークの IRC ボットとしてのヘルプを表示する
 
 IRC ボットの起動
 ----------------

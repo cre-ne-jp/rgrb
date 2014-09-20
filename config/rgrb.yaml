@@ -24,6 +24,7 @@ Plugins:
   - Keyword
   - RandomGenerator
   - CreTwitterCitation
+  - CreBotHelp
 
 # Twitter @cre_ne_jp 引用プラグインの設定
 CreTwitterCitation:

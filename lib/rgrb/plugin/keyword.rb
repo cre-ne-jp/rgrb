@@ -25,14 +25,14 @@ module RGRB
       # @return [void]
       def cre_search(m, keyword)
         url = CRE_SEARCH_URL % URI.encode_www_form_component(keyword)
-        m.channel.notice("キーワード一覧の #{url} をどうぞ♪")
+        m.target.notice("キーワード一覧の #{url} をどうぞ♪")
       end
 
       # NOTICE で Amazon.co.jp 検索ページを返す
       # @return [void]
       def amazon_search(m, keyword)
         url = AMAZON_SEARCH_URL % URI.encode_www_form_component(keyword)
-        m.channel.notice("Amazon.co.jp の商品一覧から #{url} をどうぞ♪")
+        m.target.notice("Amazon.co.jp の商品一覧から #{url} をどうぞ♪")
       end
     end
   end

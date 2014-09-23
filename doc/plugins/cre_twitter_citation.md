@@ -1,31 +1,18 @@
-# IRC ボットの設定
-IRCBot:
-  # 接続する IRC サーバーのホスト名
-  Host: irc.example.net
+CreTwitterCitation
+==================
 
-  # 接続するポート
-  Port: 6667
+Twitter @cre_ne_jp の発言を引用するためのプラグインです。
 
-  # パスワード。必要なければ null
-  Password: pa$$word
+一定間隔で @cre_ne_jp の発言をチェックし、新しいツイートの内容を NOTICE します。
 
-  # ニックネーム
-  Nick: rgrb_cinch
+使用には [Twitter Apps](https://apps.twitter.com/) としての登録が必要です。
 
-  # 接続時のユーザー名
-  User: rgrb_cinch
+設定
+----
 
-  # リアルネーム
-  RealName: 汎用ダイスボット RGRB
+設定ファイルに以下を追加して、プラグインの設定を行います。
 
-# 使用するプラグインを列挙する。大文字小文字を区別するので注意
-Plugins:
-  - DiceRoll
-  - Keyword
-  - RandomGenerator
-  - CreTwitterCitation
-  - CreBotHelp
-
+```yaml
 # Twitter @cre_ne_jp 引用プラグインの設定
 CreTwitterCitation:
   # タイムライン監視の間隔（秒）
@@ -51,3 +38,4 @@ CreTwitterCitation:
     APISecret: ''
     AccessToken: ''
     AccessTokenSecret: ''
+```

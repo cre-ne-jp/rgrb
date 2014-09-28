@@ -72,7 +72,7 @@ module RGRB
           # この段階で置換する変数の名前を格納する配列
           variables = []
 
-          str.gsub!(VARIABLE_RE) do
+          str = str.gsub(VARIABLE_RE) do
             table = Regexp.last_match(1)
             fail(CircularReference, table) if getting[table]
 

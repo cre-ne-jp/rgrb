@@ -99,15 +99,14 @@ module RGRB
       # @return [void]
       def load_data(glob_pattern)
         # 表を格納するハッシュ
-        @table = Hash.new do |hash, key|
-          hash[key] = []
-        end
+        @table = {}
 
         Dir.glob(glob_pattern) do |path|
           name = File.basename(path, '.txt')
 
           File.open(path, 'r:UTF-8') do |f|
             f.each_line do |line|
+              @table[name] = [] unless @table[name]
               @table[name] << line.chomp
             end
           end

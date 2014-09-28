@@ -10,10 +10,7 @@ require 'rgrb/plugin/random_generator'
 module RGRB
   # 設定クラス
   class Config
-    # snakecase を外から呼び出せるようにする
-    def snakecase_public(s)
-      snakecase(s)
-    end
+    public :snakecase
   end
 end
 
@@ -28,29 +25,22 @@ describe RGRB::Config do
       'Realname' => '汎用ダイスボット RGRB'
     }
   end
-  let(:redis_config) do
-    {
-      'Host' => 'example.net',
-      'Port' => 6379,
-      'Database' => 0
-    }
-  end
   let(:plugin_names) { %w(DiceRoll Keyword RandomGenerator) }
+  let(:config_data) {
+    {
+      'IRCBot' => irc_bot_config,
+      'Plugins' => plugin_names
+    }
+  }
 
-  let(:config_empty) { described_class.new({}, {}, []) }
+  let(:config_empty) { described_class.new({}) }
   let(:config) do
-    described_class.new(irc_bot_config, redis_config, plugin_names)
+    described_class.new(config_data)
   end
 
   describe '#irc_bot' do
     it 'IRC ボット設定のハッシュと等しい' do
       expect(config.irc_bot).to eq(irc_bot_config)
-    end
-  end
-
-  describe '#redis' do
-    it 'Redis 設定のハッシュと等しい' do
-      expect(config.redis).to eq(redis_config)
     end
   end
 
@@ -76,22 +66,22 @@ describe RGRB::Config do
 
   describe '#snakecase (private)' do
     context '""' do
-      subject { config_empty.snakecase_public('') }
+      subject { config_empty.snakecase('') }
       it { should eq('') }
     end
 
     context '"cre"' do
-      subject { config_empty.snakecase_public('cre') }
+      subject { config_empty.snakecase('cre') }
       it { should eq('cre') }
     end
 
     context '"RandomGenerator"' do
-      subject { config_empty.snakecase_public('RandomGenerator') }
+      subject { config_empty.snakecase('RandomGenerator') }
       it { should eq('random_generator') }
     end
 
     context '"IRCBot"' do
-      subject { config_empty.snakecase_public('IRCBot') }
+      subject { config_empty.snakecase('IRCBot') }
       it { should eq('ircbot') }
     end
   end

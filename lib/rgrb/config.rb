@@ -21,10 +21,15 @@ module RGRB
     # @return [RGRB::Config]
     def initialize(config_data)
       @irc_bot = config_data['IRCBot']
-      @plugins = config_data['Plugins'].map do |plugin_name|
-        require "rgrb/plugin/#{snakecase(plugin_name)}"
-        RGRB::Plugin.const_get(plugin_name)
-      end
+      @plugins =
+        if config_data['Plugins']
+          config_data['Plugins'].map do |plugin_name|
+            require "rgrb/plugin/#{snakecase(plugin_name)}"
+            RGRB::Plugin.const_get(plugin_name)
+          end
+        else
+          []
+        end
 
       @plugin_config = Hash[
         @plugins.map do |plugin_class|

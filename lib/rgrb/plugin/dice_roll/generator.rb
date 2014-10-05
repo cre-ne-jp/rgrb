@@ -6,7 +6,7 @@ module RGRB
     #
     # メルセンヌ・ツイスタを用いて均一な乱数を生成します。
     module DiceRoll
-      # DiceRoll の出力テキストの生成器
+      # DiceRoll の出力テキスト生成器
       class Generator
         def initialize
           @random = Random.new

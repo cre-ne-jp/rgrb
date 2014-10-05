@@ -6,7 +6,7 @@ module RGRB
   module Plugin
     # キーワード検索プラグイン
     module Keyword
-      # Keyword の出力テキストの生成器
+      # Keyword の出力テキスト生成器
       class Generator
         # cre.jp 検索ページの URL
         CRE_SEARCH_URL = 'http://cre.jp/search/?sw=%s'

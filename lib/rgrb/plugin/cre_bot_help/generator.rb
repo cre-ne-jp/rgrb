@@ -4,7 +4,7 @@ module RGRB
   module Plugin
     # .help に対応するプラグイン
     module CreBotHelp
-      # CreBotHelp の出力テキストの生成器
+      # CreBotHelp の出力テキスト生成器
       class Generator
         # ヘルプメッセージ
         HELP_MESSAGE = <<EOS

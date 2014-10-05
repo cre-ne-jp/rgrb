@@ -71,6 +71,20 @@ module RGRB
       def load_plugins
         loader = PluginsLoader.new(@config)
         @plugin_irc_adapters = loader.load_each('IrcAdapter')
+        @plugin_options = Hash[
+          @plugin_irc_adapters.map do |adapter|
+            [
+              adapter,
+              {
+                root_path: @root_path,
+                plugin: @config.plugin_config[adapter.plugin_name]
+              }
+            ]
+          end
+        ]
+      rescue => e
+        print_error("プラグインの読み込みに失敗しました (#{e})")
+        Sysexits.exit(:config_error)
       end
       private :load_plugins
 
@@ -90,19 +104,7 @@ module RGRB
 
           c.plugins.prefix = /^\./
           c.plugins.plugins = @plugin_irc_adapters
-=begin
-          c.plugins.options = Hash[
-            rgrb_plugins.map do |plugin_class|
-              [
-                plugin_class::IRCAdapter,
-                {
-                  rgrb_root_path: @root_path,
-                  rgrb_config: @config
-                }
-              ]
-            end
-          ]
-=end
+          c.plugins.options = @plugin_options
         end
 
         bot

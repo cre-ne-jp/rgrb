@@ -23,7 +23,7 @@ Plugins:
   - DiceRoll
   - Keyword
 # - RandomGenerator
-# - CreTwitterCitation
+  - CreTwitterCitation
   - CreBotHelp
   - ServerConnectionReport
 
@@ -39,7 +39,7 @@ CreTwitterCitation:
 
   # NOTICE を行うチャンネルの一覧
   ChannelsToSend:
-    - '#cre'
+    #- '#cre'
 
   # Twitter アカウント関連
   Twitter:

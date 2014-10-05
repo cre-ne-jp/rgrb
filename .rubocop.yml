@@ -5,6 +5,7 @@ AllCops:
   Exclude:
     - 'bin/**/*'
     - 'vendor/**/*'
+    - 'spec/**/*'
 
 Style/AsciiComments:
   Enabled: false

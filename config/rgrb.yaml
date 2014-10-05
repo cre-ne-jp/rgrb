@@ -22,8 +22,8 @@ IRCBot:
 Plugins:
   - DiceRoll
   - Keyword
-  - RandomGenerator
-  - CreTwitterCitation
+# - RandomGenerator
+# - CreTwitterCitation
   - CreBotHelp
   - ServerConnectionReport
 

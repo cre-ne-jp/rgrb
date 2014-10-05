@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'activesupport', '~> 4.1.6'
 gem 'cinch', '~> 2.1.0'
 gem 'twitter', '~> 5.11.0'
 gem 'hugeurl', '~> 0.0.8'

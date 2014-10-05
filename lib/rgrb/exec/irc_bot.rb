@@ -6,9 +6,7 @@ require 'sysexits'
 
 require 'rgrb/version'
 require 'rgrb/config'
-require 'rgrb/plugin/keyword'
-require 'rgrb/plugin/dice_roll'
-require 'rgrb/plugin/random_generator'
+require 'rgrb/plugins_loader'
 
 module RGRB
   module Exec
@@ -33,6 +31,7 @@ module RGRB
       def execute
         @opt.parse!(@argv)
         load_config
+        load_plugins
         bot = new_bot
 
         # シグナルを捕捉し、ボットを終了させる処理
@@ -59,7 +58,6 @@ module RGRB
 
       # 設定を読み込む
       # @return [void]
-      # @todo ファイル名を指定して読み込めるようにする
       def load_config
         @config = RGRB::Config.load_yaml_file(@config_path)
       rescue => e
@@ -68,11 +66,18 @@ module RGRB
       end
       private :load_config
 
+      # プラグインを読み込む
+      # @return [void]
+      def load_plugins
+        loader = PluginsLoader.new(@config)
+        @plugin_irc_adapters = loader.load_each('IrcAdapter')
+      end
+      private :load_plugins
+
       # IRC ボットを作り、設定して返す
       # @return [Cinch::Bot]
       def new_bot
         bot_config = @config.irc_bot
-        rgrb_plugins = @config.plugins
 
         bot = Cinch::Bot.new
         bot.configure do |c|
@@ -84,11 +89,12 @@ module RGRB
           c.realname = bot_config['RealName']
 
           c.plugins.prefix = /^\./
-          c.plugins.plugins = rgrb_plugins
+          c.plugins.plugins = @plugin_irc_adapters
+=begin
           c.plugins.options = Hash[
             rgrb_plugins.map do |plugin_class|
               [
-                plugin_class,
+                plugin_class::IRCAdapter,
                 {
                   rgrb_root_path: @root_path,
                   rgrb_config: @config
@@ -96,6 +102,7 @@ module RGRB
               ]
             end
           ]
+=end
         end
 
         bot

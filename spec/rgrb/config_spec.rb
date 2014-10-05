@@ -3,16 +3,6 @@
 require_relative '../spec_helper'
 
 require 'rgrb/config'
-require 'rgrb/plugin/dice_roll'
-require 'rgrb/plugin/keyword'
-require 'rgrb/plugin/random_generator'
-
-module RGRB
-  # 設定クラス
-  class Config
-    public :snakecase
-  end
-end
 
 describe RGRB::Config do
   let(:irc_bot_config) do
@@ -26,12 +16,23 @@ describe RGRB::Config do
     }
   end
   let(:plugin_names) { %w(DiceRoll Keyword RandomGenerator) }
-  let(:config_data) {
+  let(:keyword_settings) do
+    { 'CreSearch' => 'http://cre.jp/search/' }
+  end
+  let(:plugin_config) do
+    {
+      'DiceRoll' => nil,
+      'Keyword' => keyword_settings,
+      'RandomGenerator' => nil
+    }
+  end
+  let(:config_data) do
     {
       'IRCBot' => irc_bot_config,
-      'Plugins' => plugin_names
+      'Plugins' => plugin_names,
+      'Keyword' => keyword_settings
     }
-  }
+  end
 
   let(:config_empty) { described_class.new({}) }
   let(:config) do
@@ -45,44 +46,14 @@ describe RGRB::Config do
   end
 
   describe '#plugins' do
-    context '正常に指定した場合' do
-      it '指定したプラグインのクラスの配列と等しい' do
-        expect(config.plugins).to eq(
-          [
-            RGRB::Plugin::DiceRoll,
-            RGRB::Plugin::Keyword,
-            RGRB::Plugin::RandomGenerator
-          ]
-        )
-      end
-    end
-
-    context '存在しないプラグインを指定した場合' do
-      it do
-        expect { described_class.new({}, {}, ['hoge']) }.to raise_error
-      end
+    it 'プラグイン名の配列と等しい' do
+      expect(config.plugins).to eq(plugin_names)
     end
   end
 
-  describe '#snakecase (private)' do
-    context '""' do
-      subject { config_empty.snakecase('') }
-      it { should eq('') }
-    end
-
-    context '"cre"' do
-      subject { config_empty.snakecase('cre') }
-      it { should eq('cre') }
-    end
-
-    context '"RandomGenerator"' do
-      subject { config_empty.snakecase('RandomGenerator') }
-      it { should eq('random_generator') }
-    end
-
-    context '"IRCBot"' do
-      subject { config_empty.snakecase('IRCBot') }
-      it { should eq('ircbot') }
+  describe '#plugin_config' do
+    it 'プラグイン設定と等しい' do
+      expect(config.plugin_config).to eq(plugin_config)
     end
   end
 end

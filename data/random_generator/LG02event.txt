@@ -1,0 +1,7 @@
+%%LG02human_modifier%%%%LG02human%%に遭遇する
+%%LG02human_item%%を持った%%LG02human%%にぶつかった
+%%LG02human%%が%%LG02human_item%%をなくして%%LG02negative_response%%
+%%LG02work%%中に、%%LG02trouble%%が発生した
+%%LG02human_item%%を持った%%LG02human%%に人違いされた
+%%LG02human_item%%を持った%%LG02human%%が%%LG02negative_response%%
+%%LG02trouble%%で%%LG02human%%が%%LG02negative_response%%

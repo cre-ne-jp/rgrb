@@ -2,7 +2,7 @@
 
 module RGRB
   module Plugin
-    class RandomGenerator
+    module RandomGenerator
       # 表が見つからない場合のエラーを示すクラス
       class TableNotFound < StandardError
         # 見つからなかった表名

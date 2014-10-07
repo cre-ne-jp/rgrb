@@ -6,6 +6,9 @@ module RGRB
   module Plugin
     # 設定できる出力テキスト生成器のモジュール
     module ConfigurableGenerator
+      # インスタンスの初期化
+      #
+      # 設定関連のメソッドが動作するように変数を設定する。
       def initialize
         class_name_tree = self.class.name.split('::')
         @plugin_name_underscore = class_name_tree[-2].underscore

@@ -1,0 +1,265 @@
+0.愚者 =THE FOOL= の逆位置 ですの☆　賢行の暗示
+0.愚者 =THE FOOL= の逆位置 ですの☆　思慮の暗示
+0.愚者 =THE FOOL= の逆位置 ですの☆　節制の暗示
+0.愚者 =THE FOOL= の逆位置 ですの☆　規律の暗示
+0.愚者 =THE FOOL= の逆位置 ですの☆　親切の暗示
+0.愚者 =THE FOOL= の逆位置 ですの☆　約束の暗示
+0.愚者 =THE FOOL= の正位置 ですの☆　愚行の暗示
+0.愚者 =THE FOOL= の正位置 ですの☆　無思慮の暗示
+0.愚者 =THE FOOL= の正位置 ですの☆　浪費の暗示
+0.愚者 =THE FOOL= の正位置 ですの☆　無規律の暗示
+0.愚者 =THE FOOL= の正位置 ですの☆　不親切の暗示
+0.愚者 =THE FOOL= の正位置 ですの☆　新事態の暗示
+1.魔術師 =THE MAGICIAN= の逆位置 ですの☆　不安の暗示
+1.魔術師 =THE MAGICIAN= の逆位置 ですの☆　意思薄弱の暗示
+1.魔術師 =THE MAGICIAN= の逆位置 ですの☆　不慣れの暗示
+1.魔術師 =THE MAGICIAN= の逆位置 ですの☆　パクりの暗示
+1.魔術師 =THE MAGICIAN= の逆位置 ですの☆　誠実の暗示
+1.魔術師 =THE MAGICIAN= の逆位置 ですの☆　無個性の暗示
+1.魔術師 =THE MAGICIAN= の正位置 ですの☆　自信の暗示
+1.魔術師 =THE MAGICIAN= の正位置 ですの☆　意思力の暗示
+1.魔術師 =THE MAGICIAN= の正位置 ですの☆　熟練の暗示
+1.魔術師 =THE MAGICIAN= の正位置 ですの☆　創造心の暗示
+1.魔術師 =THE MAGICIAN= の正位置 ですの☆　独自性の暗示
+1.魔術師 =THE MAGICIAN= の正位置 ですの☆　詐欺の暗示
+10.運命の輪 =THE WHEEL OF FORTUNE= の逆位置 ですの☆　自ら道を切り開くの暗示
+10.運命の輪 =THE WHEEL OF FORTUNE= の逆位置 ですの☆　不運の暗示
+10.運命の輪 =THE WHEEL OF FORTUNE= の逆位置 ですの☆　弔事の暗示
+10.運命の輪 =THE WHEEL OF FORTUNE= の逆位置 ですの☆　不変の暗示
+10.運命の輪 =THE WHEEL OF FORTUNE= の逆位置 ですの☆　結論が出ない暗示ですの☆
+10.運命の輪 =THE WHEEL OF FORTUNE= の逆位置 ですの☆　終結、解決の先延ばしの暗示
+10.運命の輪 =THE WHEEL OF FORTUNE= の正位置 ですの☆　宿命の暗示
+10.運命の輪 =THE WHEEL OF FORTUNE= の正位置 ですの☆　幸運の暗示
+10.運命の輪 =THE WHEEL OF FORTUNE= の正位置 ですの☆　慶事の暗示
+10.運命の輪 =THE WHEEL OF FORTUNE= の正位置 ですの☆　変化の接近の暗示
+10.運命の輪 =THE WHEEL OF FORTUNE= の正位置 ですの☆　結論の暗示
+10.運命の輪 =THE WHEEL OF FORTUNE= の正位置 ですの☆　問題の終結、又は解決の接近の暗示
+11.正義 =THE JUSTICE= の逆位置 ですの☆　不公平の暗示
+11.正義 =THE JUSTICE= の逆位置 ですの☆　偽善の暗示
+11.正義 =THE JUSTICE= の逆位置 ですの☆　不当の暗示
+11.正義 =THE JUSTICE= の逆位置 ですの☆　同調の意思無しの暗示
+11.正義 =THE JUSTICE= の逆位置 ですの☆　不名誉の暗示
+11.正義 =THE JUSTICE= の逆位置 ですの☆　不満足の暗示
+11.正義 =THE JUSTICE= の正位置 ですの☆　公正の暗示
+11.正義 =THE JUSTICE= の正位置 ですの☆　正義の暗示
+11.正義 =THE JUSTICE= の正位置 ですの☆　正当の暗示
+11.正義 =THE JUSTICE= の正位置 ですの☆　調和の暗示
+11.正義 =THE JUSTICE= の正位置 ですの☆　名誉の暗示
+11.正義 =THE JUSTICE= の正位置 ですの☆　自己満足の暗示
+12.吊るされた男 =THE HANGED MAN= の逆位置 ですの☆　犬死の暗示
+12.吊るされた男 =THE HANGED MAN= の逆位置 ですの☆　不屈の暗示
+12.吊るされた男 =THE HANGED MAN= の逆位置 ですの☆　捨てる神あれば拾う神ありの暗示
+12.吊るされた男 =THE HANGED MAN= の逆位置 ですの☆　停滞の暗示
+12.吊るされた男 =THE HANGED MAN= の逆位置 ですの☆　進歩の暗示
+12.吊るされた男 =THE HANGED MAN= の逆位置 ですの☆　強力な内部要因の暗示
+12.吊るされた男 =THE HANGED MAN= の正位置 ですの☆　犠牲の暗示
+12.吊るされた男 =THE HANGED MAN= の正位置 ですの☆　投降の暗示
+12.吊るされた男 =THE HANGED MAN= の正位置 ですの☆　放棄の暗示
+12.吊るされた男 =THE HANGED MAN= の正位置 ですの☆　変遷の暗示
+12.吊るされた男 =THE HANGED MAN= の正位置 ですの☆　無進歩の暗示
+12.吊るされた男 =THE HANGED MAN= の正位置 ですの☆　強力な外部要因の暗示
+13.死神 =THE DEATH= の逆位置 ですの☆　安定の暗示
+13.死神 =THE DEATH= の逆位置 ですの☆　想定された変化の暗示
+13.死神 =THE DEATH= の逆位置 ですの☆　死からの復活の暗示
+13.死神 =THE DEATH= の逆位置 ですの☆　破壊を免れるの暗示
+13.死神 =THE DEATH= の逆位置 ですの☆　突発的な解決の暗示
+13.死神 =THE DEATH= の逆位置 ですの☆　大きな安心の暗示
+13.死神 =THE DEATH= の正位置 ですの☆　急変の暗示
+13.死神 =THE DEATH= の正位置 ですの☆　意外な変化の暗示
+13.死神 =THE DEATH= の正位置 ですの☆　死の暗示
+13.死神 =THE DEATH= の正位置 ですの☆　破壊の暗示
+13.死神 =THE DEATH= の正位置 ですの☆　突発事件の暗示
+13.死神 =THE DEATH= の正位置 ですの☆　生涯に亘る心の傷の暗示
+14.節制 =THE TEMPARANCE= の逆位置 ですの☆　ブチ切れの暗示
+14.節制 =THE TEMPARANCE= の逆位置 ですの☆　疎外感の暗示
+14.節制 =THE TEMPARANCE= の逆位置 ですの☆　無駄遣いの暗示
+14.節制 =THE TEMPARANCE= の逆位置 ですの☆　友情の喪失の暗示
+14.節制 =THE TEMPARANCE= の逆位置 ですの☆　悪い影響力の暗示
+14.節制 =THE TEMPARANCE= の逆位置 ですの☆　妥協しない事の暗示
+14.節制 =THE TEMPARANCE= の正位置 ですの☆　忍耐の暗示
+14.節制 =THE TEMPARANCE= の正位置 ですの☆　適応の暗示
+14.節制 =THE TEMPARANCE= の正位置 ですの☆　倹約の暗示
+14.節制 =THE TEMPARANCE= の正位置 ですの☆　友情の暗示
+14.節制 =THE TEMPARANCE= の正位置 ですの☆　良い影響力の暗示
+14.節制 =THE TEMPARANCE= の正位置 ですの☆　妥協の暗示
+15.悪魔 =THE DEVIL= の逆位置 ですの☆　非暴力の暗示
+15.悪魔 =THE DEVIL= の逆位置 ですの☆　破壊からの保護の暗示
+15.悪魔 =THE DEVIL= の逆位置 ですの☆　解放の暗示
+15.悪魔 =THE DEVIL= の逆位置 ですの☆　下克上の暗示
+15.悪魔 =THE DEVIL= の逆位置 ですの☆　上り詰める事の暗示
+15.悪魔 =THE DEVIL= の逆位置 ですの☆　独立心の暗示
+15.悪魔 =THE DEVIL= の正位置 ですの☆　暴力の暗示
+15.悪魔 =THE DEVIL= の正位置 ですの☆　破壊の暗示
+15.悪魔 =THE DEVIL= の正位置 ですの☆　拘束の暗示
+15.悪魔 =THE DEVIL= の正位置 ですの☆　従属の暗示
+15.悪魔 =THE DEVIL= の正位置 ですの☆　没落の暗示
+15.悪魔 =THE DEVIL= の正位置 ですの☆　依頼心の暗示
+16.塔 =THE TOWER= の逆位置 ですの☆　統合の暗示
+16.塔 =THE TOWER= の逆位置 ですの☆　辛くも災難を逃れるの暗示
+16.塔 =THE TOWER= の逆位置 ですの☆　誠実の暗示
+16.塔 =THE TOWER= の逆位置 ですの☆　開始の暗示
+16.塔 =THE TOWER= の逆位置 ですの☆　過剰な自信の暗示
+16.塔 =THE TOWER= の逆位置 ですの☆　泥沼の暗示
+16.塔 =THE TOWER= の正位置 ですの☆　分裂の暗示
+16.塔 =THE TOWER= の正位置 ですの☆　災難の暗示
+16.塔 =THE TOWER= の正位置 ですの☆　詐欺の暗示
+16.塔 =THE TOWER= の正位置 ですの☆　終局の暗示
+16.塔 =THE TOWER= の正位置 ですの☆　自信喪失の暗示
+16.塔 =THE TOWER= の正位置 ですの☆　清算の暗示
+17.星 =THE STAR= の逆位置 ですの☆　絶望の暗示
+17.星 =THE STAR= の逆位置 ですの☆　不満の暗示
+17.星 =THE STAR= の逆位置 ですの☆　失われた未来の暗示
+17.星 =THE STAR= の逆位置 ですの☆　注意力散漫の暗示
+17.星 =THE STAR= の逆位置 ですの☆　正確な時間感覚の暗示
+17.星 =THE STAR= の逆位置 ですの☆　困難の克服また、それに伴う犠牲の暗示
+17.星 =THE STAR= の正位置 ですの☆　希望の暗示
+17.星 =THE STAR= の正位置 ですの☆　満足の暗示
+17.星 =THE STAR= の正位置 ですの☆　輝かしい将来の暗示
+17.星 =THE STAR= の正位置 ですの☆　洞察力の暗示
+17.星 =THE STAR= の正位置 ですの☆　過去現在と将来の混同の暗示
+17.星 =THE STAR= の正位置 ですの☆　最大の神の与えた試練の暗示
+18.月 =THE MOON= の逆位置 ですの☆　不用心の暗示
+18.月 =THE MOON= の逆位置 ですの☆　気分の安定の暗示
+18.月 =THE MOON= の逆位置 ですの☆　安全の暗示
+18.月 =THE MOON= の逆位置 ですの☆　醜聞の撤回の暗示
+18.月 =THE MOON= の逆位置 ですの☆　露な動機の暗示
+18.月 =THE MOON= の逆位置 ですの☆　誠実の暗示
+18.月 =THE MOON= の正位置 ですの☆　用心の暗示
+18.月 =THE MOON= の正位置 ですの☆　精神の不安定の暗示
+18.月 =THE MOON= の正位置 ですの☆　危険の暗示
+18.月 =THE MOON= の正位置 ですの☆　醜聞の暗示
+18.月 =THE MOON= の正位置 ですの☆　誤謬の暗示
+18.月 =THE MOON= の正位置 ですの☆　秘密の動機の暗示
+18.月 =THE MOON= の正位置 ですの☆　不誠実の暗示
+19.太陽 =THE SUN= の逆位置 ですの☆　敗北の暗示
+19.太陽 =THE SUN= の逆位置 ですの☆　失敗の暗示
+19.太陽 =THE SUN= の逆位置 ですの☆　薄情の暗示
+19.太陽 =THE SUN= の逆位置 ですの☆　下心のある贈り物の暗示
+19.太陽 =THE SUN= の逆位置 ですの☆　古い友の喪失の暗示
+19.太陽 =THE SUN= の逆位置 ですの☆　不信任の暗示
+19.太陽 =THE SUN= の正位置 ですの☆　勝利の暗示
+19.太陽 =THE SUN= の正位置 ですの☆　成功の暗示
+19.太陽 =THE SUN= の正位置 ですの☆　温情の暗示
+19.太陽 =THE SUN= の正位置 ですの☆　誠意の暗示
+19.太陽 =THE SUN= の正位置 ですの☆　新しい友の暗示
+19.太陽 =THE SUN= の正位置 ですの☆　信任の暗示
+2.女教皇 =THE HIGH PRIESTESS= の逆位置 ですの☆　悪智恵の暗示
+2.女教皇 =THE HIGH PRIESTESS= の逆位置 ですの☆　優柔不断の暗示
+2.女教皇 =THE HIGH PRIESTESS= の逆位置 ですの☆　無学の暗示
+2.女教皇 =THE HIGH PRIESTESS= の逆位置 ですの☆　愚鈍の暗示
+2.女教皇 =THE HIGH PRIESTESS= の逆位置 ですの☆　情に厚いの暗示
+2.女教皇 =THE HIGH PRIESTESS= の逆位置 ですの☆　残酷な情の暗示
+2.女教皇 =THE HIGH PRIESTESS= の正位置 ですの☆　聡明の暗示
+2.女教皇 =THE HIGH PRIESTESS= の正位置 ですの☆　清純な智恵の暗示
+2.女教皇 =THE HIGH PRIESTESS= の正位置 ですの☆　判断力の暗示
+2.女教皇 =THE HIGH PRIESTESS= の正位置 ですの☆　学識の暗示
+2.女教皇 =THE HIGH PRIESTESS= の正位置 ですの☆　明敏の暗示
+2.女教皇 =THE HIGH PRIESTESS= の正位置 ですの☆　冷徹な情の暗示
+20.審判 =THE JUDGEMENT= の逆位置 ですの☆　誤った判断の暗示
+20.審判 =THE JUDGEMENT= の逆位置 ですの☆　経緯の暗示
+20.審判 =THE JUDGEMENT= の逆位置 ですの☆　後退の暗示
+20.審判 =THE JUDGEMENT= の逆位置 ですの☆　後ろ向きな思考の暗示
+20.審判 =THE JUDGEMENT= の逆位置 ですの☆　弁解の暗示
+20.審判 =THE JUDGEMENT= の逆位置 ですの☆　バッドタイミングの暗示
+20.審判 =THE JUDGEMENT= の正位置 ですの☆　決定の暗示
+20.審判 =THE JUDGEMENT= の正位置 ですの☆　結果の暗示
+20.審判 =THE JUDGEMENT= の正位置 ですの☆　発展の暗示
+20.審判 =THE JUDGEMENT= の正位置 ですの☆　懺悔の暗示
+20.審判 =THE JUDGEMENT= の正位置 ですの☆　好機の暗示
+20.審判 =THE JUDGEMENT= の正位置 ですの☆　肯定の暗示
+21.世界 =THE WORLD= の逆位置 ですの☆　未完成の暗示
+21.世界 =THE WORLD= の逆位置 ですの☆　一部の暗示
+21.世界 =THE WORLD= の逆位置 ですの☆　最初の変化の暗示
+21.世界 =THE WORLD= の逆位置 ですの☆　大失敗の暗示
+21.世界 =THE WORLD= の逆位置 ですの☆　不利の暗示
+21.世界 =THE WORLD= の逆位置 ですの☆　強く、悪い影響の暗示
+21.世界 =THE WORLD= の正位置 ですの☆　完成の暗示
+21.世界 =THE WORLD= の正位置 ですの☆　総合の暗示
+21.世界 =THE WORLD= の正位置 ですの☆　最後の変化の暗示
+21.世界 =THE WORLD= の正位置 ですの☆　大成功の暗示
+21.世界 =THE WORLD= の正位置 ですの☆　有利の暗示
+21.世界 =THE WORLD= の正位置 ですの☆　強く、良い影響の暗示
+3.女帝 =THE EMPRESS= の逆位置 ですの☆　億劫の暗示
+3.女帝 =THE EMPRESS= の逆位置 ですの☆　消極性の暗示
+3.女帝 =THE EMPRESS= の逆位置 ですの☆　非効率の暗示
+3.女帝 =THE EMPRESS= の逆位置 ですの☆　貧困の暗示
+3.女帝 =THE EMPRESS= の逆位置 ですの☆　挫折の暗示
+3.女帝 =THE EMPRESS= の逆位置 ですの☆　不干渉の暗示
+3.女帝 =THE EMPRESS= の正位置 ですの☆　行動力の暗示
+3.女帝 =THE EMPRESS= の正位置 ですの☆　発展性の暗示
+3.女帝 =THE EMPRESS= の正位置 ですの☆　能率性の暗示
+3.女帝 =THE EMPRESS= の正位置 ですの☆　豊饒の暗示
+3.女帝 =THE EMPRESS= の正位置 ですの☆　達成の暗示
+3.女帝 =THE EMPRESS= の正位置 ですの☆　干渉の暗示
+4.皇帝 =THE EMPEROR= の逆位置 ですの☆　口先だけの暗示
+4.皇帝 =THE EMPEROR= の逆位置 ですの☆　挫折の暗示
+4.皇帝 =THE EMPEROR= の逆位置 ですの☆　アナーキーの暗示
+4.皇帝 =THE EMPEROR= の逆位置 ですの☆　不安定の暗示
+4.皇帝 =THE EMPEROR= の逆位置 ですの☆　情熱の暗示
+4.皇帝 =THE EMPEROR= の逆位置 ですの☆　高圧的な専制の暗示
+4.皇帝 =THE EMPEROR= の正位置 ですの☆　実行力の暗示
+4.皇帝 =THE EMPEROR= の正位置 ですの☆　達成の暗示
+4.皇帝 =THE EMPEROR= の正位置 ですの☆　世俗的権力の暗示
+4.皇帝 =THE EMPEROR= の正位置 ですの☆　富の暗示
+4.皇帝 =THE EMPEROR= の正位置 ですの☆　安定の暗示
+4.皇帝 =THE EMPEROR= の正位置 ですの☆　冷静の暗示
+5.法皇 =THE HIEROPHANT= の逆位置 ですの☆　無慈悲の暗示
+5.法皇 =THE HIEROPHANT= の逆位置 ですの☆　不親切の暗示
+5.法皇 =THE HIEROPHANT= の逆位置 ですの☆　邪悪の暗示
+5.法皇 =THE HIEROPHANT= の逆位置 ですの☆　ペテンの暗示
+5.法皇 =THE HIEROPHANT= の逆位置 ですの☆　尊大の暗示
+5.法皇 =THE HIEROPHANT= の逆位置 ですの☆　対面の暗示
+5.法皇 =THE HIEROPHANT= の正位置 ですの☆　慈悲の暗示
+5.法皇 =THE HIEROPHANT= の正位置 ですの☆　親切の暗示
+5.法皇 =THE HIEROPHANT= の正位置 ですの☆　善良の暗示
+5.法皇 =THE HIEROPHANT= の正位置 ですの☆　忠告の暗示
+5.法皇 =THE HIEROPHANT= の正位置 ですの☆　謙遜の暗示
+5.法皇 =THE HIEROPHANT= の正位置 ですの☆　逃避の暗示
+6.恋人 =THE LOVERS= の逆位置 ですの☆　失恋の暗示
+6.恋人 =THE LOVERS= の逆位置 ですの☆　下心のある愛の暗示
+6.恋人 =THE LOVERS= の逆位置 ですの☆　無魅力の暗示
+6.恋人 =THE LOVERS= の逆位置 ですの☆　試煉への敗北の暗示
+6.恋人 =THE LOVERS= の逆位置 ですの☆　悲観主義の暗示
+6.恋人 =THE LOVERS= の逆位置 ですの☆　相互依存の罠の暗示
+6.恋人 =THE LOVERS= の正位置 ですの☆　恋愛の暗示
+6.恋人 =THE LOVERS= の正位置 ですの☆　真実の愛の暗示
+6.恋人 =THE LOVERS= の正位置 ですの☆　魅力の暗示
+6.恋人 =THE LOVERS= の正位置 ですの☆　試煉の克服の暗示
+6.恋人 =THE LOVERS= の正位置 ですの☆　楽観主義の暗示
+6.恋人 =THE LOVERS= の正位置 ですの☆　協調作業の暗示
+7.戦車 =THE CHARIOT= の逆位置 ですの☆　平和の暗示
+7.戦車 =THE CHARIOT= の逆位置 ですの☆　容赦の暗示
+7.戦車 =THE CHARIOT= の逆位置 ですの☆　容易の暗示
+7.戦車 =THE CHARIOT= の逆位置 ですの☆　内部要因の暗示
+7.戦車 =THE CHARIOT= の逆位置 ですの☆　勝利または敗北の暗示
+7.戦車 =THE CHARIOT= の逆位置 ですの☆　合点の暗示
+7.戦車 =THE CHARIOT= の正位置 ですの☆　戦争の暗示
+7.戦車 =THE CHARIOT= の正位置 ですの☆　復讐の暗示
+7.戦車 =THE CHARIOT= の正位置 ですの☆　困難の暗示
+7.戦車 =THE CHARIOT= の正位置 ですの☆　外部要因の暗示
+7.戦車 =THE CHARIOT= の正位置 ですの☆　勝利または敗北の暗示
+7.戦車 =THE CHARIOT= の正位置 ですの☆　早合点の暗示
+8.力 =THE STRENGTH= の逆位置 ですの☆　臆病の暗示
+8.力 =THE STRENGTH= の逆位置 ですの☆　優柔不断の暗示
+8.力 =THE STRENGTH= の逆位置 ですの☆　逃避の暗示
+8.力 =THE STRENGTH= の逆位置 ですの☆　自信の喪失の暗示
+8.力 =THE STRENGTH= の逆位置 ですの☆　合理主義の暗示
+8.力 =THE STRENGTH= の逆位置 ですの☆　君子危うきに近寄らずの暗示
+8.力 =THE STRENGTH= の正位置 ですの☆　勇気の暗示
+8.力 =THE STRENGTH= の正位置 ですの☆　決意の暗示
+8.力 =THE STRENGTH= の正位置 ですの☆　挑戦の暗示
+8.力 =THE STRENGTH= の正位置 ですの☆　自信の暗示
+8.力 =THE STRENGTH= の正位置 ですの☆　精神主義の暗示
+8.力 =THE STRENGTH= の正位置 ですの☆　危険を伴う成功の暗示
+9.隠者 =THE HERMIT= の逆位置 ですの☆　不用意の暗示
+9.隠者 =THE HERMIT= の逆位置 ですの☆　無思慮な進行の暗示
+9.隠者 =THE HERMIT= の逆位置 ですの☆　既婚の暗示
+9.隠者 =THE HERMIT= の逆位置 ですの☆　指導の誤りの暗示
+9.隠者 =THE HERMIT= の逆位置 ですの☆　杞憂の暗示
+9.隠者 =THE HERMIT= の逆位置 ですの☆　臆病さによる失敗の暗示
+9.隠者 =THE HERMIT= の正位置 ですの☆　用意周到の暗示
+9.隠者 =THE HERMIT= の正位置 ですの☆　思慮の末の撤退の暗示
+9.隠者 =THE HERMIT= の正位置 ですの☆　思慮の在る慎重の暗示
+9.隠者 =THE HERMIT= の正位置 ですの☆　独身の暗示
+9.隠者 =THE HERMIT= の正位置 ですの☆　正しい指導の暗示
+9.隠者 =THE HERMIT= の正位置 ですの☆　失敗を見越した行動の暗示

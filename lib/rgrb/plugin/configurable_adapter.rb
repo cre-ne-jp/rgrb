@@ -19,6 +19,7 @@ module RGRB
 
         true
       end
+      private :prepare_generator
     end
   end
 end

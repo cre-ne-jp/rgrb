@@ -2,7 +2,7 @@
 
 module RGRB
   module Plugin
-    class RandomGenerator
+    module RandomGenerator
       # 循環参照エラーを示すクラス
       class CircularReference < StandardError
         # 循環参照が起こった表名

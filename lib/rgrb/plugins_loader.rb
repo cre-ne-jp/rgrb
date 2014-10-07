@@ -22,7 +22,8 @@ module RGRB
 
     # プラグインの構成要素を require する
     # @param [String] component_name 構成要素の名前："Generator" 等
-    # @param [boolean] skip_on_load_error エラー時に該当要素をスキップするか
+    # @param [boolean] skip_on_load_error
+    #   読み込みエラー時に該当要素をスキップするか
     # @return [Array] 読み込んだプラグイン構成要素のクラスの配列
     def load_each(component_name, skip_on_load_error = false)
       component_name_underscore = component_name.underscore

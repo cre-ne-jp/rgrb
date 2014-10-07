@@ -22,7 +22,7 @@ IRCBot:
 Plugins:
   - DiceRoll
   - Keyword
-# - RandomGenerator
+  - RandomGenerator
   - CreTwitterCitation
   - CreBotHelp
   - ServerConnectionReport

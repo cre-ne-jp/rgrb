@@ -70,7 +70,7 @@ module RGRB
       # @return [void]
       def load_plugins
         loader = PluginsLoader.new(@config)
-        @plugin_irc_adapters = loader.load_each('IrcAdapter')
+        @plugin_irc_adapters = loader.load_each(:IrcAdapter)
         @plugin_options = Hash[
           @plugin_irc_adapters.map do |adapter|
             [

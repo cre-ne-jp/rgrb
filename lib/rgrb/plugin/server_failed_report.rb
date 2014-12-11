@@ -14,23 +14,18 @@ module RGRB
       CONNECT_MESSAGE = '"%s"がリレーしました。'
 
 			# メッセージ出力先
-			@channel_name = ''
+			CHANNEL_NAME = ''
 
+			self.prefix = ''
       match(/Server "([\w\.]+)" unregistered/, method: :fail_srv)
       match(/Server "([\w\.]+)" registered/, method: :connect_srv)
-			match(/roll[ 　]+([1-9]\d*)d([1-9]\d*)/i, method: :basic_dice)
-
-			def basic_dice(m, n_dice, max)
-			  m.target.notice("#{m.user.nick} -> #{n_dice}d#{max} = test")
-			end
-
 
 			# NOTICE でサーバー切断メッセージを出す
       # @return [void]
       def fail_srv(m, srvname)
 				mes = FAIL_MESSAGE % srvname
-#				@channel_name.each do |channel_name|
-					Channel(@channel_name).safe_notice(mes)
+#				CHANNEL_NAME.each do |channel_name|
+					Channel(CHANNEL_NAME).safe_notice(mes)
 #				end
       end
 
@@ -38,8 +33,8 @@ module RGRB
       # @return [void]
       def connect_srv(m, srvname)
 				mes = CONNECT_MESSAGE % srvname
-#				@channel_name.each do |channel_name|
-					Channel(@channel_name).safe_notice(mes)
+#				CHANNEL_NAME.each do |channel_name|
+					Channel(CHANNEL_NAME).safe_notice(mes)
 #				end
       end
     end

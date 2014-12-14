@@ -4,8 +4,8 @@ require 'cinch'
 
 module RGRB
   module Plugin
-    # キーワード検索プラグイン
-    class ServerFailedReport
+    # サーバーリレー監視プラグイン
+    class ServerConnectionReport
       include Cinch::Plugin
 
       # サーバーがリレーから切断した際のメッセージ

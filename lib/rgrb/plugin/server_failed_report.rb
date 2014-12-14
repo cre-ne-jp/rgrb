@@ -14,28 +14,34 @@ module RGRB
       CONNECT_MESSAGE = '"%s"がリレーしました。'
 
 			# メッセージ出力先
-			CHANNEL_NAME = ''
+			#@channels_to_send = ''
 
 			self.prefix = ''
       match(/Server "([\w\.]+)" unregistered/, method: :fail_srv)
       match(/Server "([\w\.]+)" registered/, method: :connect_srv)
 
+			def initialize(*args)
+				super
+
+				load_config
+			end
+
 			# NOTICE でサーバー切断メッセージを出す
       # @return [void]
       def fail_srv(m, srvname)
 				mes = FAIL_MESSAGE % srvname
-#				CHANNEL_NAME.each do |channel_name|
-					Channel(CHANNEL_NAME).safe_notice(mes)
-#				end
+				@channels_to_send.each do |channel_name|
+					Channel(channel_name).safe_notice(mes)
+				end
       end
 
       # NOTICE でサーバー接続メッセージを返す
       # @return [void]
       def connect_srv(m, srvname)
 				mes = CONNECT_MESSAGE % srvname
-#				CHANNEL_NAME.each do |channel_name|
-					Channel(CHANNEL_NAME).safe_notice(mes)
-#				end
+				@channels_to_send.each do |channel_name|
+					Channel(channel_name).safe_notice(mes)
+				end
       end
     end
   end

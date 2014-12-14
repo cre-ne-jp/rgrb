@@ -52,3 +52,9 @@ CreTwitterCitation:
     APISecret: ''
     AccessToken: ''
     AccessTokenSecret: ''
+
+# サーバーリレー監視プラグインの設定
+ServerFailedReport:
+  # NOTICE を行なうチャンネルの一覧
+  ChannelsToSend:
+    - ''

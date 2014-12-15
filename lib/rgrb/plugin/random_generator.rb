@@ -1,6 +1,7 @@
 # vim: fileencoding=utf-8
 
 require 'cinch'
+require 'yaml'
 
 require 'rgrb/plugin/random_generator/table_not_found'
 require 'rgrb/plugin/random_generator/circular_reference'
@@ -22,7 +23,7 @@ module RGRB
       def initialize(*args)
         super
 
-        load_data("#{config[:rgrb_root_path]}/data/rg/*.txt")
+        load_data("#{config[:rgrb_root_path]}/data/rg/*.yaml")
       end
 
       # NOTICE でジェネレート結果を返す
@@ -55,7 +56,7 @@ module RGRB
       def get_value_from(table_name)
         fail(TableNotFound, table_name) unless @table[table_name]
 
-        @table[table_name].sample
+        @table[table_name]['body'].sample
       end
 
       private :get_value_from
@@ -102,14 +103,16 @@ module RGRB
         @table = {}
 
         Dir.glob(glob_pattern) do |path|
-          name = File.basename(path, '.txt')
+          name = File.basename(path, '.yaml')
 
-          File.open(path, 'r:UTF-8') do |f|
-            f.each_line do |line|
-              @table[name] = [] unless @table[name]
-              @table[name] << line.chomp
-            end
-          end
+          @table[name] = YAML.load_file(path)
+
+#          File.open(path, 'r:UTF-8') do |f|
+#            f.each_line do |line|
+#              @table[name] = [] unless @table[name]
+#              @table[name] << line.chomp
+#            end
+#          end
         end
       end
 

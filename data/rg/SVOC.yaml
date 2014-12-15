@@ -5,4 +5,4 @@ access: public
 author: sf
 license: NONE
 body:
-  - %%Complement%%、%%Subject%%が、%%Object%%%%Verb%%。
+  - "%%Complement%%、%%Subject%%が、%%Object%%%%Verb%%。"

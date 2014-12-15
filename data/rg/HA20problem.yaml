@@ -1,0 +1,13 @@
+Name: HA20problem
+Description: HA20problem
+Date: 2014-12-15
+Access: public
+Author: sf
+License: NONE
+Body:
+  - "操られた%%HA20human%%が行く手をはばむ"
+  - "操られた%%HA20strange%%が行く手をはばむ"
+  - "%%HA20human%%が近くに居るので隠蔽せねばならない"
+  - "鏡の向こうの%%HA20room%%に誘い込まれていた"
+  - "教師につかまって説教された"
+  - "%%HA20human%%が声をかけてきた"

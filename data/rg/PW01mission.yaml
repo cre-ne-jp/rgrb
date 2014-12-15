@@ -1,0 +1,9 @@
+Name: PW01mission
+Description: PW01mission
+Date: 2014-12-15
+Access: public
+Author: sf
+License: NONE
+Body:
+  - "奪われた“%%PW01oparts%%”を取り返せ"
+  - "%%Fantasy_land%%に現われた“%%PW01dungeon_outward%%”迷宮を攻略せよ"

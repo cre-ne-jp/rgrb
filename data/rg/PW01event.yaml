@@ -1,0 +1,9 @@
+Name: PW01event
+Description: PW01event
+Date: 2014-12-15
+Access: public
+Author: sf
+License: NONE
+Body:
+  - "%%PW01oparts%%が奪われた"
+  - "%%PW01oparts%%を持った人物があらわれた"

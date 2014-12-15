@@ -1,0 +1,38 @@
+Name: IC04event
+Description: IC04event
+Date: 2014-12-15
+Access: public
+Author: sf
+License: NONE
+Body:
+  - "廊下の向こうから襲撃してきたのは%%IC04modifier%%%%IC04enemy%%"
+  - "廊下の向こうから襲撃してきたのは%%IC04modifier%%%%HA20human%%"
+  - "天井から降って来たのは%%IC04modifier%%%%IC04enemy%%"
+  - "天井から落ちて来たのは%%IC04modifier%%%%IC04object%%"
+  - "廊下から生えて来たのは%%IC04modifier%%%%IC04object%%"
+  - "廊下に落ちていたのは……%%IC04modifier%%%%IC04object%%"
+  - "%%IC04object%%を装備した%%IC04enemy%%が追ってくる"
+  - "廊下の向こうから襲撃してきたのは%%IC04modifier%%%%IC04enemy%%"
+  - "曲がり角を曲がると%%IC04modifier%%%%IC04enemy%%が襲撃してきた！"
+  - "曲がり角を曲がると%%IC04modifier%%%%HA20human%%が襲撃してきた！"
+  - "曲がり角の向こうで%%IC04modifier%%%%HA20human%%が待ち伏せしていた！　したいことは%%IC04action%%"
+  - "曲がり角の向こうで%%IC04modifier%%%%IC04enemy%%が待ち伏せしていた！　したいことは%%IC04action%%"
+  - "背後から襲撃してきたのは%%IC04modifier%%%%IC04enemy%%"
+  - "%%IC04room%%に入ると、%%IC04modifier%%%%IC04enemy%%が怒り出した"
+  - "%%IC04room%%に行こうと%%IC04modifier%%%%IC04enemy%%が誘ってきた"
+  - "%%IC04modifier%%%%IC04enemy%%に追われて%%IC04modifier%%%%IC04enemy%%が助けを求めてきた"
+  - "目の前で%%IC04modifier%%%%IC04enemy%%が倒された。「次はお前だ！」と%%IC04modifier%%%%IC04enemy%%が宣言する"
+  - "%%IC04object%%を持った%%IC04modifier%%%%IC04enemy%%が決闘を求めている"
+  - "目の前に%%IC04object%%を持った%%IC04modifier%%%%HA20human%%が立ちふさがった"
+  - "%%IC04object%%を%%IC04modifier%%%%IC04enemy%%が差し出した"
+  - "気配を殺して背後に立っていたのは%%IC04modifier%%%%IC04enemy%%"
+  - "教卓に現われたのは%%IC04modifier%%%%IC04enemy%%"
+  - "いつもの席に%%IC04modifier%%%%IC04enemy%%が寝ていた"
+  - "%%IC04enemy%%が机の上に%%IC04modifier%%%%IC04object%%を置いて行った"
+  - "%%IC04modifier%%%%IC04enemy%%がやってきて%%IC04action%%"
+  - "通りすがりのが%%IC04modifier%%%%IC04enemy%%を%%IC04action%%"
+  - "%%IC04action%%ため、わざわざ%%IC04modifier%%%%IC04enemy%%が%%IC04action%%"
+  - "扉を開けると、そこは%%IC04modifier%%%%IC04room%%"
+  - "扉の向こうは、たくさんの%%IC04object%%のある%%IC04modifier%%%%IC04room%%だった"
+  - "扉の向こうは、たくさんの%%IC04object%%のある%%IC04room%%だった"
+  - "窓の外に%%Fantasy_land%%が見える"

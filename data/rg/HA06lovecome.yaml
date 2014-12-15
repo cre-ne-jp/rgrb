@@ -1,0 +1,12 @@
+Name: HA06lovecome
+Description: HA06lovecome
+Date: 2014-12-15
+Access: public
+Author: sf
+License: NONE
+Body:
+  - "%%lovecome%%"
+  - "二人の出先で%%HA06human%%が%%HA06human_action%%"
+  - "二人の出先で%%HA06human%%と遭遇"
+  - "%%HA06place%%で二人きり"
+  - "%%HA06accident%%ので困ってしまう"

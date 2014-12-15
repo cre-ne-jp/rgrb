@@ -1,0 +1,11 @@
+Name: IC04mission
+Description: IC04mission
+Date: 2014-12-15
+Access: public
+Author: sf
+License: NONE
+Body:
+  - "%%HA20human%%が%%IC04modifier%%%%IC04enemy%%により%%HA20damage%%。なんとかして欲しいと助けを求められる。"
+  - "知り合いの%%HA20human%%が%%IC04modifier%%%%IC04enemy%%に襲われた。撃退せよ。"
+  - "%%IC04modifier%%%%HA20human%%が%%IC04modifier%%%%IC04enemy%%に襲われた。迎撃せよ。"
+  - "%%IC04modifier%%%%IC04room%%で、%%HA20damage%%%%IC04modifier%%%%IC04enemy%%が救いを求めている。"

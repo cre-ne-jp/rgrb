@@ -1,0 +1,14 @@
+Name: HAreishi_ryoku
+Description: HAreishi_ryoku
+Date: 2014-12-15
+Access: public
+Author: sf
+License: NONE
+Body:
+  - "霊はよく見える(霊視:13)"
+  - "霊はそこそこ見える(霊視:11)"
+  - "霊はたまに見える(霊視:9)"
+  - "霊は聞こえるだけ(霊聴:11)"
+  - "霊はプラズマだと思います(霊聴:3)"
+  - "霊は見えません(技能無し)"
+  - "霊は感じるくらいは（霊感:8）"

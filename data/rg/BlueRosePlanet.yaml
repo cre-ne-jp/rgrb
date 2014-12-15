@@ -1,0 +1,15 @@
+Name: BlueRosePlanet
+Description: BlueRosePlanet
+Date: 2014-12-15
+Access: public
+Author: sf
+License: NONE
+Body:
+  - "[　太　陽　]"
+  - "[　月　]"
+  - "[　火　星　]"
+  - "[　水　星　]"
+  - "[　木　星　]"
+  - "[　金　星　]"
+  - "[　土　星　]"
+  - "[　地　球　]"

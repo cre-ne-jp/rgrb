@@ -1,0 +1,10 @@
+Name: janken
+Description: janken
+Date: 2014-12-15
+Access: public
+Author: sf
+License: NONE
+Body:
+  - "ぐー(岩:0)"
+  - "ちょき(鋏:2)"
+  - "ぱー(紙:5)"

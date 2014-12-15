@@ -1,0 +1,8 @@
+Name: taisou_plot
+Description: taisou_plot
+Date: 2014-12-15
+Access: public
+Author: sf
+License: NONE
+Body:
+  - "主人公の現在は%%taisou_item%%の%%segyaku%%。主人公の近い未来は%%taisou_item%%の%%segyaku%%。主人公の過去は%%taisou_item%%の%%segyaku%%。援助者は%%taisou_item%%の%%segyaku%%。敵対者は%%taisou_item%%の%%segyaku%%。結末は%%taisou_item%%の%%segyaku%%。"

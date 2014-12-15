@@ -1,0 +1,23 @@
+Name: LG02negative_response
+Description: LG02negative_response
+Date: 2014-12-15
+Access: public
+Author: sf
+License: NONE
+Body:
+  - "困っている"
+  - "騒いでいる"
+  - "怒っている"
+  - "駄々を捏ねている"
+  - "嘆いている"
+  - "暴れている"
+  - "硬直している"
+  - "愚痴っている"
+  - "難詰している"
+  - "抗議している"
+  - "固まっている"
+  - "ないている"
+  - "逃げ出している"
+  - "走っている"
+  - "転がっている"
+  - "倒れている"

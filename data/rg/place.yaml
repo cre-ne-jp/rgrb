@@ -1,0 +1,20 @@
+Name: place
+Description: place
+Date: 2014-12-15
+Access: public
+Author: sf
+License: NONE
+Body:
+  - "%%house%%"
+  - "%%house%%"
+  - "%%house%%"
+  - "%%FantasyPlace%%"
+  - "%%FantasyPlace%%"
+  - "%%FantasyPlace%%"
+  - "%%HA06place%%"
+  - "%%HA21place%%"
+  - "%%HA21place%%"
+  - "%%HA21place%%"
+  - "%%PW01dungeon%%"
+  - "%%HA20room%%"
+  - "%%Fantasy_land%%"

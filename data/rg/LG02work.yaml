@@ -1,0 +1,16 @@
+Name: LG02work
+Description: LG02work
+Date: 2014-12-15
+Access: public
+Author: sf
+License: NONE
+Body:
+  - "輸送"
+  - "護衛"
+  - "速達"
+  - "追跡"
+  - "逃走"
+  - "調査"
+  - "探検"
+  - "護送"
+  - "測量"

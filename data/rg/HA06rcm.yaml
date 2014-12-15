@@ -1,0 +1,8 @@
+Name: HA06rcm
+Description: HA06rcm
+Date: 2014-12-15
+Access: public
+Author: sf
+License: NONE
+Body:
+  - "%%HA06RandomCharMake%%"

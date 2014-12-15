@@ -1,0 +1,17 @@
+Name: HA06part_of_day
+Description: HA06part_of_day
+Date: 2014-12-15
+Access: public
+Author: sf
+License: NONE
+Body:
+  - "明け方"
+  - "午前中"
+  - "お昼時"
+  - "お昼時"
+  - "昼下がり"
+  - "夕方"
+  - "夕方"
+  - "夜"
+  - "夜"
+  - "深夜"

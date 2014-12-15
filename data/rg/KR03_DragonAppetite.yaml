@@ -1,0 +1,13 @@
+Name: KR03_DragonAppetite
+Description: KR03_DragonAppetite
+Date: 2014-12-15
+Access: public
+Author: sf
+License: NONE
+Body:
+  - "ドラゴンは不機嫌"
+  - "ドラゴンは空腹"
+  - "ドラゴンは小腹が空いている"
+  - "ドラゴンは食欲なし"
+  - "ドラゴンは満腹"
+  - "ドラゴンは機嫌が良い"

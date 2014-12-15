@@ -1,0 +1,19 @@
+Name: Fantasy_land
+Description: Fantasy_land
+Date: 2014-12-15
+Access: public
+Author: sf
+License: NONE
+Body:
+  - "山岳"
+  - "平原"
+  - "大河"
+  - "海岸"
+  - "沼地"
+  - "丘陵"
+  - "連峰"
+  - "森林"
+  - "熱帯雨林"
+  - "永久凍土"
+  - "海岸"
+  - "小川"

@@ -1,0 +1,9 @@
+Name: PW01dungeon
+Description: PW01dungeon
+Date: 2014-12-15
+Access: public
+Author: sf
+License: NONE
+Body:
+  - "%%PW01dungeon_outward%%迷宮"
+  - "%%PW01oparts%%によって作られた%%PW01dungeon_outward%%迷宮"

@@ -1,0 +1,8 @@
+Name: hair
+Description: hair
+Date: 2014-12-15
+Access: public
+Author: sf
+License: NONE
+Body:
+  - "%%HairLength%%%%HairColor%%の%%HairStyle%%"

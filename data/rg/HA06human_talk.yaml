@@ -1,0 +1,8 @@
+Name: HA06human_talk
+Description: HA06human_talk
+Date: 2014-12-15
+Access: public
+Author: sf
+License: NONE
+Body:
+  - "%%HA06talk_topic%%話しかけてくる。"

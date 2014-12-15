@@ -1,0 +1,10 @@
+Name: HA21mission
+Description: HA21mission
+Date: 2014-12-15
+Access: public
+Author: sf
+License: NONE
+Body:
+  - "%%HA21enemy%%が《水》を混入しようとするのを阻止して欲しい"
+  - "%%HA21place%%で%%HA21enemy%%が襲いかかってきた、果たして生き延びられるか"
+  - "%%HA21place%%に巣食う%%HA21enemy%%を退治せよ"

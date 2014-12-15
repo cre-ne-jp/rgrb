@@ -1,0 +1,12 @@
+Name: OM04byouin
+Description: OM04byouin
+Date: 2014-12-15
+Access: public
+Author: sf
+License: NONE
+Body:
+  - "神の類（%%OM04byouin_gods%%）"
+  - "仏の類（%%OM04byouin_buddha%%）"
+  - "霊鬼の類（%%OM04byouin_reiki%%）"
+  - "呪詛"
+  - "その他（%%OM04byouin_etc%%）"

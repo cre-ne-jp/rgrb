@@ -1,0 +1,15 @@
+Name: FantasyRace
+Description: FantasyRace
+Date: 2014-12-15
+Access: public
+Author: sf
+License: NONE
+Body:
+  - "ヒューマン"
+  - "エルフ"
+  - "ドワーフ"
+  - "トロール"
+  - "ゴブリン"
+  - "オーク"
+  - "ノーム"
+  - "ハーフ%%FantasyRace%%"

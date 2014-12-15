@@ -1,0 +1,15 @@
+Name: ModernMission
+Description: ModernMission
+Date: 2014-12-15
+Access: public
+Author: sf
+License: NONE
+Body:
+  - "%%clever_crimer%%が%%clever_crime%%しているので処置して欲しい。"
+  - "%%HA06human%%が%%HA20strange%%により%%HA20damage%%。原因を解明し再発を防止して欲しい。"
+  - "%%HA06human%%が%%HA20enemy%%に襲われている。助けられるのは君たちだけだ。"
+  - "%%clever_crimer%%が密かに手下に%%violence_crime%%をさせている。証拠を集めて告発せよ。"
+  - "最近の%%clever_crime%%の犯人は%%name_mean%%名前の%%sex%%らしい。動かぬ証拠を見つけて捕まえて欲しい。"
+  - "%%clever_crimer%%の%%clever_crime%%を妨害せよ。"
+  - "親しい%%HA06human%%が%%clever_crime%%で困っている。"
+  - "%%violence_crimer%%に%%violence_crime%%された、なんとかして欲しい。"

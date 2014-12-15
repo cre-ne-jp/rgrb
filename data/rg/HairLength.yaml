@@ -1,0 +1,17 @@
+Name: HairLength
+Description: HairLength
+Date: 2014-12-15
+Access: public
+Author: sf
+License: NONE
+Body:
+  - "肩までの"
+  - "顎までで切りそろえられた"
+  - "肩にかかる程度の"
+  - "短く刈り込まれた"
+  - "背中にかかる程度の"
+  - "腰までの"
+  - "ショートの"
+  - "ミディアムの"
+  - "ロングの"
+  - "セミロングの"

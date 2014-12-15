@@ -1,0 +1,16 @@
+Name: FantasyMission
+Description: FantasyMission
+Date: 2014-12-15
+Access: public
+Author: sf
+License: NONE
+Body:
+  - "%%FantasyPlace%%で、%%FantasyMonster%%が%%FantasyCrime%%ので退治して欲しい。"
+  - "%%FantasyPlace%%で、%%FantasyEnemy%%が%%FantasyCrime%%ので再発しないようにして欲しい。"
+  - "%%FantasyClever_crimer%%が%%clever_crime%%しているので処置して欲しい。"
+  - "%%FantasyEnemy%%の襲撃から村を守って欲しい。"
+  - "%%FantasyEnemy%%に追われて%%FantasyPlace%%に逃げ込んできた、助けて欲しい。"
+  - "%%weather%%%%FantasyPlace%%で%%FantasyEnemy%%に襲撃された、撃退せよ。"
+  - "%%FantasyPlace%%に居座った、%%FantasyEnemy%%を撃退して欲しい。"
+  - "最近の%%clever_crime%%の犯人は%%name_mean%%名前の%%sex%%らしい。動かぬ証拠を見つけて捕まえて欲しい。"
+  - "%%FantasyClever_crimer%%が密かに手下に%%violence_crime%%をさせている。証拠を集めて告発せよ。"

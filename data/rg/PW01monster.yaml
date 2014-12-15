@@ -1,0 +1,8 @@
+Name: PW01monster
+Description: PW01monster
+Date: 2014-12-15
+Access: public
+Author: sf
+License: NONE
+Body:
+  - "%%PW01oparts%%と融合した%%animal%%"

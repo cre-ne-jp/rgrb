@@ -1,0 +1,10 @@
+Name: janken_guu
+Description: janken_guu
+Date: 2014-12-15
+Access: public
+Author: sf
+License: NONE
+Body:
+  - "あなたはグー、こちらはグー、あいこ"
+  - "あなたはグー、こちらはチョキ、あなたの勝ち"
+  - "あなたはグー、こちらはパー、あなたの負け"

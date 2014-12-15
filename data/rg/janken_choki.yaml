@@ -1,0 +1,10 @@
+Name: janken_choki
+Description: janken_choki
+Date: 2014-12-15
+Access: public
+Author: sf
+License: NONE
+Body:
+  - "あなたはチョキ、こちらはグー、あなたの負け"
+  - "あなたはチョキ、こちらはチョキ、あいこ"
+  - "あなたはチョキ、こちらはパー、あなたの勝ち"

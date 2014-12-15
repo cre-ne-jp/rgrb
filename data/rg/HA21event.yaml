@@ -1,0 +1,14 @@
+Name: HA21event
+Description: HA21event
+Date: 2014-12-15
+Access: public
+Author: sf
+License: NONE
+Body:
+  - "%%HA21enemy%%が%%HA21place%%に潜むとの情報が入った"
+  - "%%HA21enemy%%が%%HA21attack%%"
+  - "%%HA21accident%%"
+  - "%%HA21place%%で%%HA21enemy%%を見失った"
+  - "%%HA21enemy%%による%%HA21attack%%攻撃の犠牲者を発見した"
+  - "%%HA21attack%%攻撃の犠牲者を%%HA21place%%で発見した"
+  - "雨の日の%%HA21place%%にて%%HA21enemy%%に遭遇した"

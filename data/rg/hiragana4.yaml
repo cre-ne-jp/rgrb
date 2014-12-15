@@ -1,0 +1,8 @@
+Name: hiragana4
+Description: hiragana4
+Date: 2014-12-15
+Access: public
+Author: sf
+License: NONE
+Body:
+  - "%%hiragana%%%%hiragana%%%%hiragana%%%%hiragana%%"

@@ -1,0 +1,14 @@
+Name: LG02mission
+Description: LG02mission
+Date: 2014-12-15
+Access: public
+Author: sf
+License: NONE
+Body:
+  - "%%LG02human%%より依頼。%%LG02star_modifier%%%%LG02star%%への輸送任務。"
+  - "%%LG02human%%より依頼。%%LG02star_modifier%%%%LG02star%%への%%LG02work%%任務。"
+  - "%%LG02human%%より依頼。%%LG02star_modifier%%%%LG02star%%への%%LG02work%%任務。"
+  - "%%LG02human%%より依頼。%%LG02star_modifier%%%%LG02star%%への%%LG02work%%任務。"
+  - "%%LG02human%%より依頼。%%LG02star_modifier%%%%LG02star%%への%%LG02work%%任務。"
+  - "%%LG02human%%より依頼。%%LG02star_modifier%%%%LG02star%%への護衛任務。"
+  - "%%LG02trouble%%が発生したので対処して欲しい。"

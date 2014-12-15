@@ -1,10 +1,10 @@
-name: Object
-discription: Object
-date: 2014-12-15
-access: private
-author: sf
-license: NONE
-body:
+Name: Object
+Description: Object
+Date: 2014-12-15
+Access: private
+Author: sf
+License: NONE
+Body:
   - ご飯
   - 自分
   - おじいさん

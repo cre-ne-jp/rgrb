@@ -1,10 +1,10 @@
-name: 12shi
-discription: 十二支
-date: 2014-11-22
-access: public
-author: sf
-license: NONE
-body:
+Name: 12shi
+Description: 十二支
+Date: 2014-11-22
+Access: public
+Author: sf
+License: NONE
+Body:
   - 子
   - 丑
   - 寅

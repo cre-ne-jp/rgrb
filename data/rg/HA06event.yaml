@@ -1,10 +1,10 @@
-name: HA06event
-discription: HA06用イベント表
-date: 2014-11-22
-access: public
-author: sf
-license: NONE
-body:
+Name: HA06event
+Description: HA06用イベント表
+Date: 2014-11-22
+Access: public
+Author: sf
+License: NONE
+Body:
   - "%%HA06pretty%%が%%HA06action%%"
   - "%%HA06spirit%%が%%HA06action%%"
   - "%%HA06modifier%%%%HA06spirit%%が%%HA06action%%"

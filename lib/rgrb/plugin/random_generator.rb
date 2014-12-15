@@ -56,7 +56,7 @@ module RGRB
       def get_value_from(table_name)
         fail(TableNotFound, table_name) unless @table[table_name]
 
-        @table[table_name]['body'].sample
+        @table[table_name]['Body'].sample
       end
 
       private :get_value_from

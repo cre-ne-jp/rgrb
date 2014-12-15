@@ -1,10 +1,10 @@
-name: Verb
-Discription: Verb
-date: 2014-12-15
-access: private
-author: sf
-license: NONE
-body:
+Name: Verb
+Description: Verb
+Date: 2014-12-15
+Access: private
+Author: sf
+License: NONE
+Body:
   - を、介抱した
   - を、転ばせた
   - を、ふりまわした

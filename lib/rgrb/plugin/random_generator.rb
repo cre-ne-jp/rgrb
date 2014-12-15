@@ -106,13 +106,6 @@ module RGRB
           name = File.basename(path, '.yaml')
 
           @table[name] = YAML.load_file(path)
-
-#          File.open(path, 'r:UTF-8') do |f|
-#            f.each_line do |line|
-#              @table[name] = [] unless @table[name]
-#              @table[name] << line.chomp
-#            end
-#          end
         end
       end
 

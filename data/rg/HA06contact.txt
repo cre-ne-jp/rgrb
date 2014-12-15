@@ -1,7 +1,0 @@
-道行く%%HA06human%%が%%HA06human_action%%
-%%HA06human%%の前で%%HA06accident%%
-%%HA06human_look%%%%HA06human%%が%%HA06accident%%
-%%HA06accident%%ので困っている%%HA06human%%が%%HA06human_action%%
-%%HA06human%%が%%HA06human_action%%
-%%HA06talk_topic%%話しかけてくる
-%%HA06hauntedhouse%%

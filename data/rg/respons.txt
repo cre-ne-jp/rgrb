@@ -1,7 +1,0 @@
-#を知らない？	おしえてあげますわ☆
-#そうかな？	そうですってね♪
-#ロールのページは？	http://www.trpg.net/user/Role/ ですわっ☆
-#あけましておめでとう	あけましておめでとうございますっ☆
-^\.help	http://hiki.trpg.net/wiki/?RoleBot
-^\.cgi	http://kataribe.com/cgi/rg.cgi/
-^\.test	テストです

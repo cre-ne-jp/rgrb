@@ -1,0 +1,8 @@
+name: SVOC
+discription: SVOC
+date: 2014-12-15
+access: public
+author: sf
+license: NONE
+body:
+  - %%Complement%%、%%Subject%%が、%%Object%%%%Verb%%。

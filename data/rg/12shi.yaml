@@ -1,0 +1,19 @@
+name: 12shi
+discription: 十二支
+date: 2014-11-22
+access: public
+author: sf
+license: NONE
+body:
+  - 子
+  - 丑
+  - 寅
+  - 卯
+  - 辰
+  - 巳
+  - 午
+  - 未
+  - 申
+  - 酉
+  - 戌
+  - 亥

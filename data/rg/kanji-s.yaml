@@ -1,9 +1,9 @@
 Name: kanji-s
-Description: kanji-s
+Description: 小学校で習う漢字
 Date: 2014-12-15
 Modified: 2014-12-20
 Access: public
-Author: sf
+Author: koi-chan
 License: NONE
 Body:
   - "一"

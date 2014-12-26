@@ -1,8 +1,8 @@
 Name: HA20damage
-Description: HA20damage
+Description: 語り部「狭間さまよえるもの達：西生駒高校200X」で受けうるダメージを選びます。
 Date: 2014-12-15
 Modified: 2014-12-20
-Access: public
+Access: private
 Author: sf
 License: NONE
 Body:

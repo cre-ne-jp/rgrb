@@ -1,0 +1,16 @@
+Name: CharacterFunction
+Description: "昔話の形態学(行動領域)"
+Date: 2014-12-22
+Modified: 2014-12-22
+Access: public
+Author: koi-chan
+License: CC-BY-SA
+Original: "http://ja.wikipedia.org/wiki/%E3%82%A6%E3%83%A9%E3%82%B8%E3%83%BC%E3%83%9F%E3%83%AB%E3%83%BB%E3%83%97%E3%83%AD%E3%83%83%E3%83%97"
+Body:
+  - "敵対者（加害者）"
+  - "贈与者（提供者）"
+  - "助力者"
+  - "王女（探求される者）とその父親"
+  - "派遣者（送り出す者）"
+  - "主人公（探求者もしくは犠牲者）"
+  - "偽主人公"

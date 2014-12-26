@@ -1,5 +1,5 @@
 Name: hiragana6
-Description: hiragana6
+Description: hiraganaを自動的に6回呼び出し、指定された数字の長さの文字列を作ります。
 Date: 2014-12-15
 Modified: 2014-12-20
 Access: public

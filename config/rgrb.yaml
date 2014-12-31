@@ -9,6 +9,9 @@ IRCBot:
   # パスワード。必要なければ null
   Password: pa$$word
 
+  # エンコーディング
+  Encoding: UTF-8
+
   # ニックネーム
   Nick: rgrb_cinch
 

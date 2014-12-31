@@ -98,6 +98,7 @@ module RGRB
           c.server = bot_config['Host']
           c.port = bot_config['Port']
           c.password = bot_config['Password']
+          c.encoding = bot_config['Encoding'] || 'UTF-8'
           c.nick = bot_config['Nick']
           c.user = bot_config['User']
           c.realname = bot_config['RealName']

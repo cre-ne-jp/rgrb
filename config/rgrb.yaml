@@ -21,6 +21,10 @@ IRCBot:
   # リアルネーム
   RealName: 汎用ダイスボット RGRB
 
+  # JOIN するチャンネルの一覧
+  Channels:
+    - ''
+
 # 使用するプラグインを列挙する。大文字小文字を区別するので注意
 Plugins:
   - DiceRoll

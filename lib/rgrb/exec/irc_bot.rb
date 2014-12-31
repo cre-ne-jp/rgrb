@@ -98,10 +98,13 @@ module RGRB
           c.server = bot_config['Host']
           c.port = bot_config['Port']
           c.password = bot_config['Password']
+          # エンコーディングの既定値は UTF-8
           c.encoding = bot_config['Encoding'] || 'UTF-8'
           c.nick = bot_config['Nick']
           c.user = bot_config['User']
           c.realname = bot_config['RealName']
+          # JOIN するチャンネルの既定値はなし（空の配列）
+          c.channels = bot_config['Channels'] || []
 
           c.plugins.prefix = /^\./
           c.plugins.plugins = @plugin_irc_adapters

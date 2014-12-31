@@ -22,6 +22,7 @@ module RGRB
         @root_path = rgrb_root_path
         @argv = argv
 
+        @debug = false
         @config_path = "#{@root_path}/#{DEFAULT_CONFIG_PATH}"
         @opt = new_opt_parser
       end
@@ -37,10 +38,10 @@ module RGRB
         # シグナルを捕捉し、ボットを終了させる処理
         # trap 内で普通に bot.quit すると ThreadError が出るので
         # 新しい Thread で包む
-        %i(INT TERM).each do |signal|
+        %i(SIGINT SIGTERM).each do |signal|
           Signal.trap(signal) do
-            Thread.new do
-              bot.quit
+            Thread.new(signal) do |sig|
+              bot.quit("Caught #{sig}")
             end
           end
         end
@@ -92,8 +93,8 @@ module RGRB
       # @return [Cinch::Bot]
       def new_bot
         bot_config = @config.irc_bot
-
         bot = Cinch::Bot.new
+
         bot.configure do |c|
           c.server = bot_config['Host']
           c.port = bot_config['Port']
@@ -110,6 +111,8 @@ module RGRB
           c.plugins.plugins = @plugin_irc_adapters
           c.plugins.options = @plugin_options
         end
+
+        bot.loggers.level = @debug ? :debug : :warn
 
         bot
       rescue => e
@@ -141,6 +144,13 @@ EOS
             '設定ファイルとして CONFIG_FILE を読み込みます'
           ) do |config_file|
             @config_path = config_file
+          end
+
+          opt.on(
+            '--debug',
+            'デバッグモード。ログを冗長にします。'
+          ) do |debug|
+            @debug = true
           end
         end
       end

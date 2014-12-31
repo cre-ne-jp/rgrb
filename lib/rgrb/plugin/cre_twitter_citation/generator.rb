@@ -70,8 +70,13 @@ module RGRB
             Hugeurl.get(url)
           end
 
+          # 日本時間のツイート時刻を求める
+          # Tweet#created_at は frozen で変更不可なので
+          # dup で複製してから設定する
+          created_at_local = tweet.created_at.dup.localtime('+09:00')
+
           "【お知らせ】#{url_expanded_text} (" \
-            "#{tweet.created_at.strftime('%F %T')}; " \
+            "#{created_at_local.strftime('%F %T')}; " \
             "#{tweet.url})"
         end
         private :tweet_to_message

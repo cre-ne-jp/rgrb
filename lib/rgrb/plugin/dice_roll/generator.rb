@@ -17,7 +17,7 @@ module RGRB
         # @param [Fixnum] max ダイスの最大値
         # @return [String]
         def basic_dice(n_dice, max)
-          basic_dice_message(n_dice, max, dice_roll(n_dice, max))
+          basic_dice_message(dice_roll(n_dice, max))
         end
 
         # ダイスロールの結果を返す
@@ -26,19 +26,26 @@ module RGRB
         # @return [Hash]
         def dice_roll(n_dice, max)
           values = Array.new(n_dice) { @random.rand(1..max) }
-          sum = values.reduce(0, :+)
 
-          { values: values, sum: sum }
+          {
+            n_dice: n_dice,
+            max: max,
+            values: values,
+            sum: values.reduce(0, :+)
+          }
         end
         private :dice_roll
 
         # 基本的なダイスロールのメッセージを返す
-        # @param [Fixnum] n_dice ダイスの個数
-        # @param [Fixnum] max ダイスの最大値
-        # @param [Hash] result ダイスロールの結果のハッシュ
+        # @param [Hash] result ダイスロール結果
+        # @option result [Fixnum] :n_dice ダイスの個数
+        # @option result [Fixnum] :max ダイスの最大値
+        # @option result [Array<Fixnum>] :values ダイスの出目の配列
+        # @option result [Fixnum] :sum ダイスの出目の合計
         # @return [String]
-        def basic_dice_message(n_dice, max, result)
-          "#{n_dice}d#{max} = #{result[:values]} = #{result[:sum]}"
+        def basic_dice_message(result)
+          "#{result[:n_dice]}d#{result[:max]} = " \
+            "#{result[:values]} = #{result[:sum]}"
         end
         private :basic_dice_message
       end

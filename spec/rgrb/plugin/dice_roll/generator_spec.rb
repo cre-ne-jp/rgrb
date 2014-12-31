@@ -41,12 +41,17 @@ describe RGRB::Plugin::DiceRoll::Generator do
       let(:condition_matches) { (/^(\d+)[Dd](\d+)$/).match(condition) }
       let(:n_dice) { condition_matches[1].to_i }
       let(:max) { condition_matches[2].to_i }
-      let(:result) do
-        { values: values, sum: values.reduce(0, :+) }
+      let(:dice_roll_data) do
+        {
+          n_dice: n_dice,
+          max: max,
+          values: values,
+          sum: values.reduce(0, :+)
+        }
       end
 
       it do
-        actual_message = generator.basic_dice_message(n_dice, max, result)
+        actual_message = generator.basic_dice_message(dice_roll_data)
         expect(actual_message).to eq(expected_message)
       end
     end

@@ -16,19 +16,20 @@ RGRB は Ruby で実装されている汎用ダイスボットです。プラグ
 インストール
 ------------
 
-1. [Ruby](http://www.ruby-lang.org/) をインストールしていない場合はインストールしてください。
-2. [Bundler](http://bundler.io/) をインストールしていない場合は以下を実行してください。
+[Ruby](http://www.ruby-lang.org/) をインストールしていない場合はインストールしてください。
 
-    ```bash
-    gem install bundler
-    ```
-3. 適当なディレクトリにファイルを設置してください。
-4. 以下を実行して必要な gem（ライブラリ）をインストールしてください。
+[Bundler](http://bundler.io/) をインストールしていない場合は以下を実行してください。
 
-    ```bash
-    cd /path/to/rgrb
-    bundle install --path=vendor/bundler
-    ```
+```bash
+gem install bundler
+```
+
+上記が完了したら、適当なディレクトリにファイルを設置し、以下を実行して必要な gem（ライブラリ）をインストールしてください。
+
+```bash
+cd /path/to/rgrb
+bundle install --path=vendor/bundler
+```
 
 設定
 ----
@@ -100,16 +101,14 @@ cd /path/to/rgrb
 rake yard
 ```
 
-既知の問題
-----------
+仕様
+----
 
-* IRC ボットに対して短い時間に大量のメッセージを送ると、応答が遅れます。
-    * 発言内容の解析 → 応答メッセージ生成 → NOTICE はほとんど時間がかからない（0.1 μs オーダー）ため、IRC ボットのライブラリ [Cinch](https://github.com/cinchrb/cinch) が行う処理に時間がかかっている可能性があります。
+* IRC ボットに対して短い時間に大量のメッセージを送ると、応答が遅れます。これは IRC サーバの負荷調整に依るものです。
 
 ToDo
 ----
 
-* [語り部](http://kataribe.jp/)のキャラクターシート検索
 * Web インターフェース
     * http://kataribe.com/cgi/rg.cgi/ のようなもの
 

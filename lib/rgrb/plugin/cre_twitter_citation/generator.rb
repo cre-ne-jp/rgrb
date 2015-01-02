@@ -1,6 +1,7 @@
 # vim: fileencoding=utf-8
 
 require 'time'
+require 'cgi/util'
 require 'twitter'
 require 'hugeurl'
 require 'rgrb/plugin/configurable_generator'
@@ -66,9 +67,9 @@ module RGRB
         # @param [Twitter::Tweet] tweet ツイート
         # @return [String]
         def tweet_to_message(tweet)
-          url_expanded_text = tweet.full_text.gsub(T_CO_PATTERN) do |url|
-            Hugeurl.get(url)
-          end
+          html_unescaped_text = CGI.unescapeHTML(tweet.full_text)
+          url_expanded_text = html_unescaped_text.
+            gsub(T_CO_PATTERN) { |url| Hugeurl.get(url) }
 
           # 日本時間のツイート時刻を求める
           # Tweet#created_at は frozen で変更不可なので

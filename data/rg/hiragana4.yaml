@@ -1,6 +1,6 @@
 Name: hiragana4
-Description: hiragana�������I��4��Ăяo���A�w�肳�ꂽ�����̒����̕���������܂��B
-Date: 2014-12-15
+Description: hiraganaを自動的に4回呼び出し、指定された数字の長さの文字列を作ります。
+Added: 2014-12-15
 Modified: 2014-12-20
 Access: public
 Author: sf

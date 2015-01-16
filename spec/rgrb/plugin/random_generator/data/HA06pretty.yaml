@@ -1,0 +1,9 @@
+Name: HA06pretty
+Description: 語り部「狭間さまよえるもの達：現代オカルトファンタジー」に登場する可愛いものを選びます。
+Added: 2014-12-15
+Modified: 2014-12-20
+Access: private
+Author: sf
+License: NONE
+Body:
+  - "ちいさな%%animal%%"

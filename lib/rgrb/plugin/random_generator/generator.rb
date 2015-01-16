@@ -4,6 +4,7 @@ require 'cinch'
 
 require 'rgrb/plugin/configurable_generator'
 require 'rgrb/plugin/random_generator/constants'
+require 'rgrb/plugin/random_generator/table'
 require 'rgrb/plugin/random_generator/table_not_found'
 require 'rgrb/plugin/random_generator/circular_reference'
 
@@ -27,7 +28,7 @@ module RGRB
         def configure(*)
           super
 
-          load_data("#{@data_path}/*.txt")
+          load_data("#{@data_path}/*.yaml")
 
           self
         end
@@ -38,7 +39,7 @@ module RGRB
         # @raise [TableNotFound] 表が見つからなかった場合
         # @raise [CircularReference] 循環参照が起こった場合
         def rg(table)
-          replace_var_with_value(get_value_from(table), table => true)
+          replace_var_with_value(get_value_from(table), table)
         end
 
         # 表から値を取得して返す
@@ -90,18 +91,14 @@ module RGRB
         # @return [void]
         def load_data(glob_pattern)
           # 表を格納するハッシュ
-          @table = {}
+          @table = Hash[
+            Dir.glob(glob_pattern).map do |path|
+              yaml = File.read(path, encoding: 'UTF-8')
+              table = Table.parse_yaml(yaml)
 
-          Dir.glob(glob_pattern) do |path|
-            name = File.basename(path, '.txt')
-
-            File.open(path, 'r:UTF-8') do |f|
-              f.each_line do |line|
-                @table[name] = [] unless @table[name]
-                @table[name] << line.chomp
-              end
+              [table.name, table]
             end
-          end
+          ]
         end
 
         private :load_data

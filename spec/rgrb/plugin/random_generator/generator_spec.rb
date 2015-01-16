@@ -6,7 +6,7 @@ require 'rgrb/plugin/random_generator/generator'
 describe RGRB::Plugin::RandomGenerator::Generator do
   let(:generator) do
     obj = described_class.new
-    obj.send(:load_data, "#{__dir__}/data/*.txt")
+    obj.send(:load_data, "#{__dir__}/data/*.yaml")
 
     obj
   end
@@ -63,7 +63,9 @@ describe RGRB::Plugin::RandomGenerator::Generator do
       # よって、テスト 1000 回につき成功回数の期待値は 997 より大きい
       it '各値が偏りなく出る' do
         table = 'hiraganarand'
-        data = generator.instance_variable_get(:@table)['hiraganarand']
+        data = generator.
+          instance_variable_get(:@table)['hiraganarand'].
+          instance_variable_get(:@values)
         freq = Hash[
           data.map { |s| [s, 0] }
         ]
@@ -81,7 +83,9 @@ describe RGRB::Plugin::RandomGenerator::Generator do
   describe '#replace_var_with_value (private)' do
     shared_examples 'correctly replaced' do |root_table, result|
       it %Q("#{result}" に置換される) do
-        data = generator.instance_variable_get(:@table)[root_table]
+        data = generator.
+          instance_variable_get(:@table)[root_table].
+          instance_variable_get(:@values)
         from = data.first
         expect(generator.send(:replace_var_with_value, from, root_table)).
           to eq(result)

@@ -1,0 +1,4 @@
+Name: notfound
+Description: 存在しない表を呼び出す
+Body:
+  - "%%none%%"

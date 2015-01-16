@@ -1,0 +1,18 @@
+Name: hiraganarand
+Description: ひらがな46文字の中から一つ選びます。
+Added: 2014-12-15
+Modified: 2014-12-20
+Access: public
+Author: sf
+License: NONE
+Body:
+  - "あ"
+  - "い"
+  - "う"
+  - "え"
+  - "お"
+  - "か"
+  - "き"
+  - "く"
+  - "け"
+  - "こ"

@@ -38,34 +38,6 @@ bundle install --path=vendor/bundler
 
 複数の設定を使う場合は、上記のファイルをコピーして適当な場所に設置します。
 
-```yaml
-# IRC ボットの設定
-IRCBot:
-  # 接続する IRC サーバーのホスト名
-  Host: irc.example.net
-
-  # 接続するポート
-  Port: 6667
-
-  # パスワード。必要なければ null
-  Password: pa$$word
-
-  # ニックネーム
-  Nick: rgrb_cinch
-
-  # 接続時のユーザー名
-  User: rgrb_cinch
-
-  # リアルネーム
-  RealName: 汎用ダイスボット RGRB
-
-# 使用するプラグインを列挙する。大文字小文字を区別するので注意
-Plugins:
-  - DiceRoll
-  - Keyword
-  - RandomGenerator
-```
-
 ### プラグイン一覧
 
 * [DiceRoll](doc/plugins/dice_roll.md)：ダイスロール
@@ -73,6 +45,7 @@ Plugins:
 * [RandomGenerator](doc/plugins/random_generator.md)：ランダムジェネレータ
 * [CreTwitterCitation](doc/plugins/cre_twitter_citation.md)：Twitter @cre_ne_jp の引用
 * [CreBotHelp](doc/plugins/cre_bot_help.md)：クリエイターズネットワークの IRC ボットとしてのヘルプを表示する
+* [ServerConnectionReport](doc/plugins/server_connection_report.md)：IRCサーバの接続状態の変化を報告する
 
 IRC ボットの起動
 ----------------

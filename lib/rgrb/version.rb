@@ -2,5 +2,5 @@
 
 module RGRB
   # RGRB のバージョン
-  VERSION = '0.5.0-alpha'
+  VERSION = '0.5.0'
 end

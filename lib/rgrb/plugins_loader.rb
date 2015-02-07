@@ -28,8 +28,9 @@ module RGRB
     def load_each(component_name, skip_on_load_error = false)
       component_name_underscore = component_name.to_s.underscore
       component_path = {}
-      @plugin_path.map do |name, path|
-        component_path["#{name}::#{component_name}"] = "#{path}/#{component_name_underscore}"
+      @plugin_path.each do |name, path|
+        component_path["#{name}::#{component_name}"] =
+          "#{path}/#{component_name_underscore}"
       end
 
       loaded_class = component_path.map do |class_name, path|

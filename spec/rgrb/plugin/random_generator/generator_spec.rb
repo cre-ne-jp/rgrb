@@ -50,7 +50,7 @@ describe RGRB::Plugin::RandomGenerator::Generator do
       #
       # 要素数 10 の表から 1000 回取得したときの各値の出現回数を調べる
       # 二項分布 B(1000, 0.1) を正規分布で近似して
-      # 正常な出現回数の範囲を算出
+      # 正常な出現回数の範囲を算出する
       #
       # 二項分布、正規分布については Wikipedia を参照
       #
@@ -60,22 +60,26 @@ describe RGRB::Plugin::RandomGenerator::Generator do
       # μ - 3σ ≦ 出現回数 ≦ μ + 3σ となる確率は約 99.73%
       # 71 ≦ 出現回数 ≦ 129 となる確率は 99.73% より大きい
       #
-      # よって、テスト 1000 回につき成功回数の期待値は 997 より大きい
+      # 10 要素すべてで上記範囲になる確率は 99.73%^10 ≒ 97.3%
       it '各値が偏りなく出る' do
         table = 'hiraganarand'
         data = generator.
           instance_variable_get(:@table)['hiraganarand'].
           instance_variable_get(:@values)
-        freq = Hash[
-          data.map { |s| [s, 0] }
-        ]
+        freq = {}
+
+        data.each do |value|
+          freq[value] = 0
+        end
 
         1000.times do
           freq[generator.send(:get_value_from, table)] += 1
         end
 
-        expect(freq.each_value.all? { |n| (71..129).include?(n) }).
-          to be(true)
+        # 偶然のテスト失敗がそれなりの頻度で起こるので
+        # 7 要素で出現回数が上記範囲内ならばテスト成功とする
+        expect(freq.each_value.select { |n| n.between?(71, 129) }.length).
+          to be >= 7
       end
     end
   end

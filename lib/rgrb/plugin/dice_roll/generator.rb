@@ -17,8 +17,11 @@ module RGRB
         # @param [Fixnum] max ダイスの最大値
         # @return [String]
         def basic_dice(n_dice, max)
-          return 'ダイスが机から落ちてしまいましたの☆' if n_dice > 100
-          basic_dice_message(dice_roll(n_dice, max))
+          if n_dice > 100
+            'ダイスが机から落ちてしまいましたの☆'
+          else
+            basic_dice_message(dice_roll(n_dice, max))
+          end
         end
 
         # ダイスロールの結果を返す

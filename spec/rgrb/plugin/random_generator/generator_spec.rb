@@ -67,7 +67,10 @@ describe RGRB::Plugin::RandomGenerator::Generator do
           instance_variable_get(:@table)['hiraganarand'].
           instance_variable_get(:@values)
         freq = {}
-        data.each { |s| freq[s] = 0 }
+
+        data.each do |s|
+          freq[s] = 0
+        end
 
         1000.times do
           freq[generator.send(:get_value_from, table)] += 1

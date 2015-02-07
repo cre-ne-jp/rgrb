@@ -29,7 +29,10 @@ module RGRB
       @irc_bot = config_data['IRCBot']
       @plugins = config_data['Plugins'] || []
       @plugin_config = {}
-      @plugins.each { |name| @plugin_config[name] = config_data[name] }
+
+      @plugins.each do |name|
+        @plugin_config[name] = config_data[name]
+      end
     end
   end
 end

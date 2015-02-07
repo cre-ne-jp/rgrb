@@ -1,8 +1,7 @@
 汎用 IRC ボット RGRB
 =====================
 
-RGRB とは
----------
+[![Build Status](https://travis-ci.org/cre-ne-jp/rgrb.svg?branch=dev-0.6.0)](https://travis-ci.org/cre-ne-jp/rgrb)
 
 RGRB は Ruby で実装されている汎用 IRC ボットです。プラグイン方式により柔軟な拡張が可能です。
 

@@ -91,16 +91,15 @@ module RGRB
         # @return [void]
         def load_data(glob_pattern)
           # 表を格納するハッシュ
-          @table = Hash[
-            Dir.glob(glob_pattern).map do |path|
-              yaml = File.read(path, encoding: 'UTF-8')
-              table = Table.parse_yaml(yaml)
+          @table = {}
 
-              [table.name, table]
-            end
-          ]
+          Dir.glob(glob_pattern).each do |path|
+            yaml = File.read(path, encoding: 'UTF-8')
+            table = Table.parse_yaml(yaml)
+
+            @table[table.name] = table
+          end
         end
-
         private :load_data
       end
     end

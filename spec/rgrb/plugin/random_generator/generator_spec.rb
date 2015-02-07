@@ -46,21 +46,8 @@ describe RGRB::Plugin::RandomGenerator::Generator do
     end
 
     context 'hiraganarand' do
-      # 各値が偏りなく出ることのテスト
-      #
-      # 要素数 10 の表から 1000 回取得したときの各値の出現回数を調べる
-      # 二項分布 B(1000, 0.1) を正規分布で近似して
-      # 正常な出現回数の範囲を算出する
-      #
-      # 二項分布、正規分布については Wikipedia を参照
-      #
-      # μ = np = 1000 * 0.1 = 100
-      # σ = (np(1 - p))^(1/2) = (1000 * 0.1 * 0.9)^(1/2) ≒ 9.5
-      # 3σ ≒ 28.5
-      # μ - 3σ ≦ 出現回数 ≦ μ + 3σ となる確率は約 99.73%
-      # 71 ≦ 出現回数 ≦ 129 となる確率は 99.73% より大きい
-      #
-      # 10 要素すべてで上記範囲になる確率は 99.73%^10 ≒ 97.3%
+      # 要素数 10 の表から 100000 回取得したときに偏りが
+      # ないことをカイ二乗検定で確かめる
       it '各値が偏りなく出る' do
         table = 'hiraganarand'
         data = generator.
@@ -68,18 +55,24 @@ describe RGRB::Plugin::RandomGenerator::Generator do
           instance_variable_get(:@values)
         freq = {}
 
+        # 頻度を入れるハッシュを初期化する
         data.each do |value|
           freq[value] = 0
         end
 
-        1000.times do
+        n_gets = 100_000
+        n_gets.times do
           freq[generator.send(:get_value_from, table)] += 1
         end
 
-        # 偶然のテスト失敗がそれなりの頻度で起こるので
-        # 7 要素で出現回数が上記範囲内ならばテスト成功とする
-        expect(freq.each_value.select { |n| n.between?(71, 129) }.length).
-          to be >= 7
+        # カイ二乗値を求める
+        expected_count = n_gets.to_f / data.length
+        chi2 = freq.
+          each_value.
+          map { |count| (count - expected_count)**2 / expected_count }.
+          reduce(0, :+)
+
+        expect(chi2).to be <= 23.5894 # 自由度 9、有意水準 0.5%
       end
     end
   end

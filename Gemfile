@@ -8,9 +8,13 @@ gem 'sysexits', '~> 1.2'
 
 group :development, :test do
   gem 'pry', '~> 0.10'
-  gem 'rspec', '~> 3.1'
   gem 'yard', '~> 0.8'
   gem 'rubocop', '~> 0.28'
+end
+
+group :test do
+  gem 'rake', '~> 10.4'
+  gem 'rspec', '~> 3.1'
 end
 
 # パス設定

@@ -3,19 +3,43 @@
 require_relative '../../../spec_helper'
 require 'rgrb/plugin/dice_roll/generator'
 
-class RGRB::Plugin::DiceRoll::Generator
-  public :dice_roll
-  public :basic_dice_message
-end
-
 describe RGRB::Plugin::DiceRoll::Generator do
   let(:generator) { described_class.new }
+
+  describe '#dice_roll' do
+    let(:excess_dice_message) { 'ダイスが机から落ちてしまいましたの☆' }
+
+    context '1000d6' do
+      subject { generator.basic_dice(1000, 6) }
+      it { should eq(excess_dice_message) }
+    end
+
+    context '200d100' do
+      subject { generator.basic_dice(1000, 100) }
+      it { should eq(excess_dice_message) }
+    end
+
+    context '100d100' do
+      subject { generator.basic_dice(100, 100) }
+      it { should_not eq(excess_dice_message) }
+    end
+
+    context '10d10' do
+      subject { generator.basic_dice(10, 10) }
+      it { should_not eq(excess_dice_message) }
+    end
+
+    context '2d6' do
+      subject { generator.basic_dice(2, 6) }
+      it { should_not eq(excess_dice_message) }
+    end
+  end
 
   describe '#dice_roll (private)' do
     it '[:values] の要素がすべて「1〜ダイスの最大値」である' do
       1.upto(3) do |n_dice|
         1.upto(10) do |max|
-          result = generator.dice_roll(n_dice, max)
+          result = generator.send(:dice_roll, n_dice, max)
           values = result[:values]
 
           expect(values.all? { |x| (1..max).include?(x) }).to be(true)
@@ -26,13 +50,37 @@ describe RGRB::Plugin::DiceRoll::Generator do
     it '[:sum] は [:values] の要素の合計と等しい' do
       1.upto(3) do |n_dice|
         1.upto(10) do |max|
-          result = generator.dice_roll(n_dice, max)
+          result = generator.send(:dice_roll, n_dice, max)
           values = result[:values]
           sum = result[:sum]
 
           expect(sum).to eq(values.reduce(0, :+))
         end
       end
+    end
+
+    # 100000d101 の出目に偏りがないことを
+    # カイ二乗検定で確かめる
+    #
+    # 面数が 101 なのは、自由度が面数 - 1 で、カイ二乗分布表には
+    # 切りの良い 100 しか載っていないから
+    it '出目に偏りがない' do
+      n_dice = 100_000
+      max = 101
+      freq = Array.new(max, 0)
+      values = generator.send(:dice_roll, n_dice, max)[:values]
+
+      values.each do |x|
+        freq[x - 1] += 1
+      end
+
+      # カイ二乗値を求める
+      expected_count = n_dice.to_f / max
+      chi2 = freq.
+        map { |count| (count - expected_count)**2 / expected_count }.
+        reduce(0, :+)
+
+      expect(chi2).to be <= 140.169 # 自由度 100、有意水準 0.5%
     end
   end
 
@@ -51,7 +99,7 @@ describe RGRB::Plugin::DiceRoll::Generator do
       end
 
       it do
-        actual_message = generator.basic_dice_message(dice_roll_data)
+        actual_message = generator.send(:basic_dice_message, dice_roll_data)
         expect(actual_message).to eq(expected_message)
       end
     end

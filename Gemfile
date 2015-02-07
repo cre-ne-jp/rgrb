@@ -15,6 +15,7 @@ end
 group :test do
   gem 'rake', '~> 10.4'
   gem 'rspec', '~> 3.1'
+  gem 'coveralls', require: false
 end
 
 # パス設定

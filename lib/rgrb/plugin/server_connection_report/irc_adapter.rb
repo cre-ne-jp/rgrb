@@ -50,7 +50,7 @@ module RGRB
         # @return [void]
         def notice_on_each_channel(message)
           @channels_to_send.each do |channel_name|
-            Channel(channel_name).notice(message)
+            Channel(channel_name).send(message, true)
           end
         end
         private :notice_on_each_channel

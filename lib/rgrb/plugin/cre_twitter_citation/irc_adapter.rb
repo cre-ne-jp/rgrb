@@ -31,7 +31,7 @@ module RGRB
         def cite_from_twitter
           @generator.cite_from_twitter.each do |message|
             @channels_to_send.each do |channel_name|
-              Channel(channel_name).safe_notice(message)
+              Channel(channel_name).safe_send(message, true)
               sleep(1)
             end
           end

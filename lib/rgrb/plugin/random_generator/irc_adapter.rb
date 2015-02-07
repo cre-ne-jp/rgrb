@@ -40,7 +40,7 @@ module RGRB
                 ": 表「#{circular_reference.table}」で循環参照が起こりました。" \
                   '#cre でご報告ください。'
               end
-            m.target.notice(header + body)
+            m.target.send(header + body, true)
 
             sleep(1)
           end

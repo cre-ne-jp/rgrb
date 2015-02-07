@@ -23,7 +23,7 @@ module RGRB
         # @return [void]
         def basic_dice(m, n_dice, max)
           message = @generator.basic_dice(n_dice.to_i, max.to_i)
-          m.target.notice("#{m.user.nick} -> #{message}")
+          m.target.send("#{m.user.nick} -> #{message}", true)
         end
       end
     end

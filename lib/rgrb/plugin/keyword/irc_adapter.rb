@@ -23,13 +23,13 @@ module RGRB
         # NOTICE で cre.jp 検索ページを返す
         # @return [void]
         def cre_search(m, keyword)
-          m.target.notice(@generator.cre_search(keyword))
+          m.target.send(@generator.cre_search(keyword), true)
         end
 
         # NOTICE で Amazon.co.jp 検索ページを返す
         # @return [void]
         def amazon_search(m, keyword)
-          m.target.notice(@generator.amazon_search(keyword))
+          m.target.send(@generator.amazon_search(keyword), true)
         end
       end
     end

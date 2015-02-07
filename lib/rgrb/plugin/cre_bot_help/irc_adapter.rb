@@ -16,7 +16,7 @@ module RGRB
         # ヘルプメッセージを返す
         # @return [void]
         def help(m)
-          m.target.notice(Generator::HELP_MESSAGE)
+          m.target.send(Generator::HELP_MESSAGE, true)
         end
       end
     end

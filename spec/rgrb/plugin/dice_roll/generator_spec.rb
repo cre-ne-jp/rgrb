@@ -7,31 +7,38 @@ describe RGRB::Plugin::DiceRoll::Generator do
   let(:generator) { described_class.new }
 
   describe '#dice_roll' do
-    let(:excess_dice_message) { 'ダイスが机から落ちてしまいましたの☆' }
+    # ダイス数が多すぎるかどうか
+    # [dice_roll] ダイスロールを表す文字列。'2d6' 等
+    # [excess] ダイス数が多すぎる場合は true、適正な場合は false
+    shared_examples 'excess_dice' do |dice_roll, excess|
+      context(dice_roll) do
+        let(:matches) { dice_roll.match(/(\d+)d(\d+)/).to_a }
+        let(:n_dice) { matches[1].to_i }
+        let(:max) { matches[2].to_i }
+        let(:excess_dice_message) do
+          "#{dice_roll}: ダイスが机から落ちてしまいましたの☆"
+        end
 
-    context '1000d6' do
-      subject { generator.basic_dice(1000, 6) }
-      it { should eq(excess_dice_message) }
+        subject { generator.basic_dice(n_dice, max) }
+
+        it do
+          if excess
+            should eq(excess_dice_message)
+          else
+            should_not eq(excess_dice_message)
+          end
+        end
+      end
     end
 
-    context '200d100' do
-      subject { generator.basic_dice(1000, 100) }
-      it { should eq(excess_dice_message) }
+    # ダイス数が多すぎる場合
+    %w(1000d6 200d100).each do |dice_roll|
+      include_examples 'excess_dice', dice_roll, true
     end
 
-    context '100d100' do
-      subject { generator.basic_dice(100, 100) }
-      it { should_not eq(excess_dice_message) }
-    end
-
-    context '10d10' do
-      subject { generator.basic_dice(10, 10) }
-      it { should_not eq(excess_dice_message) }
-    end
-
-    context '2d6' do
-      subject { generator.basic_dice(2, 6) }
-      it { should_not eq(excess_dice_message) }
+    # ダイス数が適正な場合
+    %w(100d100 10d10 2d6).each do |dice_roll|
+      include_examples 'excess_dice', dice_roll, false
     end
   end
 

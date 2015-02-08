@@ -1,7 +1,0 @@
-狭間06:%%HA06event%%
-西生駒200X:%%HA20event%%
-狭間02:%%HA02event%%
-無限都市:%%IC04event%%
-地球伝承:%%LG02event%%
-鬼舞の刻:%%OM02event%%
-真珠世界:%%PW01event%%

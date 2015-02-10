@@ -1,5 +1,5 @@
 Name: birthday
-Description: 誕生日を選びます。4年に1回の閏年にのみ対応しています(ユリウス暦)。
+Description: "誕生日を選びます。4年に1回の閏年にのみ対応しています(ユリウス暦)。"
 Added: 2014-12-15
 Modified: 2014-12-20
 Access: public

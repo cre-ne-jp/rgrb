@@ -1,8 +1,8 @@
 Name: OM04byouin_etc
-Description: OM04byouin_etc
+Description: "語り部「鬼舞の刻:平安陰陽絵巻」に出てくる病因のうち、その他の詳細を選びます。"
 Added: 2014-12-15
 Modified: 2014-12-20
-Access: public
+Access: private
 Author: sf
 License: NONE
 Body:

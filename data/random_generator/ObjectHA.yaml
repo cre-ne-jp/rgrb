@@ -1,8 +1,8 @@
 Name: ObjectHA
-Description: ObjectHA
+Description: "語り部「狭間」用に、様々なモノを選びます。"
 Added: 2014-12-15
 Modified: 2014-12-20
-Access: public
+Access: private
 Author: sf
 License: NONE
 Body:

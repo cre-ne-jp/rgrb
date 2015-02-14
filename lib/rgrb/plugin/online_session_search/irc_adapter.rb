@@ -12,8 +12,11 @@ module RGRB
 
         # セッションマッチングシステムの URL
         SESSION_URL = 'http://session.trpg.net/'
+
         # 一覧の URL を提示するメッセージ
         LIST_MESSAGE = "一覧は #{SESSION_URL} からどうぞ♪"
+        # 情報取得に失敗したときのエラーメッセージ
+        GET_ERROR_MESSAGE = 'オンラインセッション情報の取得に失敗しました'
 
         set(plugin_name: 'OnlineSessionSearch')
         match(/ons\s*$/, method: :latest_schedules)
@@ -31,9 +34,14 @@ module RGRB
           )
           m.target.send(LIST_MESSAGE, true)
 
-          messages = @generator.latest_schedules(5)
-          messages.each do |s|
-            m.target.send(s, true)
+          begin
+            messages = @generator.latest_schedules(5)
+            messages.each do |s|
+              m.target.send(s, true)
+            end
+          rescue => e
+            bot.loggers.exception(e)
+            m.target.send(GET_ERROR_MESSAGE, true)
           end
         end
 
@@ -43,9 +51,14 @@ module RGRB
           )
           m.target.send(LIST_MESSAGE, true)
 
-          messages = @generator.search(str, 5)
-          messages.each do |s|
-            m.target.send(s, true)
+          begin
+            messages = @generator.search(str, 5)
+            messages.each do |s|
+              m.target.send(s, true)
+            end
+          rescue => e
+            bot.loggers.exception(e)
+            m.target.send(GET_ERROR_MESSAGE, true)
           end
         end
       end

@@ -1,6 +1,7 @@
 # vim: fileencoding=utf-8
 
 require_relative '../../../spec_helper'
+require 'webmock/rspec'
 require 'rgrb/plugin/online_session_search/generator'
 require 'rgrb/plugin/online_session_search/session'
 
@@ -78,6 +79,37 @@ describe RGRB::Plugin::OnlineSessionSearch::Generator do
         let(:expected_message) do
           'エリュシオン / セッション 2 (2015-02-10 23:59; 5人; http://session.trpg.net/99999)'
         end
+      end
+    end
+  end
+
+  describe '#latest_schedules' do
+    context 'セッション情報が見つからなかったとき' do
+      before do
+        stub_request(:get, 'http://session.trpg.net/json.php?n=5').
+          to_return(body: '[]')
+      end
+
+      subject { generator.latest_schedules(5) }
+      it { should eq(['開催予定のセッションは見つかりませんでしたの☆']) }
+    end
+
+    context 'セッション 1, 2' do
+      let(:session_1_2_json) do
+        '[{"SID":"9999","account":"@foo","username":"Foo","twitterimage":"http:\/\/example.net\/foo.png","SesName":"セッション 1","StartTime":"2015-01-23 04:56:43","MinMembers":"3","MaxMembers":"4","SysName":"ソードワールド2.0","url":"http:\/\/session.trpg.net\/9999"},{"SID":"99999","account":"@bar","username":"Bar","twitterimage":"http:\/\/example.org\/bar.png","SesName":"セッション 2","StartTime":"2015-02-10 23:59:59","MinMembers":"5","MaxMembers":"5","SysName":"エリュシオン","url":"http:\/\/session.trpg.net\/99999"}]'
+      end
+
+      before do
+        stub_request(:get, 'http://session.trpg.net/json.php?n=5').
+          to_return(body: session_1_2_json)
+      end
+
+      subject { generator.latest_schedules(5) }
+      it do
+        should eq([
+          'ソードワールド2.0 / セッション 1 (2015-01-23 04:56; 3-4人; http://session.trpg.net/9999)',
+          'エリュシオン / セッション 2 (2015-02-10 23:59; 5人; http://session.trpg.net/99999)'
+        ])
       end
     end
   end

@@ -113,6 +113,18 @@ module RGRB
         def desctiption()
           @description
         end
+
+        def author()
+          @author
+        end
+
+        def jadded()
+          @added.strftime("%Y年%m月%d日")
+        end
+
+        def jmodified()
+          @modified.strftime("%Y年%m月%d日")
+        end
       end
     end
   end

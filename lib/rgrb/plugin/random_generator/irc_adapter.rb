@@ -18,6 +18,7 @@ module RGRB
 
         set(plugin_name: 'RandomGenerator')
         match(/rg[ 　]+(#{TABLE_RE}(?: +#{TABLE_RE})*)/o, method: :rg)
+        match(/rg-desc[ 　]+(#{TABLE_RE}(?: +#{TABLE_RE})*)/o, method: :desc)
         match(/rg-info[ 　]+(#{TABLE_RE}(?: +#{TABLE_RE})*)/o, method: :info)
 
         def initialize(*args)
@@ -47,8 +48,24 @@ module RGRB
           end
         end
 
+        def desc(m, tables_str)
+          header = "rg-desc[#{m.user.nick}"
+
+          tables_str.split(' ').each do |table|
+            body =
+              begin
+                "<#{table}>: #{@generator.desc(table)} ☆"
+              rescue TableNotFound => not_found
+                ": 「#{not_found.table}」なんて表は見つからないのですわっ。"
+              end
+            m.target.send(header + body, true)
+
+            sleep(1)
+          end
+        end
+
         def info(m, tables_str)
-          header = "rg[#{m.user.nick}]"
+          header = "rg-info[#{m.user.nick}]"
 
           tables_str.split(' ').each do |table|
             body =

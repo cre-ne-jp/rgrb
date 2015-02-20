@@ -42,6 +42,16 @@ module RGRB
           replace_var_with_value(get_value_from(table), table)
         end
 
+        # 指定した表の Description を返す
+        # @param [String] table 表名
+        # @return [String]
+        # @raise [TableNotFound] 表が見つからなかった場合
+        def info(table_name)
+          fail(TableNotFound, table_name) unless @table[table_name]
+
+          @table[table_name].description
+        end
+
         # 表から値を取得して返す
         # @param [String] table_name 表名
         # @return [String]

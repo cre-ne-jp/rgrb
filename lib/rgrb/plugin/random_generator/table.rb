@@ -107,6 +107,12 @@ module RGRB
         def sample(random: Random::DEFAULT)
           @values.sample(random: random)
         end
+
+        # 表の説明を返す
+        # @return [String]
+        def desctiption()
+          @description
+        end
       end
     end
   end

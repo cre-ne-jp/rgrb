@@ -1,5 +1,5 @@
 Name: hiragana4
-Description: hiraganaを自動的に4回呼び出し、指定された数字の長さの文字列を作ります。
+Description: "hiraganaを自動的に4回呼び出し、指定された数字の長さの文字列を作ります。"
 Added: 2014-12-15
 Modified: 2014-12-20
 Access: public

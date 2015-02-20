@@ -1,8 +1,8 @@
 Name: VerbHA
-Description: VerbHA
+Description: "語り部「狭間さまよえるもの達」用に、動詞を選びます。"
 Added: 2014-12-15
 Modified: 2014-12-20
-Access: public
+Access: private
 Author: sf
 License: NONE
 Body:

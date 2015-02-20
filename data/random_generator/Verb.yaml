@@ -1,8 +1,8 @@
 Name: Verb
-Description: Verb
+Description: "動詞を選びます。"
 Added: 2014-12-15
 Modified: 2014-12-20
-Access: public
+Access: private
 Author: sf
 License: NONE
 Body:

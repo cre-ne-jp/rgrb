@@ -17,9 +17,9 @@ module RGRB
         include ConfigurableAdapter
 
         set(plugin_name: 'RandomGenerator')
-        match(/rg[ 　]+(#{TABLE_RE}(?: +#{TABLE_RE})*)/o, method: :rg)
-        match(/rg-desc[ 　]+(#{TABLE_RE}(?: +#{TABLE_RE})*)/o, method: :desc)
-        match(/rg-info[ 　]+(#{TABLE_RE}(?: +#{TABLE_RE})*)/o, method: :info)
+        match(/rg#{SPACES_RE}#{TABLES_RE}/o, method: :rg)
+        match(/rg-desc#{SPACES_RE}#{TABLES_RE}/o, method: :desc)
+        match(/rg-info#{SPACES_RE}#{TABLES_RE}/o, method: :info)
 
         def initialize(*args)
           super
@@ -49,12 +49,12 @@ module RGRB
         end
 
         def desc(m, tables_str)
-          header = "rg-desc[#{m.user.nick}"
+          header = "rg-desc"
 
           tables_str.split(' ').each do |table|
             body =
               begin
-                "<#{table}>: #{@generator.desc(table)} ☆"
+                "<#{table}>: #{@generator.desc(table)} "
               rescue TableNotFound => not_found
                 ": 「#{not_found.table}」なんて表は見つからないのですわっ。"
               end
@@ -65,12 +65,12 @@ module RGRB
         end
 
         def info(m, tables_str)
-          header = "rg-info[#{m.user.nick}]"
+          header = "rg-info"
 
           tables_str.split(' ').each do |table|
             body =
               begin
-                "<#{table}>: #{@generator.info(table)} ☆"
+                "<#{table}>: #{@generator.info(table)} "
               rescue TableNotFound => not_found
                 ": 「#{not_found.table}」なんて表は見つからないのですわっ。"
               end

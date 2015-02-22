@@ -3,7 +3,6 @@
 require 'time'
 require 'cgi/util'
 require 'twitter'
-require 'hugeurl'
 require 'rgrb/plugin/configurable_generator'
 
 module RGRB
@@ -58,7 +57,7 @@ module RGRB
           ).select { |tweet| tweet.created_at > last_cited }
           write_last_cited
 
-          uncited_tweets.sort_by { |tweet| tweet.created_at }.map do |tweet|
+          uncited_tweets.sort_by(&:created_at).map do |tweet|
             tweet_to_message(tweet)
           end
         end
@@ -67,9 +66,11 @@ module RGRB
         # @param [Twitter::Tweet] tweet ツイート
         # @return [String]
         def tweet_to_message(tweet)
-          html_unescaped_text = CGI.unescapeHTML(tweet.full_text)
-          url_expanded_text = html_unescaped_text.
-            gsub(T_CO_PATTERN) { |url| Hugeurl.get(url) }
+          unescaped_text = CGI.unescapeHTML(tweet.text)
+          url_expanded_text =
+            tweet.uris.reduce(unescaped_text) do |result, uri_info|
+              result.sub(uri_info.uri.to_s, uri_info.expanded_uri.to_s)
+            end
 
           # 日本時間のツイート時刻を求める
           # Tweet#created_at は frozen で変更不可なので

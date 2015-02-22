@@ -3,7 +3,6 @@ source 'https://rubygems.org'
 gem 'activesupport', '~> 4.2'
 gem 'cinch', '~> 2.1'
 gem 'twitter', '~> 5.11'
-gem 'hugeurl', '~> 0.0.8'
 gem 'sysexits', '~> 1.2'
 
 group :development, :test do

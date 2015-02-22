@@ -48,7 +48,7 @@ module RGRB
                   "#{session.max_members}人" :
                   "#{session.min_members}-#{session.max_members}人"
               params = [
-                session.start_time.strftime('%F %R'),
+                session.start_time.localtime('+09:00').strftime('%F %R'),
                 n_members_str,
                 session.url
               ]

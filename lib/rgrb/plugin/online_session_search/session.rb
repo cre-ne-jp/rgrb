@@ -6,6 +6,7 @@ require 'time'
 module RGRB
   module Plugin
     module OnlineSessionSearch
+      # オンラインセッション情報を格納するクラス
       class Session
         # ID
         # @return [Integer]

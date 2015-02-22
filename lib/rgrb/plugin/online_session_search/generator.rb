@@ -44,9 +44,11 @@ module RGRB
           else
             sessions.map do |session|
               n_members_str =
-                (session.min_members == session.max_members) ?
-                  "#{session.max_members}人" :
+                if session.min_members == session.max_members
+                  "#{session.max_members}人"
+                else
                   "#{session.min_members}-#{session.max_members}人"
+                end
               params = [
                 session.start_time.localtime('+09:00').strftime('%F %R'),
                 n_members_str,

@@ -28,7 +28,7 @@ gem install bundler
 
 ```bash
 cd /path/to/rgrb
-bundle install --path=vendor/bundler
+bundle install --deployment
 ```
 
 設定

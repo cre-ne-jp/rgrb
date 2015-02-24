@@ -17,7 +17,9 @@ module RGRB
         include ConfigurableAdapter
 
         set(plugin_name: 'RandomGenerator')
-        match(/rg[ 　]+(#{TABLE_RE}(?: +#{TABLE_RE})*)/o, method: :rg)
+        match(/rg#{SPACES_RE}#{TABLES_RE}/o, method: :rg)
+        match(/rg-desc#{SPACES_RE}#{TABLES_RE}/o, method: :desc)
+        match(/rg-info#{SPACES_RE}#{TABLES_RE}/o, method: :info)
 
         def initialize(*args)
           super
@@ -39,6 +41,38 @@ module RGRB
               rescue CircularReference => circular_reference
                 ": 表「#{circular_reference.table}」で循環参照が起こりました。" \
                   '#cre でご報告ください。'
+              end
+            m.target.send(header + body, true)
+
+            sleep(1)
+          end
+        end
+
+        def desc(m, tables_str)
+          header = "rg-desc"
+
+          tables_str.split(' ').each do |table|
+            body =
+              begin
+                "<#{table}>: #{@generator.desc(table)} "
+              rescue TableNotFound => not_found
+                ": 「#{not_found.table}」なんて表は見つからないのですわっ。"
+              end
+            m.target.send(header + body, true)
+
+            sleep(1)
+          end
+        end
+
+        def info(m, tables_str)
+          header = "rg-info"
+
+          tables_str.split(' ').each do |table|
+            body =
+              begin
+                "<#{table}>: #{@generator.info(table)} "
+              rescue TableNotFound => not_found
+                ": 「#{not_found.table}」なんて表は見つからないのですわっ。"
               end
             m.target.send(header + body, true)
 

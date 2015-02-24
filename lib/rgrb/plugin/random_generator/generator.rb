@@ -42,6 +42,32 @@ module RGRB
           replace_var_with_value(get_value_from(table), table)
         end
 
+        def desc(table_name)
+          fail(TableNotFound, table_name) unless @table[table_name]
+
+          @table[table_name].description
+        end
+
+        # 指定した表の説明を返す
+        # @param [String] table 表名
+        # @return [String]
+        # @raise [TableNotFound] 表が見つからなかった場合
+        def info(table_name)
+          fail(TableNotFound, table_name) unless @table[table_name]
+
+          mes = "#{table_name}は、" \
+            "#{@table[table_name].jadded}に" \
+            "#{@table[table_name].author}さんによって追加されましたの。"
+          unless @table[table_name].jmodified == nil 
+            mes = mes \
+              + "最後に更新されたのは" \
+                "#{@table[table_name].jmodified}" \
+                "ですわ。"
+          end
+
+          mes + "#{@table[table_name].description}"
+        end
+
         # 表から値を取得して返す
         # @param [String] table_name 表名
         # @return [String]

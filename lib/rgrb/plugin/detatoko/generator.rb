@@ -25,7 +25,7 @@ module RGRB
         end
 
         def skill_decision(skill_level, solid = 0)
-          header = "[detatoko] Skill-Level = #{skill_level} -> "
+          header = "スキルレベル = #{skill_level} -> "
 
           case skill_level
           when 0
@@ -47,6 +47,71 @@ module RGRB
             header + "#{result[:values]} + #{solid} " \
               "= #{values.reduce(0, :+) + solid}"
           end
+        end
+
+        # 烙印を得る
+        def stigma(type)
+          stigma = get_stigma
+          case stigma[:number].size
+          when 1
+            "#{stigma[:dice][0]} -> " \
+              "#{stigma_text(type, stigma[:number][0])}"
+          when 2
+            "#{stigma[:dice][0]}#{stigma[:dice][1]} -> "
+              "#{stigma_text(type, stigma[:number][0])} と " \
+              "#{stigma_text(type, stigma[:number][1])}"
+          end
+        end
+
+        def get_stigma()
+          stigma_number = []
+          dice = []
+          time = 1
+          second = false
+
+#          roll = [2,6,5]
+          while time > 0
+            d = dice_roll(2, 6)
+            result = d[:sum]
+#            result = roll.shift
+            if result == 2
+              if second
+                stigma_number.push(12)
+              else
+                second = true
+                time += 2
+              end
+            else
+              stigma_number.push(result)
+            end
+            time -= 1
+            dice << d[:values]
+          end
+
+          stigma_number.sort!
+          stigma_number = 
+            if stigma_number.size == 2 and stigma_number[1] == 12
+              [stigma_number[0]]
+            else
+              stigma_number
+            end
+          { :dice => dice, :number => stigma_number }
+        end
+
+        def stigma_text(type, number)
+          case type
+          when 'v'
+            stigmas = [
+              '痛手', '流血', '衰弱', '苦悶', '衝撃',
+              '疲労', '怒号', '負傷', '軽傷', 'なし'
+                          ]
+          when 'm'
+            stigmas = [
+              '絶望', '号泣', '後悔', '恐怖', '葛藤',
+              '憎悪', '呆然', '迷い', '悪夢', 'なし'
+            ]
+          end
+          "#{number}:【#{stigmas[number - 3]}】"
         end
 
         # ダイスロールの結果を返す

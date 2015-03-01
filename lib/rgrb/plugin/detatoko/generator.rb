@@ -44,60 +44,48 @@ module RGRB
         # @return [String]
         def stigma(type)
           stigma = get_stigma
-          case stigma[:number].size
-          when 1
-            "#{stigma[:dice][0]} -> " \
-              "#{stigma_text(type, stigma[:number][0])}"
-          when 2
-            "#{stigma[:dice][0]}#{stigma[:dice][1]} -> "
-              "#{stigma_text(type, stigma[:number][0])} と " \
-              "#{stigma_text(type, stigma[:number][1])}"
-          end
+          response = {:dice => '', :stigma => [] }
+
+          stigma.each { |values|
+            response[:dice] << to_sw2dll(values)
+            response[:stigma] << stigma_text(type, values.reduce(0, :+))
+          }
+          response[:stigma].delete(nil)
+          response[:stigma] << 'なし' if response[:stigma].empty?
+
+          message = "#{response[:dice]} -> "
+          response[:stigma].each { |stigma_name|
+            message << "#{stigma_name} と "
+          }
+          3.times { message.chop! }
+          message
         end
 
         # バッドエンド表を振る
+        # @param [String] type 体力・気力のどちらか
         def badend(type)
           result = dice_roll(2, 6)
           "#{result[:values]} -> #{badend_text(type, result[:sum])}"
         end
 
         # ダイスを振り獲得する烙印を決める
-        # @return [Hash]
-        #   @option [Array] :dice (1dの)出目
-        #   @option [Array] :stigma_number 烙印に対応する出目
+        # @return [Array<Array>]
         def get_stigma()
           stigma_number = []
-          dice = []
           time = 1
           second = false
 
-#          roll = [2,6,5]
           while time > 0
-            d = dice_roll(2, 6)
-            result = d[:sum]
-#            result = roll.shift
-            if result == 2
-              if second
-                stigma_number.push(12)
-              else
+            time -= 1
+            dice = dice_roll(2, 6)
+            if dice[:sum] == 2 and !second
                 second = true
                 time += 2
-              end
-            else
-              stigma_number.push(result)
             end
-            time -= 1
-            dice << d[:values]
+            stigma_number << dice[:values]
           end
 
-          stigma_number.sort!
-          stigma_number = 
-            if stigma_number.size == 2 and stigma_number[1] == 12
-              [stigma_number[0]]
-            else
-              stigma_number
-            end
-          { :dice => dice, :number => stigma_number }
+          stigma_number
         end
         private :get_stigma
 
@@ -110,17 +98,26 @@ module RGRB
           when 'v'
             stigmas = [
               '痛手', '流血', '衰弱', '苦悶', '衝撃',
-              '疲労', '怒号', '負傷', '軽傷', 'なし'
-                          ]
+              '疲労', '怒号', '負傷', '軽傷', nil
+            ]
           when 'm'
             stigmas = [
               '絶望', '号泣', '後悔', '恐怖', '葛藤',
-              '憎悪', '呆然', '迷い', '悪夢', 'なし'
+              '憎悪', '呆然', '迷い', '悪夢', nil
             ]
           end
-          "#{number}:【#{stigmas[number - 3]}】"
+
+          stigmas[number - 3] && "#{number}:【#{stigmas[number - 3]}】"
         end
         private :stigma_text
+
+        # 配列をSW2_DLLの出力と同じ形式に変換する
+        # @param [Array] values 1d6の出目2つ
+        # @return [String]
+        def to_sw2dll(values)
+          "[#{values[0]},#{values[1]}:#{values[0] + values[1]}]"
+        end
+        private :to_sw2dll
 
         # 出目から対応するバッドエンドを決定する
         # @param [String] type 体力・気力のどちらか

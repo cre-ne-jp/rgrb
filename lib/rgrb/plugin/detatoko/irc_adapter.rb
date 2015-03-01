@@ -59,6 +59,7 @@ module RGRB
             '気'
           end
         end
+        private :type_conv
       end
     end
   end

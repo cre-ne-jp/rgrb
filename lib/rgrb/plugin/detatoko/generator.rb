@@ -55,6 +55,12 @@ module RGRB
           end
         end
 
+        # バッドエンド表を振る
+        def badend(type)
+          result = dice_roll(2, 6)
+          "#{result[:values]} -> #{badend_text(type, result[:sum])}"
+        end
+
         # ダイスを振り獲得する烙印を決める
         # @return [Hash]
         #   @option [Array] :dice (1dの)出目
@@ -96,7 +102,7 @@ module RGRB
         private :get_stigma
 
         # 出目から対応する烙印を決定する
-        # @param [String] type 体力・気力のどちらの烙印か
+        # @param [String] type 体力・気力のどちらか
         # @param [Fixnum] number ダイスの出目
         # @return [String]
         def stigma_text(type, number)
@@ -115,6 +121,27 @@ module RGRB
           "#{number}:【#{stigmas[number - 3]}】"
         end
         private :stigma_text
+
+        # 出目から対応するバッドエンドを決定する
+        # @param [String] type 体力・気力のどちらか
+        # @param [Fixnum] number ダイスの出目
+        # @return [String]
+        def badend_text(type, number)
+          case type
+          when 'v'
+            badends = [
+              '死亡', '命乞', '忘却', '悲劇', '暴走', '転落', 
+              '虜囚', '逃走', '重症', '気絶', 'なし'
+            ]
+          when 'm'
+            badends = [
+              '自害', '堕落', '隷属', '裏切', '暴走', '呪い', 
+              '虜囚', '逃走', '放心', '気絶', 'なし'
+            ]
+          end
+          "#{number}:【#{badends[number - 2]}】"
+        end
+        private :badend_text
 
         # ダイスロールの結果を返す
         # @param [Fixnum] n_dice ダイスの個数

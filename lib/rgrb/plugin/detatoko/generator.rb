@@ -2,32 +2,22 @@
 
 module RGRB
   module Plugin
-    # ダイスロールを行うプラグイン
-    #
-    # メルセンヌ・ツイスタを用いて均一な乱数を生成します。
+    # システム別専用プラグイン「でたとこサーガ」
     module Detatoko
-      # DiceRoll の出力テキスト生成器
+      # Detatoko の出力テキスト生成器
       class Generator
         def initialize
           @random = Random.new
         end
 
-        # 基本的なダイスロールの結果を返す
-        # @param [Fixnum] n_dice ダイスの個数
-        # @param [Fixnum] max ダイスの最大値
+        # スキルランクから判定値を算出します
+        # @param [Fixnum] skill_rank スキルランク
+        # @param [Fixnum] solid 追加ダメージ(固定値)
         # @return [String]
-        def basic_dice(n_dice, max)
-          if n_dice > 100
-            "#{n_dice}d#{max}: ダイスが机から落ちてしまいましたの☆"
-          else
-            basic_dice_message(dice_roll(n_dice, max))
-          end
-        end
+        def skill_decision(skill_rank, solid = 0)
+          header = "スキルランク = #{skill_rank} -> "
 
-        def skill_decision(skill_level, solid = 0)
-          header = "スキルレベル = #{skill_level} -> "
-
-          case skill_level
+          case skill_rank
           when 0
             result = dice_roll(3, 6)
             values = result[:values].sort.shift(2)
@@ -35,7 +25,7 @@ module RGRB
             result = dice_roll(2, 6)
             values = result[:values]
           when 2..30
-            result = dice_roll(skill_level + 1 , 6)
+            result = dice_roll(skill_rank + 1 , 6)
             values = result[:values].sort.pop(2)
           else
             return header + "ダイスが机から落ちてしまいましたの☆"
@@ -50,6 +40,8 @@ module RGRB
         end
 
         # 烙印を得る
+        # @param [String] type 体力・気力烙印のどちらか
+        # @return [String]
         def stigma(type)
           stigma = get_stigma
           case stigma[:number].size
@@ -63,6 +55,10 @@ module RGRB
           end
         end
 
+        # ダイスを振り獲得する烙印を決める
+        # @return [Hash]
+        #   @option [Array] :dice (1dの)出目
+        #   @option [Array] :stigma_number 烙印に対応する出目
         def get_stigma()
           stigma_number = []
           dice = []
@@ -97,7 +93,12 @@ module RGRB
             end
           { :dice => dice, :number => stigma_number }
         end
+        private :get_stigma
 
+        # 出目から対応する烙印を決定する
+        # @param [String] type 体力・気力のどちらの烙印か
+        # @param [Fixnum] number ダイスの出目
+        # @return [String]
         def stigma_text(type, number)
           case type
           when 'v'
@@ -113,11 +114,16 @@ module RGRB
           end
           "#{number}:【#{stigmas[number - 3]}】"
         end
+        private :stigma_text
 
         # ダイスロールの結果を返す
         # @param [Fixnum] n_dice ダイスの個数
         # @param [Fixnum] max ダイスの最大値
         # @return [Hash]
+        #   @option [Fixnum] :n_dice ダイスの個数
+        #   @option [Fixnum] :max ダイスの最大値
+        #   @option [Array<Fixnum>] :values ダイスの出目の配列
+        #   @option [Fixnum] :sum ダイスの出目の合計
         def dice_roll(n_dice, max)
           values = Array.new(n_dice) { @random.rand(1..max) }
 
@@ -129,19 +135,6 @@ module RGRB
           }
         end
         private :dice_roll
-
-        # 基本的なダイスロールのメッセージを返す
-        # @param [Hash] result ダイスロール結果
-        # @option result [Fixnum] :n_dice ダイスの個数
-        # @option result [Fixnum] :max ダイスの最大値
-        # @option result [Array<Fixnum>] :values ダイスの出目の配列
-        # @option result [Fixnum] :sum ダイスの出目の合計
-        # @return [String]
-        def basic_dice_message(result)
-          "#{result[:n_dice]}d#{result[:max]} = " \
-            "#{result[:values]} = #{result[:sum]}"
-        end
-        private :basic_dice_message
       end
     end
   end

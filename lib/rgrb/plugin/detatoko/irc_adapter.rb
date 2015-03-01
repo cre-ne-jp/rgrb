@@ -12,7 +12,7 @@ module RGRB
 
         set(plugin_name: 'Detatoko')
         self.prefix = '.d'
-        match(/s(\d{,2})$/i, method: :skill_decision)
+        match(/s(\d{,2})([^\+][ 　]|$)/i, method: :skill_decision)
         match(/s(\d{,2})\+(\d{,2})/i, method: :skill_decision)
         match(/(v|m)st/i, method: :stigma)
 
@@ -23,11 +23,11 @@ module RGRB
           header = "でたとこサーガ "
         end
 
-        # スキルレベルから判定値を得る
+        # スキルランクから判定値を得る
         # @return [void]
-        def skill_decision(m, skill_level, solid = 0)
+        def skill_decision(m, skill_rank, solid = 0)
           header = "#{header}[#{m.user.nick}]<判定値>: "
-          message = @generator.skill_decision(skill_level.to_i, solid.to_i)
+          message = @generator.skill_decision(skill_rank.to_i, solid.to_i)
           m.target.send(header + message, true)
         end
 

@@ -8,6 +8,7 @@ module RGRB
       class Generator
         def initialize
           @random = Random.new
+          @stances = [ '敵視', '宿命', '憎悪', '雲上', '従属', '不明' ]
         end
 
         # スキルランクから判定値を算出します
@@ -50,7 +51,7 @@ module RGRB
             response[:dice] << to_sw2dll(values)
             response[:stigma] << stigma_text(type, values.reduce(0, :+))
           }
-          response[:stigma].delete(nil)
+          response[:stigma].compact!
           response[:stigma] << 'なし' if response[:stigma].empty?
 
           message = "#{response[:dice]} -> "
@@ -66,6 +67,14 @@ module RGRB
         def badend(type)
           result = dice_roll(2, 6)
           "#{result[:values]} -> #{badend_text(type, result[:sum])}"
+        end
+        
+        # スタンス表を振る
+        # @param [String] uses
+        def stance(uses)
+          use_list = what_stance_list(uses)
+          stance_type = use_list.sample
+          "#{stance_type} -> #{stance_select(stance_type)}"
         end
 
         # ダイスを振り獲得する烙印を決める
@@ -139,6 +148,39 @@ module RGRB
           "#{number}:【#{badends[number - 2]}】"
         end
         private :badend_text
+
+        # 文字列をスタンスの系統に分ける
+        # @param [String] uses 元の文字列
+        # @return [Array<String>] 使用するスタンス系統のリスト
+        def what_stance_list(uses)
+          return @stances.dup if uses.empty?
+
+          separators = /[\+＋・]/
+          @stances & uses.split(separators)
+        end
+        private :what_stance_list
+
+        # 指定された系統のスタンスをランダムに選ぶ
+        def stance_select(type)
+          stance = case type
+          when '敵視'
+            ['邪魔', '好敵手', '標的', '使命', '異世界召喚', '討伐者']
+          when '宿命'
+            ['救済', '神託', 'あの人は今', '風来坊', '自己投影', '嵐の予兆']
+          when '憎悪'
+            ['暗い目', '悪を憎む', '劣等感', '怨念', '裏切り', '復讐']
+          when '雲上'
+            ['怯え', '小市民', '懊悩', '嘆願', '世捨て人', '誰それ?']
+          when '従属'
+            ['隷従', '呪縛', '勘違い', '弱肉強食', '居場所', '心酔']
+          when '不明'
+            ['野心の炎', '大いなる御方', '戯れ', '好奇心', '天秤', '超越']
+          end
+          
+          rand = @random.rand(6)
+          "#{rand + 1}:【#{stance[rand]}】"
+        end
+        private :stance_select
 
         # ダイスロールの結果を返す
         # @param [Fixnum] n_dice ダイスの個数

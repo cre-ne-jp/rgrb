@@ -16,6 +16,7 @@ module RGRB
         match(/s(\d{,2})\+(\d{,2})/i, method: :skill_decision)
         match(/(v|m)st/i, method: :stigma)
         match(/(v|m)bet/, method: :badend)
+        match(/stance[ 　]+([敵視宿命憎悪雲上従属不明・＋\+]*)/, method: :stance)
 
         def initialize(*args)
           super
@@ -45,6 +46,13 @@ module RGRB
         def badend(m, tcode)
           header = "#{@header}[#{m.user.nick}]<#{type_conv(tcode)}力バッドエンド>: "
           message = @generator.badend(tcode)
+          m.target.send(header + message, true)
+        end
+
+        # スタンス表から引く
+        def stance(m, uses)
+          header = "#{@header}[#{m.user.nick}]<スタンス表>: "
+          message = @generator.stance(uses)
           m.target.send(header + message, true)
         end
 

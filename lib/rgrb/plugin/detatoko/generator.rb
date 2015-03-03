@@ -32,11 +32,12 @@ module RGRB
           else
             return header + "ダイスが机から落ちてしまいましたの☆"
           end
+          decision = values.reduce(0, :+)
          
-          message = header + result[:values].to_s
+          message = header + result[:values].to_s + ":#{decision}"
           message << " #{calc} #{solid}" unless solid == 0
           message << " = "
-          message << eval("#{values.reduce(0, :+).to_f} #{calc} #{solid}").ceil.to_s
+          message << eval("#{decision.to_f} #{calc} #{solid}").ceil.to_s
         end
 
         # 烙印を得る

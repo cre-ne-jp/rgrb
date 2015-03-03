@@ -1,5 +1,4 @@
 # vim: fileencoding=utf-8
-require 'pp'
 
 module RGRB
   module Plugin
@@ -66,7 +65,7 @@ module RGRB
         # @param [String] type 体力・気力のどちらか
         def badend(type)
           result = dice_roll(2, 6)
-          "#{result[:values]} -> #{badend_text(type, result[:sum])}"
+          "#{to_sw2dll(result[:values])} -> #{badend_text(type, result[:sum])}"
         end
         
         # スタンス表を振る
@@ -200,7 +199,7 @@ module RGRB
             sum: values.reduce(0, :+)
           }
         end
-#        private :dice_roll
+        private :dice_roll
       end
     end
   end

@@ -74,11 +74,16 @@ module RGRB
           end
         end
         private :type_conv
+
+        # コマンドでの表記を内部での体力・気力のフラグに書き換える
+        # @param [String] code コマンドでの表記
+        # @return [String]
         def type_tr(code)
           code.tr!('tk', 'vm')
           code.tr!('体気', 'vm')
           code
         end
+        private :type_tr
       end
     end
   end

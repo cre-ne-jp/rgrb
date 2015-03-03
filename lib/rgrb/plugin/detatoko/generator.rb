@@ -1,4 +1,5 @@
 # vim: fileencoding=utf-8
+require 'pp'
 
 module RGRB
   module Plugin
@@ -13,9 +14,10 @@ module RGRB
 
         # スキルランクから判定値を算出します
         # @param [Fixnum] skill_rank スキルランク
+        # @param [String] calc 計算記号
         # @param [Fixnum] solid 追加ダメージ(固定値)
         # @return [String]
-        def skill_decision(skill_rank, solid = 0)
+        def skill_decision(skill_rank, calc , solid)
           header = "スキルランク = #{skill_rank} -> "
 
           case skill_rank
@@ -31,13 +33,11 @@ module RGRB
           else
             return header + "ダイスが机から落ちてしまいましたの☆"
           end
-          
-          if solid == 0
-            header + "#{result[:values]} = #{values.reduce(0, :+)}"
-          else
-            header + "#{result[:values]} + #{solid} " \
-              "= #{values.reduce(0, :+) + solid}"
-          end
+         
+          message = header + result[:values].to_s
+          message << " #{calc} #{solid}" unless solid == 0
+          message << " = "
+          message << eval("#{values.reduce(0, :+).to_f} #{calc} #{solid}").ceil.to_s
         end
 
         # 烙印を得る
@@ -200,7 +200,7 @@ module RGRB
             sum: values.reduce(0, :+)
           }
         end
-        private :dice_roll
+#        private :dice_roll
       end
     end
   end

@@ -14,8 +14,12 @@ module RGRB
         self.prefix = '.d'
         match(/s(\d+)(?:[\s　]|$)/i, method: :skill_decision)
         match(/s(\d+)([\+\-\*\/])(\d+)/i, method: :skill_decision)
-        match(/(v|m)st/i, method: :stigma)
-        match(/(v|m)bet/i, method: :badend)
+        match(/(v|m)s/i, method: :stigma)
+        match(/(t|k)r/i, method: :stigma)
+        match(/(体|気)力烙印/i, method: :stigma)
+        match(/(v|m)be/i, method: :badend)
+        match(/(t|k)b/i, method: :badend)
+        match(/(体|気)力バッドエンド/i, method: :badend)
         match(/stance[\s　]+([敵視宿命憎悪雲上従属不明・＋\+]*)/i, method: :stance)
 
         def initialize(*args)
@@ -36,6 +40,7 @@ module RGRB
         # 烙印(p.63)を得る
         # @return [void]
         def stigma(m, tcode)
+          tcode = type_tr(tcode)
           header = "#{@header}[#{m.user.nick}]<#{type_conv(tcode)}力烙印>: "
           message = @generator.stigma(tcode)
           m.target.send(header + message, true)
@@ -44,6 +49,7 @@ module RGRB
         # バッドエンド表(p.65)を振る
         # @return [void]
         def badend(m, tcode)
+          tcode = type_tr(tcode)
           header = "#{@header}[#{m.user.nick}]<#{type_conv(tcode)}力バッドエンド>: "
           message = @generator.badend(tcode)
           m.target.send(header + message, true)
@@ -68,6 +74,11 @@ module RGRB
           end
         end
         private :type_conv
+        def type_tr(code)
+          code.tr!('tk', 'vm')
+          code.tr!('体気', 'vm')
+          code
+        end
       end
     end
   end

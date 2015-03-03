@@ -12,7 +12,7 @@ module RGRB
 
         set(plugin_name: 'Detatoko')
         self.prefix = '.d'
-        match(/s(\d{,2})([^\+][ 　]|$)/i, method: :skill_decision)
+        match(/s(\d{,2})(?:[ 　]|$)/i, method: :skill_decision)
         match(/s(\d{,2})\+(\d{,2})/i, method: :skill_decision)
         match(/(v|m)st/i, method: :stigma)
         match(/(v|m)bet/, method: :badend)

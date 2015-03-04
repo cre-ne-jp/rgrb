@@ -74,7 +74,8 @@ module RGRB
         def stance(uses)
           use_list = what_stance_list(uses)
           stance_type = use_list.sample
-          "#{stance_type} -> #{stance_select(stance_type)}"
+          "候補:#{use_list.to_s.tr('" ', '')} -> " \
+            "系統:【#{stance_type}】 #{stance_select(stance_type)}"
         end
 
         # ダイスを振り獲得する烙印を決める

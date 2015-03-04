@@ -20,7 +20,8 @@ module RGRB
         match(/(v|m)be/i, method: :badend)
         match(/(t|k)b/i, method: :badend)
         match(/(体|気)力バッドエンド/i, method: :badend)
-        match(/stance[\s　]+([敵視宿命憎悪雲上従属不明・＋\+]*)/i, method: :stance)
+        match(/stance[\s　]+((?:敵視|宿命|憎悪|雲上|従属|不明|[・＋\+])+)/i, method: :stance)
+        match(/スタンス[\s　]+((?:敵視|宿命|憎悪|雲上|従属|不明|[・＋\+])+)/i, method: :stance)
 
         def initialize(*args)
           super

@@ -16,8 +16,11 @@ OnlineSessionSearch
 .ons
 > 最近追加されたオンラインセッション情報ですわ☆
 > 一覧は http://session.trpg.net/ からどうぞ♪
-> ソードワールド2.0 / SW2テスト (2014-06-24 22:00; 3-5人; http://session.trpg.net/XXX)
-
+> ソードワールド2.0 / SW2テスト (2015-03-05 22:00; 3-5人; http://session.trpg.net/XXX)
+> でたとこサーガ / 初GM (2015-03-06 23:00; 3-4人; http://session.trpg.net/XXX)
+> 艦これRPG / 井戸の叫喚 (2015-03-07 21:00; 3-6人; http://session.trpg.net/XXX)
+> ダブルクロス / 真昼の月 (2015-03-07 22:00; 3-4人; http://session.trpg.net/XXX)
+> 永い後日談のネクロニカ / The Riddle Story (2015-03-09 22:00; 3-5人; http://session.trpg.net/XXX)
 ```
 
 ### セッション一覧を検索 (`.ons <キーワード>`)
@@ -28,5 +31,7 @@ OnlineSessionSearch
 
 ```
 .ons ソードワールド
+> オンラインセッション情報検索: ソードワールド
+> 一覧は http://session.trpg.net/ からどうぞ♪
 > ソードワールド2.0 / SW2テスト (2014-06-24 22:00; 3-5人; http://session.trpg.net/XXX)
 ```

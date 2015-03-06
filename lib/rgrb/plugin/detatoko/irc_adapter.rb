@@ -14,10 +14,10 @@ module RGRB
         self.prefix = '.d'
         match(/s(\d+)(?:[\s　]|$)/i, method: :skill_decision)
         match(/s(\d+)([\+\-\*\/])(\d+)/i, method: :skill_decision)
-        match(/(v|m)s/i, method: :stigma)
+        match(/(v|m|s|w)s/i, method: :stigma)
         match(/(t|k)r/i, method: :stigma)
         match(/(体|気)力烙印/i, method: :stigma)
-        match(/(v|m)be/i, method: :badend)
+        match(/(v|m|s|w)be/i, method: :badend)
         match(/(t|k)b/i, method: :badend)
         match(/(体|気)力バッドエンド/i, method: :badend)
         match(/stance[\s　]+((?:敵視|宿命|憎悪|雲上|従属|不明|[・＋\+])+)/i, method: :stance)
@@ -81,6 +81,7 @@ module RGRB
         # @return [String]
         def type_tr(code)
           code.tr!('tk', 'vm')
+          code.tr!('sw', 'vm')
           code.tr!('体気', 'vm')
           code
         end

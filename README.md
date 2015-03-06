@@ -40,14 +40,16 @@ bundle install --deployment
 
 ### プラグイン一覧
 
-* [DiceRoll](doc/plugins/dice_roll.md)：ダイスロール
-* [Keyword](doc/plugins/keyword.md)：キーワード検索
-* [RandomGenerator](doc/plugins/random_generator.md)：ランダムジェネレータ
-* [CreTwitterCitation](doc/plugins/cre_twitter_citation.md)：Twitter @cre_ne_jp の引用
-* [CreBotHelp](doc/plugins/cre_bot_help.md)：クリエイターズネットワークの IRC ボットとしてのヘルプを表示する
-* [ServerConnectionReport](doc/plugins/server_connection_report.md)：IRCサーバの接続状態の変化を報告する
-* [OnlineSessionSearch](doc/plugins/online_session_search.md)：[TRPG.NETセッションマッチングシステム](http://session.trpg.net/)から立っている卓の情報を検索する
-* [Detatoko](doc/plugins/detatoko.md)：「でたとこサーガ」専用のダイス・表引きコマンドを提供する
+| プラグイン名 | 内容 |
+| ------------ | ---- |
+| [DiceRoll](doc/plugins/dice_roll.md) | ダイスロール |
+| [Detatoko](doc/plugins/detatoko.md) | 「でたとこサーガ」専用のダイス・表引きコマンド |
+| [Keyword](doc/plugins/keyword.md) | キーワード検索 |
+| [RandomGenerator](doc/plugins/random_generator.md) | ランダムジェネレータ |
+| [CreTwitterCitation](doc/plugins/cre_twitter_citation.md) | Twitter @cre_ne_jp の引用 |
+| [CreBotHelp](doc/plugins/cre_bot_help.md) | クリエイターズネットワークの IRC ボットとしてのヘルプを表示する |
+| [ServerConnectionReport](doc/plugins/server_connection_report.md) | IRC サーバの接続状態の変化を報告する |
+| [OnlineSessionSearch](doc/plugins/online_session_search.md) | [TRPG.NET セッションマッチングシステム](http://session.trpg.net/)から予定されているオンラインセッションの情報を検索する |
 
 IRC ボットの起動
 ----------------

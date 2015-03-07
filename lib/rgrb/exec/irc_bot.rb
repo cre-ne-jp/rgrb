@@ -109,7 +109,7 @@ module RGRB
           c.plugins.options = @plugin_options
         end
 
-        bot.loggers.level = @debug ? :debug : :warn
+        bot.loggers.level = @debug ? :debug : :info
 
         bot
       rescue => e
@@ -146,7 +146,7 @@ EOS
           opt.on(
             '--debug',
             'デバッグモード。ログを冗長にします。'
-          ) do |debug|
+          ) do
             @debug = true
           end
         end

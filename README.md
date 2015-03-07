@@ -2,7 +2,6 @@
 =====================
 
 * master: [![Build Status](https://travis-ci.org/cre-ne-jp/rgrb.svg?branch=master)](https://travis-ci.org/cre-ne-jp/rgrb) [![Coverage Status](https://coveralls.io/repos/cre-ne-jp/rgrb/badge.svg?branch=master)](https://coveralls.io/r/cre-ne-jp/rgrb?branch=master)
-* dev-0.6.0: [![Build Status](https://travis-ci.org/cre-ne-jp/rgrb.svg?branch=dev-0.6.0)](https://travis-ci.org/cre-ne-jp/rgrb) [![Coverage Status](https://coveralls.io/repos/cre-ne-jp/rgrb/badge.svg?branch=dev-0.6.0)](https://coveralls.io/r/cre-ne-jp/rgrb?branch=dev-0.6.0)
 
 RGRB は Ruby で実装されている汎用 IRC ボットです。プラグイン方式により柔軟な拡張が可能です。
 

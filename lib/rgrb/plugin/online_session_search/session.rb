@@ -62,28 +62,43 @@ module RGRB
           end
         end
 
-        def initialize(
-          id: 0,
-          url: '',
-          name: '',
-          game_system: '',
-          start_time: Time.now,
-          min_members: 0,
-          max_members: 1,
-          account: '',
-          user_name: '',
-          twitter_image_url: ''
-        )
-          @id = id
-          @url = url
-          @name = name
-          @game_system = game_system
-          @start_time = start_time
-          @min_members = min_members
-          @max_members = max_members
-          @account = account
-          @user_name = user_name
-          @twitter_image_url = twitter_image_url
+        # 新しい Session インスタンスを返す
+        # @param [Hash] session_data セッション情報
+        # @option session_data [Integer] :id ID
+        # @option session_data [String] :url セッション情報の URL
+        # @option session_data [String] :name セッション名
+        # @option session_data [String] :game_system ゲームシステム名
+        # @option session_data [Time] :start_time 開始日時
+        # @option session_data [Integer] :min_members 最低人数
+        # @option session_data [Integer] 最高人数
+        # @option session_data [String] アカウント
+        # @option session_data [String] ユーザー名
+        # @option session_data [String] Twitter 画像 URL
+        def initialize(session_data)
+          default_session_data = {
+            id: 0,
+            url: '',
+            name: '',
+            game_system: '',
+            start_time: Time.now,
+            min_members: 0,
+            max_members: 1,
+            account: '',
+            user_name: '',
+            twitter_image_url: ''
+          }
+          actual_session_data = default_session_data.merge(session_data)
+
+          @id = actual_session_data[:id]
+          @url = actual_session_data[:url]
+          @name = actual_session_data[:name]
+          @game_system = actual_session_data[:game_system]
+          @start_time = actual_session_data[:start_time]
+          @min_members = actual_session_data[:min_members]
+          @max_members = actual_session_data[:max_members]
+          @account = actual_session_data[:account]
+          @user_name = actual_session_data[:user_name]
+          @twitter_image_url = actual_session_data[:twitter_image_url]
         end
       end
     end

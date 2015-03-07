@@ -60,7 +60,7 @@ module RGRB
             description: description,
             added: added,
             modified: modified,
-            is_public: is_public,
+            public: is_public,
             author: author,
             license: license
           )
@@ -69,31 +69,25 @@ module RGRB
         # 新しい Table インスタンスを返す
         # @param [String] name 表名
         # @param [Array<String>] values 表の値の配列
-        # @param [String, nil] description 表の説明
-        # @param [Date, nil] added 追加日
-        # @param [Date, nil] modified 変更日
-        # @param [Boolean] is_public 公開されているかどうか
-        # @param [String, nil] author 作者
-        # @param [String, nil] license ライセンス
-        def initialize(
-          name,
-          values,
-          description: nil,
-          added: nil,
-          modified: nil,
-          is_public: true,
-          author: nil,
-          license: nil
-        )
+        # @param [Hash] metadata メタデータ
+        # @option metadata [String] :description 表の説明
+        # @option metadata [Date] :added 追加日
+        # @option metadata [Date] :modified 変更日
+        # @option metadata [Boolean] :public 公開されているかどうか
+        # @option metadata [String] :author 作者
+        # @option metadata [String] :license ライセンス
+        def initialize(name, values, metadata)
+          actual_metadata = {}.merge(metadata)
+
           @name = name
           @values = values
 
-          @public = !!is_public
-          @description = description
-          @author = author
-          @added = added
-          @modified = modified
-          @license = license
+          @public = true & actual_metadata[:public] # 真偽値に変換する
+          @description = actual_metadata[:description]
+          @author = actual_metadata[:author]
+          @added = actual_metadata[:added]
+          @modified = actual_metadata[:modified]
+          @license = actual_metadata[:license]
         end
 
         # 公開されているかどうかを返す
@@ -108,13 +102,22 @@ module RGRB
           @values.sample(random: random)
         end
 
-        def jadded()
-          @added.strftime("%Y年%m月%d日")
+        # 追加日の日本語表記を返す
+        # @return [String]
+        def jadded
+          japanese_datetime(@added)
         end
 
-        def jmodified()
-          @modified.strftime("%Y年%m月%d日")
+        # 変更日の日本語表記を返す
+        # @return [String]
+        def jmodified
+          japanese_datetime(@modified)
         end
+
+        def japanese_datetime(datetime)
+          datetime.strftime('%Y年%m月%d日')
+        end
+        private :japanese_datetime
       end
     end
   end

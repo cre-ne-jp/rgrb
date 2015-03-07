@@ -44,10 +44,10 @@ module RGRB
           added, modified = %w(Added Modified).map do |key|
             value = data[key]
 
-            case
-            when value.nil?
+            case value
+            when nil
               nil
-            when value.kind_of?(Date)
+            when Date
               value
             else
               Date.parse(value)

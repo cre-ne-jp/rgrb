@@ -108,16 +108,6 @@ module RGRB
           @values.sample(random: random)
         end
 
-        # 表の説明を返す
-        # @return [String]
-        def desctiption()
-          @description
-        end
-
-        def author()
-          @author
-        end
-
         def jadded()
           @added.strftime("%Y年%m月%d日")
         end

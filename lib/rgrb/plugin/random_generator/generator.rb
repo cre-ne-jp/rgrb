@@ -49,7 +49,7 @@ module RGRB
         end
 
         # 指定した表の説明を返す
-        # @param [String] table 表名
+        # @param [String] table_name 表名
         # @return [String]
         # @raise [TableNotFound] 表が見つからなかった場合
         def info(table_name)
@@ -58,7 +58,7 @@ module RGRB
           mes = "#{table_name}は、" \
             "#{@table[table_name].jadded}に" \
             "#{@table[table_name].author}さんによって追加されましたの。"
-          unless @table[table_name].jmodified == nil 
+          unless @table[table_name].jmodified == nil
             mes = mes \
               + "最後に更新されたのは" \
                 "#{@table[table_name].jmodified}" \

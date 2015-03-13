@@ -2,6 +2,7 @@
 
 require 'cinch'
 require 'rgrb/plugin/detatoko/generator'
+require 'rgrb/plugin/detatoko/constants'
 
 module RGRB
   module Plugin
@@ -12,8 +13,10 @@ module RGRB
 
         set(plugin_name: 'Detatoko')
         self.prefix = '.d'
-        match(/s(\d+)(?:[\s　]|$)/i, method: :skill_decision)
-        match(/s(\d+)([\+\-\*\/])(\d+)/i, method: :skill_decision)
+        match(/s(\d+)#{END_RE}/i, method: :skill_decision)
+        match(%r|s(\d+)([+*\-/])(\d+)#{END_RE}|i, method: :skill_decision)
+        match(%r|s(\d+)([+*\-/])(\d+)@(\d+)|i, method: :skill_decision)
+        match(/s(\d+)@(\d+)/i, method: :skill_decision_flag)
         match(/(v|m|s|w)s/i, method: :stigma)
         match(/(t|k)r/i, method: :stigma)
         match(/(体|気)力烙印/i, method: :stigma)
@@ -32,10 +35,16 @@ module RGRB
 
         # スキルランクから判定値を得る
         # @return [void]
-        def skill_decision(m, skill_rank, calc = '+', solid = 0)
+        def skill_decision(m, skill_rank, calc = '+', solid = 0, flag = 0)
           header = "#{@header}[#{m.user.nick}]<判定値>: "
-          message = @generator.skill_decision(skill_rank.to_i, calc, solid.to_i)
+          message = @generator.skill_decision(skill_rank.to_i, calc, solid.to_i, flag.to_i)
           m.target.send(header + message, true)
+        end
+
+        # skill_decision の固定値なし・フラグあり用ラッパー
+        # @return [void]
+        def skill_decision_flag(m, skill_rank, flag = 0)
+          skill_decision(m, skill_rank, '+', '0', flag)
         end
 
         # 烙印(p.63)を得る

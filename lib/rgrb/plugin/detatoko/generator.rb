@@ -15,8 +15,9 @@ module RGRB
         # @param [Fixnum] skill_rank スキルランク
         # @param [String] calc 計算記号
         # @param [Fixnum] solid 追加ダメージ(固定値)
+        # @param [Fixnum] flag フラグ
         # @return [String]
-        def skill_decision(skill_rank, calc , solid)
+        def skill_decision(skill_rank, calc, solid, flag)
           header = "スキルランク = #{skill_rank} -> "
 
           case skill_rank
@@ -38,6 +39,15 @@ module RGRB
           message << " #{calc} #{solid}" unless solid == 0
           message << " = "
           message << eval("#{decision.to_f} #{calc} #{solid}").ceil.to_s
+          unless flag == 0
+            message << " (フラグ:#{flag}"
+            if decision <= flag
+              message << " 気力ダメージ発生:#{@random.rand(1..6)}"
+            end
+            message << ")"
+          end
+
+          message
         end
 
         # 烙印を得る

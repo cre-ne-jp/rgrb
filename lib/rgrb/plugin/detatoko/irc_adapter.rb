@@ -36,9 +36,10 @@ module RGRB
         # スキルランクから判定値を得る
         # @return [void]
         def skill_decision(m, skill_rank, calc = '+', solid = 0, flag = 0)
-          header = "#{@header}[#{m.user.nick}]<判定値>: "
-          message = @generator.skill_decision(skill_rank.to_i, calc, solid.to_i, flag.to_i)
-          m.target.send(header + message, true)
+          header = "#{@header}[#{m.user.nick}]: "
+          @generator.skill_decision(skill_rank.to_i, calc, solid.to_i, flag.to_i).each_line { |line|
+            m.target.send(header + line.chomp, true)
+          }
         end
 
         # skill_decision の固定値なし・フラグあり用ラッパー

@@ -40,11 +40,11 @@ module RGRB
           message << " = "
           message << eval("#{decision.to_f} #{calc} #{solid}").ceil.to_s
           unless flag == 0
-            message << " (フラグ:#{flag}"
+            message << " (フラグ:#{flag})"
             if decision <= flag
-              message << " 気力ダメージ発生:#{@random.rand(1..6)}"
+              message << "\n" \
+                "フラグ以下 -> 気力ダメージ = #{@random.rand(1..6)}"
             end
-            message << ")"
           end
 
           message

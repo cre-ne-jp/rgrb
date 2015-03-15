@@ -1,0 +1,18 @@
+[Unit]
+Description=RGRB - Internet Relay Chat bot
+Documentation=http://www.cre.ne.jp/services/irc/bots/rgrb
+After=network.target
+
+[Service]
+User=irc
+Group=irc
+Type=simple
+PIDFile=/home/irc/rgrb/%I.pid
+WorkingDirectory=/home/irc/rgrb
+ExecStart=/home/irc/rgrb/bin/rgrb-ircbot -c config/%I.yaml
+#ExecReload=/usr/bin/kill -HUP $MAINPID
+ExecStop=/usr/bin/kill $MAINPID
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

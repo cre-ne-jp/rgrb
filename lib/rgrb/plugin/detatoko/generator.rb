@@ -18,8 +18,6 @@ module RGRB
         # @param [Fixnum] flag フラグ
         # @return [String]
         def skill_decision(skill_rank, calc, solid, flag)
-          header = "スキルランク = #{skill_rank} -> "
-
           case skill_rank
           when 0
             result = dice_roll(3, 6)
@@ -34,8 +32,10 @@ module RGRB
             return header + "ダイスが机から落ちてしまいましたの☆"
           end
           decision = values.reduce(0, :+)
-         
-          message = header + result[:values].to_s + ":#{decision}"
+        
+          message = "スキルランク = #{skill_rank} -> ["
+          message << result[:values].join(',')
+          message << ":#{decision}]"
           message << " #{calc} #{solid}" unless solid == 0
           message << " = "
           message << eval("#{decision.to_f} #{calc} #{solid}").ceil.to_s
@@ -64,12 +64,7 @@ module RGRB
           response[:stigma].compact!
           response[:stigma] << 'なし' if response[:stigma].empty?
 
-          message = "#{response[:dice]} -> "
-          response[:stigma].each { |stigma_name|
-            message << "#{stigma_name} と "
-          }
-          3.times { message.chop! }
-          message
+          "#{response[:dice]} -> #{response[:stigma].join(' と ')}"
         end
 
         # バッドエンド表を振る
@@ -84,7 +79,7 @@ module RGRB
         def stance(uses)
           use_list = what_stance_list(uses)
           stance_type = use_list.sample
-          "候補:#{use_list.to_s.tr('" ', '')} -> " \
+          "候補:[#{use_list.join(',')}] -> " \
             "系統:【#{stance_type}】 #{stance_select(stance_type)}"
         end
 

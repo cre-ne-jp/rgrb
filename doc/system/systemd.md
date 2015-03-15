@@ -4,9 +4,9 @@ systemd 用サービスファイル
 ファイル目次
 ------------
 
-* rgrb.service  
+* [rgrb.service](rgrb.service)  
 通常のサービスファイルです。
-* rgrb@.service  
+* [rgrb@.service](rgrb@.service)  
 テンプレートサービスファイルです。
 
 使い方

@@ -67,6 +67,8 @@ cd /path/to/rgrb
 bin/rgrb-ircbot -c /path/to/config_file
 ```
 
+systemd による制御を行なう場合は [systemd](doc/system/systemd.md) を参照してください。
+
 開発者向けドキュメントの生成
 ----------------------------
 

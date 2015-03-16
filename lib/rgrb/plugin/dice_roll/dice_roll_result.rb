@@ -3,7 +3,7 @@
 module RGRB
   module Plugin
     module DiceRoll
-      class DiceRollResult < Struct.new(:rolls, :sides, :values)
+      class DiceRollResult
         # サイコロを振った回数
         # @return [Integer]
         attr_reader :rolls

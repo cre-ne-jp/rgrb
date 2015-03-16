@@ -1,6 +1,6 @@
 # vim: fileencoding=utf-8
 
-require 'rgrb/plugin/dice_roll/dice_roll_result.rb'
+require 'rgrb/plugin/dice_roll/generator.rb'
 
 module RGRB
   module Plugin
@@ -8,11 +8,11 @@ module RGRB
     module Detatoko
       # Detatoko の出力テキスト生成器
       class Generator
-        include DiceRoll
 
         def initialize
           @random = Random.new
           @stances = [ '敵視', '宿命', '憎悪', '雲上', '従属', '不明' ]
+          @dice_roll_generator = DiceRoll::Generator.new
         end
 
         # スキルランクから判定値を算出します
@@ -24,13 +24,13 @@ module RGRB
         def skill_decision(skill_rank, calc, solid, flag)
           case skill_rank
           when 0
-            result = dice_roll(3, 6)
+            result = @dice_roll_generator.dice_roll(3, 6)
             values = result.values.sort.shift(2)
           when 1
-            result = dice_roll(2, 6)
+            result = @dice_roll_generator.dice_roll(2, 6)
             values = result.values
           when 2..30
-            result = dice_roll(skill_rank + 1 , 6)
+            result = @dice_roll_generator.dice_roll(skill_rank + 1 , 6)
             values = result.values.sort.pop(2)
           else
             return header + "ダイスが机から落ちてしまいましたの☆"
@@ -62,7 +62,7 @@ module RGRB
           response = {:dice => '', :stigma => [] }
 
           stigma.each { |values|
-            d = DiceRollResult.new(0, 0, values)
+            d = DiceRoll::DiceRollResult.new(0, 0, values)
             response[:dice] << d.sw2_dll_format
             response[:stigma] << stigma_text(type, d.sum)
           }
@@ -75,7 +75,7 @@ module RGRB
         # バッドエンド表を振る
         # @param [String] type 体力・気力のどちらか
         def badend(type)
-          result = dice_roll(2, 6)
+          result = @dice_roll_generator.dice_roll(2, 6)
           "#{result.sw2_dll_format} -> #{badend_text(type, result.sum)}"
         end
         
@@ -97,7 +97,7 @@ module RGRB
 
           while time > 0
             time -= 1
-            dice = dice_roll(2, 6)
+            dice = @dice_roll_generator.dice_roll(2, 6)
             stigma_number << dice.values
             if dice.sum == 2 and !second
                 second = true
@@ -184,16 +184,6 @@ module RGRB
           "#{rand + 1}:【#{stance[rand]}】"
         end
         private :stance_select
-
-        # ダイスロールの結果を返す
-        # @param [Fixnum] rolls ダイスの個数
-        # @param [Fixnum] sides ダイスの最大値
-        # @return [DiceRollResult]
-        def dice_roll(rolls, sides)
-          values = Array.new(rolls) { @random.rand(1..sides) }
-          DiceRollResult.new(rolls, sides, values)
-        end
-        private :dice_roll
       end
     end
   end

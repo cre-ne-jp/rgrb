@@ -22,6 +22,8 @@ module RGRB
         # @param [Fixnum] flag フラグ
         # @return [String]
         def skill_decision(skill_rank, calc, solid, flag)
+          header = "スキルランク = #{skill_rank} -> "
+
           case skill_rank
           when 0
             result = @dice_roll_generator.dice_roll(3, 6)
@@ -37,17 +39,16 @@ module RGRB
           end
           decision = values.reduce(0, :+)
         
-          message = "スキルランク = #{skill_rank} -> ["
-          message << result.values.join(',')
-          message << ":#{decision}]"
+          message = header
+          message << "[#{result.values.join(',')}:#{decision}]"
           message << " #{calc} #{solid}" unless solid == 0
           message << " = "
           message << eval("#{decision.to_f} #{calc} #{solid}").ceil.to_s
           unless flag == 0
             message << " (フラグ:#{flag})"
             if decision <= flag
-              message << "\n" \
-                "フラグ以下 -> 気力ダメージ = #{@random.rand(1..6)}"
+              message << "\n【フラグ以下】気力ダメージ -> 1d6 = "
+              message << "#{@random.rand(1..6)}"
             end
           end
 

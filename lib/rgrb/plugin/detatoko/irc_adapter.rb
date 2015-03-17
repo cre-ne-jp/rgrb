@@ -2,6 +2,7 @@
 
 require 'cinch'
 require 'rgrb/plugin/detatoko/generator'
+require 'rgrb/plugin/detatoko/constants'
 
 module RGRB
   module Plugin
@@ -12,16 +13,19 @@ module RGRB
 
         set(plugin_name: 'Detatoko')
         self.prefix = '.d'
-        match(/s(\d+)(?:[\s　]|$)/i, method: :skill_decision)
-        match(/s(\d+)([\+\-\*\/])(\d+)/i, method: :skill_decision)
+        match(/#{SR_RE}#{END_RE}/io, method: :skill_decision)
+        match(/#{SR_RE}#{SOLID_RE}#{END_RE}/io, method: :skill_decision)
+        match(/#{SR_RE}#{SOLID_RE}#{FLAG_RE}/io, method: :skill_decision)
+        match(/#{SR_RE}#{FLAG_RE}#{END_RE}/io, method: :skill_decision_flag)
+        match(/#{SR_RE}#{FLAG_RE}#{SOLID_RE}/io, method: :skill_decision_flag)
         match(/(v|m|s|w)s/i, method: :stigma)
         match(/(t|k)r/i, method: :stigma)
         match(/(体|気)力烙印/i, method: :stigma)
         match(/(v|m|s|w)be/i, method: :badend)
         match(/(t|k)b/i, method: :badend)
         match(/(体|気)力バッドエンド/i, method: :badend)
-        match(/stance[\s　]+((?:敵視|宿命|憎悪|雲上|従属|不明|[・＋\+])+)/i, method: :stance)
-        match(/スタンス[\s　]+((?:敵視|宿命|憎悪|雲上|従属|不明|[・＋\+])+)/i, method: :stance)
+        match(/stance[\s　]+(#{STANCE_RE})/io, method: :stance)
+        match(/スタンス[\s　]+(#{STANCE_RE})/io, method: :stance)
 
         def initialize(*args)
           super
@@ -32,10 +36,17 @@ module RGRB
 
         # スキルランクから判定値を得る
         # @return [void]
-        def skill_decision(m, skill_rank, calc = '+', solid = 0)
-          header = "#{@header}[#{m.user.nick}]<判定値>: "
-          message = @generator.skill_decision(skill_rank.to_i, calc, solid.to_i)
-          m.target.send(header + message, true)
+        def skill_decision(m, skill_rank, calc = '+', solid = 0, flag = 0)
+          header = "#{@header}[#{m.user.nick}]: "
+          @generator.skill_decision(skill_rank.to_i, calc, solid.to_i, flag.to_i).each_line { |line|
+            m.target.send(header + line.chomp, true)
+          }
+        end
+
+        # skill_decision のフラグ先行コマンド用ラッパー
+        # @return [void]
+        def skill_decision_flag(m, skill_rank, flag = 0, calc = '+', solid = 0)
+          skill_decision(m, skill_rank, calc, solid, flag)
         end
 
         # 烙印(p.63)を得る

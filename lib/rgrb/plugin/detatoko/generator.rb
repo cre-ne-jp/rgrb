@@ -1,43 +1,58 @@
 # vim: fileencoding=utf-8
 
+require 'rgrb/plugin/dice_roll/generator.rb'
+
 module RGRB
   module Plugin
     # システム別専用プラグイン「でたとこサーガ」
     module Detatoko
       # Detatoko の出力テキスト生成器
       class Generator
+
         def initialize
           @random = Random.new
           @stances = [ '敵視', '宿命', '憎悪', '雲上', '従属', '不明' ]
+          @dice_roll_generator = DiceRoll::Generator.new
         end
 
         # スキルランクから判定値を算出します
         # @param [Fixnum] skill_rank スキルランク
         # @param [String] calc 計算記号
         # @param [Fixnum] solid 追加ダメージ(固定値)
+        # @param [Fixnum] flag フラグ
         # @return [String]
-        def skill_decision(skill_rank, calc , solid)
+        def skill_decision(skill_rank, calc, solid, flag)
           header = "スキルランク = #{skill_rank} -> "
 
           case skill_rank
           when 0
-            result = dice_roll(3, 6)
-            values = result[:values].sort.shift(2)
+            result = @dice_roll_generator.dice_roll(3, 6)
+            values = result.values.sort.shift(2)
           when 1
-            result = dice_roll(2, 6)
-            values = result[:values]
+            result = @dice_roll_generator.dice_roll(2, 6)
+            values = result.values
           when 2..30
-            result = dice_roll(skill_rank + 1 , 6)
-            values = result[:values].sort.pop(2)
+            result = @dice_roll_generator.dice_roll(skill_rank + 1 , 6)
+            values = result.values.sort.pop(2)
           else
             return header + "ダイスが机から落ちてしまいましたの☆"
           end
           decision = values.reduce(0, :+)
-         
-          message = header + result[:values].to_s + ":#{decision}"
+        
+          message = header
+          message << "[#{result.values.join(',')}:#{decision}]"
           message << " #{calc} #{solid}" unless solid == 0
           message << " = "
           message << eval("#{decision.to_f} #{calc} #{solid}").ceil.to_s
+          unless flag == 0
+            message << " (フラグ:#{flag})"
+            if decision <= flag
+              message << "\n【フラグ以下】気力ダメージ -> 1d6 = "
+              message << "#{@random.rand(1..6)}"
+            end
+          end
+
+          message
         end
 
         # 烙印を得る
@@ -48,25 +63,21 @@ module RGRB
           response = {:dice => '', :stigma => [] }
 
           stigma.each { |values|
-            response[:dice] << to_sw2dll(values)
-            response[:stigma] << stigma_text(type, values.reduce(0, :+))
+            d = DiceRoll::DiceRollResult.new(0, 0, values)
+            response[:dice] << d.sw2_dll_format
+            response[:stigma] << stigma_text(type, d.sum)
           }
           response[:stigma].compact!
           response[:stigma] << 'なし' if response[:stigma].empty?
 
-          message = "#{response[:dice]} -> "
-          response[:stigma].each { |stigma_name|
-            message << "#{stigma_name} と "
-          }
-          3.times { message.chop! }
-          message
+          "#{response[:dice]} -> #{response[:stigma].join(' と ')}"
         end
 
         # バッドエンド表を振る
         # @param [String] type 体力・気力のどちらか
         def badend(type)
-          result = dice_roll(2, 6)
-          "#{to_sw2dll(result[:values])} -> #{badend_text(type, result[:sum])}"
+          result = @dice_roll_generator.dice_roll(2, 6)
+          "#{result.sw2_dll_format} -> #{badend_text(type, result.sum)}"
         end
         
         # スタンス表を振る
@@ -74,7 +85,7 @@ module RGRB
         def stance(uses)
           use_list = what_stance_list(uses)
           stance_type = use_list.sample
-          "候補:#{use_list.to_s.tr('" ', '')} -> " \
+          "候補:[#{use_list.join(',')}] -> " \
             "系統:【#{stance_type}】 #{stance_select(stance_type)}"
         end
 
@@ -87,12 +98,12 @@ module RGRB
 
           while time > 0
             time -= 1
-            dice = dice_roll(2, 6)
-            if dice[:sum] == 2 and !second
+            dice = @dice_roll_generator.dice_roll(2, 6)
+            stigma_number << dice.values
+            if dice.sum == 2 and !second
                 second = true
                 time += 2
             end
-            stigma_number << dice[:values]
           end
 
           stigma_number
@@ -120,14 +131,6 @@ module RGRB
           stigmas[number - 3] && "#{number}:【#{stigmas[number - 3]}】"
         end
         private :stigma_text
-
-        # 配列をSW2_DLLの出力と同じ形式に変換する
-        # @param [Array] values 1d6の出目2つ
-        # @return [String]
-        def to_sw2dll(values)
-          "[#{values[0]},#{values[1]}:#{values[0] + values[1]}]"
-        end
-        private :to_sw2dll
 
         # 出目から対応するバッドエンドを決定する
         # @param [String] type 体力・気力のどちらか
@@ -182,26 +185,6 @@ module RGRB
           "#{rand + 1}:【#{stance[rand]}】"
         end
         private :stance_select
-
-        # ダイスロールの結果を返す
-        # @param [Fixnum] n_dice ダイスの個数
-        # @param [Fixnum] max ダイスの最大値
-        # @return [Hash]
-        #   @option [Fixnum] :n_dice ダイスの個数
-        #   @option [Fixnum] :max ダイスの最大値
-        #   @option [Array<Fixnum>] :values ダイスの出目の配列
-        #   @option [Fixnum] :sum ダイスの出目の合計
-        def dice_roll(n_dice, max)
-          values = Array.new(n_dice) { @random.rand(1..max) }
-
-          {
-            n_dice: n_dice,
-            max: max,
-            values: values,
-            sum: values.reduce(0, :+)
-          }
-        end
-        private :dice_roll
       end
     end
   end

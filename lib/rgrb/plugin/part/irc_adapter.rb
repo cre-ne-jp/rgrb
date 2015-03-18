@@ -5,6 +5,7 @@ require 'rgrb/plugin/configurable_adapter'
 
 module RGRB
   module Plugin
+    # 退出プラグイン
     module Part
       # Part の IRC アダプター
       class IrcAdapter
@@ -12,21 +13,25 @@ module RGRB
         include ConfigurableAdapter
 
         set(plugin_name: 'Part')
-        match(/part/, method: :part)
-        match(/part-(\w+)/, method: :part)
+        match(/part(?:-(\w+))?$/, method: :part)
 
         def initialize(*args)
           super
 
           config_data = config[:plugin]
-          @part_message = config_data['PartMessage']
+          @part_message =
+            config_data['PartMessage'] || 'ご利用ありがとうございました'
         end
 
         # コマンドを発言されたらそのチャンネルから退出する
+        # @param [Cinch::Message] m 送信されたメッセージ
+        # @param [String] nick 指定されたニックネーム
         # @return [void]
-        def part(m, nick = nil)
-          if nick == m.bot.to_s || nick == nil
+        def part(m, nick)
+          if !nick || nick == bot.nick
+            log(m.raw, :incoming, :info)
             Channel(m.channel).part(@part_message)
+            log("<PART on #{m.channel}> #{@part_message}", :outgoing, :info)
           end
         end
       end

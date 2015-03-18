@@ -111,6 +111,10 @@ module RGRB
 
         bot.loggers.level = @debug ? :debug : :info
 
+        bot.on(:message, '.version') do |m|
+          m.target.send("RGRB #{RGRB::VERSION}", true)
+        end
+
         bot
       rescue => e
         print_error("IRC ボットの生成に失敗しました (#{e})")

@@ -11,7 +11,9 @@ module RGRB
         include Cinch::Plugin
 
         set(plugin_name: 'DiceRoll')
-        match(/roll[ 　]+([1-9]\d*)d([1-9]\d*)/i, method: :basic_dice)
+        self.prefix = /\.roll[\s　]+/
+        match(/([1-9]\d*)d([1-9]\d*)/i, method: :basic_dice)
+        match(/d([1-9]+)/i, method: :dxx_dice)
 
         def initialize(*args)
           super
@@ -23,6 +25,13 @@ module RGRB
         # @return [void]
         def basic_dice(m, n_dice, max)
           message = @generator.basic_dice(n_dice.to_i, max.to_i)
+          m.target.send("#{m.user.nick} -> #{message}", true)
+        end
+
+        # d66 など、出目をそのままつなげるダイスロールの結果を返す
+        # @return [void]
+        def dxx_dice(m, rolls)
+          message = @generator.dxx_dice(rolls)
           m.target.send("#{m.user.nick} -> #{message}", true)
         end
       end

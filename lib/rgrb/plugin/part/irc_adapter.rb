@@ -28,7 +28,7 @@ module RGRB
         # @param [String] nick 指定されたニックネーム
         # @return [void]
         def part(m, nick)
-          if !nick || nick == bot.nick
+          if !nick || nick.downcase == bot.nick.downcase
             log(m.raw, :incoming, :info)
             Channel(m.channel).part(@part_message)
             log("<PART on #{m.channel}> #{@part_message}", :outgoing, :info)

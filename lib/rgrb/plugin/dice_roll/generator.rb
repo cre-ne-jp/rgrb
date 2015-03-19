@@ -10,8 +10,8 @@ module RGRB
     module DiceRoll
       # DiceRoll の出力テキスト生成器
       class Generator
-        TOO_MANY_DICES = "ダイスが机から落ちてしまいましたの☆"
-        
+        EXCESS_DICE_MESSAGE = "ダイスが机から落ちてしまいましたの☆"
+
         def initialize
           @random = Random.new
         end
@@ -22,7 +22,7 @@ module RGRB
         # @return [String]
         def basic_dice(rolls, sides)
           if rolls > 100
-            "#{rolls}d#{sides}: #{TOO_MANY_DICES}"
+            "#{rolls}d#{sides}: #{EXCESS_DICE_MESSAGE}"
           else
             dice_roll(rolls, sides).dice_roll_format
           end
@@ -33,7 +33,7 @@ module RGRB
         # @return [String]
         def dxx_dice(rolls)
           if rolls.size > 20
-            "d#{rolls}: #{TOO_MANY_DICES}"
+            "d#{rolls}: #{EXCESS_DICE_MESSAGE}"
           else
             values = dxx_roll(rolls)
             "d#{rolls} = [#{values.join(',')}] = #{values.join('')}"

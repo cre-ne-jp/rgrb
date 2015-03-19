@@ -38,10 +38,17 @@ describe RGRB::Plugin::RandomGenerator::Generator do
       end
     end
 
-    context '存在しない表の名前が指定される場合' do
-      it do
+    context '存在しない表の名前が指定された場合' do
+      it 'TableNotFound エラーが発生する' do
         expect { generator.send(:get_value_from, 'none') }.
           to raise_error(RGRB::Plugin::RandomGenerator::TableNotFound)
+      end
+    end
+
+    context '最初に非公開の表から引こうとした場合' do
+      it 'PrivateTable エラーが発生する' do
+        expect { generator.send(:get_value_from, 'HA06pretty', true) }.
+          to raise_error(RGRB::Plugin::RandomGenerator::PrivateTable)
       end
     end
 
@@ -90,7 +97,8 @@ describe RGRB::Plugin::RandomGenerator::Generator do
     end
 
     shared_examples 'raise error' do |root_table, error_class|
-      it do
+      error_class_name = error_class.name.split('::').last
+      it "#{error_class_name} エラーが発生する" do
         from = generator.send(:get_value_from, root_table)
         expect { generator.send(:replace_var_with_value, from, root_table) }.
           to raise_error(error_class)

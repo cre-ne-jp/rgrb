@@ -6,6 +6,7 @@ require 'rgrb/plugin/configurable_generator'
 require 'rgrb/plugin/random_generator/constants'
 require 'rgrb/plugin/random_generator/table'
 require 'rgrb/plugin/random_generator/table_not_found'
+require 'rgrb/plugin/random_generator/private_table'
 require 'rgrb/plugin/random_generator/circular_reference'
 
 module RGRB
@@ -39,11 +40,11 @@ module RGRB
         # @raise [TableNotFound] 表が見つからなかった場合
         # @raise [CircularReference] 循環参照が起こった場合
         def rg(table)
-          replace_var_with_value(get_value_from(table), table)
+          replace_var_with_value(get_value_from(table, true), table)
         end
 
         def desc(table_name)
-          fail(TableNotFound, table_name) unless @table[table_name]
+          check_existence_of(table_name)
 
           @table[table_name].description
         end
@@ -53,7 +54,7 @@ module RGRB
         # @return [String]
         # @raise [TableNotFound] 表が見つからなかった場合
         def info(table_name)
-          fail(TableNotFound, table_name) unless @table[table_name]
+          check_existence_of(table_name)
 
           mes = "#{table_name}は、" \
             "#{@table[table_name].jadded}に" \
@@ -70,10 +71,12 @@ module RGRB
 
         # 表から値を取得して返す
         # @param [String] table_name 表名
+        # @param [Boolean] root 最初に参照する表の場合 true にする
         # @return [String]
         # @raise [TableNotFound] 表が見つからなかった場合
-        def get_value_from(table_name)
-          fail(TableNotFound, table_name) unless @table[table_name]
+        def get_value_from(table_name, root = false)
+          check_existence_of(table_name)
+          check_permission_of(table_name) if root
 
           @table[table_name].sample(random: @random)
         end
@@ -127,6 +130,22 @@ module RGRB
           end
         end
         private :load_data
+
+        # 表が存在するかどうかを調べる
+        # @return [String] table_name 表名
+        # @return [true] 表が存在する場合
+        # @raise [TableNotFound] 表が存在しない場合
+        def check_existence_of(table_name)
+          fail(TableNotFound, table_name) unless @table.key?(table_name)
+
+          true
+        end
+        private :check_existence_of
+
+        def check_permission_of(table_name)
+          fail(PrivateTable, table_name) unless @table[table_name].public?
+        end
+        private :check_permission_of
       end
     end
   end

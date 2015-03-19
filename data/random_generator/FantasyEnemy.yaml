@@ -2,7 +2,7 @@ Name: FantasyEnemy
 Description: "ファンタジー世界で敵になりうるキャラクターを選びます。"
 Added: 2014-12-15
 Modified: 2014-12-20
-Access: private
+Access: public
 Author: sf
 License: NONE
 Body:

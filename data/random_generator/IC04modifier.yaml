@@ -2,7 +2,7 @@ Name: IC04modifier
 Description: "語り部「無限都市：コルチキンタワーダイビング」に登場する人物の様子を選びます。"
 Added: 2014-12-15
 Modified: 2014-12-20
-Access: private
+Access: public
 Author: sf
 License: NONE
 Body:

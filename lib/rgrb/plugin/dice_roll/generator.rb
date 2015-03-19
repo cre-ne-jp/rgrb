@@ -35,7 +35,8 @@ module RGRB
           if rolls.size > 20
             "d#{rolls}: #{TOO_MANY_DICES}"
           else
-            dxx_roll(rolls)
+            values = dxx_roll(rolls)
+            "d#{rolls} = [#{values.join(',')}] = #{values.join('')}"
           end
         end
 
@@ -50,11 +51,11 @@ module RGRB
 
         # dXX ロールの結果を返す
         # @param [String] rolls ダイスの面数と数
-        # @return [String]
+        # @return [Array<Fixnum>]
         def dxx_roll(rolls)
           values = []
           rolls.each_char { |max| values << @random.rand(1..max.to_i) }
-          "d#{rolls} = [#{values.join(',')}] = #{values.join('')}"
+          values
         end
       end
     end

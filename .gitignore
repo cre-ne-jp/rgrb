@@ -1,4 +1,5 @@
 .*
+/config/
 /doc/
 /vendor/
 /data/cre_twitter_citation/last_cited.txt

@@ -2,7 +2,7 @@ Name: HA21attack
 Description: "語り部「狭間さまよえるもの達：霞ヶ池の闇」にて、攻撃の種類を選びます。"
 Added: 2014-12-15
 Modified: 2014-12-20
-Access: private
+Access: public
 Author: sf
 License: NONE
 Body:

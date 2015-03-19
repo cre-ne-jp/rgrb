@@ -2,7 +2,7 @@ Name: IC04enemy
 Description: "語り部「無限都市：コルチキンタワーダイビング」に出てくる敵を選びます。"
 Added: 2014-12-15
 Modified: 2014-12-20
-Access: private
+Access: public
 Author: sf
 License: NONE
 Body:

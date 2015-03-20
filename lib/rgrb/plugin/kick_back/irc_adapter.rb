@@ -5,6 +5,7 @@ require 'rgrb/plugin/configurable_adapter'
 
 module RGRB
   module Plugin
+    # KICK されたとき、そのチャンネルに再度 JOIN するプラグイン
     module KickBack
       # KickBack の IRC アダプター
       class IrcAdapter

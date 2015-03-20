@@ -44,8 +44,8 @@ bundle install --deployment
 | プラグイン名 | 内容 |
 | ------------ | ---- |
 | [DiceRoll](doc/plugins/dice_roll.md) | ダイスロール |
-| [Detatoko](doc/plugins/detatoko.md) | 「でたとこサーガ」専用のダイス・表引きコマンド |
 | [RandomGenerator](doc/plugins/random_generator.md) | ランダムジェネレータ |
+| [Trpg::Detatoko](doc/plugins/trpg/detatoko.md) | 「でたとこサーガ」専用のダイス・表引きコマンド |
 
 #### 情報検索・引用
 

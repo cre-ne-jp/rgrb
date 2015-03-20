@@ -27,9 +27,9 @@ module RGRB
         # @param [Cinch::Message] m 送信されたメッセージ
         # @return [void]
         def kick(m)
-          if m.params[1] == m.bot.to_s
+          if m.params[1].downcase == bot.nick.downcase
             log(m.raw, :incoming, :info)
-            Channel(m.channel).join()
+            Channel(m.channel).join
             m.target.send(@join_message, true)
             log("<JOIN on #{m.channel}> #{@join_message}", :outgoing, :info)
           end

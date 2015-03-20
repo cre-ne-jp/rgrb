@@ -1,5 +1,5 @@
-Detatoko
-=======
+Trpg::Detatoko
+==============
 
 ゲーム専用プラグイン第1弾、「でたとこサーガ」用プラグイン。
 でたとこサーガ公式サイト: http://detatoko-saga.com/

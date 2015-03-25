@@ -19,12 +19,15 @@ module RGRB
           match(/#{SR_RE}#{SOLID_RE}#{FLAG_RE}/io, method: :skill_decision)
           match(/#{SR_RE}#{FLAG_RE}#{END_RE}/io, method: :skill_decision_flag)
           match(/#{SR_RE}#{FLAG_RE}#{SOLID_RE}/io, method: :skill_decision_flag)
+
           match(/(v|m|s|w)s/i, method: :stigma)
           match(/(t|k)r/i, method: :stigma)
           match(/(体|気)力烙印/i, method: :stigma)
+          
           match(/(v|m|s|w)be/i, method: :badend)
           match(/(t|k)b/i, method: :badend)
           match(/(体|気)力バッドエンド/i, method: :badend)
+          
           match(/stance[\s　]+(#{STANCE_RE})/io, method: :stance)
           match(/スタンス[\s　]+(#{STANCE_RE})/io, method: :stance)
 
@@ -39,9 +42,11 @@ module RGRB
           # @return [void]
           def skill_decision(m, skill_rank, calc = '+', solid = 0, flag = 0)
             header = "#{@header}[#{m.user.nick}]: "
-            @generator.skill_decision(skill_rank.to_i, calc, solid.to_i, flag.to_i).each_line { |line|
-              m.target.send(header + line.chomp, true)
-            }
+            @generator
+              .skill_decision(skill_rank.to_i, calc, solid.to_i, flag.to_i)
+              .each_line { |line|
+                m.target.send(header + line.chomp, true)
+              }
           end
 
           # skill_decision のフラグ先行コマンド用ラッパー

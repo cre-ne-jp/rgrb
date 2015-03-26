@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 gem 'activesupport', '~> 4.2'
 gem 'cinch', '~> 2.1'
 gem 'twitter', '~> 5.11'
+gem 'parslet', '~> 1.7'
 gem 'sysexits', '~> 1.2'
 
 group :development, :test do

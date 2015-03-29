@@ -82,9 +82,10 @@ module RGRB
         end
 
         yaml_path = "#{root_path}/config/#{config_id}.yaml"
-        RGRB::Config.load_yaml_file(yaml_path)
-
+        config = RGRB::Config.load_yaml_file(yaml_path)
         logger.warn("設定 #{config_id} を読み込みました")
+
+        config
       rescue => e
         logger.fatal('設定ファイルの読み込みに失敗しました')
         logger.fatal(e)

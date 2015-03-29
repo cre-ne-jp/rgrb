@@ -101,21 +101,21 @@ module RGRB
       def extract_plugin_options(
         config, loaded_irc_adapters, root_path, logger
       )
-        loaded_irc_adapters.reduce({}) do |acc, adapter|
+        plugin_options = {}
+
+        loaded_irc_adapters.each do |adapter|
           plugin_name = adapter.plugin_name
 
-          acc.update(
-            adapter => {
-              root_path: root_path,
-              plugin: config.plugin_config[plugin_name]
-            }
-          )
+          plugin_options[adapter] = {
+            root_path: root_path,
+            plugin: config.plugin_config[plugin_name]
+          }
           logger.warn(
             "プラグイン #{plugin_name} の設定を読み込みました"
           )
-
-          acc
         end
+
+        plugin_options
       rescue => e
         logger.fatal('プラグイン設定の読み込みに失敗しました')
         logger.fatal(e)

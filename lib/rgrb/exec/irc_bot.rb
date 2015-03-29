@@ -1,5 +1,6 @@
 # vim: fileencoding=utf-8
 
+require 'lumberjack'
 require 'cinch'
 require 'optparse'
 require 'sysexits'
@@ -12,8 +13,8 @@ module RGRB
   module Exec
     # IRC ボットの実行ファイルの処理を担うクラス
     class IRCBot
-      # 設定ファイルの標準パス（相対パス）
-      DEFAULT_CONFIG_PATH = 'config/rgrb.yaml'
+      # 既定の設定 ID
+      DEFAULT_CONFIG_ID = 'rgrb'
 
       # 新しい RGRB::Exec::IRCBot インスタンスを返す
       # @param [String] rgrb_root_path RGRB のルートディレクトリの絶対パス
@@ -23,15 +24,24 @@ module RGRB
         @argv = argv
 
         @debug = false
-        @config_path = "#{@root_path}/#{DEFAULT_CONFIG_PATH}"
+        @config_id = DEFAULT_CONFIG_ID
         @opt = new_opt_parser
+        @logger = new_logger
       end
 
       # プログラムを実行する
       # @return [void]
       def execute
         @opt.parse!(@argv)
-        load_config
+
+        @logger.level =
+          if @debug
+            Lumberjack::Logger::DEBUG
+          else
+            Lumberjack::Logger::INFO
+          end
+
+        @config = load_config(@config_id, @root_path, @logger)
         load_plugins
         bot = new_bot
 
@@ -58,11 +68,27 @@ module RGRB
       private :print_error
 
       # 設定を読み込む
-      # @return [void]
-      def load_config
-        @config = RGRB::Config.load_yaml_file(@config_path)
+      # @param [String] config_id 設定 ID
+      # @param [String] root_path RGRB のルートディレクトリの絶対パス
+      # @param [Logger] logger ロガー
+      # @raise [ArgumentError] config_id に '../' が含まれる場合
+      # @return [Config]
+      def load_config(config_id, root_path, logger)
+        if config_id.include?('../')
+          fail(
+            ArgumentError,
+            "#{config_id}: ディレクトリトラバーサルの疑い"
+          )
+        end
+
+        yaml_path = "#{root_path}/config/#{config_id}.yaml"
+        RGRB::Config.load_yaml_file(yaml_path)
+
+        logger.warn("設定 #{config_id} を読み込みました")
       rescue => e
-        print_error("設定ファイルの読み込みに失敗しました (#{e})")
+        logger.fatal('設定ファイルの読み込みに失敗しました')
+        logger.fatal(e)
+
         Sysexits.exit(:config_error)
       end
       private :load_config
@@ -132,7 +158,7 @@ module RGRB
           opt.banner = <<EOS
 使用法: #{opt.program_name} [オプション]
 
-汎用ダイスボット RGRB - IRC ボット
+汎用ボット RGRB - IRC ボット
 EOS
           opt.version = RGRB::VERSION
 
@@ -140,11 +166,10 @@ EOS
           opt.separator('オプション:')
 
           opt.on(
-            '-c',
-            '--config=CONFIG_FILE',
-            '設定ファイルとして CONFIG_FILE を読み込みます'
-          ) do |config_file|
-            @config_path = config_file
+            '-c', '--config=CONFIG_ID',
+            '設定 CONFIG_ID を読み込みます'
+          ) do |config_id|
+            @config_id = config_id
           end
 
           opt.on(
@@ -156,6 +181,18 @@ EOS
         end
       end
       private :new_opt_parser
+
+      # 新しいロガーを作り、設定して返す
+      # @return [Logger]
+      def new_logger
+        logger = Lumberjack::Logger.new($stdout)
+
+        logger.progname = self.class.to_s
+        logger.level = Lumberjack::Logger::INFO
+
+        logger
+      end
+      private :new_logger
     end
   end
 end

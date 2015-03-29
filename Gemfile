@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 gem 'activesupport', '~> 4.2'
 gem 'cinch', github: 'cinchrb/cinch', ref: 'e4e33ce154977168963e35067c22805d3677a8e4'
 gem 'twitter', '~> 5.11'
+gem 'lumberjack', '~> 1.0'
 gem 'sysexits', '~> 1.2'
 
 group :development, :test do

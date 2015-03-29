@@ -18,7 +18,7 @@ module RGRB
         def initialize(*args)
           super
 
-          config_data = config[:plugin]
+          config_data = config[:plugin] || {}
           @part_message =
             config_data['PartMessage'] || 'ご利用ありがとうございました'
         end

@@ -27,6 +27,10 @@ module RGRB
             dice_roll(rolls, sides).dice_roll_format
           end
         end
+        
+        def basic_dice_ja(rolls_ja, sides_ja)
+          basic_dice(ja_to_i(rolls_ja), ja_to_i(sides_ja))
+        end
 
         # dXX のようなダイスロールの結果を返す
         # @param [String] rolls ダイスの面数と数
@@ -56,6 +60,10 @@ module RGRB
           values = []
           rolls.each_char { |max| values << @random.rand(1..max.to_i) }
           values
+        end
+
+        def ja_to_i(japanese)
+          japanese.tr('あかさたなはまやらわ', '1234567890').to_i
         end
       end
     end

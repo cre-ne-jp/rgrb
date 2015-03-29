@@ -15,6 +15,9 @@ module RGRB
         match(/([1-9]\d*)d([1-9]\d*)/i, method: :basic_dice)
         match(/d([1-9]+)/i, method: :dxx_dice)
 
+        self.prefix = /。/
+        match(/([あかさたなはまやら][あかさたなはまやらわ]*)の([あかさたなはまやら][あかさたなはまやらわ]*)/i, method: :basic_dice_ja)
+
         def initialize(*args)
           super
 
@@ -25,6 +28,11 @@ module RGRB
         # @return [void]
         def basic_dice(m, n_dice, max)
           message = @generator.basic_dice(n_dice.to_i, max.to_i)
+          m.target.send("#{m.user.nick} -> #{message}", true)
+        end
+
+        def basic_dice_ja(m, n_dice, max)
+          message = @generator.basic_dice_ja(n_dice, max)
           m.target.send("#{m.user.nick} -> #{message}", true)
         end
 

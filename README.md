@@ -35,7 +35,7 @@ bundle install --deployment
 
 [config/rgrb.yaml](config/rgrb.yaml) を編集して設定します。
 
-複数の設定を使う場合は、上記のファイルをコピーして適当な場所に設置します。
+複数の設定を使う場合は、上記のファイルをコピーして config/ に設置します。
 
 ### プラグイン一覧
 
@@ -73,11 +73,11 @@ cd /path/to/rgrb
 bin/rgrb-ircbot
 ```
 
-`-c`（`--config`）オプションで、使用する設定ファイルを指定することができます。
+`-c`（`--config`）オプションで、使用する設定ファイルを指定することができます。`-c` に続けて、config/ に配置した YAML ファイルの、ファイル名から拡張子を除いた部分を指定します。
 
 ```bash
 cd /path/to/rgrb
-bin/rgrb-ircbot -c /path/to/config_file
+bin/rgrb-ircbot -c test # /path/to/rgrb/config/test.yaml を使用する場合
 ```
 
 systemd による制御を行なう場合は [systemd](doc/system/systemd.md) を参照してください。

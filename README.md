@@ -1,5 +1,5 @@
 汎用 IRC ボット RGRB
-=====================
+====================
 
 [![Build Status](https://travis-ci.org/cre-ne-jp/rgrb.svg?branch=master)](https://travis-ci.org/cre-ne-jp/rgrb) [![Coverage Status](https://coveralls.io/repos/cre-ne-jp/rgrb/badge.svg?branch=master)](https://coveralls.io/r/cre-ne-jp/rgrb?branch=master)
 
@@ -33,9 +33,11 @@ bundle install --deployment
 設定
 ----
 
-[config/rgrb.yaml](config/rgrb.yaml) を編集して設定します。
+[config/rgrb.yaml](config/rgrb.yaml) を編集して設定します。複数の設定を使う場合は、このファイルをコピーして config/ に設置します。
 
-複数の設定を使う場合は、上記のファイルをコピーして config/ に設置します。
+各設定は**設定 ID** によって識別します。設定 ID とは、config/ 以下に設置した YAML ファイルの、config/ を基準とした相対パスから拡張子を除いたものです。例えば config/rgrb.yaml の場合は `rgrb` となり、config/trpg/detatoko.yaml の場合は `trpg/detatoko` になります。
+
+プラグインの設定を別のファイルに書くことも可能です。その場合、親となる設定ファイルの `Include` 節で設定 ID を指定し、子となる設定ファイルを取り込みます。ただし、取り込まれたファイルからさらに他の設定ファイルを取り込むことはできません。具体例は上記の config/rgrb.yaml でご確認ください。
 
 ### プラグイン一覧
 
@@ -62,6 +64,7 @@ bundle install --deployment
 | [CreBotHelp](doc/plugins/cre_bot_help.md) | クリエイターズネットワークの IRC ボットとしてのヘルプを表示する |
 | [ServerConnectionReport](doc/plugins/server_connection_report.md) | IRC サーバの接続状態の変化を報告する |
 | [Part](doc/plugins/part.md) | チャンネルからの退出 |
+| [KickBack](doc/plugins/kick_back.md) | RGRB が KICK されたとき、そのチャンネルに再度 JOIN する |
 
 IRC ボットの起動
 ----------------
@@ -73,7 +76,7 @@ cd /path/to/rgrb
 bin/rgrb-ircbot
 ```
 
-`-c`（`--config`）オプションで、使用する設定ファイルを指定することができます。`-c` に続けて、config/ に配置した YAML ファイルの、ファイル名から拡張子を除いた部分を指定します。
+`-c`（`--config`）オプションで、使用する設定を指定することができます。その場合、`-c` に続けて設定 ID を書きます。
 
 ```bash
 cd /path/to/rgrb

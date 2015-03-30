@@ -45,18 +45,9 @@ module RGRB
       # @param [String] config_id 設定 ID
       # @param [String] root_path RGRB のルートディレクトリの絶対パス
       # @param [Lumberjack::Logger] logger ロガー
-      # @raise [ArgumentError] config_id に '../' が含まれる場合
       # @return [Config]
       def load_config(config_id, root_path, logger)
-        if config_id.include?('../')
-          fail(
-            ArgumentError,
-            "#{config_id}: ディレクトリトラバーサルの疑い"
-          )
-        end
-
-        yaml_path = "#{root_path}/config/#{config_id}.yaml"
-        config = RGRB::Config.load_yaml_file(yaml_path)
+        config = Config.load_yaml_file(config_id, "#{root_path}/config")
         logger.warn("設定 #{config_id} を読み込みました")
 
         config
@@ -105,14 +96,16 @@ module RGRB
 
         loaded_irc_adapters.each do |adapter|
           plugin_name = adapter.plugin_name
+          plugin_config = config.plugin_config[plugin_name]
 
           plugin_options[adapter] = {
             root_path: root_path,
-            plugin: config.plugin_config[plugin_name]
+            plugin: plugin_config
           }
+
           logger.warn(
             "プラグイン #{plugin_name} の設定を読み込みました"
-          )
+          ) if plugin_config
         end
 
         plugin_options

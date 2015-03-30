@@ -1,0 +1,5 @@
+# サーバーリレー監視プラグインの設定
+ServerConnectionReport:
+  # NOTICE を行なうチャンネルの一覧
+  ChannelsToSend:
+    - ''

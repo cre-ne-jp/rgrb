@@ -28,6 +28,7 @@ module RGRB
           end
         end
         
+        # basic_dice の日本語ダイス用ラッパー
         def basic_dice_ja(rolls_ja, sides_ja)
           basic_dice(ja_to_i(rolls_ja), ja_to_i(sides_ja))
         end
@@ -42,6 +43,11 @@ module RGRB
             values = dxx_roll(rolls)
             "d#{rolls} = [#{values.join(',')}] = #{values.join('')}"
           end
+        end
+
+        # dxx_dice の日本語ダイス用ラッパー
+        def dxx_dice_ja(rolls_ja)
+          dxx_dice("#{ja_to_i(rolls_ja)}")
         end
 
         # ダイスロールの結果を返す

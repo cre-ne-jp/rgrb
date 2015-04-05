@@ -7,7 +7,6 @@ require 'rgrb/plugin/random_generator/constants'
 require 'rgrb/plugin/random_generator/table'
 require 'rgrb/plugin/random_generator/table_not_found'
 require 'rgrb/plugin/random_generator/private_table'
-require 'rgrb/plugin/random_generator/circular_reference'
 
 module RGRB
   module Plugin

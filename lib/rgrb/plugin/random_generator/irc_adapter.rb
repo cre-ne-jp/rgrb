@@ -7,7 +7,6 @@ require 'rgrb/plugin/random_generator/constants'
 require 'rgrb/plugin/random_generator/generator'
 require 'rgrb/plugin/random_generator/table_not_found'
 require 'rgrb/plugin/random_generator/private_table'
-require 'rgrb/plugin/random_generator/circular_reference'
 
 module RGRB
   module Plugin
@@ -41,10 +40,8 @@ module RGRB
                 ": 「#{not_found_error.table}」なんて表は見つからないのですわっ。"
               rescue PrivateTable => private_table_error
                 ": 表「#{private_table_error.table}」からは引けませんわっ。"
-              rescue CircularReference => circular_ref_error
-                ": 表「#{circular_ref_error.table}」で循環参照が起こりました。" \
-                  '#cre でご報告ください。'
               end
+
             m.target.send(header + body, true)
 
             sleep(1)

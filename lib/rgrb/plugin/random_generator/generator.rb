@@ -34,7 +34,7 @@ module RGRB
         def configure(*)
           super
 
-          load_data("#{@data_path}/*.yaml")
+          load_data("#{@data_path}/**/*.yaml")
 
           self
         end

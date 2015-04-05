@@ -36,7 +36,6 @@ module RGRB
           tables_str.split(' ').each do |table|
             body =
               begin
-                header << "<#{table}>: "
                 "#{@generator.rg(table)} ですわ☆"
               rescue TableNotFound => not_found_error
                 "「#{not_found_error.table}」なんて表は見つからないのですわっ。"
@@ -47,9 +46,9 @@ module RGRB
                   '#cre でご報告ください。'
               end
 
-            body.each_line { |line|
-              m.target.send(header + line, true)
-            }
+            body.each_line do |line|
+              m.target.send("#{header}<#{table}>: #{line}", true)
+            end
 
             sleep(1)
           end

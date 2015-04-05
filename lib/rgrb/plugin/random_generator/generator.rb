@@ -1,6 +1,6 @@
 # vim: fileencoding=utf-8
 
-require 'cinch'
+require 'lumberjack'
 
 require 'rgrb/plugin/configurable_generator'
 require 'rgrb/plugin/random_generator/constants'
@@ -21,6 +21,9 @@ module RGRB
           super
 
           @ramdom = Random.new
+          @logger = Lumberjack::Logger.new(
+            STDOUT, progname: self.class.to_s
+          )
         end
 
         # プラグインの設定を行う
@@ -123,10 +126,15 @@ module RGRB
           @table = {}
 
           Dir.glob(glob_pattern).each do |path|
-            yaml = File.read(path, encoding: 'UTF-8')
-            table = Table.parse_yaml(yaml)
+            begin
+              yaml = File.read(path, encoding: 'UTF-8')
+              table = Table.parse_yaml(yaml)
 
-            @table[table.name] = table
+              @table[table.name] = table
+            rescue => e
+              @logger.error("データファイル #{path} の読み込みに失敗しました")
+              @logger.error(e)
+            end
           end
         end
         private :load_data

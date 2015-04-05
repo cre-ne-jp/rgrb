@@ -84,6 +84,7 @@ module RGRB
           # スタンス表を振る
           # @param [String] uses
           def stance(uses)
+            uses = '' if /全部/ =~ uses
             use_list = what_stance_list(uses)
             stance_type = use_list.sample
             "候補:[#{use_list.join(',')}] -> " \

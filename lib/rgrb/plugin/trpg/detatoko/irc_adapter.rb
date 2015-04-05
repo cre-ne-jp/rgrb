@@ -22,14 +22,18 @@ module RGRB
 
           match(/(v|m|s|w)s/i, method: :stigma)
           match(/(t|k)r/i, method: :stigma)
-          match(/(体|気)力烙印/i, method: :stigma)
+#          match(/(体|気)力烙印/i, method: :stigma)
           
           match(/(v|m|s|w)be/i, method: :badend)
           match(/(t|k)b/i, method: :badend)
-          match(/(体|気)力バッドエンド/i, method: :badend)
+#          match(/(体|気)力バッドエンド/i, method: :badend)
           
           match(/stance[\s　]+(#{STANCE_RE})/io, method: :stance)
-          match(/スタンス[\s　]+(#{STANCE_RE})/io, method: :stance)
+#          match(/スタンス[\s　]+(#{STANCE_RE})/io, method: :stance)
+
+          match(/(体|気)力烙印/i, method: :stigma, :prefix => '。で')
+          match(/(体|気)力バッドエンド/i, method: :badend, :prefix => '。で')
+          match(/スタンス[\s　]+(#{STANCE_RE})/io, method: :stance, :prefix => '。で')
 
           def initialize(*args)
             super

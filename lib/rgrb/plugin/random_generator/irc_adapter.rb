@@ -36,16 +36,20 @@ module RGRB
           tables_str.split(' ').each do |table|
             body =
               begin
-                "<#{table}>: #{@generator.rg(table)} ですわ☆"
+                header << "<#{table}>: "
+                "#{@generator.rg(table)} ですわ☆"
               rescue TableNotFound => not_found_error
-                ": 「#{not_found_error.table}」なんて表は見つからないのですわっ。"
+                "「#{not_found_error.table}」なんて表は見つからないのですわっ。"
               rescue PrivateTable => private_table_error
-                ": 表「#{private_table_error.table}」からは引けませんわっ。"
+                "表「#{private_table_error.table}」からは引けませんわっ。"
               rescue CircularReference => circular_ref_error
-                ": 表「#{circular_ref_error.table}」で循環参照が起こりました。" \
+                "表「#{circular_ref_error.table}」で循環参照が起こりました。" \
                   '#cre でご報告ください。'
               end
-            m.target.send(header + body, true)
+
+            body.each_line { |line|
+              m.target.send(header + line, true)
+            }
 
             sleep(1)
           end

@@ -139,9 +139,9 @@ describe RGRB::Plugin::RandomGenerator::Generator do
 
     context '循環参照' do
       include_examples(
-        'raise error',
+        'correctly replaced',
         'self',
-        RGRB::Plugin::RandomGenerator::CircularReference
+        '!!!!!!!!!!(...)'
       )
     end
   end

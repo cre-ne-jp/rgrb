@@ -17,12 +17,15 @@ module RGRB
       class Generator
         include ConfigurableGenerator
 
+        # 循環参照と見做される同一表参照回数の閾値
+        CIRCULAR_REFERENCE_THRESHOLD = 10
+
         def initialize
           super
 
           @ramdom = Random.new
           @logger = Lumberjack::Logger.new(
-            STDOUT, progname: self.class.to_s
+            $stdout, progname: self.class.to_s
           )
         end
 
@@ -91,7 +94,8 @@ module RGRB
         # @raise [CircularReference] 循環参照が起こった場合
         # @return [String]
         def replace_var_with_value(str, root_table)
-          getting = { root_table => true }
+          get_count = { root_table => 1 }
+          get_count.default = 0
 
           while VARIABLE_RE === str
             # この段階で置換する変数の名前を格納する配列
@@ -99,7 +103,12 @@ module RGRB
 
             str = str.gsub(VARIABLE_RE) do
               table = Regexp.last_match(1)
-              fail(CircularReference, table) if getting[table]
+
+              if get_count[table] >= CIRCULAR_REFERENCE_THRESHOLD
+                # 同一表の参照上限に到達したので、打ち切る
+                @logger.warn("参照上限到達: #{table}")
+                next '(...)'
+              end
 
               variables << table
 
@@ -110,7 +119,7 @@ module RGRB
             # 循環参照と判断されないように
             # 最後に取得中のフラグを立てる
             variables.uniq.each do |variable|
-              getting[variable] = true
+              get_count[variable] += 1
             end
           end
 

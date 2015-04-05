@@ -101,23 +101,6 @@ module RGRB
         def sample(random: Random::DEFAULT)
           @values.sample(random: random)
         end
-
-        # 追加日の日本語表記を返す
-        # @return [String]
-        def jadded
-          japanese_datetime(@added)
-        end
-
-        # 変更日の日本語表記を返す
-        # @return [String]
-        def jmodified
-          japanese_datetime(@modified)
-        end
-
-        def japanese_datetime(datetime)
-          datetime.strftime('%Y年%m月%d日')
-        end
-        private :japanese_datetime
       end
     end
   end

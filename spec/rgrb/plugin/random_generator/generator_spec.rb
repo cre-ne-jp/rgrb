@@ -1,6 +1,7 @@
 # vim: fileencoding=utf-8
 
 require_relative '../../../spec_helper'
+require 'date'
 require 'rgrb/plugin/random_generator/generator'
 
 describe RGRB::Plugin::RandomGenerator::Generator do
@@ -9,6 +10,56 @@ describe RGRB::Plugin::RandomGenerator::Generator do
     obj.send(:load_data, "#{__dir__}/data/*.yaml")
 
     obj
+  end
+
+  describe '#desc' do
+    context 'hiragana' do
+      subject { generator.desc('hiragana') }
+      it { should eq('ひらがな46文字の中から一つ選びます。') }
+    end
+
+    context 'HA06event' do
+      subject { generator.desc('HA06event') }
+      it { should eq('語り部「狭間さまよえるもの達：現代オカルトファンタジー」で物語のきっかけとなる事件を作ります。') }
+    end
+
+    context '存在しない表の名前が指定された場合' do
+      it 'TableNotFound エラーが発生する' do
+        expect { generator.desc('none') }.
+          to raise_error(RGRB::Plugin::RandomGenerator::TableNotFound)
+      end
+    end
+  end
+
+  describe '#japanese_date (private)' do
+    context '2014-12-31' do
+      subject { generator.send(:japanese_date, Date.new(2014, 12, 31)) }
+      it { should eq('2014年12月31日') }
+    end
+
+    context '2015-04-01' do
+      subject { generator.send(:japanese_date, Date.new(2015, 4, 1)) }
+      it { should eq('2015年4月1日') }
+    end
+  end
+
+  describe '#info' do
+    context 'hiragana' do
+      subject { generator.info('hiragana') }
+      it { should eq('「hiragana」の作者は sf さんで、2014年12月15日 に追加されましたの。最後に更新されたのは 2014年12月20日 ですわ。ひらがな46文字の中から一つ選びます。') }
+    end
+
+    context 'hiragana-no-modified' do
+      subject { generator.info('hiragana-no-modified') }
+      it { should eq('「hiragana-no-modified」の作者は ocha さんで、2015年4月6日 に追加されましたの。ひらがな46文字の中から一つ選びます。') }
+    end
+
+    context '存在しない表の名前が指定された場合' do
+      it 'TableNotFound エラーが発生する' do
+        expect { generator.info('none') }.
+          to raise_error(RGRB::Plugin::RandomGenerator::TableNotFound)
+      end
+    end
   end
 
   describe '#get_value_from (private)' do

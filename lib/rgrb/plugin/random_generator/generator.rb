@@ -31,6 +31,8 @@ module RGRB
         # プラグインの設定を行う
         #
         # ランダムジェネレータでは、データを読み込む。
+        #
+        # @return [self]
         def configure(*)
           super
 
@@ -43,35 +45,46 @@ module RGRB
         # @param [String] table 表名
         # @return [String]
         # @raise [TableNotFound] 表が見つからなかった場合
-        # @raise [CircularReference] 循環参照が起こった場合
+        # @note 循環参照を CIRCULAR_REFERENCE_THRESHOLD
+        #   まで許容するようになった
         def rg(table)
           replace_var_with_value(get_value_from(table, true), table)
         end
 
+        # 指定した表の概要を返す
+        # @param [String] table_name 表名
+        # @return [String]
+        # @raise [TableNotFound] 表が見つからなかった場合
         def desc(table_name)
           check_existence_of(table_name)
 
           @table[table_name].description
         end
 
-        # 指定した表の説明を返す
+        # 指定した表の詳細な説明を返す
         # @param [String] table_name 表名
         # @return [String]
         # @raise [TableNotFound] 表が見つからなかった場合
         def info(table_name)
           check_existence_of(table_name)
 
-          mes = "#{table_name}は、" \
-            "#{@table[table_name].jadded}に" \
-            "#{@table[table_name].author}さんによって追加されましたの。"
-          unless @table[table_name].jmodified == nil
-            mes = mes \
-              + "最後に更新されたのは" \
-                "#{@table[table_name].jmodified}" \
+          added_and_author =
+            "「#{table_name}」の作者は" \
+              " #{@table[table_name].author} さんで、" \
+              "#{japanese_date(@table[table_name].added)} に" \
+              "追加されましたの。"
+          modified_value = @table[table_name].modified
+          modified =
+            if modified_value
+              "最後に更新されたのは" \
+                " #{japanese_date(modified_value)} " \
                 "ですわ。"
-          end
+            else
+              ''
+            end
+          description = @table[table_name].description
 
-          mes + "#{@table[table_name].description}"
+          "#{added_and_author}#{modified}#{description}"
         end
 
         # 表から値を取得して返す
@@ -90,7 +103,6 @@ module RGRB
         # 変数を表から取得した値に置換して返す
         # @param [String] str 置換対象の文字列
         # @param [String] root_table 値を取得した最初の表の名前
-        # @raise [CircularReference] 循環参照が起こった場合
         # @return [String]
         def replace_var_with_value(str, root_table)
           get_count = { root_table => 1 }
@@ -147,7 +159,7 @@ module RGRB
         end
         private :load_data
 
-        # 表が存在するかどうかを調べる
+        # 表が存在することを確かめる
         # @return [String] table_name 表名
         # @return [true] 表が存在する場合
         # @raise [TableNotFound] 表が存在しない場合
@@ -158,10 +170,24 @@ module RGRB
         end
         private :check_existence_of
 
+        # 表が公開されていることを確かめる
+        # @return [String] table_name 表名
+        # @return [true] 表が公開されている場合
+        # @raise [PrivateTable] 表が公開されていない場合
         def check_permission_of(table_name)
           fail(PrivateTable, table_name) unless @table[table_name].public?
+
+          true
         end
         private :check_permission_of
+
+        # 日付の日本語表記を返す
+        # @param [Date, DateTime] date 日付
+        # @return [String]
+        def japanese_date(date)
+          "#{date.year}年#{date.month}月#{date.day}日"
+        end
+        private :japanese_date
       end
     end
   end

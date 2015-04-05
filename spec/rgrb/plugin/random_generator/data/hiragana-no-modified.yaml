@@ -1,0 +1,8 @@
+Name: hiragana-no-modified
+Description: ひらがな46文字の中から一つ選びます。
+Added: 2015-04-06
+Access: public
+Author: ocha
+License: NONE
+Body:
+  - "あ"

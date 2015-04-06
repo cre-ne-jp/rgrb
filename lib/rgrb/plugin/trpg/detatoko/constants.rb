@@ -1,5 +1,6 @@
 # vim: fileencoding=utf-8
 
+
 module RGRB
   module Plugin
     module Trpg

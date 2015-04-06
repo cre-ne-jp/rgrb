@@ -31,6 +31,7 @@ module RGRB
           match(/stance[\s　]+(#{STANCE_RE})/io, method: :stance)
 #          match(/スタンス[\s　]+(#{STANCE_RE})/io, method: :stance)
 
+          match(/す([あかさたなはまやらわ]+)/i, method: :skill_decision_ja, :prefix => '。で')
           match(/(体|気)力烙印/i, method: :stigma, :prefix => '。で')
           match(/(体|気)力バッドエンド/i, method: :badend, :prefix => '。で')
           match(/スタンス[\s　]+(#{STANCE_RE})/io, method: :stance, :prefix => '。で')
@@ -57,6 +58,15 @@ module RGRB
           # @return [void]
           def skill_decision_flag(m, skill_rank, flag = 0, calc = '+', solid = 0)
             skill_decision(m, skill_rank, calc, solid, flag)
+          end
+
+          def skill_decision_ja(m, skill_rank_ja)
+            header = "#{@header}[#{m.user.nick}]: "
+            @generator
+              .skill_decision_ja(skill_rank_ja)
+              .each_line { |line|
+                m.target.send(header + line.chomp, true)
+              }
           end
 
           # 烙印(p.63)を得る

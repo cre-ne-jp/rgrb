@@ -56,6 +56,10 @@ module RGRB
             message
           end
 
+          def skill_decision_ja(skill_rank_ja)
+            skill_decision(@dice_roll_generator.ja_to_i(skill_rank_ja), '+', 0, 0)
+          end
+
           # 烙印を得る
           # @param [String] type 体力・気力烙印のどちらか
           # @return [String]

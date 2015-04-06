@@ -1,6 +1,7 @@
 # vim: fileencoding=utf-8
 
 require 'cinch'
+require 'rgrb/plugin/dice_roll/constants'
 require 'rgrb/plugin/dice_roll/generator'
 
 module RGRB
@@ -12,8 +13,12 @@ module RGRB
 
         set(plugin_name: 'DiceRoll')
         self.prefix = /\.roll[\s　]+/
-        match(/([1-9]\d*)d([1-9]\d*)/i, method: :basic_dice)
-        match(/d([1-9]+)/i, method: :dxx_dice)
+        match(/(#{NUMS_RE})d(#{NUMS_RE})/io, method: :basic_dice)
+        match(/d(#{NUM_RE}+)/io, method: :dxx_dice)
+
+        self.prefix = /。/
+        match(/(#{KANA_NUMS_RE})の(#{KANA_NUMS_RE})/io, method: :basic_dice_ja)
+        match(/の(#{KANA_NUM_RE}+)/io, method: :dxx_dice_ja)
 
         def initialize(*args)
           super
@@ -28,10 +33,20 @@ module RGRB
           m.target.send("#{m.user.nick} -> #{message}", true)
         end
 
+        def basic_dice_ja(m, n_dice, max)
+          message = @generator.basic_dice_ja(n_dice, max)
+          m.target.send("#{m.user.nick} -> #{message}", true)
+        end
+
         # d66 など、出目をそのままつなげるダイスロールの結果を返す
         # @return [void]
         def dxx_dice(m, rolls)
           message = @generator.dxx_dice(rolls)
+          m.target.send("#{m.user.nick} -> #{message}", true)
+        end
+
+        def dxx_dice_ja(m, rolls)
+          message = @generator.dxx_dice_ja(rolls)
           m.target.send("#{m.user.nick} -> #{message}", true)
         end
       end

@@ -16,10 +16,10 @@ IRCBot:
   Nick: rgrb_cinch
 
   # 接続時のユーザー名
-  User: rgrb_cinch
+  User: rgrb
 
   # リアルネーム
-  RealName: 汎用ダイスボット RGRB
+  RealName: 汎用ボット RGRB
 
   # JOIN するチャンネルの一覧
   Channels:
@@ -28,42 +28,21 @@ IRCBot:
 # 使用するプラグインを列挙する。大文字小文字を区別するので注意
 Plugins:
   - DiceRoll
+  - RandomGenerator
   - Trpg::Detatoko
   - Keyword
-  - RandomGenerator
+  - OnlineSessionSearch
   - CreTwitterCitation
   - CreBotHelp
   - ServerConnectionReport
-  - OnlineSessionSearch
+  - Part
+  - KickBack
 
-# Twitter @cre_ne_jp 引用プラグインの設定
-CreTwitterCitation:
-  # タイムライン監視の間隔（秒）
-  # あまり短いとアクセス規制になるので注意
-  # 60 以上を推奨
-  CheckInterval: 300
-
-  # チェックごとに取得するツイートの最大数
-  MaxTweetsPerCheck: 3
-
-  # NOTICE を行うチャンネルの一覧
-  ChannelsToSend:
-    #- '#cre'
-
-  # Twitter アカウント関連
-  Twitter:
-    # Twitter ID（@〜）
-    ID: cre_ne_jp
-
-    # API キー関連
-    # https://apps.twitter.com/ で確認可能
-    APIKey: ''
-    APISecret: ''
-    AccessToken: ''
-    AccessTokenSecret: ''
-
-# サーバーリレー監視プラグインの設定
-ServerConnectionReport:
-  # NOTICE を行なうチャンネルの一覧
-  ChannelsToSend:
-    - ''
+# 取り込む設定の ID を列挙する
+# 設定ファイルは config/ 以下に配置する
+# 設定 ID は config/ を基準とした相対パスから拡張子を除いたもの
+Include:
+  - cre_twitter_citation
+  - server_connection_report
+  - part
+  - kick_back

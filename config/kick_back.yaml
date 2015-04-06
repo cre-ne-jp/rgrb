@@ -1,0 +1,4 @@
+# KickBack プラグインの設定
+KickBack:
+  # KICK された後、再 JOIN 時に発言するメッセージ
+  JoinMessage: '退出させるときは .part を使ってね☆'

@@ -27,7 +27,7 @@ module RGRB
             dice_roll(rolls, sides).dice_roll_format
           end
         end
-        
+
         # basic_dice の日本語ダイス用ラッパー
         def basic_dice_ja(rolls_ja, sides_ja)
           basic_dice(ja_to_i(rolls_ja), ja_to_i(sides_ja))

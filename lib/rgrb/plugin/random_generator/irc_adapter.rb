@@ -47,7 +47,7 @@ module RGRB
               end
 
             body.each_line do |line|
-              m.target.send("#{header}<#{table}>: #{line}", true)
+              m.target.send("#{header}<#{table}>: #{line.chomp}", true)
             end
 
             sleep(1)

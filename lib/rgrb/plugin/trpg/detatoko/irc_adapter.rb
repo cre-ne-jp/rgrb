@@ -22,14 +22,11 @@ module RGRB
 
           match(/(v|m|s|w)s/i, method: :stigma)
           match(/(t|k)r/i, method: :stigma)
-#          match(/(体|気)力烙印/i, method: :stigma)
           
           match(/(v|m|s|w)be/i, method: :badend)
           match(/(t|k)b/i, method: :badend)
-#          match(/(体|気)力バッドエンド/i, method: :badend)
           
           match(/stance[\s　]+(#{STANCE_RE})/io, method: :stance)
-#          match(/スタンス[\s　]+(#{STANCE_RE})/io, method: :stance)
 
           match(/す([あかさたなはまやらわ]+)/i, method: :skill_decision_ja, :prefix => '。で')
           match(/(体|気)力烙印/i, method: :stigma, :prefix => '。で')
@@ -60,6 +57,8 @@ module RGRB
             skill_decision(m, skill_rank, calc, solid, flag)
           end
 
+          # skill_decision の日本語コマンド
+          # @return [void]
           def skill_decision_ja(m, skill_rank_ja)
             header = "#{@header}[#{m.user.nick}]: "
             @generator

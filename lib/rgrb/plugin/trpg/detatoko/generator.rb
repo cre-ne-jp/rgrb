@@ -56,6 +56,9 @@ module RGRB
             message
           end
 
+          # skill_decision の日本語コマンド用ラッパー
+          # @param [String] skill_rank_ja ひらがな表現のスキルランク
+          # @return [String]
           def skill_decision_ja(skill_rank_ja)
             skill_decision(@dice_roll_generator.ja_to_i(skill_rank_ja), '+', 0, 0)
           end

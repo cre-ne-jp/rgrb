@@ -12,7 +12,7 @@ module RGRB
         class IrcAdapter
           include Cinch::Plugin
 
-          set(plugin_name: 'Detatoko')
+          set(plugin_name: 'Trpg::Detatoko')
           self.prefix = '.d'
           match(/#{SR_RE}#{END_RE}/io, method: :skill_decision)
           match(/#{SR_RE}#{SOLID_RE}#{END_RE}/io, method: :skill_decision)

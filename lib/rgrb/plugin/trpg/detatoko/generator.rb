@@ -56,6 +56,13 @@ module RGRB
             message
           end
 
+          # skill_decision の日本語コマンド用ラッパー
+          # @param [String] skill_rank_ja ひらがな表現のスキルランク
+          # @return [String]
+          def skill_decision_ja(skill_rank_ja)
+            skill_decision(@dice_roll_generator.ja_to_i(skill_rank_ja), '+', 0, 0)
+          end
+
           # 烙印を得る
           # @param [String] type 体力・気力烙印のどちらか
           # @return [String]
@@ -84,6 +91,7 @@ module RGRB
           # スタンス表を振る
           # @param [String] uses
           def stance(uses)
+            uses = '' if /全部/ =~ uses
             use_list = what_stance_list(uses)
             stance_type = use_list.sample
             "候補:[#{use_list.join(',')}] -> " \

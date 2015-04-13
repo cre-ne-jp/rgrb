@@ -27,11 +27,13 @@ module RGRB
           match(/(t|k)b/i, method: :badend)
           
           match(/stance[\s　]+(#{STANCE_RE})/io, method: :stance)
+          match(/lbp/i, method: :lastboss_position)
 
           match(/す([あかさたなはまやらわ]+)/i, method: :skill_decision_ja, :prefix => '。で')
           match(/(体|気)力烙印/i, method: :stigma, :prefix => '。で')
           match(/(体|気)力バッドエンド/i, method: :badend, :prefix => '。で')
           match(/スタンス[\s　]+(#{STANCE_RE})/io, method: :stance, :prefix => '。で')
+          match(/ラスボス立場/i, method: :lastboss_position, :prefix => '。で')
 
           def initialize(*args)
             super
@@ -87,9 +89,18 @@ module RGRB
           end
 
           # スタンス表から引く
+          # @return [void]
           def stance(m, uses)
             header = "#{@header}[#{m.user.nick}]<スタンス表>: "
             message = @generator.stance(uses)
+            m.target.send(header + message, true)
+          end
+
+          # ラスボス立場表を引く
+          # @return [void]
+          def lastboss_position(m)
+            header = "#{@header}[#{m.user.nick}]<ラスボス立場>: "
+            message = @generator.lastboss_position
             m.target.send(header + message, true)
           end
 

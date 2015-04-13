@@ -83,19 +83,28 @@ module RGRB
 
           # バッドエンド表を振る
           # @param [String] type 体力・気力のどちらか
+          # @return [String]
           def badend(type)
             result = @dice_roll_generator.dice_roll(2, 6)
             "#{result.sw2_dll_format} -> #{badend_text(type, result.sum)}"
           end
 
           # スタンス表を振る
-          # @param [String] uses
+          # @param [String] uses 列挙された使用するスタンス系統
+          # @return [String]
           def stance(uses)
             uses = '' if /全部/ =~ uses
             use_list = what_stance_list(uses)
             stance_type = use_list.sample
             "候補:[#{use_list.join(',')}] -> " \
               "系統:【#{stance_type}】 #{stance_select(stance_type)}"
+          end
+
+          # ラスボス立場表を振る
+          # @return [String]
+          def lastboss_position()
+            result = @dice_roll_generator.dice_roll(2, 6)
+            "#{result.sw2_dll_format} -> #{lastboss_position_text(result.sum)}"
           end
 
           # ダイスを振り獲得する烙印を決める
@@ -162,6 +171,17 @@ module RGRB
           end
           private :badend_text
 
+          # 出目から対応するラスボス立場を決定する
+          # @param [Fixnum] number ダイスの出目
+          # @return [String]
+          def lastboss_position_text(number)
+            positions = [
+              '恐怖', '破壊', '封印', '滅亡', '侵略', '暴君',
+              '陰謀', '独裁', '崇拝', '犠牲', '人望'
+            ]
+            "#{number}: 【#{positions[number - 2]}】"
+          end
+
           # 文字列をスタンスの系統に分ける
           # @param [String] uses 元の文字列
           # @return [Array<String>] 使用するスタンス系統のリスト
@@ -174,6 +194,8 @@ module RGRB
           private :what_stance_list
 
           # 指定された系統のスタンスをランダムに選ぶ
+          # @param [String] type スタンス系統
+          # @return [String]
           def stance_select(type)
             stance = case type
             when '敵視'

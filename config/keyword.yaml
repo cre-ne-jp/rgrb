@@ -1,0 +1,4 @@
+# キーワード検索プラグインの設定
+Keyword:
+  # Amazon 検索で使用するアソシエイト ID
+  AmazonAssociateID: koubou-22

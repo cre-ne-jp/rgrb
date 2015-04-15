@@ -27,3 +27,15 @@ Keyword
 .a SW 2.0
 > Amazon.co.jp の商品一覧から http://www.amazon.co.jp/gp/search?ie=UTF8&tag=koubou-22&keywords=SW+2.0 をどうぞ♪
 ```
+
+設定
+----
+
+設定ファイルに以下を追加して、プラグインの設定を行います。
+
+```yaml
+# キーワード検索プラグインの設定
+Keyword:
+  # Amazon 検索で使用するアソシエイト ID
+  AmazonAssociateID: koubou-22
+```

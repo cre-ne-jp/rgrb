@@ -11,38 +11,17 @@ module RGRB
       class IrcAdapter
         include Cinch::Plugin
 
-        # サーバメッセージのチャンネル名
-        SERVER_MESSAGE_CHANNEL = '&SERVER'
-
         set(plugin_name: 'ServerConnectionReport')
-
         self.prefix = ''
-        match(/^Server "([\w\.]+)" registered/, method: :registered)
-        match(/^Server "([\w\.]+)" unregistered/, method: :unregistered)
 
         def initialize(*)
           super
 
           config_data = config[:plugin]
-          @channels_to_send = config_data['ChannelsToSend']
+          @using_serverd = config_data['UsingServerD']
 
+          require "rgrb/plugin/server_connection_report/server_#{@using_serverd}"
           @generator = Generator.new
-        end
-
-        # サーバ接続メッセージを NOTICE する
-        # @return [void]
-        def registered(m, server)
-          return unless m.channel == SERVER_MESSAGE_CHANNEL
-
-          notice_on_each_channel(@generator.registered(server))
-        end
-
-        # サーバ切断メッセージを NOTICE する
-        # @return [void]
-        def unregistered(m, server)
-          return unless m.channel == SERVER_MESSAGE_CHANNEL
-
-          notice_on_each_channel(@generator.unregistered(server))
         end
 
         # 各チャンネルで NOTICE する

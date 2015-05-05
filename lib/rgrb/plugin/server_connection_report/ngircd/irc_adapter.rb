@@ -40,7 +40,7 @@ module RGRB
           # @param [Cinch::Message] m メッセージ
           # @param [String] server サーバ
           # @return [void]
-          def registered(m, server)
+          def joined(m, server)
             return unless m.channel == SERVER_MESSAGE_CHANNEL
 
             notice_on_each_channel(@generator.joined(server))
@@ -50,10 +50,10 @@ module RGRB
           # @param [Cinch::Message] m メッセージ
           # @param [String] server サーバ
           # @return [void]
-          def unregistered(m, server)
+          def disconnected(m, server)
             return unless m.channel == SERVER_MESSAGE_CHANNEL
 
-            notice_on_each_channel(@generator.unregistered(server))
+            notice_on_each_channel(@generator.disconnected(server))
           end
         end
       end

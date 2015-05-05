@@ -3,6 +3,7 @@
 require 'cinch'
 
 require 'rgrb/plugin/util/notice_on_each_channel'
+require 'rgrb/plugin/util/logging'
 require 'rgrb/plugin/server_connection_report/generator'
 
 module RGRB
@@ -41,9 +42,10 @@ module RGRB
           # @param [String] server サーバ
           # @return [void]
           def joined(m, server)
-            return unless m.channel == SERVER_MESSAGE_CHANNEL
-
-            notice_on_each_channel(@generator.joined(server))
+            if m.channel == SERVER_MESSAGE_CHANNEL
+              log_incoming(m)
+              notice_on_each_channel(@generator.joined(server))
+            end
           end
 
           # サーバ切断メッセージを NOTICE する
@@ -51,9 +53,10 @@ module RGRB
           # @param [String] server サーバ
           # @return [void]
           def disconnected(m, server)
-            return unless m.channel == SERVER_MESSAGE_CHANNEL
-
-            notice_on_each_channel(@generator.disconnected(server))
+            if m.channel == SERVER_MESSAGE_CHANNEL
+              log_incoming(m)
+              notice_on_each_channel(@generator.disconnected(server))
+            end
           end
         end
       end

@@ -1,10 +1,14 @@
 # vim: fileencoding=utf-8
 
+require 'rgrb/plugin/util/logging'
+
 module RGRB
   module Plugin
     module Util
-      # 各チャンネルで NOTICE するメソッドを追加する。
+      # 各チャンネルで NOTICE するメソッドのモジュール。
       module NoticeOnEachChannel
+        include Logging
+
         private
 
         # 各チャンネルで NOTICE する
@@ -16,11 +20,15 @@ module RGRB
         # @return [void]
         def notice_on_each_channel(message, safe = false)
           channels_to_send.each do |channel_name|
+            channel = Channel(channel_name)
+
             if safe
-              Channel(channel_name).safe_notice(message)
+              channel.safe_notice(message)
             else
-              Channel(channel_name).notice(message)
+              channel.notice(message)
             end
+
+            log_notice(channel, message)
           end
         end
       end

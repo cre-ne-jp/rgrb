@@ -34,7 +34,7 @@ Plugins:
   - OnlineSessionSearch
   - CreTwitterCitation
   - CreBotHelp
-  - ServerConnectionReport
+  - ServerConnectionReport::Charybdis
   - Part
   - KickBack
 
@@ -43,6 +43,6 @@ Plugins:
 # 設定 ID は config/ を基準とした相対パスから拡張子を除いたもの
 Include:
   - cre_twitter_citation
-  - server_connection_report
+  - server_connection_report/charybdis
   - part
   - kick_back

@@ -28,11 +28,12 @@ module RGRB
           attr_reader :channels_to_send
 
           set(plugin_name: 'ServerConnectionReport::Charybdis')
-          self.prefix = ''
+          self.prefix = '*** Notice -- '
+          self.react_on = :notice
 
-          match(/^Netjoin [\w\.]+ <-> ([\w\.]+)/, method: :joined)
+          match(/Netjoin [\w\.]+ <-> ([\w\.]+)/, method: :joined)
           match(
-            /^Netsplit [\w\.]+ <-> ([\w\.]+) \(.+?\) \((.+)\)/,
+            /Netsplit [\w\.]+ <-> ([\w\.]+) \(.+?\) \((.+)\)/,
             method: :disconnected
           )
 
@@ -41,7 +42,6 @@ module RGRB
 
             config_data = config[:plugin]
             @channels_to_send = config_data['ChannelsToSend'] || []
-            @allowed_senders = config_data['AllowedSenders'] || []
 
             @generator = Generator.new
           end
@@ -51,7 +51,7 @@ module RGRB
           # @param [String] server サーバ
           # @return [void]
           def joined(m, server)
-            if @allowed_senders.include?(m.user.nick)
+            if m.server
               log_incoming(m)
               notice_on_each_channel(@generator.joined(server))
             end
@@ -63,7 +63,7 @@ module RGRB
           # @param [String] comment コメント
           # @return [void]
           def disconnected(m, server, comment)
-            if @allowed_senders.include?(m.user.nick)
+            if m.server
               log_incoming(m)
               notice_on_each_channel(
                 @generator.disconnected(server, comment)

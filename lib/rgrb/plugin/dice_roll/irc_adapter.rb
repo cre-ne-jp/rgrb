@@ -16,9 +16,8 @@ module RGRB
         match(/(#{NUMS_RE})d(#{NUMS_RE})/io, method: :basic_dice)
         match(/d(#{NUM_RE}+)/io, method: :dxx_dice)
 
-        self.prefix = /。/
-        match(/(#{KANA_NUMS_RE})の(#{KANA_NUMS_RE})/io, method: :basic_dice_ja)
-        match(/の(#{KANA_NUM_RE}+)/io, method: :dxx_dice_ja)
+        match(/(#{KANA_NUMS_RE})の(#{KANA_NUMS_RE})/io, method: :basic_dice_ja, :prefix => '。')
+        match(/の(#{KANA_NUM_RE}+)/io, method: :dxx_dice_ja, :prefix => '。')
 
         def initialize(*args)
           super

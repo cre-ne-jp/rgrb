@@ -4,7 +4,11 @@ require_relative '../../../spec_helper'
 require 'rgrb/plugin/keyword/generator'
 
 describe RGRB::Plugin::Keyword::Generator do
-  let(:generator) { described_class.new }
+  let(:generator) do
+    described_class.
+      new.
+      configure('AmazonAssociateID' => 'koubou-22')
+  end
 
   describe '#cre_search' do
     let(:base_url) { 'http://cre.jp/search/?sw=' }

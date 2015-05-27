@@ -1,6 +1,7 @@
 # vim: fileencoding=utf-8
 
 require 'cinch'
+require 'rgrb/plugin/configurable_adapter'
 require 'rgrb/plugin/keyword/generator'
 
 module RGRB
@@ -9,6 +10,7 @@ module RGRB
       # Keyword の IRC アダプター
       class IrcAdapter
         include Cinch::Plugin
+        include ConfigurableAdapter
 
         set(plugin_name: 'Keyword')
         match(/k[ 　]+(.+)/, method: :cre_search)
@@ -16,8 +18,7 @@ module RGRB
 
         def initialize(*args)
           super
-
-          @generator = Generator.new
+          prepare_generator
         end
 
         # NOTICE で cre.jp 検索ページを返す

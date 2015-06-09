@@ -37,18 +37,22 @@ module RGRB
           header = "rg[#{m.user.nick}]"
 
           tables_str.split(' ').each do |table|
-            body =
+            lines =
               begin
-                "<#{table}>: #{@generator.rg(table)} ですわ☆"
+                "#{@generator.rg(table)} ですわ☆".
+                  split("\n").
+                  map { |line| "<#{table}>: #{line}" }
               rescue TableNotFound => not_found_error
-                ": #{table_not_found_message(not_found_error)}"
+                [": #{table_not_found_message(not_found_error)}"]
               rescue PrivateTable => private_table_error
-                ": #{private_table_message(private_table_error)}"
+                [": #{private_table_message(private_table_error)}"]
               end
-            message = "#{header}#{body}"
 
-            m.target.send(message, true)
-            log_notice(m.target, message)
+            lines.each do |line|
+              message = "#{header}#{line.chomp}"
+              m.target.send(message, true)
+              log_notice(m.target, message)
+            end
 
             sleep(1)
           end

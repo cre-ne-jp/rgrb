@@ -27,6 +27,9 @@ module RGRB
         # ライセンス
         # @return [String, nil]
         attr_reader :license
+        # 出力ヘッダ
+        # @return [String, nil]
+        attr_reader :header
 
         # YAML を解析して Table オブジェクトに変換する
         # @param [String] yaml 表を表す YAML 文字列
@@ -40,6 +43,7 @@ module RGRB
           is_public = (data['Access'] == 'public')
           author = data['Author']
           license = data['License']
+          header = data['Header']
 
           added, modified = %w(Added Modified).map do |key|
             value = data[key]
@@ -62,7 +66,8 @@ module RGRB
             modified: modified,
             public: is_public,
             author: author,
-            license: license
+            license: license,
+            header: header
           )
         end
 
@@ -76,6 +81,7 @@ module RGRB
         # @option metadata [Boolean] :public 公開されているかどうか
         # @option metadata [String] :author 作者
         # @option metadata [String] :license ライセンス
+        # @option metadata [String] :header 出力ヘッダ
         def initialize(name, values, metadata)
           actual_metadata = {}.merge(metadata)
 
@@ -88,6 +94,7 @@ module RGRB
           @added = actual_metadata[:added]
           @modified = actual_metadata[:modified]
           @license = actual_metadata[:license]
+          @header = actual_metadata[:header]
         end
 
         # 公開されているかどうかを返す
@@ -99,7 +106,7 @@ module RGRB
         # 表から値を 1 個取り出す
         # @param [Random] random 使用する乱数生成器
         def sample(random: Random::DEFAULT)
-          @values.sample(random: random)
+          "#{@header}#{@values.sample(random: random)}"
         end
       end
     end

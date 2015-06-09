@@ -12,6 +12,8 @@ module RGRB
   module Plugin
     module RandomGenerator
       # RandomGenerator の IRC アダプター
+      #
+      # TODO：RGRB::Plugin::Util::Logging を利用したログ記録
       class IrcAdapter
         include Cinch::Plugin
         include ConfigurableAdapter

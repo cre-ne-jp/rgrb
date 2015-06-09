@@ -85,7 +85,7 @@ module RGRB
           end
         end
 
-        # NOTICE で表の
+        # NOTICE で表の詳細な情報を返す
         # @param [Cinch::Message] m メッセージ
         # @param [String] tables_str 表のリスト
         # @return [void]

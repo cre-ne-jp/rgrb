@@ -12,11 +12,7 @@ module RGRB
         # @return [String]
         def joined(server, message = nil)
           common_part = "!! #{server} がネットワークに参加しました"
-          if message
-            "#{common_part} (#{message})"
-          else
-            common_part
-          end
+          message ? "#{common_part} (#{message})" : common_part
         end
 
         # サーバがネットワークから切断された際のメッセージを返す
@@ -25,11 +21,7 @@ module RGRB
         # @return [String]
         def disconnected(server, message = nil)
           common_part = "!! #{server} がネットワークから切断されました"
-          if message
-            "#{common_part} (#{message})"
-          else
-            common_part
-          end
+          message ? "#{common_part} (#{message})" : common_part
         end
       end
     end

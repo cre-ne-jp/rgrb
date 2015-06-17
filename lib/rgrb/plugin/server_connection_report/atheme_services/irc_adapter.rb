@@ -4,6 +4,7 @@ require 'cinch'
 
 require 'rgrb/plugin/util/notice_on_each_channel'
 require 'rgrb/plugin/util/logging'
+require 'rgrb/plugin/server_connection_report/constants'
 require 'rgrb/plugin/server_connection_report/generator'
 
 module RGRB
@@ -22,11 +23,17 @@ module RGRB
           # サーバメッセージのチャンネル名
           SERVER_MESSAGE_CHANNEL = '#services'
 
+          # サーバーがネットワークに参加したときのメッセージを表す正規表現
+          SERVER_ADD_RE = /^server_add\(\): (#{HOSTNAME_RE})/o
+          # サーバーがネットワークから切断されたときのメッセージを表す
+          # 正規表現
+          SERVER_DELETE_RE = /^server_delete\(\): (#{HOSTNAME_RE})/o
+
           set(plugin_name: 'ServerConnectionReport::AthemeServices')
           self.prefix = ''
 
-          match(/^server_add\(\): ([\w\.]+)/, method: :joined)
-          match(/^server_delete\(\): ([\w\.]+)/, method: :disconnected)
+          match(SERVER_ADD_RE, method: :joined)
+          match(SERVER_DELETE_RE, method: :disconnected)
 
           def initialize(*)
             super

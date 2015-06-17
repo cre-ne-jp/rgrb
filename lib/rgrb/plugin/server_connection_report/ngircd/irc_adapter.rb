@@ -4,6 +4,7 @@ require 'cinch'
 
 require 'rgrb/plugin/util/notice_on_each_channel'
 require 'rgrb/plugin/util/logging'
+require 'rgrb/plugin/server_connection_report/constants'
 require 'rgrb/plugin/server_connection_report/generator'
 
 module RGRB
@@ -22,11 +23,17 @@ module RGRB
           # サーバメッセージのチャンネル名
           SERVER_MESSAGE_CHANNEL = '&SERVER'
 
+          # サーバーがネットワークに参加したときのメッセージを表す正規表現
+          REGISTERED_RE = /^Server "(#{HOSTNAME_RE})" registered/o
+          # サーバーがネットワークから切断されたときのメッセージを表す
+          # 正規表現
+          UNREGISTERED_RE = /^Server "(#{HOSTNAME_RE})" unregistered/o
+
           set(plugin_name: 'ServerConnectionReport::Ngircd')
           self.prefix = ''
 
-          match(/^Server "([\w\.]+)" registered/, method: :joined)
-          match(/^Server "([\w\.]+)" unregistered/, method: :disconnected)
+          match(REGISTERED_RE, method: :joined)
+          match(UNREGISTERED_RE, method: :disconnected)
 
           def initialize(*)
             super

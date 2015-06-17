@@ -4,6 +4,7 @@ require 'cinch'
 
 require 'rgrb/plugin/util/notice_on_each_channel'
 require 'rgrb/plugin/util/logging'
+require 'rgrb/plugin/server_connection_report/constants'
 require 'rgrb/plugin/server_connection_report/generator'
 
 module RGRB
@@ -27,15 +28,23 @@ module RGRB
           # メッセージを送信するチャンネルのリスト
           attr_reader :channels_to_send
 
+          # サーバーがネットワークに参加したときのメッセージを表す正規表現
+          NETJOIN_RE =
+            /^\*\*\* Notice -- Netjoin #{HOSTNAME_RE} <-> #{HOSTNAME_RE}/o
+          # サーバーがネットワークから切断されたときのメッセージを表す
+          # 正規表現
+          NETSPLIT_RE =
+            /^\*\*\* Notice -- Netsplit #{HOSTNAME_RE} <-> (#{HOSTNAME_RE}) \(.+?\) \((.+)\)/o
+
           set(plugin_name: 'ServerConnectionReport::Charybdis')
-          self.prefix = '*** Notice -- '
+          self.prefix = ''
           self.react_on = :notice
 
-          match(/Netjoin [\w\.]+ <-> ([\w\.]+)/, method: :joined)
-          match(
-            /Netsplit [\w\.]+ <-> ([\w\.]+) \(.+?\) \((.+)\)/,
-            method: :disconnected
-          )
+          # サーバーがネットワークに参加したときのメッセージを表す正規表現
+          match(NETJOIN_RE, method: :joined)
+          # サーバーがネットワークから切断されたときのメッセージを表す
+          # 正規表現
+          match(NETSPLIT_RE, method: :disconnected)
 
           def initialize(*)
             super

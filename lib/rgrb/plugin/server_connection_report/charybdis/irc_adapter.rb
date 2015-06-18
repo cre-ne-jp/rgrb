@@ -30,7 +30,7 @@ module RGRB
 
           # サーバーがネットワークに参加したときのメッセージを表す正規表現
           NETJOIN_RE =
-            /^\*\*\* Notice -- Netjoin #{HOSTNAME_RE} <-> #{HOSTNAME_RE}/o
+            /^\*\*\* Notice -- Netjoin #{HOSTNAME_RE} <-> (#{HOSTNAME_RE})/o
           # サーバーがネットワークから切断されたときのメッセージを表す
           # 正規表現
           NETSPLIT_RE =

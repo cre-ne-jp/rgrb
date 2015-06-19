@@ -6,7 +6,15 @@ Keyword
 コマンド
 --------
 
-### cre.jp 検索 (`.k keyword`)
+### cre.jp 検索
+
+#### 書式
+
+```
+.k keyword
+```
+
+#### 説明
 
 [cre.jp 検索ページ](http://cre.jp/search/)の検索結果の URL を返します。
 
@@ -17,7 +25,15 @@ Keyword
 > キーワード一覧の http://cre.jp/search/?sw=SW+2.0 をどうぞ♪
 ```
 
-### Amazon.co.jp 検索 (`.a keyword`)
+### Amazon.co.jp 検索
+
+#### 書式
+
+```
+.a keyword
+```
+
+#### 説明
 
 [Amazon.co.jp](http://www.amazon.co.jp/) の検索結果の URL を返します。
 

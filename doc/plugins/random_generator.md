@@ -11,7 +11,7 @@ RandomGenerator
 #### 書式
 
 ```
-.rg table <table2> <table3> ...
+.rg <table> [<table2> ...]
 ```
 
 #### 説明
@@ -44,7 +44,7 @@ RandomGenerator
 #### 書式
 
 ```
-.rg-desc table
+.rg-desc <table>
 ```
 
 #### 説明
@@ -72,7 +72,7 @@ RandomGenerator
 #### 書式
 
 ```
-.rg-info _table_
+.rg-info <table>
 ```
 
 #### 説明

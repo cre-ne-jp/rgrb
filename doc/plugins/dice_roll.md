@@ -11,8 +11,8 @@ DiceRoll
 #### 書式
 
 ```
-.roll fdp
-.roll fDp
+.roll <f>d<p>
+.roll <f>D<p>
 。●の▼
 ```
 
@@ -40,7 +40,7 @@ DiceRoll
 #### 書式
 
 ```
-.roll dXX
+.roll d<XX>
 。の○○
 ```
 

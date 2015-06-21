@@ -15,6 +15,19 @@ Plugins:
   - ServerConnectionReport::AthemeServices
 ```
 
+以下で説明する、サーバの接続状態を報告するチャンネル( ChannelsToSend の設定値)に JOIN しておかなければ、 IRC サーバにはじかれてプラグインが動作しないことがあります。
+
+
+```yaml
+IRCbot:
+  #### 省略 ####
+  # JOIN するチャンネルの一覧
+  Channels:
+    - ''
+```
+
+もしくは報告先のチャンネルのモードに +n(チャンネルに入っていないクライアントからの発言を拒否する) を設定しないようにしておくことでこの設定をしなくても動作させることが可能ですが、全く関係ないスパムの侵入を許すことにつながりかねないため、お勧めしません。
+
 IRC デーモンごとの動作・設定
 ----------------------------
 
@@ -26,7 +39,7 @@ IRC デーモンごとの動作・設定
 
 ```yaml
 # サーバーリレー監視プラグインの設定
-ServerConnectionReport::Ngircd
+ServerConnectionReport::Ngircd:
   # NOTICE を行なうチャンネルの一覧
   ChannelsToSend:
     - '#cre'

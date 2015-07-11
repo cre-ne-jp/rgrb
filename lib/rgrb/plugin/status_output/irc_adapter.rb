@@ -1,7 +1,6 @@
 # vim: fileencoding=utf-8
 
 require 'cinch'
-require 'socket'
 require 'pp'
 
 module RGRB
@@ -14,7 +13,9 @@ module RGRB
 
         set(plugin_name: 'StatusOutput')
         timer(5, method: :request_map)
-#        match(/map/, method: :request_map)
+        timer(5, method: :request_lusers)
+        match(/map/, method: :request_map)
+        match(/lusers/, method: :request_lusers)
 
         # MAP コマンドの応答 (charybdis)
         listen_to(:'015', method: :map)
@@ -41,25 +42,21 @@ module RGRB
           }
         end
 
-        def request_map
-          host = 'irc.cre.jp'
-          port = 6666
-          p 'Socket Open'
-          daemon_socket = TCPSocket.open(host, port)
-          daemon_socket.write("nick RGRB-requestmap\r\n")
-          daemon_socket.write("user RGRB 0 0 :\r\n")
-          daemon_socket.write("map\r\n")
-          daemon_socket.write("quit\r\n")
-          daemon_socket.close
-          p 'Socket Close'
+        def request_map(m)
+          bot.irc.send('MAP')
+        end
+
+        def request_lusers(m)
+          bot.irc.send('LUSERS')
         end
 
         def map(m)
           #get_time = m.time
           m.params[1].match(
-            %r{[\|`\- ]*([\w\.\-]+)\[\d\d\w\] -+ \| Users:\s+(\d+)}
+            %r{[\|`\- ]*([\w\.\-]+)\[\d\d\w\] -+ \| Users:\s+(\d+) \(\s*(\d+\.\d)%\)}
           ) { |md|
             print("ircMap_#{@servername[md[1]]}.value #{md[2]}\n")
+            print("ircMapPercent_#{@servername[md[1]]}.value #{md[3]}\n")
           }
         end
 

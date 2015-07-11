@@ -15,7 +15,17 @@ module RGRB
         set(plugin_name: 'StatusOutput')
         timer(5, method: :request_map)
 #        match(/map/, method: :request_map)
-        listen_to(:'015', method: :receive_map)
+
+        # MAP コマンドの応答 (charybdis)
+        listen_to(:'015', method: :map)
+
+        # LUSERS コマンドの応答 (charybdis)
+        listen_to(:'251', method: :general_datas)
+        listen_to(:'252', method: :opers)
+        listen_to(:'254', method: :channels)
+        listen_to(:'255', method: :local_connections)
+        listen_to(:'265', method: :local_users)
+        listen_to(:'266', method: :global_users)
 
         def initialize(*args)
           super
@@ -44,14 +54,49 @@ module RGRB
           p 'Socket Close'
         end
 
-        def receive_map(m)
+        def map(m)
           #get_time = m.time
-          map_data = m.params[1]
-          map_data.match(
+          m.params[1].match(
             %r{[\|`\- ]*([\w\.\-]+)\[\d\d\w\] -+ \| Users:\s+(\d+)}
           ) { |md|
-            print("ircmap_#{@servername[md[1]]}.value #{md[2]}\n")
+            print("ircMap_#{@servername[md[1]]}.value #{md[2]}\n")
           }
+        end
+
+        def general_datas(m)
+          m.params[1].match(
+            %r{There are (\d+) users and (\d+) invisible on (\d+) servers}
+          ) { |md|
+            #print("ircGlobalUsers.value #{md[1].to_i + md[2].to_i}\n")
+            print("ircGlobalServers.value #{md[3]}\n")
+          }
+        end
+
+        def opers(m)
+          print("ircOpers.value #{m.params[1]}\n")
+        end
+
+        def channels(m)
+          print("ircChannels.value #{m.params[1]}\n")
+        end
+
+        def local_connections(m)
+          m.params[1].match(
+            %r{I have (\d+) clients and (\d+) servers}
+          ) { |md|
+            #print("ircLocalClients.value #{md[1]}\n")
+            print("ircLocalServers.value #{md[2]}\n")
+          }
+        end
+
+        def local_users(m)
+          print("ircLocalCurrentUsers.value #{m.params[1]}\n")
+          print("ircLocalMaxUsers.value #{m.params[2]}\n")
+        end
+
+        def global_users(m)
+          print("ircGlobalCurrentUsers.value #{m.params[1]}\n")
+          print("ircGlobalMaxUsers.value #{m.params[2]}\n")
         end
       end
     end

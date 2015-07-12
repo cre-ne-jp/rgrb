@@ -82,13 +82,13 @@ module RGRB
             %r{I have (\d+) clients and (\d+) servers}
           ) { |md|
             #print("ircLocalClients.value #{md[1]}\n")
-            print("ircLocalServers.value #{md[2]}\n")
+            print("ircLocalServers_#{@servername[m.server]}.value #{md[2]}\n")
           }
         end
 
         def local_users(m)
-          print("ircLocalCurrentUsers.value #{m.params[1]}\n")
-          print("ircLocalMaxUsers.value #{m.params[2]}\n")
+          print("ircLocalCurrentUsers_#{@servername[m.server]}.value #{m.params[1]}\n")
+          print("ircLocalMaxUsers_#{@servername[m.server]}.value #{m.params[2]}\n")
         end
 
         def global_users(m)

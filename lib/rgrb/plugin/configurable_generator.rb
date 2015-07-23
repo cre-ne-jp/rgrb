@@ -20,6 +20,7 @@ module RGRB
       def root_path=(root_path)
         @root_path = root_path
         @data_path = "#{root_path}/data/#{@plugin_name_underscore}"
+        @plugin_script_path = "#{root_path}/lib/rgrb/plugin/#{@plugin_name_underscore}"
 
         root_path
       end
@@ -28,8 +29,25 @@ module RGRB
       #
       # 標準では何も行わない。
       # @return [self]
-      def configure(*)
+      def configure(config_data)
+        @dbconfig= config_data['Database'] || ''
         self
+      end
+
+      # 使用する DB 名の接頭語を決め、DB 固有のファイルを読み込む
+      # @return [Boolean]
+      def prepare_database
+        options = { 
+          dbname_prefix: "rgrb_plugin_#{@plugin_name_underscore}",
+          data_path: @data_path,
+          config: @dbconfig
+        }
+        require "#{@plugin_script_path}/db_#{@dbconfig['Type']}"
+
+        class_name_tree = self.class.name.split('::')
+        class_name_tree[-1] = 'Database'
+        database_class = Object.const_get(class_name_tree.join('::'))
+        @db = database_class.new(options)
       end
     end
   end

@@ -8,8 +8,15 @@ module RGRB
     module Origcmd
       class Database
 
-        def initialize
-          dbm = SDBM.open(filename)
+        # SDBM データベースを開く
+        # @param [Hash] options DB に関する設定
+        # @option options [String] :data_path データファイルのパス
+        # @option options [String] :config データベースに関する設定ファイルでの指定
+        # @option options:config [String] Type データベースの種類
+        # @return [true]
+        def initialize(options)
+          @dbm = SDBM.open("#{options[:data_path]}/cmds")
+          true
         end
 
         # SDBM データベースへ書き込む
@@ -29,15 +36,15 @@ module RGRB
             date: Date.today
           }
 
-          dbm[cmdname] = JSON.dump(data)
-          true
+          @dbm[cmdname] = JSON.dump(data)
+          read(cmdname)
         end
 
         # SDBM データベースから指定されたコマンド名のデータを読み込む
         # @param [String] cmdname 読み込むコマンド名
         # @return [Hash]
         def read(cmdname)
-          data = JSON.parse(dbm[cmdname], {:symbolize_names => true})
+          data = JSON.parse(@dbm[cmdname], {:symbolize_names => true})
           data[:date] = Date.parse(data[:date])
 
           data
@@ -47,7 +54,7 @@ module RGRB
         # @param [String] cmdname
         # @return [nil]
         def remove(cmdname)
-          dbm.delete(cmdname)
+          @dbm.delete(cmdname)
           nil
         end
 
@@ -55,9 +62,8 @@ module RGRB
         # @param [String] cmdname
         # @return [Boolean]
         def cmd_exist?(cmdname)
-          dbm.has_key?(cmdname)
+          @dbm.has_key?(cmdname)
         end
-
       end
     end
   end

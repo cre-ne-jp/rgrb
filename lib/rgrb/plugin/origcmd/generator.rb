@@ -1,6 +1,5 @@
 # vim: fileencoding=utf-8
 
-require 'uri'
 require 'rgrb/plugin/configurable_generator'
 
 module RGRB
@@ -13,20 +12,17 @@ module RGRB
 
         # 新しい Origcmd::Generator インスタンスを返す
         def initialize
+          super
         end
 
         # 設定データを解釈してプラグインの設定を行う
         # @param [Hash] config_data 設定データのハッシュ
         # @return [self]
         def configure(config_data)
-          dbtype = config_data['DBtype'] || 'sdbm'
-          db_initialize
+          super
+          prepare_database
 
           self
-        end
-
-        def db_initialize
-
         end
 
         # オリジナルコマンドを作成する
@@ -37,13 +33,15 @@ module RGRB
         # @param [String] reply
         # @return [String]
         def create(nick, channel, cmdname, delkey, reply)
-          return '[error] 既に同名のコマンドが登録されています。' if cmdname_exist?
+          return '[error] 既に同名のコマンドが登録されています。' if @db.cmd_exist?(cmdname)
+          return '[error] コマンド名に使用できない文字が含まれています。' until cmdname == cmdname.match(CMD_RE).to_s
+          return '[error] 削除キーに使用できない文字が含まれています。' until delkey == delkey.match(CMD_RE).to_s
 
-          @db.write(nick, channel, cmdname, delkey, reply)
+          cmd = @db.write(nick, channel, cmdname, delkey, reply)
 
           "#{cmdname} を登録しました。変更・削除するための" \
             "削除キー #{delkey} を紛失しないようにしてください。\n" \
-            "コマンド応答例: &#{cmd[:reply]}"
+            "コマンド応答例: #{cmd[:reply]}"
         end
 
         # オリジナルコマンドを削除します
@@ -66,7 +64,8 @@ module RGRB
           return '[error] コマンドが存在しません' until @db.cmd_exist?(cmdname)
 
           cmd = @db.read(cmdname)
-          "#{cmd[:cmdname]} 作者:#{cmd[:nick]}(#{cmd[:channel]}) 登録日:#{cmd[:date]}"
+          "#{cmd[:cmdname]} 作者:#{cmd[:nick]}(#{cmd[:channel]}) 登録日:#{cmd[:date]}\n" \
+            "コマンド応答例: #{cmd[:reply]}"
         end
 
         # オリジナルコマンドを上書き作成します
@@ -81,12 +80,39 @@ module RGRB
           create(nick, channel, cmdname, delkey, reply)
         end
 
+        # オリジナルコマンドを呼び出して実行します
+        # @param [] m
+        # @param [String] cmdname
+        # @param [String] args
+        # @return [false] コマンドが存在しなかった時
+        # @return [String] コマンドが存在した時、呼び出した結果
         def cmdcall(m, cmdname, args)
           return until @db.cmd_exist?(cmdname)
-          arg = args.split(/[ 　]/)
-
           result = @db.read(cmdname).fetch(:reply)
+          arg = args.split(/[ 　]+/, result.scan(/%[we]/).size)
+
+          result.gsub(/%[wecdtu1-9%]/) { |match|
+            case match
+            when '%w'
+              arg.shift
+            when '%e'
+              URI.encode_www_form_component(arg.shift)
+            when '%c'
+              m.channel.to_s
+            when '%d'
+              Date.today
+            when '%t'
+              Time.now.strftime('%T')
+            when '%u'
+              m.user.nick
+            when /%([1-9])/
+              Random.rand(1..$1.to_i)
+            when '%%'
+              '%'
+            end
+          }
         end
+
         # コマンドの削除キーが一致するか調べます
         # @param [String] cmdname
         # @param [String] delkey

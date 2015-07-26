@@ -49,10 +49,9 @@ module RGRB
             else
               @generator.create(nick, channel, cmdname, delkey, reply)
             end
-p result
+
           result.each_line do |line|
             message = "origcmd[#{nick}]<CREATE>: #{line.chomp}"
-p message
             m.target.send(message, true)
             #log_notice(m.target, message)
           end

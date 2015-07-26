@@ -30,7 +30,7 @@ module RGRB
       # 標準では何も行わない。
       # @return [self]
       def configure(config_data)
-        @dbconfig= config_data['Database'] || ''
+        @dbconfig = config_data['Database'] || ''
         self
       end
 
@@ -42,7 +42,12 @@ module RGRB
           data_path: @data_path,
           config: @dbconfig
         }
-        require "#{@plugin_script_path}/db_#{@dbconfig['Type']}"
+        begin
+          require "#{@plugin_script_path}/db_#{@dbconfig['Type']}"
+        rescue LoadError => e
+          p 'File not found',e
+          exit
+        end
 
         class_name_tree = self.class.name.split('::')
         class_name_tree[-1] = 'Database'

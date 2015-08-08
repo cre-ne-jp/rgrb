@@ -33,9 +33,9 @@ module RGRB
         # @param [String] reply
         # @return [String]
         def create(nick, channel, cmdname, delkey, reply)
-          return '[error] 既に同名のコマンドが登録されています。' if @db.cmd_exist?(cmdname)
-          return '[error] コマンド名に使用できない文字が含まれています。' until cmdname == cmdname.match(CMD_RE).to_s
-          return '[error] 削除キーに使用できない文字が含まれています。' until delkey == delkey.match(CMD_RE).to_s
+          #return '[error] 既に同名のコマンドが登録されています。' if @db.cmd_exist?(cmdname)
+          #return '[error] コマンド名に使用できない文字が含まれています。' until cmdname == cmdname.match(CMD_RE).to_s
+          #return '[error] 削除キーに使用できない文字が含まれています。' until delkey == delkey.match(CMD_RE).to_s
 
           cmd = @db.write(nick, channel, cmdname, delkey, reply)
 

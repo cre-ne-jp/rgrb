@@ -30,7 +30,7 @@ module RGRB
       # 標準では何も行わない。
       # @return [self]
       def configure(config_data)
-        @dbconfig = config_data['Database'] || ''
+#        @dbconfig = config_data['Database'] || ''
         self
       end
 

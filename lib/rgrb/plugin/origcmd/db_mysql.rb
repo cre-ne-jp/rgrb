@@ -1,6 +1,6 @@
 # vim: fileencoding=utf-8
 
-#require 'mysql2'
+require 'mysql2'
 require 'active_record'
 
 module RGRB
@@ -17,12 +17,13 @@ module RGRB
         # @option options:config:#{Connection} [String] ActiveRecord に与える接続設定本体
         # @return [true]
         def initialize(options)
-          ActiveRecord::Base.extablish_connection(options[:config][options[:config]['Connection']])
-          @dbm = SDBM.open("#{options[:data_path]}/cmds")
+          connection_config = options[:config][options[:config]['Connection']]
+          connection_config['adapter'] = 'mysql2'
+          ActiveRecord::Base.establish_connection(connection_config)
           true
         end
 
-        # SDBM データベースへ書き込む
+        # MySQL データベースへ書き込む
         # @param [String] nick 
         # @param [String] channel
         # @param [String] cmdname
@@ -38,22 +39,24 @@ module RGRB
             reply: reply,
             date: Date.today
           }
-
-          @dbm[cmdname] = JSON.dump(data)
-          read(cmdname)
+          db = Origcmds.new(data)
+          db.save
         end
 
-        # SDBM データベースから指定されたコマンド名のデータを読み込む
+        # MySQL データベースから指定されたコマンド名のデータを読み込む
         # @param [String] cmdname 読み込むコマンド名
         # @return [Hash]
         def read(cmdname)
+          db = Origcmds.find_by(cmdname: cmdname)
+          db
+
           data = JSON.parse(@dbm[cmdname], {:symbolize_names => true})
           data[:date] = Date.parse(data[:date])
 
           data
         end
 
-        # SDBM データベースから指定されたコマンド名のデータを削除する
+        # MySQL データベースから指定されたコマンド名のデータを削除する
         # @param [String] cmdname
         # @return [nil]
         def remove(cmdname)
@@ -61,7 +64,7 @@ module RGRB
           nil
         end
 
-        # SDBM データベースに指定したコマンド名が登録されているか調べる
+        # MySQL データベースに指定したコマンド名が登録されているか調べる
         # @param [String] cmdname
         # @return [Boolean]
         def cmd_exist?(cmdname)
@@ -69,7 +72,6 @@ module RGRB
         end
 
         class Origcmds < ActiveRecord::Base
-
         end
       end
     end

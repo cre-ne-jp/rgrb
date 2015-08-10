@@ -28,10 +28,10 @@ module RGRB
         # @return [void]
         def invite(m)
           Channel(m.channel).join
-          @join_message.each do |line|
+          @join_message.each_line do |line|
             message = line.chomp
             m.target.send(message, true)
-            log_notice(m.target, message)
+#            log_notice(m.target, message)
           end
         end
       end

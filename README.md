@@ -65,6 +65,7 @@ bundle install --deployment
 | [ServerConnectionReport](doc/plugins/server_connection_report.md) | IRC サーバの接続状態の変化を報告する |
 | [Part](doc/plugins/part.md) | チャンネルからの退出 |
 | [KickBack](doc/plugins/kick_back.md) | RGRB が KICK されたとき、そのチャンネルに再度 JOIN する |
+| [Invite](doc/plugins/invite.md) | RGRB が INVITE されたとき、そのチャンネルに JOIN する |
 
 IRC ボットの起動
 ----------------

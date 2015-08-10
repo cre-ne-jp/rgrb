@@ -37,6 +37,7 @@ Plugins:
   - ServerConnectionReport
   - Part
   - KickBack
+  - Invite
 
 # 取り込む設定の ID を列挙する
 # 設定ファイルは config/ 以下に配置する
@@ -47,3 +48,4 @@ Include:
   - server_connection_report
   - part
   - kick_back
+  - invite

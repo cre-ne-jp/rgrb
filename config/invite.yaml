@@ -1,4 +1,5 @@
 # Invite プラグインの設定
 Invite:
   # JOIN 時に発言するメッセージ
-  JoinMessage: "ご招待いただきありがとう☆"
+  JoinMessage:
+    - "ご招待いただきありがとう☆"

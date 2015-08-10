@@ -20,7 +20,7 @@ module RGRB
 
           config_data = config[:plugin] || {}
           @join_message =
-            config_data['JoinMessage'] || 'ご招待いただきありがとう'
+            config_data['JoinMessage'] || [ 'ご招待いただきありがとう' ]
         end
 
         # 自分が INVITE されたら自動的にそのチャンネルに入る
@@ -28,8 +28,7 @@ module RGRB
         # @return [void]
         def invite(m)
           Channel(m.channel).join
-          @join_message.each_line do |line|
-            message = line.chomp
+          @join_message.each do |message|
             m.target.send(message, true)
             log("<JOIN on #{m.channel}> #{message}", :outgoing, :info)
           end

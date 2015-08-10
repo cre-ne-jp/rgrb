@@ -17,7 +17,8 @@ RGRB が INVITE (招待)されたとき、そのチャンネルに JOIN する�
 # Invite プラグインの設定
 Invite:
   # INVITE された時、JOIN 時に発言するメッセージ
-  JoinMessage: "ご招待いただきありがとう☆"
+  JoinMessage: 
+    - "ご招待いただきありがとう☆"
 ```
 
-JoinMessage には、"\n"を使うことで複数行を送信することもできます。
+JoinMessage は、発言1行を1つの要素として、配列形式で記述してください。

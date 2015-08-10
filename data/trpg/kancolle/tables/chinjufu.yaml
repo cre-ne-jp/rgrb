@@ -1,0 +1,17 @@
+Name: "鎮守府名決定"
+Rulebook: "着任ノ書"
+Page: 211
+Added: 2015-08-08
+Modified: 2015-08-08
+Body:
+  - "%%chimei%% %%tokushu%% %%soshiki%%"
+  - "%%chimei%% %%shokubutsu%% %%soshiki%%"
+  - "%%makurakotoba%% %%shokubutsu%% %%soshiki%%"
+  - "%%makurakotoba%% %%tokushu%% %%soshiki%%"
+  - "%%makurakotoba%% %%chimei%% %%soshiki%%"
+  - "%%chimei%% %%yuumou%% %%soshiki%%"
+  - "%%shuushoku%% %%chimei%% %%soshiki%%"
+  - "%%shuushoku%% %%tokushu%% %%soshiki%%"
+  - "%%shuushoku%% %%shokubutsu%% %%soshiki%%"
+  - "%%chimei%% %suisei%% %%soshiki%%"
+  - "%%chimei%% %%koubutsu%% %%soshiki%%"

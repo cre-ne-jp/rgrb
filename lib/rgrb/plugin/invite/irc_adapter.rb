@@ -31,7 +31,7 @@ module RGRB
           @join_message.each_line do |line|
             message = line.chomp
             m.target.send(message, true)
-#            log_notice(m.target, message)
+            log("<JOIN on #{m.channel}> #{message}", :outgoing, :info)
           end
         end
       end

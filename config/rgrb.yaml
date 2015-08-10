@@ -34,7 +34,7 @@ Plugins:
   - OnlineSessionSearch
   - CreTwitterCitation
   - CreBotHelp
-  - ServerConnectionReport
+  - ServerConnectionReport::Charybdis
   - Part
   - KickBack
 
@@ -44,6 +44,6 @@ Plugins:
 Include:
   - keyword
   - cre_twitter_citation
-  - server_connection_report
+  - server_connection_report/charybdis
   - part
   - kick_back

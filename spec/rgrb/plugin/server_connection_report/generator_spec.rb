@@ -6,41 +6,32 @@ require 'rgrb/plugin/server_connection_report/generator'
 describe RGRB::Plugin::ServerConnectionReport::Generator do
   let(:generator) { described_class.new }
 
-  describe '#registered' do
-    shared_examples 'registered' do
-      subject { generator.registered(server) }
-      it { should eq(%Q("#{server}" がネットワークに参加しました。)) }
-    end
-
+  describe '#joined' do
     context 'irc.cre.jp' do
-      include_examples 'registered' do
-        let(:server) { 'irc.cre.jp' }
-      end
+      subject { generator.joined('irc.cre.jp') }
+      it { should eq('!! irc.cre.jp がネットワークに参加しました') }
     end
 
     context 'irc.kazagakure.net' do
-      include_examples 'registered' do
-        let(:server) { 'irc.kazagakure.net' }
-      end
+      subject { generator.joined('irc.kazagakure.net', 'connected') }
+      it { should eq('!! irc.kazagakure.net がネットワークに参加しました (connected)') }
     end
   end
 
-  describe '#unregistered' do
-    shared_examples 'unregistered' do
-      subject { generator.unregistered(server) }
-      it { should eq(%Q("#{server}" がネットワークから切断されました。)) }
-    end
-
+  describe '#disconnected' do
     context 'irc.cre.jp' do
-      include_examples 'unregistered' do
-        let(:server) { 'irc.cre.jp' }
-      end
+      subject { generator.disconnected('irc.cre.jp') }
+      it { should eq('!! irc.cre.jp がネットワークから切断されました') }
     end
 
     context 'irc.kazagakure.net' do
-      include_examples 'unregistered' do
-        let(:server) { 'irc.kazagakure.net' }
+      subject do
+        generator.disconnected(
+          'irc.kazagakure.net',
+          'Remote host closed the connection'
+        )
       end
+      it { should eq('!! irc.kazagakure.net がネットワークから切断されました (Remote host closed the connection)') }
     end
   end
 end

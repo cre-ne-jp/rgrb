@@ -1,0 +1,15 @@
+# Charybdis 用サーバーリレー監視プラグインの設定
+ServerConnectionReport::Charybdis:
+  # NOTICE を行うチャンネルの一覧
+  ChannelsToSend:
+    - ''
+
+  # 反応すべきメッセージの送信者の一覧
+  AllowedSenders:
+    - irc.cre.jp
+    - irc.r-roman.net
+    - services.cre.jp
+    - irc.egotex.net
+    - t-net.xyz
+    - irc.sougetu.net
+    - irc.kazagakure.net

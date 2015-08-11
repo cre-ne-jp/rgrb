@@ -34,9 +34,10 @@ Plugins:
   - OnlineSessionSearch
   - CreTwitterCitation
   - CreBotHelp
-  - ServerConnectionReport
+  - ServerConnectionReport::Charybdis
   - Part
   - KickBack
+  - Invite
 
 # 取り込む設定の ID を列挙する
 # 設定ファイルは config/ 以下に配置する
@@ -44,6 +45,7 @@ Plugins:
 Include:
   - keyword
   - cre_twitter_citation
-  - server_connection_report
+  - server_connection_report/charybdis
   - part
   - kick_back
+  - invite

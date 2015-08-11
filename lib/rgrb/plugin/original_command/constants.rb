@@ -3,7 +3,7 @@
 
 module RGRB
   module Plugin
-    module Origcmd
+    module OriginalCommand
       # オリジナルコマンドを表す正規表現
       CMD_RE = /[-_\d\w]+/
     end

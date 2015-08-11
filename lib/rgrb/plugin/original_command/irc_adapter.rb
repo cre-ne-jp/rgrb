@@ -2,18 +2,18 @@
 
 require 'cinch'
 require 'rgrb/plugin/configurable_adapter'
-require 'rgrb/plugin/origcmd/constants'
-require 'rgrb/plugin/origcmd/generator'
+quire 'rgrb/plugin/original_command/constants'
+require 'rgrb/plugin/original_command/generator'
 
 module RGRB
   module Plugin
-    module Origcmd
-      # Origcmd の IRC アダプター
+    module OriginalCommand
+      # OriginalCommand の IRC アダプター
       class IrcAdapter
         include Cinch::Plugin
         include ConfigurableAdapter
 
-        set(plugin_name: 'Origcmd')
+        set(plugin_name: 'OriginalCommand')
         self.prefix = '.origcmd '
         match(/create[ 　]+(.+)/, method: :create)
         match(/remove (#{CMD_RE})(.*)/, method: :remove)
@@ -51,7 +51,7 @@ module RGRB
             end
 
           result.each_line do |line|
-            message = "origcmd[#{nick}]<CREATE>: #{line.chomp}"
+            message = "original_command[#{nick}]<CREATE>: #{line.chomp}"
             m.target.send(message, true)
             #log_notice(m.target, message)
           end
@@ -66,7 +66,7 @@ module RGRB
             if delkey == nil or delkey == ''
               '[error] 削除キーが入力されていません'
             else
-              "origcmd[#{m.user.nick}]<REMOVE>: #{@generator.remove(cmdname, delkey)}"
+              "original_command[#{m.user.nick}]<REMOVE>: #{@generator.remove(cmdname, delkey)}"
             end
           m.target.send(message, true)
           #log_notice(m.target, message)
@@ -76,7 +76,7 @@ module RGRB
         # .origcmd show CMDNAME
         # @return [void]
         def show(m, cmdname)
-          message = "origcmd[#{m.user.nick}]<SHOW>: #{@generator.show(cmdname)}"
+          message = "original_command[#{m.user.nick}]<SHOW>: #{@generator.show(cmdname)}"
           m.target.send(message, true)
           #log_notice(m.target, message)
         end
@@ -88,7 +88,7 @@ module RGRB
           nick = m.user.nick
           channel = m.channel.to_s
           @generator.edit(nick, channel, cmdname, delkey, reply).each_line do |line|
-            message = "origcmd[#{m.user.nick}]<EDIT>: #{line.chomp}"
+            message = "original_command[#{m.user.nick}]<EDIT>: #{line.chomp}"
             m.target.send(message, true)
             #log_notice(m.target, message)
           end

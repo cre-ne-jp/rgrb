@@ -5,12 +5,12 @@ require 'rgrb/plugin/configurable_generator'
 module RGRB
   module Plugin
     # オリジナルコマンド作成プラグイン
-    module Origcmd
-      # Origcmd の出力テキスト生成器
+    module OriginalCommand
+      # OriginalCommand の出力テキスト生成器
       class Generator
         include ConfigurableGenerator
 
-        # 新しい Origcmd::Generator インスタンスを返す
+        # 新しい OriginalCommand::Generator インスタンスを返す
         def initialize
           super
         end

@@ -1,25 +1,29 @@
 # vim: fileencoding=utf-8
 
-require 'sdbm'
-require 'json'
+require 'mysql2'
+require 'active_record'
 
 module RGRB
   module Plugin
-    module Origcmd
+    module OriginalCommand
       class Database
-
-        # SDBM データベースを開く
+        # MySQL データベースを開く
         # @param [Hash] options DB に関する設定
         # @option options [String] :data_path データファイルのパス
+        # @option options [String] :dbname_prefix データベース名の接頭詞
         # @option options [String] :config データベースに関する設定ファイルでの指定
         # @option options:config [String] Type データベースの種類
+        # @option options:config [String] Connection 使用する DB 接続設定名
+        # @option options:config:#{Connection} [String] ActiveRecord に与える接続設定本体
         # @return [true]
         def initialize(options)
-          @dbm = SDBM.open("#{options[:data_path]}/cmds")
+          connection_config = options[:config][options[:config]['Connection']]
+          connection_config['adapter'] = 'mysql2'
+          ActiveRecord::Base.establish_connection(connection_config)
           true
         end
 
-        # SDBM データベースへ書き込む
+        # MySQL データベースへ書き込む
         # @param [String] nick 
         # @param [String] channel
         # @param [String] cmdname
@@ -35,22 +39,24 @@ module RGRB
             reply: reply,
             date: Date.today
           }
-
-          @dbm[cmdname] = JSON.dump(data)
-          read(cmdname)
+          db = OriginalCommands.new(data)
+          db.save
         end
 
-        # SDBM データベースから指定されたコマンド名のデータを読み込む
+        # MySQL データベースから指定されたコマンド名のデータを読み込む
         # @param [String] cmdname 読み込むコマンド名
         # @return [Hash]
         def read(cmdname)
+          db = OriginalCommands.find_by(cmdname: cmdname)
+          db
+
           data = JSON.parse(@dbm[cmdname], {:symbolize_names => true})
           data[:date] = Date.parse(data[:date])
 
           data
         end
 
-        # SDBM データベースから指定されたコマンド名のデータを削除する
+        # MySQL データベースから指定されたコマンド名のデータを削除する
         # @param [String] cmdname
         # @return [nil]
         def remove(cmdname)
@@ -58,11 +64,14 @@ module RGRB
           nil
         end
 
-        # SDBM データベースに指定したコマンド名が登録されているか調べる
+        # MySQL データベースに指定したコマンド名が登録されているか調べる
         # @param [String] cmdname
         # @return [Boolean]
         def cmd_exist?(cmdname)
           @dbm.has_key?(cmdname)
+        end
+
+        class OriginalCommands < ActiveRecord::Base
         end
       end
     end

@@ -20,6 +20,10 @@ module RGRB
           match(/mr#{SPACES_RE}#{KANMUSU_RE}/io, method: :kanmusu_reaction)
           match(/t#{SPACES_RE}#{TABLES_RE}/io, method: :table_random)
 
+          match(/娘/i, method: :kanmusu_ja, :prefix => "。艦")
+          match(/リアクション#{SPACES_RE}(.*)/io, method: :kanmusu_reaction_ja, :prefix => "。艦")
+          match(/表#{SPACES_RE}(.*)/io, method: :table_random_ja, :prefix => "。艦")
+
           def initialize(*args)
             super
             prepare_generator
@@ -48,12 +52,12 @@ module RGRB
           def table_random(m, tables_str)
             tables_str.split(' ').each do |table|
               begin
-                body = @generator.table_random(table)
-                name_ja = @generator.table_name_ja(table)
+                body = "<#{@generator.table_name_ja(table)}>" \
+                  ": #{@generator.table_random(table)}"
               rescue TableNotFound => not_found_error
-                ": #{table_not_found_message(not_found_error)}"
+                body = ": #{table_not_found_message(not_found_error)}"
               end
-              message = "#{@header}[#{m.user.nick}]<#{name_ja}>: #{body}"
+              message = "#{@header}[#{m.user.nick}]#{body}"
 
               m.target.send(message, true)
               log_notice(m.target, message)
@@ -61,6 +65,37 @@ module RGRB
               sleep(1)
             end
           end
+
+          def kanmusu_ja(m)
+          end
+
+          def kanmusu_reaction_ja(m, kanmusu)
+          end
+
+          # 日本語で決定表名を書かれたときその表を振る
+          # table_random の日本語コマンド用ラッパー
+          # @param [Cinch::Message] m メッセージ
+          # @param [String] tables_str_ja 決定表名のリスト
+          # @return [void]
+          def table_random_ja(m, tables_str_ja)
+            tables = []
+            tables_str_ja.split(SPACES_RE).each do |table|
+              tables << @generator.table_name_en(table.gsub(/表$/, ''))
+            end
+
+            tables_str = tables.join(' ')
+            return if tables_str == ''
+
+            table_random(m, tables_str)
+          end
+
+          # 表が見つからなかったときのメッセージを返す
+          # @param [TableNotFound] error エラー
+          # @return [String]
+          def table_not_found_message(error)
+            "「#{error.table}」なんて表は見つからないのですわっ。"
+          end
+          private :table_not_found_message
 
           # NOTICE 送信をログに残す
           # @param [Cinch::Target] target 対象

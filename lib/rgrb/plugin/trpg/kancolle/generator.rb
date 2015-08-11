@@ -23,6 +23,7 @@ module RGRB
             @random = Random.new
             @dice_roll_generator = DiceRoll::Generator.new
             @table = {}
+            @table_ja = {}
             @kanmusu = {}
 
             @logger = Lumberjack::Logger.new(
@@ -33,8 +34,8 @@ module RGRB
           def configure(*)
             super
 
-            load_tables("#{@data_path}/tables/*.yaml")
 #            load_kanmusu("#{@data_path}/kanmusu/*.yaml")
+            load_tables("#{@data_path}/tables/*.yaml")
 
             self
           end
@@ -63,7 +64,16 @@ module RGRB
           # @param [String] table_name 表名
           # @return [String]
           def table_name_ja(table_name)
+            check_existence_of(table_name)
             @table[table_name].name_ja
+          end
+
+          # 日本語の表名からアルファベットの表名を調べる
+          # @param [String] table_name 表名
+          # @return [String] 表が存在した時
+          # @return [nil] 表が存在しなかった時
+          def table_name_en(table_name)
+            @table_ja[table_name]
           end
 
           # 表から値を取得して返す
@@ -134,6 +144,7 @@ module RGRB
                 yaml = File.read(path, encoding: 'UTF-8')
                 table = Table.parse_yaml(yaml)
                 @table[table.name] = table
+                @table_ja[table.name_ja] = table.name
               rescue => e
                 @logger.error("データファイル #{path} の読み込みに失敗しました")
                 @logger.error(e)

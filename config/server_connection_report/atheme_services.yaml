@@ -1,0 +1,5 @@
+# Atheme-Services 用サーバーリレー監視プラグインの設定
+ServerConnectionReport::AthemeServices:
+  # NOTICE を行うチャンネルの一覧
+  ChannelsToSend:
+    - ''

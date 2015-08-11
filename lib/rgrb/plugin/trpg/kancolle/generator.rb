@@ -4,6 +4,9 @@ require 'lumberjack'
 
 require 'rgrb/plugin/dice_roll/generator'
 require 'rgrb/plugin/configurable_generator'
+require 'rgrb/plugin/trpg/kancolle/constants'
+require 'rgrb/plugin/trpg/kancolle/table'
+require 'rgrb/plugin/trpg/kancolle/table_not_found'
 
 module RGRB
   module Plugin
@@ -19,7 +22,7 @@ module RGRB
 
             @random = Random.new
             @dice_roll_generator = DiceRoll::Generator.new
-            @tables = {}
+            @table = {}
             @kanmusu = {}
 
             @logger = Lumberjack::Logger.new(
@@ -31,7 +34,7 @@ module RGRB
             super
 
             load_tables("#{@data_path}/tables/*.yaml")
-            load_kanmusu("#{@data_path}/kanmusu/*.yaml")
+#            load_kanmusu("#{@data_path}/kanmusu/*.yaml")
 
             self
           end
@@ -56,15 +59,22 @@ module RGRB
             replace_var_with_value(get_value_from(table, true), table)
           end
 
+          # 表名から日本語名を調べる
+          # @param [String] table_name 表名
+          # @return [String]
+          def table_name_ja(table_name)
+            @table[table_name].name_ja
+          end
+
           # 表から値を取得して返す
           # @param [String] table_name 表名
           # @param [Boolean] root 最初に参照する表の場合 true にする
           # @return [String]
           # @raise [TableNotFound] 表が見つからなかった場合
           def get_value_from(table_name, root = false)
-#            check_existence_of(table_name)
+            check_existence_of(table_name)
 
-            @tables[table_name].sample(random: @random)
+            @table[table_name].sample(random: @random)
           end
           private :get_value_from
 
@@ -83,12 +93,6 @@ module RGRB
 
               str = str.gsub(VARIABLE_RE) do
                 table = Regexp.last_match(1)
-
-                if get_count[table] >= CIRCULAR_REFERENCE_THRESHOLD
-                  # 同一表の参照上限に到達したので、打ち切る
-                  @logger.warn("参照上限到達: #{table}")
-                  next '(...)'
-                end
 
                 variables << table
 
@@ -114,7 +118,7 @@ module RGRB
             # dXX ロールの埋め込み
             while DXXDICE_RE === str
               str = str.gsub(DXXDICE_RE) do
-                @dice_roll_generator.dxx_roll(Regexp.last_match(1), true).sort.join
+                @dice_roll_generator.dxx_roll(Regexp.last_match(1)).sort.join
               end
             end
 
@@ -125,13 +129,11 @@ module RGRB
           # @param [String] glob_pattern データファイル名のパターン
           # @return [void]
           def load_tables(glob_pattern)
-p 'Tables reading'
             Dir.glob(glob_pattern).each do |path|
               begin
                 yaml = File.read(path, encoding: 'UTF-8')
                 table = Table.parse_yaml(yaml)
-
-                @tables[table.name] = table
+                @table[table.name] = table
               rescue => e
                 @logger.error("データファイル #{path} の読み込みに失敗しました")
                 @logger.error(e)
@@ -143,21 +145,31 @@ p 'Tables reading'
           # 艦娘のデータを読み込む
           # @param [String] glob_pattern データファイル名のパターン
           # @return [void]
-          def load_kanmusu(glob_pattern)
-            Dir.glob(glob_pattern).each do |path|
-              begin
-                yaml = File.read(path, encoding: 'UTF-8')
-                table = Table.parse_yaml(yaml)
+#          def load_kanmusu(glob_pattern)
+#            Dir.glob(glob_pattern).each do |path|
+#              begin
+#                yaml = File.read(path, encoding: 'UTF-8')
+#                kanmusu = Kanmusu.parse_yaml(yaml)
+#
+#                @kanmusu[kanmusu.name] = kanmusu
+#              rescue => e
+#                @logger.error("データファイル #{path} の読み込みに失敗しました")
+#                @logger.error(e)
+#              end
+#            end
+#          end
+#          private :load_kanmusu
 
-                @kanmusu[table.name] = table
-              rescue => e
-                @logger.error("データファイル #{path} の読み込みに失敗しました")
-                @logger.error(e)
-              end
-            end
+          # 表が存在することを確かめる
+          # @return [String] table_name 表名
+          # @return [true] 表が存在する場合
+          # @raise [TableNotFound] 表が存在しない場合
+          def check_existence_of(table_name)
+            fail(TableNotFound, table_name) unless @table.key?(table_name)
+
+            true
           end
-          private :load_kanmusu
-
+          private :check_existence_of
         end
       end
     end

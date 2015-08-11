@@ -42,11 +42,37 @@ module RGRB
           end
 
           # その他のイベント表などを振る
+          # @param [Cinch::Message] m メッセージ
+          # @param [String] tables_str 表のリスト
           # @return [void]
-          def table_random(m, table)
-            header = "#{@header}[#{m.user.nick}]: "
-            m.target.send(header + @generator.table_random(table), true)
+          def table_random(m, tables_str)
+            tables_str.split(' ').each do |table|
+              begin
+                body = @generator.table_random(table)
+                name_ja = @generator.table_name_ja(table)
+              rescue TableNotFound => not_found_error
+                ": #{table_not_found_message(not_found_error)}"
+              end
+              message = "#{@header}[#{m.user.nick}]<#{name_ja}>: #{body}"
+
+              m.target.send(message, true)
+              log_notice(m.target, message)
+
+              sleep(1)
+            end
           end
+
+          # NOTICE 送信をログに残す
+          # @param [Cinch::Target] target 対象
+          # @param [String] message メッセージ
+          # @return [void]
+          def log_notice(target, message)
+            log(
+              "<NOTICE to #{target}> #{message.inspect}",
+              :outgoing, :info
+            )
+          end
+          private :log_notice
         end
       end
     end

@@ -20,9 +20,9 @@ module RGRB
         NUM_RE = /[1-9]/
         NUMS_RE = /[1-9]\d*/
         # ダイスロールを表す正規表現
-        BASICDICE_RE = /$$(#{NUMS_RE}*)d(#{NUMS_RE}*)$$/io
+        BASICDICE_RE = /@@(#{NUMS_RE}*)d(#{NUMS_RE}*)@@/io
         # dxxロールを表す正規表現
-        DXXDICE_RE = /$$d(#{NUM_RE}+)$$/io
+        DXXDICE_RE = /@@d(#{NUM_RE}+)@@/io
       end
     end
   end

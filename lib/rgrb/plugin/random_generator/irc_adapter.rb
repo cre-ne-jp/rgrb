@@ -3,6 +3,7 @@
 require 'cinch'
 
 require 'rgrb/plugin/configurable_adapter'
+require 'rgrb/plugin/util/notice_multi_lines'
 require 'rgrb/plugin/random_generator/constants'
 require 'rgrb/plugin/random_generator/generator'
 require 'rgrb/plugin/random_generator/table_not_found'
@@ -17,6 +18,7 @@ module RGRB
       class IrcAdapter
         include Cinch::Plugin
         include ConfigurableAdapter
+        include Util::NoticeMultiLines
 
         set(plugin_name: 'RandomGenerator')
         match(/rg#{SPACES_RE}#{TABLES_RE}/o, method: :rg)
@@ -50,11 +52,7 @@ module RGRB
                 [": #{private_table_message(private_table_error)}"]
               end
 
-            lines.each do |line|
-              message = "#{header}#{line.chomp}"
-              m.target.send(message, true)
-              log_notice(m.target, message)
-            end
+            notice_multi_lines(header, lines, m.target)
 
             sleep(1)
           end

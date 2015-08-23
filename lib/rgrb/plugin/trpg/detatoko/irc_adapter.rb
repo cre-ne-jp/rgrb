@@ -1,6 +1,7 @@
 # vim: fileencoding=utf-8
 
 require 'cinch'
+require 'rgrb/plugin/util/notice_multi_lines'
 require 'rgrb/plugin/trpg/detatoko/generator'
 require 'rgrb/plugin/trpg/detatoko/constants'
 
@@ -11,6 +12,7 @@ module RGRB
         # Detatoko の IRC アダプター
         class IrcAdapter
           include Cinch::Plugin
+          include Util::NoticeMultiLines
 
           set(plugin_name: 'Trpg::Detatoko')
           self.prefix = '.d'
@@ -45,12 +47,9 @@ module RGRB
           # スキルランクから判定値を得る
           # @return [void]
           def skill_decision(m, skill_rank, calc = '+', solid = 0, flag = 0)
-            header = "#{@header}[#{m.user.nick}]: "
-            @generator
+            messages = @generator
               .skill_decision(skill_rank.to_i, calc, solid.to_i, flag.to_i)
-              .each_line { |line|
-                m.target.send(header + line.chomp, true)
-              }
+            notice_multi_messages("#{@header}[#{m.user.nick}]: ", messages, m.target)
           end
 
           # skill_decision のフラグ先行コマンド用ラッパー
@@ -62,12 +61,9 @@ module RGRB
           # skill_decision の日本語コマンド
           # @return [void]
           def skill_decision_ja(m, skill_rank_ja)
-            header = "#{@header}[#{m.user.nick}]: "
-            @generator
+            messages = @generator
               .skill_decision_ja(skill_rank_ja)
-              .each_line { |line|
-                m.target.send(header + line.chomp, true)
-              }
+            notice_multi_messages("#{@header}[#{m.user.nick}]: ", messages, m.target)
           end
 
           # 烙印(p.63)を得る

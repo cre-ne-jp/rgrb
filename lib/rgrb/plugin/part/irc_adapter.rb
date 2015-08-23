@@ -21,6 +21,10 @@ module RGRB
           config_data = config[:plugin] || {}
           @part_message =
             config_data['PartMessage'] || 'ご利用ありがとうございました'
+          @exclude_channels = 
+            config_data['ExcludeChannels'].map do |channel|
+              channel.downcase
+            end
         end
 
         # コマンドを発言されたらそのチャンネルから退出する
@@ -28,6 +32,8 @@ module RGRB
         # @param [String] nick 指定されたニックネーム
         # @return [void]
         def part(m, nick)
+          return if @exclude_channels.index(m.channel.name.downcase)
+
           if !nick || nick.downcase == bot.nick.downcase
             log(m.raw, :incoming, :info)
             Channel(m.channel).part(@part_message)

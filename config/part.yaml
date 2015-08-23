@@ -3,3 +3,6 @@ Part:
   # 退出時のメッセージ
   # （IRCプロトコルにおける）PART コマンドの引数として使われます。
   PartMessage: 'ご利用ありがとうございました'
+  # コマンドを無効化するチャンネル
+  ExcludeChannels:
+    - '#cre'

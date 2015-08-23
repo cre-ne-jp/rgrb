@@ -3,6 +3,7 @@
 require 'cinch'
 
 require 'rgrb/plugin/configurable_adapter'
+require 'rgrb/plugin/util/logging'
 require 'rgrb/plugin/util/notice_multi_lines'
 require 'rgrb/plugin/random_generator/constants'
 require 'rgrb/plugin/random_generator/generator'
@@ -18,6 +19,7 @@ module RGRB
       class IrcAdapter
         include Cinch::Plugin
         include ConfigurableAdapter
+        include Util::Logging
         include Util::NoticeMultiLines
 
         set(plugin_name: 'RandomGenerator')
@@ -36,7 +38,7 @@ module RGRB
         # @param [String] tables_str 表のリスト
         # @return [void]
         def rg(m, tables_str)
-          log(m.raw, :incoming, :info)
+          log_incoming(m)
 
           header = "rg[#{m.user.nick}]"
 
@@ -63,7 +65,7 @@ module RGRB
         # @param [String] tables_str 表のリスト
         # @return [void]
         def desc(m, tables_str)
-          log(m.raw, :incoming, :info)
+          log_incoming(m)
 
           header = "rg-desc"
 
@@ -88,7 +90,7 @@ module RGRB
         # @param [String] tables_str 表のリスト
         # @return [void]
         def info(m, tables_str)
-          log(m.raw, :incoming, :info)
+          log_incoming(m)
 
           header = "rg-info"
 
@@ -124,17 +126,6 @@ module RGRB
         end
         private :private_table_message
 
-        # NOTICE 送信をログに残す
-        # @param [Cinch::Target] target 対象
-        # @param [String] message メッセージ
-        # @return [void]
-        def log_notice(target, message)
-          log(
-            "<NOTICE to #{target}> #{message.inspect}",
-            :outgoing, :info
-          )
-        end
-        private :log_notice
       end
     end
   end

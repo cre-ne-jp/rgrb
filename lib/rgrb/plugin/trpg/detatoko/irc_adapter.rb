@@ -49,7 +49,7 @@ module RGRB
           def skill_decision(m, skill_rank, calc = '+', solid = 0, flag = 0)
             messages = @generator
               .skill_decision(skill_rank.to_i, calc, solid.to_i, flag.to_i)
-            notice_multi_messages("#{@header}[#{m.user.nick}]: ", messages, m.target)
+            notice_multi_messages(messages, m.target, "#{@header}[#{m.user.nick}]: ")
           end
 
           # skill_decision のフラグ先行コマンド用ラッパー
@@ -63,7 +63,7 @@ module RGRB
           def skill_decision_ja(m, skill_rank_ja)
             messages = @generator
               .skill_decision_ja(skill_rank_ja)
-            notice_multi_messages("#{@header}[#{m.user.nick}]: ", messages, m.target)
+            notice_multi_messages(messages, m.target, "#{@header}[#{m.user.nick}]: ")
           end
 
           # 烙印(p.63)を得る

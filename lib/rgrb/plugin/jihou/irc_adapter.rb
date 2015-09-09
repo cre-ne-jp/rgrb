@@ -23,7 +23,14 @@ module RGRB
 
           config_data = config[:plugin] || {}
           @timer = config_data['Timer']
+          @wait = config_data['Wait'] || 60
 
+          Timer(0, {shots: 1, method: :wait}).start
+#          Timer(1, method: :jihou).start
+        end
+
+        def wait
+          sleep(@wait)
           Timer(1, method: :jihou).start
         end
 

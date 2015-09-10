@@ -12,7 +12,6 @@ module RGRB
 
           def initialize
             @random = Random.new
-            @stances = [ '敵視', '宿命', '憎悪', '雲上', '従属', '不明' ]
             @dice_roll_generator = DiceRoll::Generator.new
           end
 
@@ -186,10 +185,10 @@ module RGRB
           # @param [String] uses 元の文字列
           # @return [Array<String>] 使用するスタンス系統のリスト
           def what_stance_list(uses)
-            return @stances.dup if uses.empty?
+            return STANCES.dup if uses.empty?
 
             separators = /[\+＋・]/
-            @stances & uses.split(separators)
+            STANCES & uses.split(separators)
           end
           private :what_stance_list
 

@@ -14,6 +14,8 @@ module RGRB
 
           set(plugin_name: 'Trpg::Detatoko')
           self.prefix = '.d'
+          prefix_ja = '。で'
+
           match(/#{SR_RE}#{END_RE}/io, method: :skill_decision)
           match(/#{SR_RE}#{SOLID_RE}#{END_RE}/io, method: :skill_decision)
           match(/#{SR_RE}#{SOLID_RE}#{FLAG_RE}/io, method: :skill_decision)
@@ -29,11 +31,11 @@ module RGRB
           match(/stance[\s　]+(#{STANCE_RE})/io, method: :stance)
           match(/lbp/i, method: :lastboss_position)
 
-          match(/す([あかさたなはまやらわ]+)/i, method: :skill_decision_ja, :prefix => '。で')
-          match(/(体|気)力烙印/i, method: :stigma, :prefix => '。で')
-          match(/(体|気)力バッドエンド/i, method: :badend, :prefix => '。で')
-          match(/スタンス[\s　]+(#{STANCE_RE})/io, method: :stance, :prefix => '。で')
-          match(/ラスボス立場/i, method: :lastboss_position, :prefix => '。で')
+          match(/す([あかさたなはまやらわ]+)/i, method: :skill_decision_ja, :prefix => prefix_ja)
+          match(/(体|気)力烙印/i, method: :stigma, :prefix => prefix_ja)
+          match(/(体|気)力バッドエンド/i, method: :badend, :prefix => prefix_ja)
+          match(/スタンス[\s　]+(#{STANCE_RE})/io, method: :stance, :prefix => prefix_ja)
+          match(/ラスボス立場/i, method: :lastboss_position, :prefix => prefix_ja)
 
           def initialize(*args)
             super

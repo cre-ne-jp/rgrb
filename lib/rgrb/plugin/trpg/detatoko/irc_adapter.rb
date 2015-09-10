@@ -29,13 +29,21 @@ module RGRB
           match(/(t|k)b/i, method: :badend)
           
           match(/stance[\s　]+(#{STANCE_RE})/io, method: :stance)
-          match(/lbp/i, method: :lastboss_position)
+          match(/lbp/i, method: :lastboss_ground)
+          match(/lbg/i, method: :lastboss_ground)
+
+          match(/c/i, method: :character_class)
+          match(/pp/i, method: :pc_position)
+          match(/npp/i, method: :npc_position)
 
           match(/す([あかさたなはまやらわ]+)/i, method: :skill_decision_ja, :prefix => prefix_ja)
           match(/(体|気)力烙印/i, method: :stigma, :prefix => prefix_ja)
           match(/(体|気)力バッドエンド/i, method: :badend, :prefix => prefix_ja)
           match(/スタンス[\s　]+(#{STANCE_RE})/io, method: :stance, :prefix => prefix_ja)
-          match(/ラスボス立場/i, method: :lastboss_position, :prefix => prefix_ja)
+          match(/ラスボス立場/i, method: :lastboss_ground, :prefix => prefix_ja)
+          match(/クラス/i, method: :character_class, :prefix => prefix_ja)
+          match(/ポジション/i, method: :pc_position, :prefix => prefix_ja)
+          match(/敵ポジション/i, method: :npc_position, :prefix => prefix_ja)
 
           def initialize(*args)
             super
@@ -100,9 +108,33 @@ module RGRB
 
           # ラスボス立場表を引く
           # @return [void]
-          def lastboss_position(m)
+          def lastboss_ground(m)
             header = "#{@header}[#{m.user.nick}]<ラスボス立場>: "
-            message = @generator.lastboss_position
+            message = @generator.lastboss_ground
+            m.target.send(header + message, true)
+          end
+
+          # クラスを1つ選ぶ
+          # @return [void]
+          def character_class(m)
+            header = "#{@header}[#{m.user.nick}]<クラス>: "
+            message = @generator.character_class
+            m.target.send(header + message, true)
+          end
+
+          # PC 用のポジションを1つ選ぶ
+          # @return [void]
+          def pc_position(m)
+            header = "#{@header}[#{m.user.nick}]<PCポジション>: "
+            message = @generator.pc_position
+            m.target.send(header + message, true)
+          end
+
+          # NPC 用のポジションを1つ選ぶ
+          # @return [void]
+          def npc_position(m)
+            header = "#{@header}[#{m.user.nick}]<敵NPCポジション>: "
+            message = @generator.npc_position
             m.target.send(header + message, true)
           end
 

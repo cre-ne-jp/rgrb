@@ -145,7 +145,7 @@ module RGRB
               else
                 cs = D1lcs::Element.new(id)
                 if(cs.error != nil)
-                  result[:error] << cs.error
+                  result[:error] = cs.error
                   break
                 else
                   result[:lcs] << cs.chara_sheet_line

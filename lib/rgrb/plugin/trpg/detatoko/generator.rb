@@ -1,6 +1,8 @@
 # vim: fileencoding=utf-8
 
-require 'rgrb/plugin/dice_roll/generator.rb'
+require 'd1lcs'
+require 'rgrb/plugin/dice_roll/generator'
+require 'rgrb/plugin/trpg/detatoko/constants'
 
 module RGRB
   module Plugin
@@ -13,6 +15,7 @@ module RGRB
           def initialize
             @random = Random.new
             @dice_roll_generator = DiceRoll::Generator.new
+            @d1lcs_title_line = D1lcs.title_line
           end
 
           # スキルランクから判定値を算出します
@@ -125,6 +128,35 @@ module RGRB
           def npc_position
             result = @random.rand(6)
             "#{npc_position_text(result)} (フロンティアp.#{result + 68})"
+          end
+
+          # 1行キャラシを出力する
+          # @param [Array<String>] ids 対象のキャラシID
+          # @return [Hash]
+          # @option return [String] :hits ヒット数
+          # @option return [Array<String>] :lcs キャラクターシート
+          # @option return [String] :error 発生したエラー
+          def lcs(ids)
+            result = { :hits => 0, :lcs => [nil], :error => nil }
+            ids.each { |id|
+              case id
+              when 'title'
+                result[:lcs][0] = @d1lcs_title_line
+              else
+                cs = D1lcs::Element.new(id)
+                if(cs.error != nil)
+                  result[:error] << cs.error
+                  break
+                else
+                  result[:lcs] << cs.chara_sheet_line
+                  result[:hits] += 1
+                end
+              end
+            }
+
+            result[:lcs].compact!
+
+            result
           end
 
           # ダイスを振り獲得する烙印を決める

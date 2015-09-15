@@ -11,6 +11,9 @@ module RGRB
         SOLID_RE = %r|([+*\-/])(\d+)|
         # フラグを指定した時の正規表現
         FLAG_RE = /@(\d+)/
+        # 1行キャラシ用IDを表す正規表現
+        LCSID_RE = /(\d+|title)/
+        LCSIDS_RE = /(#{LCSID_RE}(?: +#{LCSID_RE})*)/
         # コマンドのパターンの最後を表す正規表現
         END_RE = /(?:[\s　]|$)/
         # 使用可能なスタンス

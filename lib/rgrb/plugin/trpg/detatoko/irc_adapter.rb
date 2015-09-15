@@ -3,6 +3,7 @@
 require 'cinch'
 require 'rgrb/plugin/trpg/detatoko/generator'
 require 'rgrb/plugin/trpg/detatoko/constants'
+require 'rgrb/plugin/util/logging'
 
 module RGRB
   module Plugin
@@ -11,6 +12,7 @@ module RGRB
         # Detatoko の IRC アダプター
         class IrcAdapter
           include Cinch::Plugin
+          include Util::Logging
 
           set(plugin_name: 'Trpg::Detatoko')
           self.prefix = '.d'
@@ -35,6 +37,7 @@ module RGRB
           match(/c/i, method: :character_class)
           match(/pp/i, method: :pc_position)
           match(/npp/i, method: :npc_position)
+          match(/1lcs #{LCSIDS_RE}/io, method: :lcs)
 
           match(/す([あかさたなはまやらわ]+)/i, method: :skill_decision_ja, :prefix => prefix_ja)
           match(/(体|気)力烙印/i, method: :stigma, :prefix => prefix_ja)
@@ -136,6 +139,31 @@ module RGRB
             header = "#{@header}[#{m.user.nick}]<敵NPCポジション>: "
             message = @generator.npc_position
             m.target.send(header + message, true)
+          end
+
+          # 1行のキャラクターシートを生成する
+          # @return [void]
+          def lcs(m, ids_str)
+            log_incoming(m)
+
+            header = "#{header}[#{m.user.nick}]<1行キャラクターシート>: "
+            result = @generator.lcs(ids_str.split(' '))
+
+            if(result[:error] != nil)
+              message = header + result[:error]
+            else
+              message = "#{header}#{result[:hits]}件ヒットしました"
+              log_notice(m.target, message)
+              m.target.send(message, true)
+              result[:lcs].each { |line|
+                log_notice(m.target, line)
+                m.target.send(line, true)
+                sleep(1)
+              }
+              message = "#{header}出力は以上です"
+            end
+            log_notice(m.target, message)
+            m.target.send(message, true)
           end
 
           # 体力・気力コードを対応する日本語に変換する

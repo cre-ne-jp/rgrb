@@ -34,10 +34,10 @@ module RGRB
           match(/lbp/i, method: :lastboss_ground)
           match(/lbg/i, method: :lastboss_ground)
 
-          match(/c/i, method: :character_class)
+          match(/c(?:[^s]|$)/i, method: :character_class)
           match(/pp/i, method: :pc_position)
           match(/npp/i, method: :npc_position)
-          match(/1lcs #{LCSIDS_RE}/io, method: :lcs)
+          match(/cs #{LCSIDS_RE}/io, method: :lcs)
 
           match(/す([あかさたなはまやらわ]+)/i, method: :skill_decision_ja, :prefix => prefix_ja)
           match(/(体|気)力烙印/i, method: :stigma, :prefix => prefix_ja)
@@ -151,19 +151,20 @@ module RGRB
 
             if(result[:error] != nil)
               message = header + result[:error]
-            else
-              message = "#{header}#{result[:hits]}件ヒットしました"
               log_notice(m.target, message)
               m.target.send(message, true)
+            else
               result[:lcs].each { |line|
                 log_notice(m.target, line)
                 m.target.send(line, true)
                 sleep(1)
               }
-              message = "#{header}出力は以上です"
+              if(result[:hits] > 1)
+                message = "#{header}#{result[:hits]}件ヒットしました。出力は以上です" 
+                log_notice(m.target, message)
+                m.target.send(message, true)
+              end
             end
-            log_notice(m.target, message)
-            m.target.send(message, true)
           end
 
           # 体力・気力コードを対応する日本語に変換する

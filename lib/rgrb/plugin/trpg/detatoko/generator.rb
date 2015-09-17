@@ -133,11 +133,10 @@ module RGRB
           # 1行キャラシを出力する
           # @param [Array<String>] ids 対象のキャラシID
           # @return [Hash]
-          # @option return [String] :hits ヒット数
           # @option return [Array<String>] :lcs キャラクターシート
           # @option return [Array<String>] :errors 発生したエラー
           def lcs(ids)
-            result = { :hits => 0, :lcs => [nil], :errors => [] }
+            result = { :lcs => [nil], :errors => [] }
             ids.each { |id|
               case id
               when 'title'
@@ -148,7 +147,6 @@ module RGRB
                   result[:errors] << cs.error
                 else
                   result[:lcs] << cs.chara_sheet_line
-                  result[:hits] += 1
                 end
               end
             }

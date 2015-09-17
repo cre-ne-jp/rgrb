@@ -149,22 +149,22 @@ module RGRB
             header = "#{header}[#{m.user.nick}]<1行キャラクターシート>: "
             result = @generator.lcs(ids_str.split(' '))
 
-            if(result[:error] != nil)
-              message = header + result[:error]
+            if(result[:errors].count != 0)
+              message = "#{header}#{result[:errors].count} 件のエラーが発生しました"
               log_notice(m.target, message)
               m.target.send(message, true)
-            else
-              result[:lcs].each { |line|
-                log_notice(m.target, line)
-                m.target.send(line, true)
-                sleep(1)
-              }
-              if(result[:hits] > 1)
-                message = "#{header}#{result[:hits]}件ヒットしました。出力は以上です" 
+              result[:errors].each { |line|
+                message = header + line
                 log_notice(m.target, message)
                 m.target.send(message, true)
-              end
+                sleep(1)
+              }
             end
+            result[:lcs].each { |line|
+              log_notice(m.target, line)
+              m.target.send(line, true)
+              sleep(1)
+            }
           end
 
           # 体力・気力コードを対応する日本語に変換する

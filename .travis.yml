@@ -10,3 +10,15 @@ rvm:
   - 2.2.0
   - 2.2.1
   - 2.2.3
+notifications:
+  irc:
+    use_notice: true
+    channels: 
+      - 'irc.trpg.net#irc_test'
+    on_success: always
+    on_failure: always
+    template:
+      - '%{repository_slug} #%{build_number} %{branch} - %{commit} -> %{result}'
+      - '変更履歴: %{compare_url}'
+      - 'ステータス: %{build_url}'
+  email: false

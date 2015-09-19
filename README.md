@@ -67,6 +67,7 @@ bundle install --deployment
 | [KickBack](doc/plugins/kick_back.md) | RGRB が KICK されたとき、そのチャンネルに再度 JOIN する |
 | [Invite](doc/plugins/invite.md) | RGRB が INVITE されたとき、そのチャンネルに JOIN する |
 | [Jihou](doc/plugins/jihou.md) | 毎日決まった時刻になった時、チャンネルに通知する |
+| [Ctcp](doc/plugins/ctcp.md) | CTCP メッセージを受信した時、適切な応答を返す |
 
 IRC ボットの起動
 ----------------

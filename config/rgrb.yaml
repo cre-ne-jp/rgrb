@@ -38,6 +38,7 @@ Plugins:
   - Part
   - KickBack
   - Invite
+  - Ctcp
 
 # 取り込む設定の ID を列挙する
 # 設定ファイルは config/ 以下に配置する
@@ -49,3 +50,4 @@ Include:
   - part
   - kick_back
   - invite
+  - ctcp

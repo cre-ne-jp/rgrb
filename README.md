@@ -66,6 +66,7 @@ bundle install --deployment
 | [Part](doc/plugins/part.md) | チャンネルからの退出 |
 | [KickBack](doc/plugins/kick_back.md) | RGRB が KICK されたとき、そのチャンネルに再度 JOIN する |
 | [Invite](doc/plugins/invite.md) | RGRB が INVITE されたとき、そのチャンネルに JOIN する |
+| [Jihou](doc/plugins/jihou.md) | 毎日決まった時刻になった時、チャンネルに通知する |
 
 IRC ボットの起動
 ----------------

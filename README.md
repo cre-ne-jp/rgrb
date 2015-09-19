@@ -66,6 +66,7 @@ bundle install --deployment
 | [Part](doc/plugins/part.md) | チャンネルからの退出 |
 | [KickBack](doc/plugins/kick_back.md) | RGRB が KICK されたとき、そのチャンネルに再度 JOIN する |
 | [Invite](doc/plugins/invite.md) | RGRB が INVITE されたとき、そのチャンネルに JOIN する |
+| [Ctcp](doc/plugins/ctcp.md) | CTCP メッセージを受信した時、適切な応答を返す |
 
 IRC ボットの起動
 ----------------

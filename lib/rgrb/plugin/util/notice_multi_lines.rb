@@ -30,7 +30,7 @@ module RGRB
         # @param [String] header メッセージの先頭に挿入する文字列
         # @return [void]
         def notice_multi_messages(messages, target, header = '')
-          notice_multi_lines(header, messages.split("$/"), target)
+          notice_multi_lines(messages.split("$/"), target, header)
         end
       end
     end

@@ -26,9 +26,9 @@ module RGRB
           @not_part_message = 
             config_data['NotPartMessage'] || 'このチャンネルでは退出コマンドを利用できません'
           @exclude_channels = 
-            config_data['ExcludeChannels'].map do |channel|
+            (config_data['ExcludeChannels'] || []).map do |channel|
               channel.downcase
-            end
+            end 
         end
 
         # コマンドを発言されたらそのチャンネルから退出する

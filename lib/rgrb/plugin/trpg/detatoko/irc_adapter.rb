@@ -3,6 +3,7 @@
 require 'cinch'
 require 'rgrb/plugin/trpg/detatoko/generator'
 require 'rgrb/plugin/trpg/detatoko/constants'
+require 'rgrb/plugin/util/logging'
 
 module RGRB
   module Plugin
@@ -11,9 +12,12 @@ module RGRB
         # Detatoko の IRC アダプター
         class IrcAdapter
           include Cinch::Plugin
+          include Util::Logging
 
           set(plugin_name: 'Trpg::Detatoko')
           self.prefix = '.d'
+          prefix_ja = '。で'
+
           match(/#{SR_RE}#{END_RE}/io, method: :skill_decision)
           match(/#{SR_RE}#{SOLID_RE}#{END_RE}/io, method: :skill_decision)
           match(/#{SR_RE}#{SOLID_RE}#{FLAG_RE}/io, method: :skill_decision)
@@ -27,13 +31,22 @@ module RGRB
           match(/(t|k)b/i, method: :badend)
           
           match(/stance[\s　]+(#{STANCE_RE})/io, method: :stance)
-          match(/lbp/i, method: :lastboss_position)
+          match(/lbp/i, method: :lastboss_ground)
+          match(/lbg/i, method: :lastboss_ground)
 
-          match(/す([あかさたなはまやらわ]+)/i, method: :skill_decision_ja, :prefix => '。で')
-          match(/(体|気)力烙印/i, method: :stigma, :prefix => '。で')
-          match(/(体|気)力バッドエンド/i, method: :badend, :prefix => '。で')
-          match(/スタンス[\s　]+(#{STANCE_RE})/io, method: :stance, :prefix => '。で')
-          match(/ラスボス立場/i, method: :lastboss_position, :prefix => '。で')
+          match(/c(?:[^s]|$)/i, method: :character_class)
+          match(/pp/i, method: :pc_position)
+          match(/npp/i, method: :npc_position)
+          match(/cs #{LCSIDS_RE}/io, method: :lcs)
+
+          match(/す([あかさたなはまやらわ]+)/i, method: :skill_decision_ja, :prefix => prefix_ja)
+          match(/(体|気)力烙印/i, method: :stigma, :prefix => prefix_ja)
+          match(/(体|気)力バッドエンド/i, method: :badend, :prefix => prefix_ja)
+          match(/スタンス[\s　]+(#{STANCE_RE})/io, method: :stance, :prefix => prefix_ja)
+          match(/ラスボス立場/i, method: :lastboss_ground, :prefix => prefix_ja)
+          match(/クラス/i, method: :character_class, :prefix => prefix_ja)
+          match(/ポジション/i, method: :pc_position, :prefix => prefix_ja)
+          match(/敵ポジション/i, method: :npc_position, :prefix => prefix_ja)
 
           def initialize(*args)
             super
@@ -98,10 +111,60 @@ module RGRB
 
           # ラスボス立場表を引く
           # @return [void]
-          def lastboss_position(m)
+          def lastboss_ground(m)
             header = "#{@header}[#{m.user.nick}]<ラスボス立場>: "
-            message = @generator.lastboss_position
+            message = @generator.lastboss_ground
             m.target.send(header + message, true)
+          end
+
+          # クラスを1つ選ぶ
+          # @return [void]
+          def character_class(m)
+            header = "#{@header}[#{m.user.nick}]<クラス>: "
+            message = @generator.character_class
+            m.target.send(header + message, true)
+          end
+
+          # PC 用のポジションを1つ選ぶ
+          # @return [void]
+          def pc_position(m)
+            header = "#{@header}[#{m.user.nick}]<PCポジション>: "
+            message = @generator.pc_position
+            m.target.send(header + message, true)
+          end
+
+          # NPC 用のポジションを1つ選ぶ
+          # @return [void]
+          def npc_position(m)
+            header = "#{@header}[#{m.user.nick}]<敵NPCポジション>: "
+            message = @generator.npc_position
+            m.target.send(header + message, true)
+          end
+
+          # 1行のキャラクターシートを生成する
+          # @return [void]
+          def lcs(m, ids_str)
+            log_incoming(m)
+
+            header = "#{header}[#{m.user.nick}]<1行キャラクターシート>: "
+            result = @generator.lcs(ids_str.split(' '))
+
+            if(result[:errors].count != 0)
+              message = "#{header}#{result[:errors].count} 件のエラーが発生しました"
+              log_notice(m.target, message)
+              m.target.send(message, true)
+              result[:errors].each { |line|
+                message = header + line
+                log_notice(m.target, message)
+                m.target.send(message, true)
+                sleep(1)
+              }
+            end
+            result[:lcs].each { |line|
+              log_notice(m.target, line)
+              m.target.send(line, true)
+              sleep(1)
+            }
           end
 
           # 体力・気力コードを対応する日本語に変換する

@@ -36,7 +36,7 @@ module RGRB
         # @param [Boolean] safe 表示不可能な文字を排除するかどうか
         # @return [void]
         def notice_multi_messages(messages, target, header = '', safe = false)
-          notice_multi_lines(messages.split("$/"), target, header, safe)
+          notice_multi_lines(messages.split($/), target, header, safe)
         end
       end
     end

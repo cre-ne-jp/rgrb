@@ -3,6 +3,7 @@
 require 'cinch'
 require 'rgrb/plugin/configurable_adapter'
 require 'rgrb/plugin/cre_twitter_citation/generator'
+require 'rgrb/plugin/util/notice_multi_lines'
 
 module RGRB
   module Plugin
@@ -12,6 +13,7 @@ module RGRB
       class IrcAdapter
         include Cinch::Plugin
         include ConfigurableAdapter
+        include Util::NoticeMultiLines
 
         set(plugin_name: 'CreTwitterCitation')
 
@@ -29,11 +31,13 @@ module RGRB
         # ツイートを引用し、NOTICE する
         # @return [void]
         def cite_from_twitter
-          @generator.cite_from_twitter.each do |message|
-            @channels_to_send.each do |channel_name|
-              Channel(channel_name).safe_send(message, true)
-              sleep(1)
-            end
+          @channels_to_send.each do |channel_name|
+            notice_multi_lines(
+              @generator.cite_from_twitter,
+              Channel(channel_name), 
+              '',
+              true
+            )
           end
         end
       end

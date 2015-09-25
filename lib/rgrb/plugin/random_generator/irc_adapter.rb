@@ -54,7 +54,7 @@ module RGRB
                 [": #{private_table_message(private_table_error)}"]
               end
 
-            notice_multi_lines(header, lines, m.target)
+            notice_multi_lines(lines, m.target, header)
 
             sleep(1)
           end

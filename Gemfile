@@ -6,6 +6,7 @@ gem 'twitter', '~> 5.11'
 gem 'lumberjack', '~> 1.0'
 gem 'sysexits', '~> 1.2'
 gem 'd1lcs', '~> 0.5.1'
+gem 'mail', '~> 2.6.3'
 
 group :development, :test do
   gem 'pry', '~> 0.10'

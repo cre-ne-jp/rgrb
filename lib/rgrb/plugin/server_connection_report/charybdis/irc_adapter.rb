@@ -62,6 +62,7 @@ module RGRB
           def joined(m, server)
             if m.server
               log_incoming(m)
+              sleep 1
               notice_on_each_channel(@generator.joined(server))
             end
           end

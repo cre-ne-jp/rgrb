@@ -1,7 +1,7 @@
 # vim: fileencoding=utf-8
 
-require 'mail'
-require 'pp'
+require 'rgrb/plugin/configurable_generator'
+require 'rgrb/plugin/server_connection_report/mail_sender'
 
 module RGRB
   module Plugin
@@ -9,52 +9,39 @@ module RGRB
     module ServerConnectionReport
       # ServerConnectionReport の出力テキスト生成器
       class Generator
+        include ConfigurableGenerator
         # 設定データを解釈してプラグインの設定を行う
         # @param [Hash] config_data 設定データのハッシュ
         # @return [self]
         def configure(config_data)
-#          mailconf = config_data['mail']
+          @mail = MailSender.new(config_data['mail'] || {})
+          self
+        end
 
-#          Mail.defaults do
-#            from    'RGRB (%{nick}) <rgrb-%{nick}@%{server}>'
-#            to      mailconf['to']
-#            subject 'IRC Server %{server} Connection Report'
-#            delivery_method(:smtp, mailconf['smtp'])
-#          end
+        def connection_datas=(datas)
+          @mail.connection_datas = datas
         end
 
         # サーバがネットワークに参加した際のメッセージを返す
         # @param [String] server サーバ名
+        # @param [DateTime] time 接続時間
         # @param [String] message メッセージ
         # @return [String]
-        def joined(server, message = nil)
+        def joined(server, time, message = nil)
           common_part = "!! #{server} がネットワークに参加しました"
-          sendmail message ? "#{common_part} (#{message})" : common_part
+          @mail.send(server, :joined, time, message)
+          message ? "#{common_part} (#{message})" : common_part
         end
 
         # サーバがネットワークから切断された際のメッセージを返す
         # @param [String] server サーバ名
+        # @param [DateTime] time 切断時間
         # @param [String] message メッセージ
         # @return [String]
-        def disconnected(server, message = nil)
+        def disconnected(server, time, message = nil)
           common_part = "!! #{server} がネットワークから切断されました"
-          sendmail message ? "#{common_part} (#{message})" : common_part
-        end
-
-        # メールを送信する
-        # @param [String] message 送信内容
-        # @return [String]
-        def sendmail(message)
-          sendmes = <<-__EOT__
-IRC サーバ　接続状態通知
-: #{Date.now}
-
-          __EOT__
-#          mail = Mail.new
-#          mail.body = sendmes % {nick: m.}
-#          mail.deliver
-
-          message
+          @mail.send(server, :disconnected, time, message)
+          message ? "#{common_part} (#{message})" : common_part
         end
       end
     end

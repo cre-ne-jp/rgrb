@@ -27,7 +27,7 @@ module RGRB
         # @param [DateTime] time 接続時間
         # @param [String] message メッセージ
         # @return [String]
-        def joined(server, time, message = nil)
+        def joined(server, time = nil, message = nil)
           common_part = "!! #{server} がネットワークに参加しました"
           @mail.send(server, :joined, time, message)
           message ? "#{common_part} (#{message})" : common_part
@@ -38,7 +38,7 @@ module RGRB
         # @param [DateTime] time 切断時間
         # @param [String] message メッセージ
         # @return [String]
-        def disconnected(server, time, message = nil)
+        def disconnected(server, time = nil, message = nil)
           common_part = "!! #{server} がネットワークから切断されました"
           @mail.send(server, :disconnected, time, message)
           message ? "#{common_part} (#{message})" : common_part

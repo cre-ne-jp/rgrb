@@ -74,11 +74,11 @@ module RGRB
           data_parts[:server] = server
           data_parts[:message] = message
           data_parts[:rgrb_version] = RGRB::VERSION
-          data_parts[:status] = case status
+          data_parts[:status1], data_parts[:status2] = case status
           when :joined
-            'に参加し'
+            ['に参加し', '接続']
           when :disconnected
-            'から切断され'
+            ['から切断され', '切断']
           end
 
           mail = Mail.new

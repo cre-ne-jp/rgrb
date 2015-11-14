@@ -1,5 +1,4 @@
-IRC サーバー接続状態通知 (%{server})
+IRC サーバ%{status2}通知 (%{server})
 
-「irc.cre.jp 系IRCサーバ群」の公式ボット、%{nick} よりお知らせします。
-%{time}、IRC サーバー "%{server}" がネットワーク%{status}ました。
+"%{server}" がネットワーク%{status1}ました。
 

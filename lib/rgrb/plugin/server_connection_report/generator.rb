@@ -14,7 +14,11 @@ module RGRB
         # @param [Hash] config_data 設定データのハッシュ
         # @return [self]
         def configure(config_data)
-          @mail = MailSender.new(config_data['mail'] || {})
+          super
+
+          @mail = MailSender.new(config_data['Mail'] || {})
+          @mail.load_message_template("#{@data_path}/#{config_data['MessageTemplate']}.txt")
+
           self
         end
 

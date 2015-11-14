@@ -1,6 +1,7 @@
 # vim: fileencoding=utf-8
 
 require 'mail'
+require 'lumberjack'
 
 module RGRB
   module Plugin
@@ -15,16 +16,14 @@ module RGRB
         def initialize(config)
           if(config['smtp'])
             Mail.defaults do
-              delivery_method(:smtp, config['smtp'])
+              delivery_method(:smtp, config['SMTP'])
             end
           end
-          @to = config['to'] || 'root@localhost'
-          if(config['address'])
-            @address = config['address']
-          else
-            # error
-            @address = 'return@example.com'
-          end
+          @to = config['To'] || 'root@localhost'
+
+          @logger = Lumberjack::Logger.new(
+            $stdout, progname: self.class.to_s
+          )
         end
 
         # 接続設定を保存する
@@ -32,6 +31,36 @@ module RGRB
         # @param [String] :nick ボットのニックネーム
         # @param [String] :network ネットワーク名
         attr_writer :connection_datas
+
+        # メールのテンプレートを読み込む
+        # @param [String] path テンプレートファイル(text/plain)のパス
+        # @return [void]
+        def load_message_template(path)
+          begin
+            template = File.read(path, encoding: 'UTF-8')
+            @logger.warn("メールテンプレート #{path} の読み込みが完了しました")
+          rescue => e
+            @logger.error("メールテンプレート #{path} の読み込みに失敗しました")
+            @logger.error(e)
+          end
+
+          line_flag = :first
+          template.each_line do |line|
+            case line_flag
+            when :first
+              # 1行目は件名
+              line_flag = :second
+              @subject = line.chomp
+            when :second
+              # 2行目は破棄
+              line_flag = :body
+              @body = ''
+            when :body
+              # 3行目以降は本文
+              @body << line
+            end
+          end
+        end
 
         # メールを送信する
         # @param [String] server 対象のサーバー
@@ -41,8 +70,10 @@ module RGRB
         # @return [String]
         def send(server, status, time, message)
           data_parts = @connection_datas.clone
+          data_parts[:time] = time.strftime('%Y年%m月%d日 %H:%M:%S')
           data_parts[:server] = server
           data_parts[:message] = message
+          data_parts[:rgrb_version] = RGRB::VERSION
           data_parts[:status] = case status
           when :joined
             'に参加し'
@@ -51,33 +82,16 @@ module RGRB
           end
 
           mail = Mail.new
+          mail['charset'] = 'utf-8'
+          mail['to']      = @to
           {
-            charset:  'utf-8',
             from:     '%{nick} on %{network} <rgrb-%{nick}@%{host}>',
-            to:       @to,
-            subject:  'IRC Server "%{server}" Connection Report',
-            body:     <<-__EOT__
-IRC サーバー接続状態通知
-
-%{network} に接続されている IRC ボット、%{nick} よりお知らせします。
-#{time.strftime('%Y年%m月%d日 %H:%M:%S')}、IRC サーバー %{server} がネットワーク%{status}ました。
-
-IRC サーバーより送信されたメッセージ
-%{message}
-ここまで============================
-
-
-このメールは汎用 IRC ボット "RGRB" に組み込まれたプラグイン "ServerConnectionReport" により送信されました。
-RGRB ver#{RGRB::VERSION}
-Development: https://github.com/cre-ne-jp/rgrb
-
-心当たりがない場合は、お手数をですが以下までご連絡いただきますよう、よろしくお願い致します。
-IRC ボット "%{nick}" 運営者連絡先: #{@address}
-
-            __EOT__
+            subject:  @subject,
+            body:     @body
           }.each do |key, value|
             mail[key] = value % data_parts
           end
+puts "Subject: #{mail.subject}\n"
 puts mail.body
 puts mail.to_s
         end

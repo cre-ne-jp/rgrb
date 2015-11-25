@@ -13,7 +13,7 @@ describe RGRB::Plugin::ServerConnectionReport::Generator do
     end
 
     context 'irc.kazagakure.net' do
-      subject { generator.joined('irc.kazagakure.net', 'connected') }
+      subject { generator.joined('irc.kazagakure.net', Date.new, 'connected') }
       it { should eq('!! irc.kazagakure.net がネットワークに参加しました (connected)') }
     end
   end
@@ -28,6 +28,7 @@ describe RGRB::Plugin::ServerConnectionReport::Generator do
       subject do
         generator.disconnected(
           'irc.kazagakure.net',
+          Date.new,
           'Remote host closed the connection'
         )
       end

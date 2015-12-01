@@ -23,4 +23,10 @@ ServerConnectionReport::Test:
   Mail:
     To: 
       - 'koi-chan@mail.kazagakure.net'
-#    Smtp:
+    SMTP:
+      address: 'localhost'
+      port: 25
+      domain: 'vm11.kazagakure.net'
+      authentication: false
+      ssl: false
+      enable_starttls_auto: false

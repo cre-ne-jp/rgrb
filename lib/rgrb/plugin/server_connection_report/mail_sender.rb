@@ -14,10 +14,11 @@ module RGRB
         # @option [String] to 送信先
         # @option [Hash] smtp 送信に利用するSMTPサーバーの設定
         def initialize(config)
-          if(config['smtp'])
-            Mail.defaults do
-              delivery_method(:smtp, config['SMTP'])
-            end
+          if(config['SMTP'])
+            @mail_config = symbolize_keys(config['SMTP'])
+              .delete_if do |key, value|
+                value == 'nil'
+              end
           end
           @to = config['To'] || 'root@localhost'
 
@@ -82,6 +83,7 @@ module RGRB
           end
 
           mail = Mail.new
+          mail.delivery_method(:smtp, @mail_config)
           mail['charset'] = 'utf-8'
           mail['to']      = @to
           {
@@ -94,7 +96,15 @@ module RGRB
 puts "Subject: #{mail.subject}\n"
 puts mail.body
 puts mail.to_s
+          mail.deliver
         end
+
+        def symbolize_keys(hash)
+          hash.map { |key, value|
+            [key.to_sym, value]
+          }.to_h
+        end
+        private :symbolize_keys
       end
     end
   end

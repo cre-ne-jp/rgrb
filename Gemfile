@@ -5,6 +5,10 @@ gem 'cinch'
 gem 'twitter', '~> 5.11'
 gem 'lumberjack', '~> 1.0'
 gem 'sysexits', '~> 1.2'
+gem 'http', '~> 0.9'
+gem 'guess_html_encoding'
+gem 'charlock_holmes', '~> 0.7'
+gem 'nokogiri', '~> 1.6'
 gem 'd1lcs', '~> 0.5.1'
 
 group :development, :test do

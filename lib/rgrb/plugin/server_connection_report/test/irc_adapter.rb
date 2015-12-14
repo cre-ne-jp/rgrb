@@ -7,6 +7,7 @@ require 'rgrb/plugin/util/notice_on_each_channel'
 require 'rgrb/plugin/util/logging'
 require 'rgrb/plugin/server_connection_report/constants'
 require 'rgrb/plugin/server_connection_report/generator'
+require 'rgrb/plugin/server_connection_report/common_disposal'
 
 module RGRB
   module Plugin
@@ -25,9 +26,7 @@ module RGRB
           include Cinch::Plugin
           include Util::NoticeOnEachChannel
           include Util::Logging
-
-          # メッセージを送信するチャンネルのリスト
-          attr_reader :channels_to_send
+          include CommonDisposal
 
           # サーバーがネットワークに参加したときのメッセージを表す正規表現
           NETJOIN_RE =
@@ -86,16 +85,8 @@ module RGRB
             end
           end
 
-          # サーバーへの接続が完了したとき、情報を集める
-          # @param [Cinch::Message] m メッセージ
-          # @return [void]
           def connected(m)
-            sleep 1
-            @generator.connection_datas = {
-              host: bot.host,
-              nick: bot.nick,
-              network: bot.irc.isupport['NETWORK']
-            }
+            _connected(m)
           end
         end
       end

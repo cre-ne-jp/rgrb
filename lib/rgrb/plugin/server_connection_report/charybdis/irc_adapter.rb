@@ -2,10 +2,8 @@
 
 require 'cinch'
 
-require 'rgrb/plugin/util/notice_on_each_channel'
-require 'rgrb/plugin/util/logging'
 require 'rgrb/plugin/server_connection_report/constants'
-require 'rgrb/plugin/server_connection_report/generator'
+require 'rgrb/plugin/server_connection_report/common_disposal'
 
 module RGRB
   module Plugin
@@ -24,9 +22,7 @@ module RGRB
           include Cinch::Plugin
           include Util::NoticeOnEachChannel
           include Util::Logging
-
-          # メッセージを送信するチャンネルのリスト
-          attr_reader :channels_to_send
+          include ServerConnectionReport::CommonDisposal
 
           # サーバーがネットワークに参加したときのメッセージを表す正規表現
           NETJOIN_RE =
@@ -45,14 +41,11 @@ module RGRB
           # サーバーがネットワークから切断されたときのメッセージを表す
           # 正規表現
           match(NETSPLIT_RE, method: :disconnected)
+          # サーバーへの接続が完了したときに情報を集める
+          listen_to(:'002', method: :connected)
 
           def initialize(*)
             super
-
-            config_data = config[:plugin]
-            @channels_to_send = config_data['ChannelsToSend'] || []
-
-            @generator = Generator.new
           end
 
           # サーバ接続メッセージを NOTICE する
@@ -60,11 +53,7 @@ module RGRB
           # @param [String] server サーバ
           # @return [void]
           def joined(m, server)
-            if m.server
-              log_incoming(m)
-              sleep 1
-              notice_on_each_channel(@generator.joined(server))
-            end
+            _joined(m,server)
           end
 
           # サーバ切断メッセージを NOTICE する
@@ -73,12 +62,14 @@ module RGRB
           # @param [String] comment コメント
           # @return [void]
           def disconnected(m, server, comment)
-            if m.server
-              log_incoming(m)
-              notice_on_each_channel(
-                @generator.disconnected(server, comment)
-              )
-            end
+            _connected(m, server, comment)
+          end
+
+          # サーバーへの接続が完了したとき、情報を集める
+          # @param [Cinch::Message] m メッセージ
+          # @return [void]
+          def connected(m)
+            _connected(m)
           end
         end
       end

@@ -62,7 +62,7 @@ module RGRB
           # @param [String] comment コメント
           # @return [void]
           def disconnected(m, server, comment)
-            _connected(m, server, comment)
+            _disconnected(m, server, comment)
           end
 
           # サーバーへの接続が完了したとき、情報を集める

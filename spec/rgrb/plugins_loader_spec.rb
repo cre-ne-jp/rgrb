@@ -66,7 +66,7 @@ describe RGRB::PluginsLoader do
         context 'skip_on_load_error = false' do
           it do
             expect { wrong_plugins_loader.load_each('Generator') }.
-              to raise_error
+              to raise_error(LoadError)
           end
         end
 

@@ -1,0 +1,4 @@
+IRC サーバ%{status2}通知 (%{server})
+
+"%{server}" がネットワーク%{status1}ました。
+

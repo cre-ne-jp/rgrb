@@ -1,5 +1,5 @@
-# Charybdis 用サーバーリレー監視プラグインの設定
-ServerConnectionReport::Charybdis:
+# Test 用サーバーリレー監視プラグインの設定
+ServerConnectionReport::Test:
   # NOTICE を行うチャンネルの一覧
   ChannelsToSend:
     - '#irc_test'

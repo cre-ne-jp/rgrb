@@ -10,6 +10,7 @@ gem 'guess_html_encoding'
 gem 'charlock_holmes', '~> 0.7'
 gem 'nokogiri', '~> 1.6'
 gem 'd1lcs', '~> 0.5.1'
+gem 'mail', '~> 2.6.3'
 
 group :development, :test do
   gem 'pry', '~> 0.10'

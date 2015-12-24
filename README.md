@@ -57,6 +57,7 @@ bundle install --deployment
 | [Keyword](doc/plugins/keyword.md) | キーワード検索 |
 | [OnlineSessionSearch](doc/plugins/online_session_search.md) | [TRPG.NET セッションマッチングシステム](http://session.trpg.net/)から予定されているオンラインセッションの情報を検索する |
 | [CreTwitterCitation](doc/plugins/cre_twitter_citation.md) | Twitter @cre_ne_jp の引用 |
+| [UrlFetchTitle](doc/plugins/url_fetch_title.md) | 発言された URL のページタイトルを取得する |
 
 #### IRC 関連
 

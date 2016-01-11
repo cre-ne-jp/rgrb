@@ -87,6 +87,14 @@ module RGRB
           "#{added_and_author}#{modified}#{description}"
         end
 
+        # 表を一覧にして返す
+        # @return [Array]
+        def list
+          @table.select do |key, value|
+            value.public?
+          end.keys.sort
+        end
+
         # 表から値を取得して返す
         # @param [String] table_name 表名
         # @param [Boolean] root 最初に参照する表の場合 true にする

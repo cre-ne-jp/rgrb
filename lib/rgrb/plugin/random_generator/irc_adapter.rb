@@ -22,6 +22,7 @@ module RGRB
         match(/rg#{SPACES_RE}#{TABLES_RE}/o, method: :rg)
         match(/rg-desc#{SPACES_RE}#{TABLES_RE}/o, method: :desc)
         match(/rg-info#{SPACES_RE}#{TABLES_RE}/o, method: :info)
+        match(/rg-list/, method: :list)
 
         def initialize(*args)
           super
@@ -108,6 +109,19 @@ module RGRB
 
             sleep(1)
           end
+        end
+
+        # 表の名前を一覧する
+        # @param [Cinch::Message] m メッセージ
+        # @return [String]
+        def list(m)
+          log(m.raw, :incoming, :info)
+          message = "rg-list: #{@generator.list.join(', ')}"
+
+          m.target.send(message, true)
+          log_notice(m.target, message)
+
+          sleep(1)
         end
 
         # 表が見つからなかったときのメッセージを返す

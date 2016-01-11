@@ -27,6 +27,9 @@ module RGRB
         def initialize(*args)
           super
 
+          config_data = config[:plugin] || {}
+          @list_reply = config_data['ListReply'] || ''
+
           prepare_generator
         end
 
@@ -116,8 +119,12 @@ module RGRB
         # @return [String]
         def list(m)
           log(m.raw, :incoming, :info)
-#          message = "rg-list: #{@generator.list.join(', ')}"
-          message = "rg-list: コマンドリファレンス http://www.cre.ne.jp/services/irc/bots/rgrb/rg-reference をご覧ください"
+
+          if(@list_reply == '')
+            message = "rg-list: #{@generator.list.join(', ')}"
+          else
+            message = "rg-list: #{@list_reply}"
+          end
 
           m.target.send(message, true)
           log_notice(m.target, message)

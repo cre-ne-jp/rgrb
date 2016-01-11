@@ -21,12 +21,12 @@ ServerConnectionReport::Charybdis:
 
   # 送信設定
   Mail:
-    To: 
-      - 'koi-chan@mail.kazagakure.net'
+    To:
+      - 'admin@example.net'
     SMTP:
       address: 'localhost'
       port: 25
-      domain: 'vm11.kazagakure.net'
+      domain: 'example.net'
       authentication: false
       ssl: false
       enable_starttls_auto: false

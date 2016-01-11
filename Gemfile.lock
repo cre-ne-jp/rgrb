@@ -143,6 +143,7 @@ DEPENDENCIES
   lumberjack (~> 1.0)
   mail (~> 2.6.3)
   nokogiri (~> 1.6)
+  mail (~> 2.6.3)
   pry (~> 0.10)
   rake (~> 10.4)
   rspec (~> 3.1)

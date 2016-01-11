@@ -116,7 +116,8 @@ module RGRB
         # @return [String]
         def list(m)
           log(m.raw, :incoming, :info)
-          message = "rg-list: #{@generator.list.join(', ')}"
+#          message = "rg-list: #{@generator.list.join(', ')}"
+          message = "rg-list: コマンドリファレンス http://www.cre.ne.jp/services/irc/bots/rgrb/rg-reference をご覧ください"
 
           m.target.send(message, true)
           log_notice(m.target, message)

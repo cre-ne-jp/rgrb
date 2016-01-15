@@ -36,7 +36,7 @@ module RGRB
           if !nick || nick.downcase == bot.nick.downcase
             log(m.raw, :incoming, :info)
 
-            if(@part_lock.include?(m.channel))
+            if @part_lock.include?(m.channel)
               m.target.send(@locked_message, true)
               log_notice(m.target, @locked_message)
             else

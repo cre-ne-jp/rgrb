@@ -2,6 +2,7 @@
 
 require 'cinch'
 require 'rgrb/plugin/configurable_adapter'
+require 'rgrb/plugin/util/logging'
 
 module RGRB
   module Plugin
@@ -10,6 +11,7 @@ module RGRB
       # Part の IRC アダプター
       class IrcAdapter
         include Cinch::Plugin
+        include Util::Logging
         include ConfigurableAdapter
 
         set(plugin_name: 'Part')
@@ -21,6 +23,9 @@ module RGRB
           config_data = config[:plugin] || {}
           @part_message =
             config_data['PartMessage'] || 'ご利用ありがとうございました'
+          @locked_message =
+            config_data['LockedMessage'] || 'このチャンネルで .part は使えません。'
+          @part_lock = config_data['PartLock'] || []
         end
 
         # コマンドを発言されたらそのチャンネルから退出する
@@ -30,8 +35,14 @@ module RGRB
         def part(m, nick)
           if !nick || nick.downcase == bot.nick.downcase
             log(m.raw, :incoming, :info)
-            Channel(m.channel).part(@part_message)
-            log("<PART on #{m.channel}> #{@part_message}", :outgoing, :info)
+
+            if @part_lock.include?(m.channel)
+              m.target.send(@locked_message, true)
+              log_notice(m.target, @locked_message)
+            else
+              Channel(m.channel).part(@part_message)
+              log("<PART on #{m.channel}> #{@part_message}", :outgoing, :info)
+            end
           end
         end
       end

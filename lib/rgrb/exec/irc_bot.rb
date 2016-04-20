@@ -41,6 +41,8 @@ module RGRB
       end
       module_function :run
 
+      private
+
       # 設定を読み込む
       # @param [String] config_id 設定 ID
       # @param [String] root_path RGRB のルートディレクトリの絶対パス
@@ -57,7 +59,6 @@ module RGRB
 
         Sysexits.exit(:config_error)
       end
-      private :load_config
 
       # プラグインの IRC アダプタを読み込む
       # @param [Config] config RGRB の設定
@@ -80,7 +81,6 @@ module RGRB
 
         Sysexits.exit(:config_error)
       end
-      private :load_irc_adapters
 
       # 設定から読み込まれたプラグインの設定を抽出する
       # @param [Config] config RGRB の設定
@@ -96,7 +96,7 @@ module RGRB
 
         loaded_irc_adapters.each do |adapter|
           plugin_name = adapter.plugin_name
-          plugin_config = config.plugin_config[plugin_name]
+          plugin_config = config.plugin_config[plugin_name] || {}
 
           plugin_options[adapter] = {
             root_path: root_path,
@@ -115,7 +115,6 @@ module RGRB
 
         Sysexits.exit(:config_error)
       end
-      private :extract_plugin_options
 
       # IRC ボットを作り、設定して返す
       # @param [Config] config RGRB の設定
@@ -162,7 +161,6 @@ module RGRB
 
         Sysexits.exit(:config_error)
       end
-      private :new_bot
 
       # オプションを解析する
       # @return [Hash]
@@ -212,7 +210,6 @@ module RGRB
 
         default_options.merge(options)
       end
-      private :parse_options
 
       # 新しいロガーを作り、設定して返す
       # @param [Symbol] log_level ログレベル
@@ -227,7 +224,6 @@ module RGRB
           level: lumberjack_log_level
         )
       end
-      private :new_logger
 
       # シグナルハンドラを設定する
       # @param [Cinch::Bot] bot IRC ボット
@@ -244,7 +240,6 @@ module RGRB
           end
         end
       end
-      private :set_signal_handler
     end
   end
 end

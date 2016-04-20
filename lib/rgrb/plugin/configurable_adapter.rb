@@ -15,7 +15,10 @@ module RGRB
         @generator = generator_class.new
 
         @generator.root_path = config[:root_path]
-        @generator.configure(config[:plugin])
+
+        # プラグインをロガーとして使えるよう、設定に含める
+        config_data = config[:plugin].merge({ logger: self })
+        @generator.configure(config_data)
 
         true
       end

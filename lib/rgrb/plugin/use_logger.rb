@@ -1,5 +1,7 @@
 # vim: fileencoding=utf-8
 
+require 'lumberjack'
+
 module RGRB
   module Plugin
     # Generator でロガーを使う場合に利用するモジュール。

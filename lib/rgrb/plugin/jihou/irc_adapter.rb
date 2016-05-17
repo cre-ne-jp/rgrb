@@ -15,6 +15,7 @@ module RGRB
         include Util::Logging
 
         set(plugin_name: 'Jihou')
+        listen_to(:'001', method: :connected)
 
         JIHOU_MESSAGE = "%{nick} が %{channel} の皆様に %{time} をお知らせします"
 
@@ -22,23 +23,28 @@ module RGRB
           super
 
           config_data = config[:plugin] || {}
-          @timer = config_data['Timer']
+          @timing = config_data['Timer']
           @wait = config_data['Wait'] || 60
 
           Timer(0, {shots: 1, method: :wait}).start
 #          Timer(1, method: :jihou).start
         end
 
+        def connected
+          @timing.start if !@timing.defined? || @timing.stopped?
+        end
+        private :connected
+
         def wait
           sleep(@wait)
-          Timer(1, method: :jihou).start
+          @timer = Timer(1, method: :jihou).start
         end
 
         # 毎日決められた時刻になったら発言用のメソッドを呼び出す
         # @return [void]
         def jihou
           time = Time.now
-          if(channels = @timer[time.strftime('%T')])
+          if(channels = @timing[time.strftime('%T')])
             sendmes(channels, time)
           end
         end

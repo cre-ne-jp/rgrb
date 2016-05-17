@@ -27,12 +27,15 @@ module RGRB
 
         def initialize(*)
           super
-          config_data = config[:plugin]
+
+          # プラグインをロガーとして使えるよう、設定に含める
+          config_data = config[:plugin].merge({ logger: self })
+
           @channels_to_send = config_data['ChannelsToSend'] || []
 
           @generator = Generator.new
           @generator.root_path = config[:root_path]
-          @generator.configure(config[:plugin])
+          @generator.configure(config_data)
         end
 
         # サーバ接続メッセージを NOTICE する

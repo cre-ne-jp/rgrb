@@ -26,16 +26,28 @@ module RGRB
           @timing = config_data['Timer']
           @wait = config_data['Wait'] || 60
 
-          Timer(0, {shots: 1, method: :wait}).start
-#          Timer(1, method: :jihou).start
+          prepare_timer
         end
 
+        # サーバへの接続を検知して Timer を起動する
+        # 再接続時のみ動作し、初回接続時は何もしない
+        # @return [void]
         def connected
-          @timing.start if !@timing.defined? || @timing.stopped?
+          prepare_timer if !@timer.defined? || @timer.stopped?
         end
         private :connected
 
-        def wait
+        # 時報 Timer を起動する
+        # 接続時の安定待ちのための遅延をする
+        # @return [void]
+        def prepare_timer
+          Timer(0, {shots: 1, method: :start_timer}).start
+        end
+        private :define_timer
+
+        # 実際に Timer を開始する
+        # @return [void]
+        def start_timer
           sleep(@wait)
           @timer = Timer(1, method: :jihou).start
         end

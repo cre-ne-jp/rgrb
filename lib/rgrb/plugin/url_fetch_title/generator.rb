@@ -5,12 +5,12 @@ require 'timeout'
 require 'http'
 require 'active_support'
 require 'active_support/core_ext/numeric/conversions'
-require 'lumberjack'
 require 'guess_html_encoding'
 require 'charlock_holmes'
 require 'nokogiri'
 require 'rgrb/version'
 require 'rgrb/plugin/configurable_generator'
+require 'rgrb/plugin/use_logger'
 
 module RGRB
   module Plugin
@@ -30,12 +30,12 @@ module RGRB
       # @see https://github.com/sparklemotion/mechanize/blob/master/lib/mechanize/page.rb Mechanize::Page
       class Generator
         include ConfigurableGenerator
+        include UseLogger
 
         def initialize
           super
 
-          @logger = Lumberjack::Logger.new($stdout,
-                                           progname: self.class.to_s)
+          prepare_default_logger
         end
 
         # 設定データを解釈してプラグインの設定を行う
@@ -60,6 +60,8 @@ module RGRB
           user_agent_format = config_data['UserAgent'] ||
             "RGRB/%s (Creator's Network IRC bot)"
           @user_agent = user_agent_format % RGRB::VERSION
+
+          set_logger(config_data)
 
           self
         end
@@ -178,7 +180,7 @@ module RGRB
               GuessHtmlEncoding::HTMLScanner.new(html_code).encoding
             encodings << html_encoding if html_encoding
           rescue guess_html_encoding_error
-            @logger.debug(
+            logger.debug(
               "GuessHtmlEncoding error: #{guess_html_encoding_error}"
             )
           end
@@ -205,7 +207,7 @@ module RGRB
               doc = Nokogiri::HTML(html_code, nil, encoding)
               return doc unless encoding_error?(doc)
             rescue e
-              @logger.debug("Nokogiri::HTML error: #{e}")
+              logger.debug("Nokogiri::HTML error: #{e}")
             end
           end
 

@@ -24,10 +24,10 @@ module RGRB
         match(/rg-info#{SPACES_RE}#{TABLES_RE}/o, method: :info)
         match(/rg-list/, method: :list)
 
-        def initialize(*args)
+        def initialize(*)
           super
 
-          config_data = config[:plugin] || {}
+          config_data = config[:plugin]
           @list_reply = config_data['ListReply'] || ''
 
           prepare_generator

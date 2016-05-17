@@ -10,10 +10,11 @@ module RGRB
       # メール送信を司るクラス
       class MailSender
         # 送信データを初期化する
-        # @param [Hash] config
+        # @param [Hash] config 設定
+        # @param [Object] logger ロガー
         # @option [String] to 送信先
         # @option [Hash] smtp 送信に利用するSMTPサーバーの設定
-        def initialize(config)
+        def initialize(config, logger = nil)
           if(config['SMTP'])
             @mail_config = symbolize_keys(config['SMTP'])
               .delete_if do |key, value|
@@ -22,7 +23,7 @@ module RGRB
           end
           @to = config['To'] || 'root@localhost'
 
-          @logger = Lumberjack::Logger.new(
+          @logger = logger || Lumberjack::Logger.new(
             $stdout, progname: self.class.to_s
           )
         end

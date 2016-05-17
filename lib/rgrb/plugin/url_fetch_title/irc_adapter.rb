@@ -19,7 +19,7 @@ module RGRB
 
         listen_to(:privmsg, method: :fetch_title)
 
-        def initialize(*args)
+        def initialize(*)
           super
 
           prepare_generator

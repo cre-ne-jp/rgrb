@@ -16,7 +16,8 @@ module RGRB
         def configure(config_data)
           super
 
-          @mail = MailSender.new(config_data['Mail'] || {})
+          @mail = MailSender.new(config_data['Mail'] || {},
+                                 config_data[:logger])
           @mail.load_message_template("#{@data_path}/#{config_data['MessageTemplate']}.txt")
 
           self

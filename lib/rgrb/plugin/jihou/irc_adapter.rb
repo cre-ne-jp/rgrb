@@ -32,8 +32,8 @@ module RGRB
         # サーバへの接続を検知して Timer を起動する
         # 再接続時のみ動作し、初回接続時は何もしない
         # @return [void]
-        def connected
-          prepare_timer if !@timer.defined? || @timer.stopped?
+        def connected(m)
+          prepare_timer if !defined?(@timer) || @timer.stopped?
         end
         private :connected
 
@@ -43,7 +43,7 @@ module RGRB
         def prepare_timer
           Timer(0, {shots: 1, method: :start_timer}).start
         end
-        private :define_timer
+        private :prepare_timer
 
         # 実際に Timer を開始する
         # @return [void]

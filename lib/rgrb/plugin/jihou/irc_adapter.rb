@@ -15,7 +15,7 @@ module RGRB
         include Util::Logging
 
         set(plugin_name: 'Jihou')
-        listen_to(:'001', method: :connected)
+        listen_to(:connect, method: :connected)
 
         JIHOU_MESSAGE = "%{nick} が %{channel} の皆様に %{time} をお知らせします"
 
@@ -26,31 +26,19 @@ module RGRB
           @timing = config_data['Timer']
           @wait = config_data['Wait'] || 60
 
-          prepare_timer
+          @timer = Timer(1, {
+            method: :jihou,
+            start_automatically: false
+          })
         end
 
         # サーバへの接続を検知して Timer を起動する
-        # 再接続時のみ動作し、初回接続時は何もしない
         # @return [void]
-        def connected
-          prepare_timer if !@timer.defined? || @timer.stopped?
+        def connected(m)
+          sleep(@wait)
+          @timer.start if @timer.stopped?
         end
         private :connected
-
-        # 時報 Timer を起動する
-        # 接続時の安定待ちのための遅延をする
-        # @return [void]
-        def prepare_timer
-          Timer(0, {shots: 1, method: :start_timer}).start
-        end
-        private :define_timer
-
-        # 実際に Timer を開始する
-        # @return [void]
-        def start_timer
-          sleep(@wait)
-          @timer = Timer(1, method: :jihou).start
-        end
 
         # 毎日決められた時刻になったら発言用のメソッドを呼び出す
         # @return [void]
@@ -67,13 +55,15 @@ module RGRB
         # @return [void]
         def sendmes(channels, time)
           channels.each { |channel_name|
+            channel = Channel(channel_name)
+
             message = JIHOU_MESSAGE % {
                 nick: bot.nick,
                 channel: channel_name,
                 time: time.strftime('%Y年%m月%d日 %H時%M分%S秒')
             }
-            Channel(channel_name).safe_notice(message)
-            log_notice(channel_name, message)
+            channel.safe_notice(message)
+            log_notice(channel, message)
           }
         end
       end

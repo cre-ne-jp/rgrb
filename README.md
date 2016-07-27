@@ -26,6 +26,15 @@ gem install bundler
 
 上記が完了したら、適当なディレクトリにファイルを設置し、以下を実行して必要な gem（ライブラリ）をインストールしてください。
 
+なお、gem をインストールするためには、システムにいくつかのライブラリと開発環境がインストールされている必要があります。  
+CentOS 7 を最小限構成でセットアップしている場合、以下の追加パッケージが必要です。
+
+* make
+* gcc
+* gcc-c++
+* libicu-devel
+* zlib-devel
+
 ```bash
 cd /path/to/rgrb
 bundle install --deployment

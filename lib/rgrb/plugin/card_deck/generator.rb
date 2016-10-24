@@ -1,114 +1,121 @@
 # vim: fileencoding=utf-8
 
-require 'cinch'
-require 'rgrb/plugin/configurable_adapter'
-require 'rgrb/plugin/card_deck/generator'
-require 'rgrb/plugin/util/logging'
+require 'sdbm'
+
+require 'rgrb/plugin/configurable_generator'
+require 'rgrb/plugin/use_logger'
 
 module RGRB
   module Plugin
+    # カードデッキプラグイン
     module CardDeck
-      # CardDeck の IRC アダプター
-      class IrcAdapter
-        include Cinch::Plugin
-        include ConfigurableAdapter
-        include Util::Logging
+      # CardDeck の出力テキスト生成器。
+      class Generator
+        include ConfigurableGenerator
+        include UseLogger
 
-        set(plugin_name: 'CardDeck')
-
-        match(/[ 　]+#{DECK_NAME}/, method: :card_draw)
-        match(/-add/, method: :card_add)
-        match(/-del/, method: :card_del)
-        match(/-new/, method: :deck_new)
-        match(/-shuffle/, method: :deck_shuffle)
-        match(/-export/, method: :deck_export)
-        match(/-destroy/, method: :deck_destroy)
-        match(/-info/, method: :deck_info)
-        match(/-mode/, method: :draw_mode)
-        match(/-help/, method: :help)
-
-        def initialize(*)
+        def initialize
           super
 
-          prepare_generator
+          prepare_default_logger
+        end
+
+        # 設定データを解釈してプラグインの設定を行う
+        # @param [Hash] config_data プラグインの設定データ
+        # @return [self]
+        def configure(config_data)
+          # チャンネルデータベースを読み出す
+          @channel_data = SDBM.open("#{@data_path}/channel")
+          # デッキが保存されているディレクトリのパス
+          @deck_path = "#{@data_path}/decks/"
+
+          load_decks
+
+          set_logger(config_data)
+
+          self
+        end
+
+        # デッキをデータベースから読み込む
+        # @return [void]
+        def load_decks
+          deck_list = []
+          Dir.glob("#{@deck_path}/*.dir").each do |file|
+            path = "#{@deck_path}/#{file}"
+            deck_list << path if File.exist?("#{path}.pag")
+          end
+
+          @decks = deck_list.map do |deck_name|
+            SDBM.open(deck_name)
+          end
         end
 
         # デッキからカードを引く
         # @return [void]
-        def card_draw(m, deck_name)
-          m.target.send(message, true)
+        def card_draw(deck_name)
         end
 
         # カードをデッキに追加する
-        # @param [Cinch::Message] m
         # @param [String] deck_name デッキ名
         # @param [String] password デッキ編集パスワード
         # @param [String] card 追加するカードの内容
         # @return [void]
-        def card_add(m, deck_name, password, card)
+        def card_add(deck_name, password, card)
         end
 
         # カードをデッキから削除する
-        # @param [Cinch::Message] m
         # @param [String] deck_name デッキ名
         # @param [String] password デッキ編集パスワード
         # @param [String] card_id 追加するカードの ID
         # @return [void]
-        def card_del(m, deck_name, password, card_id)
+        def card_del(deck_name, password, card_id)
         end
 
         # デッキを新規に作成する
-        # @param [Cinch::Message] m
         # @param [String] deck_name デッキ名
         # @return [void]
-        def deck_new(m, deck_name)
+        def deck_new(deck_name)
         end
 
         # 山札モードの時、デッキを初期化する
-        # @param [Cinch::Message] m
         # @param [String] deck_name デッキ名
         # @return [void]
-        def deck_shuffle(m, deck_name)
+        def deck_shuffle(deck_name)
         end
 
         # デッキの内容を全て出力する
-        # @param [Cinch::Message] m
         # @param [String] deck_name デッキ名
         # @param [String] method 出力方法(メールなど)
         # @param [Array] args 出力方法に依存する追加オプション
         # @return [void]
-        def deck_export(m, deck_name, method, args*)
+        def deck_export(deck_name, method, args*)
         end
 
         # デッキを削除する
-        # @param [Cinch::Message] m
         # @param [String] deck_name デッキ名
         # @param [String] password デッキ編集パスワード
         # @return [void]
-        def deck_destroy(m, deck_name, password)
+        def deck_destroy(deck_name, password)
         end
 
         # デッキの情報を出力する
-        # @param [Cinch::Message] m
         # @param [String] deck_name デッキ名
         # @return [void]
-        def deck_info(m, deck_name)
+        def deck_info(deck_name)
         end
 
         # デッキからカードを引くモードを変更する
         # モードは「山札モード」と「ランダムモード」の2つ
         # 山札　　: 既に引いたカードを記憶しておき、出ていないカードを引く
         # ランダム: 毎回ランダムにカードを引く
-        # @param [Cinch::Message] m
         # @param [String] deck_name デッキ名
         # @return [void]
-        def draw_mode(m, deck_name)
+        def draw_mode(deck_name)
         end
 
         # ヘルプを表示する
-        # @param [Cinch::Message] m
         # @return [void]
-        def help(m)
+        def help
         end
       end
     end

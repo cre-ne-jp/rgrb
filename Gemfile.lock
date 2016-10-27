@@ -41,7 +41,7 @@ GEM
     http-form_data (1.0.1)
     http_parser.rb (0.6.0)
     i18n (0.7.0)
-    json (1.8.3)
+    json (2.0.2)
     lumberjack (1.0.10)
     mail (2.6.4)
       mime-types (>= 1.16, < 4)

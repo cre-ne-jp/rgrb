@@ -31,8 +31,8 @@ module RGRB
           match(/(t|k)b/i, method: :badend)
           
           match(/stance[\s　]+(#{STANCE_RE})/io, method: :stance)
-          match(/lbp/i, method: :lastboss_ground)
           match(/lbg/i, method: :lastboss_ground)
+          match(/dg/i, method: :darkboss_ground)
 
           match(/c(?:[^s]|$)/i, method: :character_class)
           match(/pp/i, method: :pc_position)
@@ -44,6 +44,7 @@ module RGRB
           match(/(体|気)力バッドエンド/i, method: :badend, :prefix => prefix_ja)
           match(/スタンス[\s　]+(#{STANCE_RE})/io, method: :stance, :prefix => prefix_ja)
           match(/ラスボス立場/i, method: :lastboss_ground, :prefix => prefix_ja)
+          match(/悪へのラスボス立場/i, method: :darkboss_ground, :prefix => prefix_ja)
           match(/クラス/i, method: :character_class, :prefix => prefix_ja)
           match(/ポジション/i, method: :pc_position, :prefix => prefix_ja)
           match(/敵ポジション/i, method: :npc_position, :prefix => prefix_ja)
@@ -113,7 +114,15 @@ module RGRB
           # @return [void]
           def lastboss_ground(m)
             header = "#{@header}[#{m.user.nick}]<ラスボス立場>: "
-            message = @generator.lastboss_ground
+            message = @generator.ground(:normal)
+            m.target.send(header + message, true)
+          end
+
+          # 悪へのラスボス立場表を引く
+          # @return [void]
+          def darkboss_ground(m)
+            header = "#{@header}[#{m.user.nick}]<敵へのラスボス立場>: "
+            message = @generator.ground(:dark)
             m.target.send(header + message, true)
           end
 

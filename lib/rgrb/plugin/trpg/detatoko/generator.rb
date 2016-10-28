@@ -103,10 +103,16 @@ module RGRB
           end
 
           # ラスボス立場表を振る
+          # @param [Symbol] type 通常の立場表か、悪への立場表か
+          # @option :normal 通常の立場表
+          # @option :dark   悪へのラスボス立場表
           # @return [String]
-          def lastboss_ground
+          def ground(type = :normal)
             result = @dice_roll_generator.dice_roll(2, 6)
-            "#{result.sw2_dll_format} -> #{lastboss_ground_text(result.sum)}"
+            number = result.sum
+
+            "#{result.sw2_dll_format} -> " \
+              "#{number}: 【#{GROUNDS[type][number - 2]}】"
           end
 
           # クラスを1つ選ぶ
@@ -220,17 +226,17 @@ module RGRB
           end
           private :badend_text
 
-          # 出目から対応するラスボス立場を決定する
-          # @param [Fixnum] number ダイスの出目
-          # @return [String]
-          def lastboss_ground_text(number)
-            grounds = [
+          # 出目から対応するラスボス立場を決定するための表
+          GROUNDS = {
+            :normal => [
               '恐怖', '破壊', '封印', '滅亡', '侵略', '暴君',
               '陰謀', '独裁', '崇拝', '犠牲', '人望'
+            ],
+            :dark => [
+              '外的存在', '下衆', '悪の同輩', '悪の先達', '有象無象',
+              '討伐者', '新たな力', '邪魔者', '反逆者', '希望', '世界法則'
             ]
-            "#{number}: 【#{grounds[number - 2]}】"
-          end
-          private :lastboss_ground_text
+          }
 
           # 文字列をスタンスの系統に分ける
           # @param [String] uses 元の文字列

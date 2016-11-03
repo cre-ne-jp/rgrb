@@ -31,12 +31,14 @@ module RGRB
           match(/(t|k)b/i, method: :badend)
           
           match(/stance[\s　]+(#{STANCE_RE})/io, method: :stance)
+
           match(/lbg/i, method: :lastboss_ground)
           match(/dg/i, method: :darkboss_ground)
 
           match(/c(?:[^s]|$)/i, method: :character_class)
-          match(/pp/i, method: :pc_position)
-          match(/npp/i, method: :npc_position)
+
+          match(/(|n)pp/i, method: :position)
+
           match(/cs #{LCSIDS_RE}/io, method: :lcs)
 
           match(/す([あかさたなはまやらわ]+)/i, method: :skill_decision_ja, :prefix => prefix_ja)
@@ -46,8 +48,7 @@ module RGRB
           match(/ラスボス立場/i, method: :lastboss_ground, :prefix => prefix_ja)
           match(/悪へのラスボス立場/i, method: :darkboss_ground, :prefix => prefix_ja)
           match(/クラス/i, method: :character_class, :prefix => prefix_ja)
-          match(/ポジション/i, method: :pc_position, :prefix => prefix_ja)
-          match(/敵ポジション/i, method: :npc_position, :prefix => prefix_ja)
+          match(/(|敵)ポジション/i, method: :position, :prefix => prefix_ja)
 
           def initialize(*args)
             super
@@ -134,19 +135,18 @@ module RGRB
             m.target.send(header + message, true)
           end
 
-          # PC 用のポジションを1つ選ぶ
+          # ポジションを1つ選ぶ
           # @return [void]
-          def pc_position(m)
+          def position(m, type)
             header = "#{@header}[#{m.user.nick}]<PCポジション>: "
-            message = @generator.pc_position
-            m.target.send(header + message, true)
-          end
-
-          # NPC 用のポジションを1つ選ぶ
-          # @return [void]
-          def npc_position(m)
-            header = "#{@header}[#{m.user.nick}]<敵NPCポジション>: "
-            message = @generator.npc_position
+            type = case type
+              when ''
+                :pc
+              when 'n', '敵'
+                header[-10, 0] = '敵N'
+                :npc
+              end
+            message = @generator.position(type)
             m.target.send(header + message, true)
           end
 
@@ -177,10 +177,10 @@ module RGRB
           end
 
           # 体力・気力コードを対応する日本語に変換する
-          # @param [String] tcode 体力・気力コード
+          # @param [String/Symbol] tcode 体力・気力コード
           # @return [String]
           def type_conv(tcode)
-            case tcode
+            case "#{tcode}"
             when 'v'
               '体'
             when 'm'
@@ -191,12 +191,12 @@ module RGRB
 
           # コマンドでの表記を内部での体力・気力のフラグに書き換える
           # @param [String] code コマンドでの表記
-          # @return [String]
+          # @return [Symbol]
           def type_tr(code)
             code.tr!('tk', 'vm')
             code.tr!('sw', 'vm')
             code.tr!('体気', 'vm')
-            code
+            code.to_sym
           end
           private :type_tr
         end

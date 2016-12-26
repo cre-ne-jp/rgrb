@@ -118,8 +118,8 @@ module RGRB
           # クラスを1つ選ぶ
           # @return [String]
           def character_class
-            result = @random.rand(1..15)
-            "%02d -> #{CLASSES.at(result - 1)}" % result
+            result = CLASSES.to_a.sample
+            "%02d -> #{result[0]}" % result[1]
           end
 
           # ポジションを1つ選ぶ
@@ -131,6 +131,8 @@ module RGRB
               [@random.rand(POSITIONS[:pc].size), 42]
             when :npc
               [@random.rand(POSITIONS[:npc].size), 68]
+            when :dark
+              [@random.rand(POSITIONS[:dark].size), 46]
             end
 
             "#{POSITIONS[type][result]} (フロンティアp.#{result + page})"

@@ -37,7 +37,7 @@ module RGRB
 
           match(/c(?:[^s]|$)/i, method: :character_class)
 
-          match(/(|n)pp/i, method: :position)
+          match(/(|n|d)pp/i, method: :position)
 
           match(/cs #{LCSIDS_RE}/io, method: :lcs)
 
@@ -48,7 +48,7 @@ module RGRB
           match(/ラスボス立場/i, method: :lastboss_ground, :prefix => prefix_ja)
           match(/悪へのラスボス立場/i, method: :darkboss_ground, :prefix => prefix_ja)
           match(/クラス/i, method: :character_class, :prefix => prefix_ja)
-          match(/(|敵)ポジション/i, method: :position, :prefix => prefix_ja)
+          match(/(|敵|悪)ポジション/i, method: :position, :prefix => prefix_ja)
 
           def initialize(*args)
             super
@@ -145,6 +145,9 @@ module RGRB
               when 'n', '敵'
                 header[-10, 0] = '敵N'
                 :npc
+              when 'd', '悪'
+                header[-10, 0] = '悪の'
+                :dark
               end
             message = @generator.position(type)
             m.target.send(header + message, true)

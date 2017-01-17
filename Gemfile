@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'activesupport', '~> 4.2'
+gem 'activesupport', '~> 5.0'
 gem 'cinch'
 gem 'twitter', '~> 5.11'
 gem 'lumberjack', '~> 1.0'
@@ -9,7 +9,7 @@ gem 'http', '~> 0.9'
 gem 'guess_html_encoding'
 gem 'charlock_holmes', '~> 0.7'
 gem 'nokogiri', '~> 1.6'
-gem 'd1lcs', '~> 0.5.1'
+gem 'd1lcs'
 gem 'mail', '~> 2.6.3'
 
 group :development, :test do

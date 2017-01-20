@@ -138,17 +138,15 @@ module RGRB
           # ポジションを1つ選ぶ
           # @return [void]
           def position(m, type)
-            header = "#{@header}[#{m.user.nick}]<PCポジション>: "
-            type = case type
+            insert, type = case type
               when ''
-                :pc
+                ['PC', :pc]
               when 'n', '敵'
-                header[-10, 0] = '敵N'
-                :npc
+                ['敵NPC', :npc]
               when 'd', '悪'
-                header[-10, 0] = '悪の'
-                :dark
+                ['悪の', :dark]
               end
+            header = "#{@header}[#{m.user.nick}]<#{insert}ポジション>: "
             message = @generator.position(type)
             m.target.send(header + message, true)
           end

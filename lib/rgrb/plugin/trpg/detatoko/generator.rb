@@ -123,19 +123,13 @@ module RGRB
           end
 
           # ポジションを1つ選ぶ
-          # @param [Symbol] type PC用か、NPC用か
+          # @param [Symbol] type 用途
+          # @option type :pc   PC のポジション
+          # @option type :npc  NPC のポジション
+          # @option type :dark 悪のポジション
           # @return [String]
           def position(type)
-            result, page = case type
-            when :pc
-              [@random.rand(POSITIONS[:pc].size), 42]
-            when :npc
-              [@random.rand(POSITIONS[:npc].size), 68]
-            when :dark
-              [@random.rand(POSITIONS[:dark].size), 46]
-            end
-
-            "#{POSITIONS[type][result]} (フロンティアp.#{result + page})"
+            POSITIONS[type].sample
           end
 
           # 1行キャラシを出力する

@@ -137,7 +137,7 @@ module RGRB
             when 'lb', ''
               ['', :normal]
             when 'd', '悪への'
-              ['敵への', :dark]
+              ['悪への', :dark]
             end
             header = "#{@header}[#{m.user.nick}]<#{insert}ラスボス立場>: "
             message = @generator.ground(type)

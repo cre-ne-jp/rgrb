@@ -30,7 +30,12 @@ module RGRB
           @generator = Generator.new
         end
 
+        # 最近追加されたセッション情報を出力する
+        # @param [Cinch::Message] m
+        # @return [void]
         def latest_schedules(m)
+          log_incoming(m)
+
           messages = [
             '最近追加されたオンラインセッション情報ですわ☆',
             LIST_MESSAGE
@@ -45,17 +50,23 @@ module RGRB
           notice_multi_lines(messages, m.target)
         end
 
+        # オンラインセッションを検索する
+        # @param [Cinch::Message] m
+        # @param [String] str 検索キーワード
+        # @return [void]
         def search(m, str)
-          message = [
+          log_incoming(m)
+
+          messages = [
             "オンラインセッション情報検索: #{str}",
             LIST_MESSAGE
           ]
 
           begin
-            messages << @generator.search(str, 5)
+            messages += @generator.search(str, 5)
           rescue => e
             bot.loggers.exception(e)
-            message << GET_ERROR_MESSAGE
+            messages << GET_ERROR_MESSAGE
           end
           notice_multi_lines(messages, m.target, '', true)
         end

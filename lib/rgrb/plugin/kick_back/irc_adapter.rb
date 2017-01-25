@@ -32,8 +32,9 @@ module RGRB
           if m.params[1].downcase == bot.nick.downcase
             log_incoming(m)
             Channel(m.channel).join
+            log_join(m.channel)
             m.target.send(@join_message, true)
-            log("<JOIN on #{m.channel}> #{@join_message}", :outgoing, :info)
+            log_notice(m.channel, @join_message)
           end
         end
       end

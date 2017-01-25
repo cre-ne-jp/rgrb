@@ -30,6 +30,7 @@ module RGRB
         # @return [void]
         def invite(m)
           Channel(m.channel).join
+          log_join(m.channel)
           notice_multi_lines(@join_message, m.channel)
         end
       end

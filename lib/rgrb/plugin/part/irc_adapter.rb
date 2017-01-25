@@ -41,7 +41,7 @@ module RGRB
               log_notice(m.target, @locked_message)
             else
               Channel(m.channel).part(@part_message)
-              log("<PART from #{m.channel}> #{@part_message}", :outgoing, :info)
+              log_part(m.channel, @part_message)
             end
           end
         end

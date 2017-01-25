@@ -19,10 +19,22 @@ module RGRB
         # @param [String] message メッセージ
         # @return [void]
         def log_notice(target, message)
-          log(
-            "<NOTICE to #{target.name}> #{message.inspect}",
-            :outgoing, :info
-          )
+          log("<NOTICE to #{target.name}> #{message.inspect}", :outgoing, :info)
+        end
+
+        # JOIN をログに残す
+        # @param [Cinch::Channel] channel
+        # @return [void]
+        def log_join(channel)
+          log("<JOIN on #{channel}>", :outgoing, :info)
+        end
+
+        # PART をログに残す
+        # @param [Cinch::Channel] channel
+        # @param [String] message 退出メッセージ
+        # @return [void]
+        def log_part(channel, message)
+          log("<PART from #{channel}> #{message.inspect}", :outgoing, :info)
         end
       end
     end

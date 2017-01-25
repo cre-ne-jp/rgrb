@@ -1,8 +1,7 @@
 # vim: fileencoding=utf-8
 
-require 'lumberjack'
-
 require 'rgrb/plugin/configurable_generator'
+require 'rgrb/plugin/use_logger'
 require 'rgrb/plugin/random_generator/constants'
 require 'rgrb/plugin/random_generator/table'
 require 'rgrb/plugin/random_generator/table_not_found'
@@ -15,6 +14,7 @@ module RGRB
       # RandomGenerator の出力テキスト生成器
       class Generator
         include ConfigurableGenerator
+        include UseLogger
 
         # 循環参照と見做される同一表参照回数の閾値
         CIRCULAR_REFERENCE_THRESHOLD = 10
@@ -23,9 +23,7 @@ module RGRB
           super
 
           @ramdom = Random.new
-          @logger = Lumberjack::Logger.new(
-            $stdout, progname: self.class.to_s
-          )
+          prepare_default_logger
         end
 
         # プラグインの設定を行う
@@ -33,10 +31,11 @@ module RGRB
         # ランダムジェネレータでは、データを読み込む。
         #
         # @return [self]
-        def configure(*)
+        def configure(config_data)
           super
 
           load_data("#{@data_path}/**/*.yaml")
+          set_logger(config_data)
 
           self
         end
@@ -87,6 +86,14 @@ module RGRB
           "#{added_and_author}#{modified}#{description}"
         end
 
+        # 表を一覧にして返す
+        # @return [Array]
+        def list
+          @table.select do |key, value|
+            value.public?
+          end.keys.sort
+        end
+
         # 表から値を取得して返す
         # @param [String] table_name 表名
         # @param [Boolean] root 最初に参照する表の場合 true にする
@@ -117,7 +124,7 @@ module RGRB
 
               if get_count[table] >= CIRCULAR_REFERENCE_THRESHOLD
                 # 同一表の参照上限に到達したので、打ち切る
-                @logger.warn("参照上限到達: #{table}")
+                logger.warn("参照上限到達: #{table}")
                 next '(...)'
               end
 
@@ -152,8 +159,8 @@ module RGRB
 
               @table[table.name] = table
             rescue => e
-              @logger.error("データファイル #{path} の読み込みに失敗しました")
-              @logger.error(e)
+              logger.error("データファイル #{path} の読み込みに失敗しました")
+              logger.error(e)
             end
           end
         end

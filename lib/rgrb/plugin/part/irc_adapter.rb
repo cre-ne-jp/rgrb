@@ -11,8 +11,8 @@ module RGRB
       # Part の IRC アダプター
       class IrcAdapter
         include Cinch::Plugin
-        include ConfigurableAdapter
         include Util::Logging
+        include ConfigurableAdapter
 
         set(plugin_name: 'Part')
         match(/part(?:-(\w+))?$/, method: :part)
@@ -23,12 +23,9 @@ module RGRB
           config_data = config[:plugin] || {}
           @part_message =
             config_data['PartMessage'] || 'ご利用ありがとうございました'
-          @not_part_message = 
-            config_data['NotPartMessage'] || 'このチャンネルでは退出コマンドを利用できません'
-          @exclude_channels = 
-            (config_data['ExcludeChannels'] || []).map do |channel|
-              channel.downcase
-            end 
+          @locked_message =
+            config_data['LockedMessage'] || 'このチャンネルで .part は使えません。'
+          @part_lock = config_data['PartLock'] || []
         end
 
         # コマンドを発言されたらそのチャンネルから退出する
@@ -36,17 +33,16 @@ module RGRB
         # @param [String] nick 指定されたニックネーム
         # @return [void]
         def part(m, nick)
-          if @exclude_channels.index(m.channel.name.downcase)
-            log_incoming(m)
-            m.target.send(@not_part_message, true)
-            log_notice(m.target, @not_part_message)
-            return
-          end
-
           if !nick || nick.downcase == bot.nick.downcase
             log_incoming(m)
-            Channel(m.channel).part(@part_message)
-            log("<PART on #{m.channel}> #{@part_message}", :outgoing, :info)
+
+            if @part_lock.include?(m.channel)
+              m.target.send(@locked_message, true)
+              log_notice(m.target, @locked_message)
+            else
+              Channel(m.channel).part(@part_message)
+              log("<PART from #{m.channel}> #{@part_message}", :outgoing, :info)
+            end
           end
         end
       end

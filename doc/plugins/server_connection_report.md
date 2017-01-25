@@ -59,6 +59,32 @@ ServerConnectionReport::Charybdis:
     - '#cre'
 ```
 
+さらに、charybdis 用のプラグインはメールでの通知にも対応しています。
+設定ファイルに以下を追記して、メール関係の設定を行います。
+
+```yaml
+  # 送信するメールのテンプレートファイルID
+  # data/server_connection_report/ に保存したテキストファイル(.txt)の
+  # ファイル名部を指定する
+  MessageTemplate: 'template'
+
+  # 送信設定
+  Mail:
+    To:
+      - 'irc-operator@example.com'
+    SMTP:
+      address: 'localhost'
+      port: 25
+      domain: 'mail.example.com'
+      authentication: false
+      ssl: false
+      enable_starttls_auto: false
+```
+
+#### MessageTemplate に指定するファイルについての注記
+
+_MessageTemplate_ に指定するファイルは、1行目がメールの件名(Subject)として利用され、2行目は何が書かれていても無視します。
+
 ### Atheme-Services
 
 Atheme-Services を利用している環境であれば、IRC デーモンの種類を問わずこのプラグインでサーバーの接続状態を検知できます。初期設定では「#services」チャンネルに情報が出力されます。RGRB がこのチャンネルに参加している必要があります。

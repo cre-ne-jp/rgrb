@@ -1,0 +1,20 @@
+# UrlFetchTitle プラグインの設定
+UrlFetchTitle:
+  # 書き込みタイムアウト
+  WriteTimeout: 2
+  # 接続タイムアウト
+  ConnectTimeout: 5
+  # 読み込みタイムアウト
+  ReadTimeout: 5
+  # 最大リダイレクト回数
+  MaxRedirects: 5
+  # 読み込みサイズ閾値（バイト単位）
+  ReadSizeThreshold: 65536
+  # 返信の接頭辞
+  ReplyPrefix: 'FetchTitle: '
+  # 返信の接尾辞
+  ReplySuffix: ''
+
+  # HTTP 接続用の User-Agent
+  # %s を書くと、RGRBのバージョンに置換される
+  UserAgent: "RGRB/%s (Creator's Network IRC bot)"

@@ -1,6 +1,8 @@
 # vim: fileencoding=utf-8
 
-require 'rgrb/plugin/dice_roll/generator.rb'
+require 'd1lcs'
+require 'rgrb/plugin/dice_roll/generator'
+require 'rgrb/plugin/trpg/detatoko/constants'
 
 module RGRB
   module Plugin
@@ -12,8 +14,8 @@ module RGRB
 
           def initialize
             @random = Random.new
-            @stances = [ '敵視', '宿命', '憎悪', '雲上', '従属', '不明' ]
             @dice_roll_generator = DiceRoll::Generator.new
+            @d1lcs_title_line = D1lcs.title_line
           end
 
           # スキルランクから判定値を算出します
@@ -102,14 +104,61 @@ module RGRB
 
           # ラスボス立場表を振る
           # @return [String]
-          def lastboss_position()
+          def lastboss_ground
             result = @dice_roll_generator.dice_roll(2, 6)
-            "#{result.sw2_dll_format} -> #{lastboss_position_text(result.sum)}"
+            "#{result.sw2_dll_format} -> #{lastboss_ground_text(result.sum)}"
+          end
+
+          # クラスを1つ選ぶ
+          # @return [String]
+          def character_class
+            result = @random.rand(1..15)
+            "%02d -> #{character_class_text(result)}" % result
+          end
+
+          # PC 用のポジションを1つ選ぶ
+          # @return [String]
+          def pc_position
+            result = @random.rand(18) - 1
+            "#{pc_position_text(result)} (フロンティアp.#{result + 42})"
+          end
+
+          # NPC 用のポジションを1つ選ぶ
+          # @return [String]
+          def npc_position
+            result = @random.rand(6)
+            "#{npc_position_text(result)} (フロンティアp.#{result + 68})"
+          end
+
+          # 1行キャラシを出力する
+          # @param [Array<String>] ids 対象のキャラシID
+          # @return [Hash]
+          # @option return [Array<String>] :lcs キャラクターシート
+          # @option return [Array<String>] :errors 発生したエラー
+          def lcs(ids)
+            result = { :lcs => [nil], :errors => [] }
+            ids.each { |id|
+              case id
+              when 'title'
+                result[:lcs][0] = @d1lcs_title_line
+              else
+                cs = D1lcs::Element.new(id)
+                if(cs.error != nil)
+                  result[:errors] << cs.error
+                else
+                  result[:lcs] << cs.chara_sheet_line
+                end
+              end
+            }
+
+            result[:lcs].compact!
+
+            result
           end
 
           # ダイスを振り獲得する烙印を決める
           # @return [Array<Array>]
-          def get_stigma()
+          def get_stigma
             stigma_number = []
             time = 1
             second = false
@@ -174,22 +223,23 @@ module RGRB
           # 出目から対応するラスボス立場を決定する
           # @param [Fixnum] number ダイスの出目
           # @return [String]
-          def lastboss_position_text(number)
-            positions = [
+          def lastboss_ground_text(number)
+            grounds = [
               '恐怖', '破壊', '封印', '滅亡', '侵略', '暴君',
               '陰謀', '独裁', '崇拝', '犠牲', '人望'
             ]
-            "#{number}: 【#{positions[number - 2]}】"
+            "#{number}: 【#{grounds[number - 2]}】"
           end
+          private :lastboss_ground_text
 
           # 文字列をスタンスの系統に分ける
           # @param [String] uses 元の文字列
           # @return [Array<String>] 使用するスタンス系統のリスト
           def what_stance_list(uses)
-            return @stances.dup if uses.empty?
+            return STANCES.dup if uses.empty?
 
             separators = /[\+＋・]/
-            @stances & uses.split(separators)
+            STANCES & uses.split(separators)
           end
           private :what_stance_list
 
@@ -216,6 +266,41 @@ module RGRB
             "#{rand + 1}:【#{stance[rand]}】"
           end
           private :stance_select
+
+          # 指定された番号のクラスの名前を返す
+          # @param [Fixnum] no クラスの番号
+          # @return [String]
+          def character_class_text(no)
+            [
+              '勇者', '魔王', 'お姫様', 'ドラゴン', '戦士', '魔法使い',
+              '神聖', '暗黒', 'マスコット', 'モンスター', '謎', 'ザコ',
+              'メカ', '商人', '占い師'     # フロンティア
+            ].at(no - 1)
+          end
+          private :character_class_text
+
+          # 指定された ID の PC 用ポジションを返す
+          # @param [Fixnum] id ポジション ID
+          # @return [String]
+          def pc_position_text(id)
+            [
+             '冒険者', '凡人', '夢追い', '神話の住人', '負け犬', '守護者', 
+             '悪党', 'カリスマ', '修羅', '遊び人', '従者', '正体不明', 
+             '迷い子', '生ける伝説', '罪人', '傷追人', '型破り', '裏の住人' 
+            ].at(id)
+          end
+          private :pc_position_text
+
+          # 指定された ID の NPC 用ポジションを返す
+          # @param [Fixnum] id ポジション ID
+          # @return [String]
+          def npc_position_text(id)
+            [
+              '裏切者', '帝王', '悪の化身', '黒幕', '災厄', '侵略者'
+            ].at(id)
+          end
+          private :npc_position_text
+
         end
       end
     end

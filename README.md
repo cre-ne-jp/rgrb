@@ -1,7 +1,8 @@
 汎用 IRC ボット RGRB
 ====================
 
-[![Build Status](https://travis-ci.org/cre-ne-jp/rgrb.svg?branch=master)](https://travis-ci.org/cre-ne-jp/rgrb) [![Coverage Status](https://coveralls.io/repos/cre-ne-jp/rgrb/badge.svg?branch=master)](https://coveralls.io/r/cre-ne-jp/rgrb?branch=master)
+[![Build Status](https://travis-ci.org/cre-ne-jp/rgrb.svg?branch=master)](https://travis-ci.org/cre-ne-jp/rgrb)
+[![Coverage Status](https://coveralls.io/repos/cre-ne-jp/rgrb/badge.svg?branch=master&service=github)](https://coveralls.io/github/cre-ne-jp/rgrb?branch=master)
 
 RGRB は Ruby で実装されている汎用 IRC ボットです。プラグイン方式により柔軟な拡張が可能です。
 
@@ -24,6 +25,15 @@ gem install bundler
 ```
 
 上記が完了したら、適当なディレクトリにファイルを設置し、以下を実行して必要な gem（ライブラリ）をインストールしてください。
+
+なお、gem をインストールするためには、システムにいくつかのライブラリと開発環境がインストールされている必要があります。CentOS 7 を最小限構成でセットアップしている場合、以下の追加パッケージが必要です。
+
+* make
+* gcc
+* gcc-c++
+* libicu-devel
+* zlib-devel
+* which
 
 ```bash
 cd /path/to/rgrb
@@ -56,6 +66,7 @@ bundle install --deployment
 | [Keyword](doc/plugins/keyword.md) | キーワード検索 |
 | [OnlineSessionSearch](doc/plugins/online_session_search.md) | [TRPG.NET セッションマッチングシステム](http://session.trpg.net/)から予定されているオンラインセッションの情報を検索する |
 | [CreTwitterCitation](doc/plugins/cre_twitter_citation.md) | Twitter @cre_ne_jp の引用 |
+| [UrlFetchTitle](doc/plugins/url_fetch_title.md) | 発言された URL のページタイトルを取得する |
 
 #### IRC 関連
 
@@ -66,6 +77,8 @@ bundle install --deployment
 | [Part](doc/plugins/part.md) | チャンネルからの退出 |
 | [KickBack](doc/plugins/kick_back.md) | RGRB が KICK されたとき、そのチャンネルに再度 JOIN する |
 | [Invite](doc/plugins/invite.md) | RGRB が INVITE されたとき、そのチャンネルに JOIN する |
+| [Jihou](doc/plugins/jihou.md) | 毎日決まった時刻になった時、チャンネルに通知する |
+| [Ctcp](doc/plugins/ctcp.md) | CTCP メッセージを受信した時、適切な応答を返す |
 
 IRC ボットの起動
 ----------------
@@ -120,7 +133,7 @@ ToDo
 制作
 ----
 
-&copy; 2014-2015 [クリエイターズネットワーク](http://www.cre.ne.jp/)技術部
+&copy; 2014-2016 [クリエイターズネットワーク](http://www.cre.ne.jp/)技術部
 
 * 鯉（[@koi-chan](https://github.com/koi-chan)）
 * ocha（[@ochaochaocha3](https://github.com/ochaochaocha3)）

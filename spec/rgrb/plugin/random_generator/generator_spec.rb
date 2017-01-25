@@ -104,33 +104,13 @@ describe RGRB::Plugin::RandomGenerator::Generator do
     end
 
     context 'hiraganarand' do
-      # 要素数 10 の表から 100000 回取得したときに偏りが
-      # ないことをカイ二乗検定で確かめる
-      it '各値が偏りなく出る' do
+      it '100 回取り出したとき、値がすべて同じではない' do
         table = 'hiraganarand'
-        data = generator.
-          instance_variable_get(:@table)['hiraganarand'].
-          instance_variable_get(:@values)
-        freq = {}
-
-        # 頻度を入れるハッシュを初期化する
-        data.each do |value|
-          freq[value] = 0
+        results = Array.new(100) do
+          generator.send(:get_value_from, table)
         end
 
-        n_gets = 100_000
-        n_gets.times do
-          freq[generator.send(:get_value_from, table)] += 1
-        end
-
-        # カイ二乗値を求める
-        expected_count = n_gets.to_f / data.length
-        chi2 = freq.
-          each_value.
-          map { |count| (count - expected_count)**2 / expected_count }.
-          reduce(0, :+)
-
-        expect(chi2).to be <= 23.5894 # 自由度 9、有意水準 0.5%
+        expect(results.uniq.length).to be > 1
       end
     end
   end

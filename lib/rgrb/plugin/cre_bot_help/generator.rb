@@ -10,7 +10,7 @@ module RGRB
         HELP_MESSAGE = <<EOS
 クリエイターズネットワーク公式IRCボット
 ご利用方法: http://www.cre.ne.jp/services/irc/bots
-リファレンス: http://hiki.trpg.net/wiki/?RoleBot
+RGRB独自コマンド一覧: http://www.cre.ne.jp/services/irc/bots/rgrb
 EOS
       end
     end

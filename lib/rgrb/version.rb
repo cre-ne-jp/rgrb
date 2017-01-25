@@ -2,5 +2,5 @@
 
 module RGRB
   # RGRB のバージョン
-  VERSION = '0.9.0'
+  VERSION = '0.10.5'
 end

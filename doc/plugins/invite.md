@@ -17,7 +17,7 @@ RGRB が INVITE (招待)されたとき、そのチャンネルに JOIN する�
 # Invite プラグインの設定
 Invite:
   # INVITE された時、JOIN 時に発言するメッセージ
-  JoinMessage: 
+  JoinMessage:
     - "ご招待いただきありがとう☆"
 ```
 

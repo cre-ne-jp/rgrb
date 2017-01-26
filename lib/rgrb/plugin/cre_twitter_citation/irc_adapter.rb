@@ -34,7 +34,7 @@ module RGRB
           @channels_to_send.each do |channel_name|
             notice_multi_lines(
               @generator.cite_from_twitter,
-              Channel(channel_name), 
+              Channel(channel_name),
               '',
               true
             )

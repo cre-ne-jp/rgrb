@@ -26,10 +26,10 @@ module RGRB
 
           match(/(v|m|s|w)s/i, method: :stigma)
           match(/(t|k)r/i, method: :stigma)
-          
+
           match(/(v|m|s|w)be/i, method: :badend)
           match(/(t|k)b/i, method: :badend)
-          
+
           match(/stance[\s　]+(#{STANCE_RE})/io, method: :stance)
 
           match(/(lb|d)g/i, method: :ground)

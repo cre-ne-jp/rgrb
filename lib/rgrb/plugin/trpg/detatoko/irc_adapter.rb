@@ -44,7 +44,7 @@ module RGRB
           match(/(体|気)力烙印/i, method: :stigma, :prefix => prefix_ja)
           match(/(体|気)力バッドエンド/i, method: :badend, :prefix => prefix_ja)
           match(/スタンス[\s　]+(#{STANCE_RE})/io, method: :stance, :prefix => prefix_ja)
-          match(/(|悪への)ラスボス立場/i, method: :ground, :prefix => prefix_ja)
+          match(/(|悪の)ラスボス立場/i, method: :ground, :prefix => prefix_ja)
           match(/クラス/i, method: :character_class, :prefix => prefix_ja)
           match(/(|敵|悪)ポジション/i, method: :position, :prefix => prefix_ja)
 

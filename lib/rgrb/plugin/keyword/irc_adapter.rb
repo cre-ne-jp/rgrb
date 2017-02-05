@@ -16,8 +16,6 @@ module RGRB
 
         set(plugin_name: 'Keyword')
         match(/(k|a)[ 　]+(.+)/, method: :search)
-        match(/k[ 　]+(.+)/, method: :cre_search)
-        match(/a[ 　]+(.+)/, method: :amazon_search)
 
         def initialize(*args)
           super

@@ -31,15 +31,17 @@ module RGRB
         # @return [void]
         def basic_dice(m, n_dice, max)
           log_incoming(m)
-          message = @generator.basic_dice(n_dice.to_i, max.to_i)
-          m.target.send("#{m.user.nick} -> #{message}", true)
+          result = @generator.basic_dice(n_dice.to_i, max.to_i)
+          message = "#{m.user.nick} -> #{result}"
+          m.target.send(message, true)
           log_notice(m.target, message)
         end
 
         def basic_dice_ja(m, n_dice, max)
           log_incoming(m)
-          message = @generator.basic_dice_ja(n_dice, max)
-          m.target.send("#{m.user.nick} -> #{message}", true)
+          result = @generator.basic_dice_ja(n_dice, max)
+          message = "#{m.user.nick} -> #{result}"
+          m.target.send(message, true)
           log_notice(m.target, message)
         end
 
@@ -47,15 +49,17 @@ module RGRB
         # @return [void]
         def dxx_dice(m, rolls)
           log_incoming(m)
-          message = @generator.dxx_dice(rolls)
-          m.target.send("#{m.user.nick} -> #{message}", true)
+          result = @generator.dxx_dice(rolls)
+          message = "#{m.user.nick} -> #{result}"
+          m.target.send(message, true)
           log_notice(m.target, message)
         end
 
         def dxx_dice_ja(m, rolls)
           log_incoming(m)
-          message = @generator.dxx_dice_ja(rolls)
-          m.target.send("#{m.user.nick} -> #{message}", true)
+          result = @generator.dxx_dice_ja(rolls)
+          message = "#{m.user.nick} -> #{result}"
+          m.target.send(message, true)
           log_notice(m.target, message)
         end
       end

@@ -22,7 +22,7 @@ module RGRB
         def initialize
           super
 
-          @ramdom = Random.new
+          @random = Random.new
           prepare_default_logger
         end
 

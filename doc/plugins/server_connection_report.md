@@ -59,7 +59,7 @@ ServerConnectionReport::Charybdis:
     - '#cre'
 ```
 
-さらに、charybdis 用のプラグインはメールでの通知にも対応しています。  
+さらに、charybdis 用のプラグインはメールでの通知にも対応しています。
 設定ファイルに以下を追記して、メール関係の設定を行います。
 
 ```yaml
@@ -70,7 +70,7 @@ ServerConnectionReport::Charybdis:
 
   # 送信設定
   Mail:
-    To: 
+    To:
       - 'irc-operator@example.com'
     SMTP:
       address: 'localhost'

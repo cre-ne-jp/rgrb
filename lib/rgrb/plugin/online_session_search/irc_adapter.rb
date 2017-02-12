@@ -2,6 +2,7 @@
 
 require 'cinch'
 require 'rgrb/plugin/online_session_search/generator'
+require 'rgrb/plugin/util/notice_multi_lines'
 
 module RGRB
   module Plugin
@@ -9,6 +10,7 @@ module RGRB
       # OnlineSessionSearch の IRC アダプター
       class IrcAdapter
         include Cinch::Plugin
+        include Util::NoticeMultiLines
 
         # セッションマッチングシステムの URL
         SESSION_URL = 'http://session.trpg.net/'
@@ -28,38 +30,45 @@ module RGRB
           @generator = Generator.new
         end
 
+        # 最近追加されたセッション情報を出力する
+        # @param [Cinch::Message] m
+        # @return [void]
         def latest_schedules(m)
-          m.target.send(
-            '最近追加されたオンラインセッション情報ですわ☆', true
-          )
-          m.target.send(LIST_MESSAGE, true)
+          log_incoming(m)
+
+          messages = [
+            '最近追加されたオンラインセッション情報ですわ☆',
+            LIST_MESSAGE
+          ]
 
           begin
-            messages = @generator.latest_schedules(5)
-            messages.each do |s|
-              m.target.send(s, true)
-            end
+            messages += @generator.latest_schedules(5)
           rescue => e
             bot.loggers.exception(e)
-            m.target.send(GET_ERROR_MESSAGE, true)
+            messages << GET_ERROR_MESSAGE
           end
+          notice_multi_lines(messages, m.target)
         end
 
+        # オンラインセッションを検索する
+        # @param [Cinch::Message] m
+        # @param [String] str 検索キーワード
+        # @return [void]
         def search(m, str)
-          m.target.safe_send(
-            "オンラインセッション情報検索: #{str}", true
-          )
-          m.target.send(LIST_MESSAGE, true)
+          log_incoming(m)
+
+          messages = [
+            "オンラインセッション情報検索: #{str}",
+            LIST_MESSAGE
+          ]
 
           begin
-            messages = @generator.search(str, 5)
-            messages.each do |s|
-              m.target.send(s, true)
-            end
+            messages += @generator.search(str, 5)
           rescue => e
             bot.loggers.exception(e)
-            m.target.send(GET_ERROR_MESSAGE, true)
+            messages << GET_ERROR_MESSAGE
           end
+          notice_multi_lines(messages, m.target, '', true)
         end
       end
     end

@@ -10,7 +10,7 @@ rvm:
 notifications:
   irc:
     use_notice: true
-    channels: 
+    channels:
       - 'irc.trpg.net#irc_test'
     on_success: always
     on_failure: always

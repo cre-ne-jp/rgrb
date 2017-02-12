@@ -3,6 +3,7 @@
 require 'cinch'
 
 require 'rgrb/plugin/configurable_adapter'
+require 'rgrb/plugin/util/notice_multi_lines'
 require 'rgrb/plugin/random_generator/constants'
 require 'rgrb/plugin/random_generator/generator'
 require 'rgrb/plugin/random_generator/table_not_found'
@@ -17,6 +18,7 @@ module RGRB
       class IrcAdapter
         include Cinch::Plugin
         include ConfigurableAdapter
+        include Util::NoticeMultiLines
 
         set(plugin_name: 'RandomGenerator')
         match(/rg#{SPACES_RE}#{TABLES_RE}/o, method: :rg)
@@ -38,7 +40,7 @@ module RGRB
         # @param [String] tables_str 表のリスト
         # @return [void]
         def rg(m, tables_str)
-          log(m.raw, :incoming, :info)
+          log_incoming(m)
 
           header = "rg[#{m.user.nick}]"
 
@@ -54,11 +56,7 @@ module RGRB
                 [": #{private_table_message(private_table_error)}"]
               end
 
-            lines.each do |line|
-              message = "#{header}#{line.chomp}"
-              m.target.send(message, true)
-              log_notice(m.target, message)
-            end
+            notice_multi_lines(lines, m.target, header)
 
             sleep(1)
           end
@@ -69,7 +67,7 @@ module RGRB
         # @param [String] tables_str 表のリスト
         # @return [void]
         def desc(m, tables_str)
-          log(m.raw, :incoming, :info)
+          log_incoming(m)
 
           header = "rg-desc"
 
@@ -94,7 +92,7 @@ module RGRB
         # @param [String] tables_str 表のリスト
         # @return [void]
         def info(m, tables_str)
-          log(m.raw, :incoming, :info)
+          log_incoming(m)
 
           header = "rg-info"
 
@@ -148,17 +146,6 @@ module RGRB
         end
         private :private_table_message
 
-        # NOTICE 送信をログに残す
-        # @param [Cinch::Target] target 対象
-        # @param [String] message メッセージ
-        # @return [void]
-        def log_notice(target, message)
-          log(
-            "<NOTICE to #{target}> #{message.inspect}",
-            :outgoing, :info
-          )
-        end
-        private :log_notice
       end
     end
   end

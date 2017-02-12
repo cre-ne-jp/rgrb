@@ -21,7 +21,7 @@ ServerConnectionReport::Test:
 
   # 送信設定
   Mail:
-    To: 
+    To:
       - 'koi-chan@mail.kazagakure.net'
     SMTP:
       address: 'localhost'

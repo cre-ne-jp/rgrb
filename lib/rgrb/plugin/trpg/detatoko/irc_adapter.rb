@@ -1,9 +1,9 @@
 # vim: fileencoding=utf-8
 
 require 'cinch'
+require 'rgrb/plugin/util/notice_multi_lines'
 require 'rgrb/plugin/trpg/detatoko/generator'
 require 'rgrb/plugin/trpg/detatoko/constants'
-require 'rgrb/plugin/util/logging'
 
 module RGRB
   module Plugin
@@ -12,7 +12,7 @@ module RGRB
         # Detatoko の IRC アダプター
         class IrcAdapter
           include Cinch::Plugin
-          include Util::Logging
+          include Util::NoticeMultiLines
 
           set(plugin_name: 'Trpg::Detatoko')
           self.prefix = '.d'
@@ -63,12 +63,10 @@ module RGRB
           # @param [String] flag 現在の PC のフラグ値
           # @return [void]
           def skill_decision(m, skill_rank, calc = '+', solid = 0, flag = 0)
-            header = "#{@header}[#{m.user.nick}]: "
-            @generator
+            log_incoming(m)
+            messages = @generator
               .skill_decision(skill_rank.to_i, calc, solid.to_i, flag.to_i)
-              .each_line { |line|
-                m.target.send(header + line.chomp, true)
-              }
+            notice_multi_messages(messages, m.target, "#{@header}[#{m.user.nick}]: ")
           end
 
           # skill_decision のフラグ先行コマンド用ラッパー
@@ -79,6 +77,7 @@ module RGRB
           # @param [String] solid 四則演算を行なう場合の計算される数
           # @return [void]
           def skill_decision_flag(m, skill_rank, flag = 0, calc = '+', solid = 0)
+            log_incoming(m)
             skill_decision(m, skill_rank, calc, solid, flag)
           end
 
@@ -88,12 +87,9 @@ module RGRB
           # @param [String] skill_rank_ja スキルランクの日本語形式
           # @return [void]
           def skill_decision_ja(m, skill_rank_ja)
-            header = "#{@header}[#{m.user.nick}]: "
-            @generator
-              .skill_decision_ja(skill_rank_ja)
-              .each_line { |line|
-                m.target.send(header + line.chomp, true)
-              }
+            log_incoming(m)
+            messages = @generator.skill_decision_ja(skill_rank_ja)
+            notice_multi_messages(messages, m.target, "#{@header}[#{m.user.nick}]: ")
           end
 
           # 烙印(p.63)を得る
@@ -101,10 +97,11 @@ module RGRB
           # @param [String] tcode 何の烙印か
           # @return [void]
           def stigma(m, tcode)
+            log_incoming(m)
             tcode = type_tr(tcode)
             header = "#{@header}[#{m.user.nick}]<#{type_conv(tcode)}力烙印>: "
             message = @generator.stigma(tcode)
-            m.target.send(header + message, true)
+            notice_multi_lines([message], m.target, header)
           end
 
           # バッドエンド表(p.65)を振る
@@ -112,10 +109,11 @@ module RGRB
           # @param [String] tcode 何のバッドエンド表か
           # @return [void]
           def badend(m, tcode)
+            log_incoming(m)
             tcode = type_tr(tcode)
             header = "#{@header}[#{m.user.nick}]<#{type_conv(tcode)}力バッドエンド>: "
             message = @generator.badend(tcode)
-            m.target.send(header + message, true)
+            notice_multi_lines([message], m.target, header)
           end
 
           # スタンス表から引く
@@ -123,9 +121,10 @@ module RGRB
           # @param [String] uses 選ぶ元となるスタンス
           # @return [void]
           def stance(m, uses)
+            log_incoming(m)
             header = "#{@header}[#{m.user.nick}]<スタンス表>: "
             message = @generator.stance(uses)
-            m.target.send(header + message, true)
+            notice_multi_lines([message], m.target, header)
           end
 
           # ラスボス立場表を引く
@@ -133,6 +132,7 @@ module RGRB
           # @param [String] type 何のラスボス立場表か
           # @return [void]
           def ground(m, type)
+            log_incoming(m)
             insert, type = case type
             when 'lb', ''
               ['', :normal]
@@ -141,16 +141,17 @@ module RGRB
             end
             header = "#{@header}[#{m.user.nick}]<#{insert}ラスボス立場>: "
             message = @generator.ground(type)
-            m.target.send(header + message, true)
+            notice_multi_lines([message], m.target, header)
           end
 
           # クラスを1つ選ぶ
           # @param [Cinch::Message] m
           # @return [void]
           def character_class(m)
+            log_incoming(m)
             header = "#{@header}[#{m.user.nick}]<クラス>: "
             message = @generator.character_class
-            m.target.send(header + message, true)
+            notice_multi_lines([message], m.target, header)
           end
 
           # ポジションを1つ選ぶ
@@ -158,6 +159,7 @@ module RGRB
           # @param [String] type 何のポジションか
           # @return [void]
           def position(m, type)
+            log_incoming(m)
             insert, type = case type
               when ''
                 ['PC', :pc]
@@ -168,7 +170,7 @@ module RGRB
               end
             header = "#{@header}[#{m.user.nick}]<#{insert}ポジション>: "
             message = @generator.position(type)
-            m.target.send(header + message, true)
+            notice_multi_lines([message], m.target, header)
           end
 
           # 1行のキャラクターシートを生成する
@@ -178,26 +180,20 @@ module RGRB
           def lcs(m, ids_str)
             log_incoming(m)
 
-            header = "#{header}[#{m.user.nick}]<1行キャラクターシート>: "
             result = @generator.lcs(ids_str.split(' '))
+            messages = []
 
             if(result[:errors].count != 0)
-              message = "#{header}#{result[:errors].count} 件のエラーが発生しました"
-              log_notice(m.target, message)
-              m.target.send(message, true)
-              result[:errors].each { |line|
-                message = header + line
-                log_notice(m.target, message)
-                m.target.send(message, true)
-                sleep(1)
-              }
+              header = "#{@header}[#{m.user.nick}]<1行キャラクターシート>: "
+              messages << "#{header}#{result[:errors].count} 件のエラーが発生しました"
+              messages.concat(result[:errors].map {|line| "#{header}#{line}"})
             end
-            result[:lcs].each { |line|
-              log_notice(m.target, line)
-              m.target.send(line, true)
-              sleep(1)
-            }
+            messages.concat(result[:lcs])
+
+            notice_multi_lines(messages, m.target)
           end
+
+          private
 
           # 体力・気力コードを対応する日本語に変換する
           # @param [String/Symbol] tcode 体力・気力コード
@@ -210,7 +206,6 @@ module RGRB
               '気'
             end
           end
-          private :type_conv
 
           # コマンドでの表記を内部での体力・気力のフラグに書き換える
           # @param [String] code コマンドでの表記
@@ -221,7 +216,6 @@ module RGRB
             code.tr!('体気', 'vm')
             code.to_sym
           end
-          private :type_tr
         end
       end
     end

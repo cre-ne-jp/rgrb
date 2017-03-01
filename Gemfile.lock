@@ -119,7 +119,7 @@ GEM
       unf_ext
     unf_ext (0.0.7.2)
     unicode-display_width (1.1.3)
-    webmock (1.24.6)
+    webmock (2.3.2)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
       hashdiff
@@ -145,7 +145,7 @@ DEPENDENCIES
   rubocop (~> 0.28)
   sysexits (~> 1.2)
   twitter (~> 5.11)
-  webmock (~> 1.20)
+  webmock (~> 2.3)
   yard (~> 0.8)
 
 BUNDLED WITH

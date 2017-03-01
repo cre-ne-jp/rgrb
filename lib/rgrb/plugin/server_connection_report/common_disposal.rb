@@ -3,7 +3,6 @@
 require 'cinch'
 
 require 'rgrb/plugin/util/notice_on_each_channel'
-require 'rgrb/plugin/util/logging'
 require 'rgrb/plugin/server_connection_report/constants'
 require 'rgrb/plugin/server_connection_report/generator'
 require 'rgrb/plugin/server_connection_report/common_disposal'
@@ -17,7 +16,6 @@ module RGRB
       module CommonDisposal
         include Cinch::Plugin
         include Util::NoticeOnEachChannel
-        include Util::Logging
 
         # メッセージを送信するチャンネルのリスト
         attr_reader :channels_to_send

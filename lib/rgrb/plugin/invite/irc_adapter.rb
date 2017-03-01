@@ -2,6 +2,7 @@
 
 require 'cinch'
 require 'rgrb/plugin/configurable_adapter'
+require 'rgrb/plugin/util/notice_multi_lines'
 
 module RGRB
   module Plugin
@@ -11,6 +12,7 @@ module RGRB
       class IrcAdapter
         include Cinch::Plugin
         include ConfigurableAdapter
+        include Util::NoticeMultiLines
 
         set(plugin_name: 'Invite')
         listen_to(:invite, method: :invite)
@@ -28,10 +30,8 @@ module RGRB
         # @return [void]
         def invite(m)
           Channel(m.channel).join
-          @join_message.each do |message|
-            m.target.send(message, true)
-            log("<JOIN on #{m.channel}> #{message}", :outgoing, :info)
-          end
+          log_join(m.channel)
+          notice_multi_lines(@join_message, m.channel)
         end
       end
     end

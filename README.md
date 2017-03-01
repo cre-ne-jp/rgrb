@@ -33,6 +33,7 @@ gem install bundler
 * gcc-c++
 * libicu-devel
 * zlib-devel
+* which
 
 ```bash
 cd /path/to/rgrb

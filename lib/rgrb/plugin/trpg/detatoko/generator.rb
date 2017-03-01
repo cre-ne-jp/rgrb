@@ -19,10 +19,10 @@ module RGRB
           end
 
           # スキルランクから判定値を算出します
-          # @param [Fixnum] skill_rank スキルランク
+          # @param [Integer] skill_rank スキルランク
           # @param [String] calc 計算記号
-          # @param [Fixnum] solid 追加ダメージ(固定値)
-          # @param [Fixnum] flag フラグ
+          # @param [Integer] solid 追加ダメージ(固定値)
+          # @param [Integer] flag フラグ
           # @return [String]
           def skill_decision(skill_rank, calc, solid, flag)
             header = "スキルランク = #{skill_rank} -> "
@@ -181,7 +181,7 @@ module RGRB
 
           # 出目から対応する烙印を決定する
           # @param [Symbol] type 体力・気力のどちらか
-          # @param [Fixnum] number ダイスの出目
+          # @param [Integer] number ダイスの出目
           # @return [String]
           def stigma_text(type, number)
             STIGMAS[type][number - 3] &&
@@ -191,7 +191,7 @@ module RGRB
 
           # 出目から対応するバッドエンドを決定する
           # @param [Symbol] type 体力・気力のどちらか
-          # @param [Fixnum] number ダイスの出目
+          # @param [Integer] number ダイスの出目
           # @return [String]
           def badend_text(type, number)
             "#{number}: 【#{BADENDS[type][number - 2]}】"

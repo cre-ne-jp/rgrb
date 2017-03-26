@@ -12,7 +12,7 @@ describe RGRB::Plugin::ServerConnectionReport::AthemeServices::IrcAdapter do
     'irc.r-roman.net',
     'irc.sougetu.net',
     'irc.trpg.net',
-    't-net.xyz'
+    'services.cre.jp'
   ]
 
   describe 'SERVER_ADD_RE' do

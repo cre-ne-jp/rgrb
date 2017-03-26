@@ -12,13 +12,13 @@ describe RGRB::Plugin::ServerConnectionReport::Charybdis::IrcAdapter do
     'irc.r-roman.net',
     'irc.sougetu.net',
     'irc.trpg.net',
-    't-net.xyz'
+    'services.cre.jp'
   ]
 
   describe 'NETJOIN_RE' do
     shared_examples 'netjoin' do |server|
       context(server) do
-        let(:message) { "*** Notice -- Netjoin irc.cre.ne.jp <-> #{server} (0S 0C)" }
+        let(:message) { "*** Notice -- Netjoin irc.cre.jp <-> #{server} (0S 0C)" }
 
         it 'マッチする' do
           expect(message).to match(described_class::NETJOIN_RE)
@@ -41,7 +41,7 @@ describe RGRB::Plugin::ServerConnectionReport::Charybdis::IrcAdapter do
       context(server) do
         let(:comment) { 'some comment' }
         let(:message) do
-          "*** Notice -- Netsplit irc.cre.ne.jp <-> #{server} (0S 0C) (#{comment})"
+          "*** Notice -- Netsplit irc.cre.jp <-> #{server} (0S 0C) (#{comment})"
         end
 
         it 'マッチする' do

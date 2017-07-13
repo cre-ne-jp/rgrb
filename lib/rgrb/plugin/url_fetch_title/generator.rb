@@ -123,7 +123,7 @@ module RGRB
             when HTTP::Redirector::TooManyRedirectsError,
               HTTP::Redirector::EndlessRedirectError
               "最大回数 (#{@max_redirects}) を超えてリダイレクトされました"
-            when HTTP::TimeoutError, Timeout::Error, Errno::ETIMEDOUT
+            when HTTP::TimeoutError, Timeout::Error, Errno::ETIMEDOUT, HTTP::ConnectionError
               'タイムアウト'
             else
               error.message

@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gem 'activesupport', '~> 5.0'
 gem 'cinch'
-gem 'twitter', '~> 5.15'
+gem 'twitter', '> 5.15'
 gem 'lumberjack', '~> 1.0'
 gem 'sysexits', '~> 1.2'
 gem 'http', '> 0.9'

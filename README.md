@@ -133,7 +133,7 @@ ToDo
 制作
 ----
 
-&copy; 2014-2016 [クリエイターズネットワーク](http://www.cre.ne.jp/)技術部
+&copy; 2014-2017 [クリエイターズネットワーク](http://www.cre.ne.jp/)技術部
 
 * 鯉（[@koi-chan](https://github.com/koi-chan)）
 * ocha（[@ochaochaocha3](https://github.com/ochaochaocha3)）

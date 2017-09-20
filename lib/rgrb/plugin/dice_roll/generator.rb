@@ -1,5 +1,6 @@
 # vim: fileencoding=utf-8
 
+require 'rgrb/plugin/configurable_generator'
 require 'rgrb/plugin/dice_roll/dice_roll_result'
 
 module RGRB
@@ -10,6 +11,7 @@ module RGRB
     module DiceRoll
       # DiceRoll の出力テキスト生成器
       class Generator
+        include ConfigurableGenerator
         EXCESS_DICE_MESSAGE = "ダイスが机から落ちてしまいましたの☆"
 
         def initialize

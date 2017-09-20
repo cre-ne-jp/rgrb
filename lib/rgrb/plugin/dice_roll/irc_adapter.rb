@@ -1,6 +1,7 @@
 # vim: fileencoding=utf-8
 
 require 'cinch'
+require 'rgrb/plugin/configurable_adapter'
 require 'rgrb/plugin/dice_roll/constants'
 require 'rgrb/plugin/dice_roll/generator'
 require 'rgrb/plugin/util/logging'
@@ -11,6 +12,7 @@ module RGRB
       # DiceRoll の IRC アダプター
       class IrcAdapter
         include Cinch::Plugin
+        include ConfigurableAdapter
         include Util::Logging
 
         set(plugin_name: 'DiceRoll')
@@ -24,7 +26,11 @@ module RGRB
         def initialize(*args)
           super
 
-          @generator = Generator.new
+          config_data = config[:plugin]
+          @jadice = true
+          @jadice = false if config_data['JaDice'] == false
+
+          prepare_generator
         end
 
         # 基本的なダイスロールの結果を返す
@@ -39,6 +45,8 @@ module RGRB
 
         def basic_dice_ja(m, n_dice, max)
           log_incoming(m)
+          return unless @jadice
+
           result = @generator.basic_dice_ja(n_dice, max)
           message = "#{m.user.nick} -> #{result}"
           m.target.send(message, true)
@@ -57,6 +65,8 @@ module RGRB
 
         def dxx_dice_ja(m, rolls)
           log_incoming(m)
+          return unless @jadice
+
           result = @generator.dxx_dice_ja(rolls)
           message = "#{m.user.nick} -> #{result}"
           m.target.send(message, true)

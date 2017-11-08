@@ -4,6 +4,7 @@ require 'sdbm'
 
 require 'rgrb/plugin/configurable_generator'
 require 'rgrb/plugin/use_logger'
+require 'rgrb/plugin/card_deck/deck'
 
 module RGRB
   module Plugin
@@ -25,77 +26,50 @@ module RGRB
         # @return [self]
         def configure(config_data)
           # チャンネルデータベースを読み出す
-          @channel_data = SDBM.open("#{@data_path}/channel")
+          #@channel_data = SDBM.open("#{@data_path}/channel")
+          @channel_data = {}
           # デッキが保存されているディレクトリのパス
           @deck_path = "#{@data_path}/decks/"
 
-          load_decks
+          load_decks("#{@data_path}/decks/*.yaml")
 
           set_logger(config_data)
 
           self
         end
 
-        # デッキをデータベースから読み込む
-        # @return [void]
-        def load_decks
-          deck_list = []
-          Dir.glob("#{@deck_path}/*.dir").each do |file|
-            path = "#{@deck_path}/#{file}"
-            deck_list << path if File.exist?("#{path}.pag")
+        # デッキをチャンネルで使えるようにする
+        # @param [String] channel チャンネル名
+        # @param [String] deck デッキ名
+        # @return [String]
+        def deck_initialize(channel, deck)
+          return "デッキ #{deck} は存在しません" if @decks[deck] == nil
+          if @channel_data[channel] == nil
+            @channel_data[channel] = {}
+          elsif initialized?(channel, deck)
+            return "既に #{channel} で #{deck} は初期化済みです"
           end
 
-          @decks = deck_list.map do |deck_name|
-            SDBM.open(deck_name)
-          end
+          @channel_data[channel][deck] =
+            Array.new(@decks[deck].values.size) { |index| index }.shuffle
+
+          "デッキ #{deck} を初期化しました。残り #{@channel_data[channel][deck].size} 枚です"
         end
 
         # デッキからカードを引く
+        # @param [String] channel チャンネル名
+        # @param [String] deck デッキ名
         # @return [void]
-        def card_draw(deck_name)
-        end
+        def card_draw(channel, deck)
+          return "デッキ #{deck} は存在しません" if @decks[deck] == nil
+          return "#{channel} でデッキ #{deck} は未初期化です" if initialized?(channel, deck)
 
-        # カードをデッキに追加する
-        # @param [String] deck_name デッキ名
-        # @param [String] password デッキ編集パスワード
-        # @param [String] card 追加するカードの内容
-        # @return [void]
-        def card_add(deck_name, password, card)
-        end
-
-        # カードをデッキから削除する
-        # @param [String] deck_name デッキ名
-        # @param [String] password デッキ編集パスワード
-        # @param [String] card_id 追加するカードの ID
-        # @return [void]
-        def card_del(deck_name, password, card_id)
-        end
-
-        # デッキを新規に作成する
-        # @param [String] deck_name デッキ名
-        # @return [void]
-        def deck_new(deck_name)
-        end
-
-        # 山札モードの時、デッキを初期化する
-        # @param [String] deck_name デッキ名
-        # @return [void]
-        def deck_shuffle(deck_name)
-        end
-
-        # デッキの内容を全て出力する
-        # @param [String] deck_name デッキ名
-        # @param [String] method 出力方法(メールなど)
-        # @param [Array] args 出力方法に依存する追加オプション
-        # @return [void]
-        def deck_export(deck_name, method, args*)
-        end
-
-        # デッキを削除する
-        # @param [String] deck_name デッキ名
-        # @param [String] password デッキ編集パスワード
-        # @return [void]
-        def deck_destroy(deck_name, password)
+          id = @channel_data[channel][deck].pop
+          if id == nil
+            "デッキ #{deck} は空です"
+          else
+            "結果: #{@decks[deck].values[id]} / 残り: #{@channel_data[channel][deck].size} 枚です"
+          end
         end
 
         # デッキの情報を出力する
@@ -104,18 +78,45 @@ module RGRB
         def deck_info(deck_name)
         end
 
-        # デッキからカードを引くモードを変更する
-        # モードは「山札モード」と「ランダムモード」の2つ
-        # 山札　　: 既に引いたカードを記憶しておき、出ていないカードを引く
-        # ランダム: 毎回ランダムにカードを引く
-        # @param [String] deck_name デッキ名
-        # @return [void]
-        def draw_mode(deck_name)
-        end
-
         # ヘルプを表示する
         # @return [void]
         def help
+        end
+
+        private
+
+        # デッキをデータベースから読み込む
+        # @param [String] glob_pattern デッキファイル名のパターン
+        # @return [void]
+        def load_decks(glob_pattern)
+          @decks = {}
+
+          Dir.glob(glob_pattern).each do |path|
+            begin
+              yaml = File.read(path, encoding: 'UTF-8')
+              deck = Deck.parse_yaml(yaml)
+
+              @decks[deck.name] = deck
+            rescue => e
+              logger.error("データファイル #{path} の読み込みに失敗しました")
+              logger.error(e)
+            end
+          end
+        end
+
+        # チャンネルでデッキが初期化されているか
+        # @param [String] channel チャンネル名
+        # @param [String] deck デッキ名
+        # @return [Boolean]
+        def initialized?(channel, deck)
+          @channel_data[channel][deck].class == 'array'
+        end
+
+        # 日付の日本語表記を返す
+        # @param [Date, DateTime] date 日付
+        # @return [String]
+        def japanese_date(date)
+          "#{date.year}年#{date.month}月#{date.day}日"
         end
       end
     end

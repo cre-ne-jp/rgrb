@@ -1,0 +1,19 @@
+Name: 12shi
+Description: "十二支から一つを選びます。"
+Added: 2014-12-15
+Modified: 2014-12-20
+Author: sf
+License: NONE
+Body:
+  - "子"
+  - "丑"
+  - "寅"
+  - "卯"
+  - "辰"
+  - "巳"
+  - "午"
+  - "未"
+  - "申"
+  - "酉"
+  - "戌"
+  - "亥"

@@ -12,7 +12,7 @@ describe RGRB::Plugin::ServerConnectionReport::Ngircd::IrcAdapter do
     'irc.r-roman.net',
     'irc.sougetu.net',
     'irc.trpg.net',
-    't-net.xyz'
+    'services.cre.jp'
   ]
 
   describe 'REGISTERED_RE' do

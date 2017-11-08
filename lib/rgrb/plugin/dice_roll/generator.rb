@@ -1,5 +1,6 @@
 # vim: fileencoding=utf-8
 
+require 'rgrb/plugin/configurable_generator'
 require 'rgrb/plugin/dice_roll/dice_roll_result'
 
 module RGRB
@@ -10,6 +11,7 @@ module RGRB
     module DiceRoll
       # DiceRoll の出力テキスト生成器
       class Generator
+        include ConfigurableGenerator
         EXCESS_DICE_MESSAGE = "ダイスが机から落ちてしまいましたの☆"
 
         def initialize
@@ -17,8 +19,8 @@ module RGRB
         end
 
         # 基本的なダイスロールの結果を返す
-        # @param [Fixnum] rolls ダイスの個数
-        # @param [Fixnum] sides ダイスの最大値
+        # @param [Integer] rolls ダイスの個数
+        # @param [Integer] sides ダイスの最大値
         # @return [String]
         def basic_dice(rolls, sides)
           if rolls > 100
@@ -51,8 +53,8 @@ module RGRB
         end
 
         # ダイスロールの結果を返す
-        # @param [Fixnum] rolls ダイスの個数
-        # @param [Fixnum] sides ダイスの最大値
+        # @param [Integer] rolls ダイスの個数
+        # @param [Integer] sides ダイスの最大値
         # @return [DiceRollResult]
         def dice_roll(rolls, sides)
           values = Array.new(rolls) { @random.rand(1..sides) }
@@ -61,7 +63,7 @@ module RGRB
 
         # dXX ロールの結果を返す
         # @param [String] rolls ダイスの面数と数
-        # @return [Array<Fixnum>]
+        # @return [Array<Integer>]
         def dxx_roll(rolls)
           values = []
           rolls.each_char { |max| values << @random.rand(1..max.to_i) }

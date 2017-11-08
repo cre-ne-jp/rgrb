@@ -34,14 +34,14 @@ module RGRB
         # @return [void]
         def part(m, nick)
           if !nick || nick.downcase == bot.nick.downcase
-            log(m.raw, :incoming, :info)
+            log_incoming(m)
 
             if @part_lock.include?(m.channel)
               m.target.send(@locked_message, true)
               log_notice(m.target, @locked_message)
             else
               Channel(m.channel).part(@part_message)
-              log("<PART on #{m.channel}> #{@part_message}", :outgoing, :info)
+              log_part(m.channel, @part_message)
             end
           end
         end

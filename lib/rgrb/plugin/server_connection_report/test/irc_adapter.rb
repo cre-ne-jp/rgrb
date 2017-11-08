@@ -3,8 +3,6 @@
 require 'cinch'
 require 'pp'
 
-require 'rgrb/plugin/util/notice_on_each_channel'
-require 'rgrb/plugin/util/logging'
 require 'rgrb/plugin/server_connection_report/constants'
 require 'rgrb/plugin/server_connection_report/generator'
 require 'rgrb/plugin/server_connection_report/common_disposal'
@@ -24,9 +22,7 @@ module RGRB
         # ServerConnectionReport::Test の IRC アダプター
         class IrcAdapter
           include Cinch::Plugin
-          include Util::NoticeOnEachChannel
-          include Util::Logging
-          include CommonDisposal
+          include ServerConnectionReport::CommonDisposal
 
           # サーバーがネットワークに参加したときのメッセージを表す正規表現
           NETJOIN_RE =

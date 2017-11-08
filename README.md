@@ -11,7 +11,7 @@ RGRB は Ruby で実装されている汎用 IRC ボットです。プラグイ�
 
 * Linux または OSX
     * 現在のところ Windows には未対応。
-* Ruby 2.1.0 以降
+* Ruby 2.2.2 以降
 
 インストール
 ------------
@@ -33,6 +33,7 @@ gem install bundler
 * gcc-c++
 * libicu-devel
 * zlib-devel
+* which
 
 ```bash
 cd /path/to/rgrb
@@ -132,7 +133,7 @@ ToDo
 制作
 ----
 
-&copy; 2014-2016 [クリエイターズネットワーク](http://www.cre.ne.jp/)技術部
+&copy; 2014-2017 [クリエイターズネットワーク](http://www.cre.ne.jp/)技術部
 
 * 鯉（[@koi-chan](https://github.com/koi-chan)）
 * ocha（[@ochaochaocha3](https://github.com/ochaochaocha3)）

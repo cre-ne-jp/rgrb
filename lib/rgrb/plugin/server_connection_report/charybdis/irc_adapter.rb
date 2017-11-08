@@ -20,8 +20,6 @@ module RGRB
         # ServerConnectionReport::Charybdis の IRC アダプター
         class IrcAdapter
           include Cinch::Plugin
-          include Util::NoticeOnEachChannel
-          include Util::Logging
           include ServerConnectionReport::CommonDisposal
 
           # サーバーがネットワークに参加したときのメッセージを表す正規表現

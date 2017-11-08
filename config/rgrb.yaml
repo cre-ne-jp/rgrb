@@ -45,6 +45,7 @@ Plugins:
 # 設定ファイルは config/ 以下に配置する
 # 設定 ID は config/ を基準とした相対パスから拡張子を除いたもの
 Include:
+  - dice_roll
   - keyword
   - cre_twitter_citation
   - server_connection_report/charybdis

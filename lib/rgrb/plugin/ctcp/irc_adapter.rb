@@ -35,7 +35,7 @@ module RGRB
         def ctcp_version(m)
           m.ctcp_reply("RGRB #{RGRB::VERSION}")
         end
-        
+
         def ctcp_time(m)
           m.ctcp_reply(Time.now.strftime('%a %b %d %T %Y %Z'))
         end

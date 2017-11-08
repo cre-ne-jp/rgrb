@@ -30,8 +30,12 @@ module RGRB
         # @param [String] gameType ゲームタイプ
         # @return [void]
         def bcdice(m, command, gameType = '')
+          log_incoming(m)
+
           result = @bcdice.roll(command, gameType)
           message = result[0].lstrip
+
+          log_notice(m.target, message)
           m.target.send(message, true)
         end
       end

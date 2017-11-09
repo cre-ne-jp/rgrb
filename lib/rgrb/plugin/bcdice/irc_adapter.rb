@@ -17,6 +17,7 @@ module RGRB
         set(plugin_name: 'Bcdice')
         self.prefix = '.bcdice'
         match(/[ 　]+([A-z0-9@]+)[ 　]+([A-z0-9]+)/, method: :bcdice)
+        match(/-version/, method: :version)
 
         def initialize(*args)
           super
@@ -34,6 +35,24 @@ module RGRB
 
           result = @bcdice.roll(command, gameType)
           message = result[0].lstrip
+
+          log_notice(m.target, message)
+          m.target.send(message, true)
+        end
+
+        # git submodule で組み込んでいる BCDice のバージョンを出力する
+        # @param [Cinch::Message] m
+        # @rturn [void]
+        def version(m)
+          log_incoming(m)
+
+          message = 'BCDice Commit ID: '
+          message += Dir.chdir(File.expand_path(
+            '../../../../vendor/BCDice',
+            File.dirname(__FILE__)
+          )) do |path|
+            `git show -s --format=%H`.strip
+          end
 
           log_notice(m.target, message)
           m.target.send(message, true)

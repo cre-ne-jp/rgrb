@@ -16,7 +16,7 @@ module RGRB
 
         set(plugin_name: 'Bcdice')
         self.prefix = '.bcdice'
-        match(/[ 　]+([A-z0-9@]+)[ 　]+([A-z0-9]+)/, method: :bcdice)
+        match(/[\s　]+([A-z0-9+\-*\/()<>=\[\]\.@]+)(?:[\s　]+([A-z0-9]+)|$)/, method: :bcdice)
         match(/-version/, method: :version)
 
         def initialize(*args)

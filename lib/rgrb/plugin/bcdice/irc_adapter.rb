@@ -30,7 +30,8 @@ module RGRB
         # @param [String] command ダイスコマンド
         # @param [String] gameType ゲームタイプ
         # @return [void]
-        def bcdice(m, command, gameType = '')
+        def bcdice(m, command, gameType)
+          gameType = "diceBot" if gameType == nil
           log_incoming(m)
 
           result = @bcdice.roll(command, gameType)

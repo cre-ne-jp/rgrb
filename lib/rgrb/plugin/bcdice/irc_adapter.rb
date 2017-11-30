@@ -23,6 +23,7 @@ module RGRB
           super
 
           @bcdice = CgiDiceBot.new
+          @header = 'BCDice'
         end
 
         # BCDice でダイスを振る
@@ -35,10 +36,11 @@ module RGRB
           log_incoming(m)
 
           result = @bcdice.roll(command, gameType)
-          message = result[0].lstrip
+          gameHeader, messages = result[0].lstrip.split(' : ', 2)
 
-          log_notice(m.target, message)
-          m.target.send(message, true)
+          header = "#{@header}[#{gameHeader}]: "
+
+          notice_multi_lines(messages.lines, m.target, header)
         end
 
         # git submodule で組み込んでいる BCDice のバージョンを出力する

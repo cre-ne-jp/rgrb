@@ -35,10 +35,14 @@ module RGRB
           gameType = "diceBot" if gameType == nil
           log_incoming(m)
 
+          header = "#{@header}->#{m.user.nick}"
           result = @bcdice.roll(command, gameType)
-          gameHeader, messages = result[0].lstrip.split(' : ', 2)
-
-          header = "#{@header}[#{gameHeader}]: "
+          if result[0] == ''
+            messages = '指定されたゲームシステム名は間違っています'
+          else
+            gameHeader, messages = result[0].lstrip.split(' : ', 2)
+            header << "[#{gameHeader}]: "
+          end
 
           notice_multi_lines(messages.lines, m.target, header)
         end

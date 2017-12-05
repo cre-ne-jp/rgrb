@@ -59,10 +59,26 @@ module RGRB
           "デッキ #{deck} を初期化しました。残り #{@channel_data[channel][deck].size} 枚です"
         end
 
+        # デッキを破棄する
+        # @param [String] channel チャンネル名
+        # @param [String] deck デッキ名
+        # @return [String]
+        def deck_destroy(channel, deck)
+          return "デッキ #{deck} は存在しません" if @decks[deck] == nil
+
+          if initialized?(channel, deck)
+            @channel_data[channel].delete(deck)
+            save_json
+            "デッキ #{deck} を破棄しました"
+          else
+            "デッキ #{deck} は #{channel} で初期化されていません"
+          end
+        end
+
         # デッキからカードを引く
         # @param [String] channel チャンネル名
         # @param [String] deck デッキ名
-        # @return [void]
+        # @return [String]
         def card_draw(channel, deck)
           return "デッキ #{deck} は存在しません" if @decks[deck] == nil
           return "#{channel} でデッキ #{deck} は未初期化です" unless initialized?(channel, deck)

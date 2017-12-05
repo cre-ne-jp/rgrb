@@ -18,6 +18,8 @@ module RGRB
         self.prefix = '.deck'
 
         match(/-(?:initialize|set)[\s　]+([A-z0-9]+)/, method: :deck_initialize)
+        match(/-destroy[\s　]+([A-z0-9]+)/, method: :deck_destroy)
+        match(/-reset[\s　]+([A-z0-9]+)/, method: :deck_reset)
         match(/(?:-draw|)[\s　]+([A-z0-9]+)/, method: :card_draw)
 #        match(/-info/, method: :deck_info)
 #        match(/-help/, method: :help)
@@ -32,6 +34,20 @@ module RGRB
         # @return [void]
         def deck_initialize(m, deck_name)
           m.target.send(@generator.deck_initialize(m.channel.name, deck_name), true)
+        end
+
+        # 使いかけのデッキを破棄する
+        # @return [void]
+        def deck_destroy(m, deck_name)
+          m.target.send(@generator.deck_destroy(m.channel.name, deck_name), true)
+        end
+
+        # デッキをリセットする
+        # 既に途中まで使われたデッキを破棄し、新しく初期化する
+        # @return [void]
+        def deck_reset(m, deck_name)
+          deck_destroy(m, deck_name)
+          deck_initialize(m, deck_name)
         end
 
         # デッキからカードを引く

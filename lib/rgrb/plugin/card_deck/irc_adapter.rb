@@ -17,8 +17,8 @@ module RGRB
         set(plugin_name: 'CardDeck')
         self.prefix = '.deck'
 
-        match(/-initialize[ 　]+([A-z0-9]+)/, method: :deck_initialize)
-        match(/[ 　]+([A-z0-9]+)/, method: :card_draw)
+        match(/-(?:initialize|set)[\s　]+([A-z0-9]+)/, method: :deck_initialize)
+        match(/(?:-draw|)[\s　]+([A-z0-9]+)/, method: :card_draw)
 #        match(/-info/, method: :deck_info)
 #        match(/-help/, method: :help)
 

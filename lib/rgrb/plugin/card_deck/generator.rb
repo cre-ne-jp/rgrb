@@ -93,6 +93,15 @@ module RGRB
           end
         end
 
+        # デッキの残り枚数を返す
+        # @param [String] channel チャンネル名
+        # @param [String] deck デッキ名
+        # @return [String]
+        def card_count(channel, deck)
+          count = @channel_data[channel][deck].size
+          "#{channel} での #{deck} の残り枚数は #{count} 枚です"
+        end
+
         # デッキの情報を出力する
         # @param [String] deck_name デッキ名
         # @return [void]

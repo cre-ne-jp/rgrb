@@ -21,6 +21,7 @@ module RGRB
         match(/-destroy[\s　]+([A-z0-9]+)/, method: :deck_destroy)
         match(/-reset[\s　]+([A-z0-9]+)/, method: :deck_reset)
         match(/(?:-draw|)[\s　]+([A-z0-9]+)/, method: :card_draw)
+        match(/-count[\s　]+([A-z0-9]+)/, method: :card_count)
 #        match(/-info/, method: :deck_info)
 #        match(/-help/, method: :help)
 
@@ -54,6 +55,12 @@ module RGRB
         # @return [void]
         def card_draw(m, deck_name)
           m.target.send(@generator.card_draw(m.channel.name, deck_name), true)
+        end
+
+        # デッキに残るカードの枚数を返す
+        # @return [void]
+        def card_count(m, deck_name)
+          m.target.send(@generator.card_count(m.channel.name, deck_name), true)
         end
 
         # デッキの情報を出力する

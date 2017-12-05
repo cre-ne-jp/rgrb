@@ -1,6 +1,6 @@
 # vim: fileencoding=utf-8
 
-require 'sdbm'
+require 'json'
 
 require 'rgrb/plugin/configurable_generator'
 require 'rgrb/plugin/use_logger'
@@ -26,8 +26,9 @@ module RGRB
         # @return [self]
         def configure(config_data)
           # チャンネルデータベースを読み出す
-          #@channel_data = SDBM.open("#{@data_path}/channel")
-          @channel_data = {}
+          @json_db = "#{@data_path}/channel.json"
+          load_json
+
           # デッキが保存されているディレクトリのパス
           @deck_path = "#{@data_path}/decks/"
 
@@ -44,6 +45,7 @@ module RGRB
         # @return [String]
         def deck_initialize(channel, deck)
           return "デッキ #{deck} は存在しません" if @decks[deck] == nil
+
           if @channel_data[channel] == nil
             @channel_data[channel] = {}
           elsif initialized?(channel, deck)
@@ -52,6 +54,7 @@ module RGRB
 
           @channel_data[channel][deck] =
             Array.new(@decks[deck].values.size) { |index| index }.shuffle
+          save_json
 
           "デッキ #{deck} を初期化しました。残り #{@channel_data[channel][deck].size} 枚です"
         end
@@ -62,9 +65,11 @@ module RGRB
         # @return [void]
         def card_draw(channel, deck)
           return "デッキ #{deck} は存在しません" if @decks[deck] == nil
-          return "#{channel} でデッキ #{deck} は未初期化です" if initialized?(channel, deck)
+          return "#{channel} でデッキ #{deck} は未初期化です" unless initialized?(channel, deck)
 
           id = @channel_data[channel][deck].pop
+          save_json
+
           if id == nil
             "デッキ #{deck} は空です"
           else
@@ -84,6 +89,43 @@ module RGRB
         end
 
         private
+
+        # チャンネルデータを JSON ファイルから読み込む
+        # @return [Boolean]
+        def load_json
+          begin
+            @channel_data = File.open(@json_db) do |file|
+              JSON.parse(file.read)
+            end
+          rescue Errno::ENOENT => e
+            @channel_data = {}
+            @logger.warn("チャンネルデータ #{@json_db} を新規作成します")
+          rescue => e
+            @logger.error("チャンネルデータ #{@json_db} の読み込みに失敗しました")
+            @logger.error(e)
+            return false
+          end
+          @logger.warn("チャンネルデータ #{@json_db} の読み込みが完了しました")
+
+          true
+        end
+
+        # チャンネルデータを JSON ファイルに保存する
+        # @return [Boolean]
+        def save_json
+          begin
+            File.open(@json_db, 'w') do |file|
+              JSON.dump(@channel_data, file)
+            end
+          rescue => e
+            @logger.error("チャンネルデータ #{@json_db} の保存に失敗しました")
+            @logger.error(e)
+            return false
+          end
+          @logger.warn("チャンネルデータ #{@json_db} の保存が完了しました")
+
+          true
+        end
 
         # デッキをデータベースから読み込む
         # @param [String] glob_pattern デッキファイル名のパターン
@@ -109,7 +151,7 @@ module RGRB
         # @param [String] deck デッキ名
         # @return [Boolean]
         def initialized?(channel, deck)
-          @channel_data[channel][deck].class == 'array'
+          @channel_data[channel][deck].class == Array
         end
 
         # 日付の日本語表記を返す

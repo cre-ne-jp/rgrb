@@ -44,16 +44,16 @@ module RGRB
         # @param [String] deck デッキ名
         # @return [String]
         def deck_initialize(channel, deck)
-          return "デッキ #{deck} は存在しません" if @decks[deck] == nil
+          return "デッキ #{deck} は存在しません" if @decks[deck].nil?
 
-          if @channel_data[channel] == nil
+          if @channel_data[channel].nil?
             @channel_data[channel] = {}
           elsif initialized?(channel, deck)
             return "既に #{channel} で #{deck} は初期化済みです"
           end
 
           @channel_data[channel][deck] =
-            Array.new(@decks[deck].values.size) { |index| index }.shuffle
+            Array.new(@decks[deck].size) { |index| index }.shuffle
           save_json
 
           "デッキ #{deck} を初期化しました。残り #{@channel_data[channel][deck].size} 枚です"
@@ -64,7 +64,7 @@ module RGRB
         # @param [String] deck デッキ名
         # @return [String]
         def deck_destroy(channel, deck)
-          return "デッキ #{deck} は存在しません" if @decks[deck] == nil
+          return "デッキ #{deck} は存在しません" if @decks[deck].nil?
 
           if initialized?(channel, deck)
             @channel_data[channel].delete(deck)
@@ -80,7 +80,7 @@ module RGRB
         # @param [String] deck デッキ名
         # @return [String]
         def card_draw(channel, deck)
-          return "デッキ #{deck} は存在しません" if @decks[deck] == nil
+          return "デッキ #{deck} は存在しません" if @decks[deck].nil?
           return "#{channel} でデッキ #{deck} は未初期化です" unless initialized?(channel, deck)
 
           id = @channel_data[channel][deck].pop

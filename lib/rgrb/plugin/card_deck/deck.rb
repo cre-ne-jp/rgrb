@@ -12,6 +12,9 @@ module RGRB
         # デッキの中身(札)
         # @return [Array<String>]
         attr_reader :values
+        # 未使用デッキのカード枚数
+        # @return [Integer]
+        attr_reader :size
         # デッキの説明
         # @return [String, nil]
         attr_reader :description
@@ -30,9 +33,6 @@ module RGRB
         # 出力ヘッダ
         # @return [String, nil]
         attr_reader :header
-        # 初期モード
-        # @return [Symbol]
-        attr_reader :default_mode
 
         # YAML を解析して Deck オブジェクトに変換する
         # @param [String] yaml 表を表す YAML 文字列
@@ -75,6 +75,7 @@ module RGRB
         # 新しい Deck インスタンスを返す
         # @param [String] name デッキ名
         # @param [Array<String>] values 表の値の配列
+        # @param [Integer] size 値の数(未使用デッキのカード枚数)
         # @param [Hash] metadata メタデータ
         # @option metadata [String] :description 表の説明
         # @option metadata [Date] :added 追加日
@@ -87,6 +88,7 @@ module RGRB
 
           @name = name
           @values = values
+          @size = values.size
 
           @description = actual_metadata[:description]
           @author = actual_metadata[:author]

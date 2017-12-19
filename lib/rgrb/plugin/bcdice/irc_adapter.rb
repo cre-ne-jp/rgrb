@@ -49,7 +49,7 @@ module RGRB
 
         # git submodule で組み込んでいる BCDice のバージョンを出力する
         # @param [Cinch::Message] m
-        # @rturn [void]
+        # @return [void]
         def version(m)
           log_incoming(m)
 

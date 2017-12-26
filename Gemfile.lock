@@ -22,7 +22,7 @@ GEM
       tins (~> 1.6)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
-    d1lcs (0.5.3)
+    d1lcs (0.5.4)
     diff-lcs (1.3)
     docile (1.1.5)
     domain_name (0.5.20170404)
@@ -148,4 +148,4 @@ DEPENDENCIES
   yard (~> 0.8)
 
 BUNDLED WITH
-   1.16.0
+   1.16.1

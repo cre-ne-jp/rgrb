@@ -11,20 +11,17 @@ module RGRB
   module Plugin
     # サーバーリレー監視プラグイン
     module ServerConnectionReport
-      # メール送信を司るクラス
-      class MailSender
+      # メール生成を司るクラス
+      class MailGenerator
         # メールテンプレートの読み込みに失敗した際に発生するエラー
         class MailTemplateLoadError < StandardError; end
 
-        # メールの送信先
-        # @return [String]
-        attr_reader :to
         # メールの件名
         # @return [String]
-        attr_reader :subject
+        attr_accessor :subject
         # メールの本文
         # @return [String]
-        attr_reader :body
+        attr_accessor :body
 
         # ボットの接続先ホスト名
         # @return [String]
@@ -36,9 +33,13 @@ module RGRB
         # @return [String]
         attr_accessor :irc_network
 
+        # メールの送信先
+        # @return [String]
+        attr_reader :to
+
         # 送信データを初期化する
         # @param [Hash] config 設定
-        # @param [Object] logger ロガー
+        # @param [Object?] logger ロガー
         # @option [String] to 送信先
         # @option [Hash] smtp 送信に利用するSMTPサーバーの設定
         def initialize(config, logger = nil)
@@ -119,18 +120,19 @@ module RGRB
           disconnected: '切断'
         }.freeze
 
-        # メールを送信する
+        # メールの内容を生成する
         # @param [String] server 対象のサーバー
         # @param [Symbol] status サーバーのステータス
         # @param [DateTime] time 接続・切断時間
         # @param [String] message 補足メッセージ
-        # @return [String]
-        def send(server, status, time, message)
+        # @return [MailData]
+        def generate(server, status, time, message)
           data_parts = {
             host: @irc_host,
             nick: @irc_nick,
             network: @irc_network,
             time: time.strftime('%Y年%m月%d日 %H:%M:%S'),
+            server: server,
             message: message,
             rgrb_version: RGRB::VERSION,
             status1: STATUS_1[status],
@@ -139,8 +141,8 @@ module RGRB
 
           mail = Mail.new
           mail.delivery_method(:smtp, @mail_config)
-          mail['charset'] = 'utf-8'
-          mail['to']      = @to
+          mail.charset = 'utf-8'
+          mail.to      = @to
           {
             from:     '%{nick} on %{network} <rgrb-%{nick}@%{host}>',
             subject:  @subject,
@@ -148,12 +150,13 @@ module RGRB
           }.each do |key, value|
             mail[key] = value % data_parts
           end
-puts "Subject: #{mail.subject}\n"
-puts mail.body
-puts mail.to_s
-          mail.deliver
+
+          mail
         end
 
+        # Hashのキーをシンボルに変えたものを返す
+        # @param [Hash] hash 変換元のハッシュテーブル
+        # @return [Hash]
         def symbolize_keys(hash)
           hash.map { |key, value|
             [key.to_sym, value]

@@ -64,13 +64,13 @@ describe RGRB::Plugin::ServerConnectionReport::MailSender do
       }
 
       it 'キーを文字列からシンボルに変換する' do
-        mail_sender_2 = described_class.new(mail_config_hash_1)
+        mail_sender_2 = described_class.new(mail_config_hash_1, null_logger)
         expect(mail_sender_2.instance_variable_get(:@mail_config)).
           to eq(expected_1)
       end
 
       it 'nullの項目を除く' do
-        mail_sender_2 = described_class.new(mail_config_hash_2)
+        mail_sender_2 = described_class.new(mail_config_hash_2, null_logger)
         expect(mail_sender_2.instance_variable_get(:@mail_config)).
           to eq(expected_2)
       end

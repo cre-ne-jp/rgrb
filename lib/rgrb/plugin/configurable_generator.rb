@@ -6,12 +6,21 @@ module RGRB
   module Plugin
     # 設定できる出力テキスト生成器のモジュール
     module ConfigurableGenerator
+      # RGRB のルートパス
+      # @return [String]
+      attr_reader :root_path
+      # プラグインで使うデータを格納するディレクトリのパス
+      # @retrun [String]
+      attr_reader :data_path
+
       # インスタンスの初期化
       #
       # 設定関連のメソッドが動作するように変数を設定する。
       def initialize
         class_name_tree = self.class.name.split('::')
         @plugin_name_underscore = class_name_tree[-2].underscore
+
+        self.root_path = File.expand_path('../../..', __dir__)
       end
 
       # RGRB のルートパスを設定する

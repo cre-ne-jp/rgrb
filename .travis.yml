@@ -8,6 +8,9 @@ rvm:
   - 2.3.6
   - 2.4.3
   - 2.5.0
+before_install:
+  # https://github.com/travis-ci/travis-ci/issues/8978#issuecomment-354036443
+  - gem update --system
 notifications:
   irc:
     use_notice: true

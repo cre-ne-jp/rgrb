@@ -32,12 +32,12 @@ module RGRB
           @subject = ''
           @body = ''
 
-          if(config['SMTP'])
-            @mail_config = symbolize_keys(config['SMTP'])
-              .delete_if do |key, value|
-                value == 'nil'
-              end
+          smtp_config = config['SMTP']
+          if smtp_config
+            @mail_config = symbolize_keys(smtp_config).
+              reject { |_, value| value.nil? }
           end
+
           @to = config['To'] || 'root@localhost'
 
           @logger = logger || Lumberjack::Logger.new(

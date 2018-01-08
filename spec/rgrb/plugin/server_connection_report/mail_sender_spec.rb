@@ -1,6 +1,8 @@
 # vim: fileencoding=utf-8
 
 require_relative '../../../spec_helper'
+
+require 'yaml'
 require 'lumberjack'
 require 'rgrb/plugin/server_connection_report/mail_sender'
 
@@ -9,9 +11,9 @@ describe RGRB::Plugin::ServerConnectionReport::MailSender do
   let(:test_data_file_path) {
     ->file_name { "#{test_data_dir}/#{file_name}" }
   }
-  let(:mail_sender) {
-    described_class.new({}, Lumberjack::Logger.new('/dev/null'))
-  }
+
+  let(:null_logger) { Lumberjack::Logger.new('/dev/null') }
+  let(:mail_sender) { described_class.new({}, null_logger) }
 
   describe '#initialize' do
     it 'インスタンスを初期化することができる' do
@@ -28,6 +30,50 @@ describe RGRB::Plugin::ServerConnectionReport::MailSender do
 
     it 'body を正しく設定する' do
       expect(mail_sender.body).to eq('')
+    end
+
+    describe '@mail_config' do
+      let(:mail_config_hash_1) {
+        YAML.load(<<-YAML)
+        SMTP:
+          address: localhost
+          port: 25
+        YAML
+      }
+
+      let(:expected_1) {
+        {
+          address: 'localhost',
+          port: 25
+        }
+      }
+
+      let(:mail_config_hash_2) {
+        YAML.load(<<-YAML)
+        SMTP:
+          authentication: false
+          # YAMLではnilではなくnull
+          invalid_key: null
+        YAML
+      }
+
+      let(:expected_2) {
+        {
+          authentication: false
+        }
+      }
+
+      it 'キーを文字列からシンボルに変換する' do
+        mail_sender_2 = described_class.new(mail_config_hash_1)
+        expect(mail_sender_2.instance_variable_get(:@mail_config)).
+          to eq(expected_1)
+      end
+
+      it 'nullの項目を除く' do
+        mail_sender_2 = described_class.new(mail_config_hash_2)
+        expect(mail_sender_2.instance_variable_get(:@mail_config)).
+          to eq(expected_2)
+      end
     end
   end
 

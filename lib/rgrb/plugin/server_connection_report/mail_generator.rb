@@ -2,6 +2,7 @@
 # frozen_string_literal: true
 
 require 'rgrb/version'
+require 'rgrb/plugin/configurable_generator'
 
 require 'stringio'
 require 'mail'
@@ -13,6 +14,8 @@ module RGRB
     module ServerConnectionReport
       # メール生成を司るクラス
       class MailGenerator
+        include ConfigurableGenerator
+
         # メールテンプレートの読み込みに失敗した際に発生するエラー
         class MailTemplateLoadError < StandardError; end
 
@@ -37,12 +40,10 @@ module RGRB
         # @return [String]
         attr_reader :to
 
-        # 送信データを初期化する
-        # @param [Hash] config 設定
-        # @param [Object?] logger ロガー
-        # @option [String] to 送信先
-        # @option [Hash] smtp 送信に利用するSMTPサーバーの設定
-        def initialize(config, logger = nil)
+        # メール生成器を初期化する
+        def initialize(*)
+          super
+
           @subject = ''
           @body = ''
 
@@ -50,17 +51,37 @@ module RGRB
           @irc_nick = ''
           @irc_network = ''
 
-          smtp_config = config['SMTP']
-          if smtp_config
-            @mail_config = symbolize_keys(smtp_config).
-              reject { |_, value| value.nil? }
+          @mail_config = {}
+          @to = 'root@localhost'
+
+          @logger =
+            Lumberjack::Logger.new($stdout, progname: self.class.to_s)
+        end
+
+        # 設定データを解釈してプラグインの設定を行う
+        # @param [Hash] config_data 設定データのハッシュ
+        # @return [self]
+        def configure(config_data)
+          mail_config = config_data['Mail']
+          if mail_config
+            smtp_config = mail_config['SMTP']
+            if smtp_config
+              @mail_config = symbolize_keys(smtp_config).
+                reject { |_, value| value.nil? }
+            end
+
+            to_config = mail_config['To']
+            if to_config
+              @to = to_config
+            end
           end
 
-          @to = config['To'] || 'root@localhost'
+          logger = config_data[:logger]
+          if logger
+            @logger = logger
+          end
 
-          @logger = logger || Lumberjack::Logger.new(
-            $stdout, progname: self.class.to_s
-          )
+          self
         end
 
         # メールのテンプレートを読み込む
@@ -108,6 +129,14 @@ module RGRB
           @logger.warn("メールテンプレート #{path} の読み込みが完了しました")
 
           self
+        end
+
+        # 指定された名前のメールテンプレートファイルを読み込む
+        # @param [String] name テンプレート名。これに .txt が付加されて読み込まれる。
+        # @return [self]
+        # @raise [MailTemplateLoadError] 読み込めなかった場合に発生する
+        def load_mail_template_by_name(name)
+          load_mail_template_file("#{@data_path}/#{name}.txt")
         end
 
         STATUS_1 = {

@@ -15,19 +15,26 @@ describe RGRB::Plugin::ServerConnectionReport::MailGenerator do
   let(:template_cre_path) { test_data_file_path['cre.txt'] }
 
   let(:null_logger) { Lumberjack::Logger.new('/dev/null') }
-  let(:smtp_config) {
+
+  let(:config_data) {
     {
-      'SMTP' => {
-        'address' => 'localhost',
-        'port' => 25,
-        'domain' => 'smtp.example.net',
-        'authentication' => false,
-        'ssl' => false,
-        'enable_starttls_auto' => false
+      'Mail' => {
+        'To' => ['admin@example.net'],
+        'SMTP' => {
+          'address' => 'localhost',
+          'port' => 25,
+          'domain' => 'smtp.example.net',
+          'authentication' => false,
+          'ssl' => false,
+          'enable_starttls_auto' => false
+        }
       }
     }
   }
-  let(:mail_generator) { described_class.new(smtp_config, null_logger) }
+
+  let(:mail_generator) {
+    described_class.new.configure(logger: null_logger)
+  }
 
   describe '#initialize' do
     it 'インスタンスを初期化することができる' do
@@ -54,68 +61,66 @@ describe RGRB::Plugin::ServerConnectionReport::MailGenerator do
       expect(mail_generator.irc_network).to eq('')
     end
 
+    it 'to を正しく設定する' do
+      expect(mail_generator.to).to eq('root@localhost')
+    end
+  end
+
+  describe '#configure' do
+    let(:configured_mail_generator) {
+      mail_generator.configure(config_data)
+    }
+
     describe '@to' do
       context '指定されていなかった場合' do
-        it 'to を正しい既定値に設定する' do
-          expect(mail_generator.to).to eq('root@localhost')
+        it 'to が設定されない' do
+          config_data['Mail']['To'] = nil
+          expect(configured_mail_generator.to).to eq('root@localhost')
         end
       end
 
       context '指定されていた場合' do
-        let(:mail_address) { 'someone@example.net' }
-        let(:config) {
-          { 'To' => mail_address }
-        }
-
-        let(:generator) { described_class.new(config, null_logger) }
-
         it 'to を設定する' do
-          expect(generator.to).to eq(mail_address)
+          expect(configured_mail_generator.to).to eq(['admin@example.net'])
         end
       end
     end
 
     describe '@mail_config' do
-      let(:mail_config_hash_1) {
-        YAML.load(<<-YAML)
-        SMTP:
-          address: localhost
-          port: 25
-        YAML
-      }
-
-      let(:expected_1) {
+      let(:expected_symbol_keys) {
         {
           address: 'localhost',
-          port: 25
+          port: 25,
+          domain: 'smtp.example.net',
+          authentication: false,
+          ssl: false,
+          enable_starttls_auto: false
         }
       }
 
-      let(:mail_config_hash_2) {
+      let(:smtp_config_with_nil_value) {
         YAML.load(<<-YAML)
-        SMTP:
-          authentication: false
-          # YAMLではnilではなくnull
-          invalid_key: null
+        authentication: false
+        # YAMLではnilではなくnull
+        invalid_key: null
         YAML
       }
 
-      let(:expected_2) {
+      let(:expected_rejected_nil_value) {
         {
           authentication: false
         }
       }
 
       it 'キーを文字列からシンボルに変換する' do
-        mail_generator_2 = described_class.new(mail_config_hash_1, null_logger)
-        expect(mail_generator_2.instance_variable_get(:@mail_config)).
-          to eq(expected_1)
+        expect(configured_mail_generator.instance_variable_get(:@mail_config)).
+          to eq(expected_symbol_keys)
       end
 
       it 'nullの項目を除く' do
-        mail_generator_2 = described_class.new(mail_config_hash_2, null_logger)
-        expect(mail_generator_2.instance_variable_get(:@mail_config)).
-          to eq(expected_2)
+        config_data['Mail']['SMTP'] = smtp_config_with_nil_value
+        expect(configured_mail_generator.instance_variable_get(:@mail_config)).
+          to eq(expected_rejected_nil_value)
       end
     end
   end

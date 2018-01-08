@@ -1,5 +1,7 @@
 # vim: fileencoding=utf-8
 
+require 'rgrb/plugin/configurable_generator'
+
 module RGRB
   module Plugin
     # サーバーリレー監視プラグイン

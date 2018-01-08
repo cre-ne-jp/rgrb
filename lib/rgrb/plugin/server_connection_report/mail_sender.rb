@@ -1,5 +1,6 @@
 # vim: fileencoding=utf-8
 
+require 'stringio'
 require 'mail'
 require 'lumberjack'
 
@@ -9,12 +10,25 @@ module RGRB
     module ServerConnectionReport
       # メール送信を司るクラス
       class MailSender
+        # メールテンプレートの読み込みに失敗した際に発生するエラー
+        class MailTemplateLoadError < StandardError; end
+
+        # メールの件名
+        # @return [String]
+        attr_accessor :subject
+        # メールの本文
+        # @return [String]
+        attr_accessor :body
+
         # 送信データを初期化する
         # @param [Hash] config 設定
         # @param [Object] logger ロガー
         # @option [String] to 送信先
         # @option [Hash] smtp 送信に利用するSMTPサーバーの設定
         def initialize(config, logger = nil)
+          @subject = ''
+          @body = ''
+
           if(config['SMTP'])
             @mail_config = symbolize_keys(config['SMTP'])
               .delete_if do |key, value|
@@ -35,33 +49,50 @@ module RGRB
         attr_writer :connection_datas
 
         # メールのテンプレートを読み込む
-        # @param [String] path テンプレートファイル(text/plain)のパス
-        # @return [void]
-        def load_message_template(path)
-          begin
-            template = File.read(path, encoding: 'UTF-8')
-            @logger.warn("メールテンプレート #{path} の読み込みが完了しました")
-          rescue => e
-            @logger.error("メールテンプレート #{path} の読み込みに失敗しました")
-            @logger.error(e)
+        # @param [String] content テンプレートの内容
+        # @return [self]
+        def load_mail_template(content)
+          content_io = StringIO.new(content)
+
+          # 件名を読み込む
+          subject_line = content_io.gets
+          unless subject_line
+            raise MailTemplateLoadError, '件名が含まれていません'
           end
 
-          line_flag = :first
-          template.each_line do |line|
-            case line_flag
-            when :first
-              # 1行目は件名
-              line_flag = :second
-              @subject = line.chomp
-            when :second
-              # 2行目は破棄
-              line_flag = :body
-              @body = ''
-            when :body
-              # 3行目以降は本文
-              @body << line
-            end
+          @subject = subject_line.chomp
+
+          # 1行読み捨てる
+          content_io.gets
+
+          if content_io.eof?
+            raise MailTemplateLoadError, '本文が含まれていません'
           end
+
+          @body = content_io.read.chomp
+
+          self
+        end
+
+        # メールテンプレートファイルを読み込む
+        # @param [String] path メールテンプレートファイル（text/plain）のパス
+        # @return [self]
+        # @raise [MailTemplateLoadError] 読み込めなかった場合に発生する
+        def load_mail_template_file(path)
+          content = File.read(path, encoding: 'UTF-8')
+
+          begin
+            load_mail_template(content)
+          rescue => e
+            @logger.error("メールテンプレート #{path} の読み込みに失敗しました")
+
+            # 再送出
+            raise e
+          end
+
+          @logger.warn("メールテンプレート #{path} の読み込みが完了しました")
+
+          self
         end
 
         # メールを送信する

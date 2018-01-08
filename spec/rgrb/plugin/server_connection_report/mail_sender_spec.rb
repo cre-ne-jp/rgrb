@@ -18,6 +18,10 @@ describe RGRB::Plugin::ServerConnectionReport::MailSender do
       expect(mail_sender).to be_truthy
     end
 
+    it 'to を正しい既定値に設定する' do
+      expect(mail_sender.to).to eq('root@localhost')
+    end
+
     it 'subject を正しく設定する' do
       expect(mail_sender.subject).to eq('')
     end

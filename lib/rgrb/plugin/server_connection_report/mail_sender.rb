@@ -13,12 +13,15 @@ module RGRB
         # メールテンプレートの読み込みに失敗した際に発生するエラー
         class MailTemplateLoadError < StandardError; end
 
+        # メールの送信先
+        # @return [String]
+        attr_reader :to
         # メールの件名
         # @return [String]
-        attr_accessor :subject
+        attr_reader :subject
         # メールの本文
         # @return [String]
-        attr_accessor :body
+        attr_reader :body
 
         # 送信データを初期化する
         # @param [Hash] config 設定

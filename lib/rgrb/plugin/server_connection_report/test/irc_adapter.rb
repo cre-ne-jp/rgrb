@@ -81,6 +81,9 @@ module RGRB
             end
           end
 
+          # サーバーへの接続が完了したとき、情報を集める
+          # @param [Cinch::Message] m メッセージ
+          # @return [void]
           def connected(m)
             _connected(m)
           end

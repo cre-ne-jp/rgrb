@@ -61,6 +61,7 @@ ServerConnectionReport::Charybdis:
 
 さらに、charybdis 用のプラグインはメールでの通知にも対応しています。
 設定ファイルに以下を追記して、メール関係の設定を行います。
+`MessageTemplate` と `Mail` の両方が含まれていなければメールでの通知は行いません。
 
 ```yaml
   # 送信するメールのテンプレートファイルID

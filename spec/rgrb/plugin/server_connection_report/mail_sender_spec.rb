@@ -32,6 +32,18 @@ describe RGRB::Plugin::ServerConnectionReport::MailSender do
       expect(mail_sender.body).to eq('')
     end
 
+    it 'irc_host を正しく設定する' do
+      expect(mail_sender.irc_host).to eq('')
+    end
+
+    it 'irc_nick を正しく設定する' do
+      expect(mail_sender.irc_nick).to eq('')
+    end
+
+    it 'irc_network を正しく設定する' do
+      expect(mail_sender.irc_network).to eq('')
+    end
+
     describe '@mail_config' do
       let(:mail_config_hash_1) {
         YAML.load(<<-YAML)

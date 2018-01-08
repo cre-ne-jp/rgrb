@@ -1,4 +1,7 @@
 # vim: fileencoding=utf-8
+# frozen_string_literal: true
+
+require 'rgrb/version'
 
 require 'stringio'
 require 'mail'
@@ -23,6 +26,16 @@ module RGRB
         # @return [String]
         attr_reader :body
 
+        # ボットの接続先ホスト名
+        # @return [String]
+        attr_accessor :irc_host
+        # ボットのニックネーム
+        # @return [String]
+        attr_accessor :irc_nick
+        # ボットの接続先ネットワーク
+        # @return [String]
+        attr_accessor :irc_network
+
         # 送信データを初期化する
         # @param [Hash] config 設定
         # @param [Object] logger ロガー
@@ -31,6 +44,10 @@ module RGRB
         def initialize(config, logger = nil)
           @subject = ''
           @body = ''
+
+          @irc_host = ''
+          @irc_nick = ''
+          @irc_network = ''
 
           smtp_config = config['SMTP']
           if smtp_config
@@ -44,12 +61,6 @@ module RGRB
             $stdout, progname: self.class.to_s
           )
         end
-
-        # 接続設定を保存する
-        # @param [String] :host 接続サーバーのホスト名
-        # @param [String] :nick ボットのニックネーム
-        # @param [String] :network ネットワーク名
-        attr_writer :connection_datas
 
         # メールのテンプレートを読み込む
         # @param [String] content テンプレートの内容
@@ -98,6 +109,16 @@ module RGRB
           self
         end
 
+        STATUS_1 = {
+          joined: 'に参加し',
+          disconnected: 'から切断され'
+        }.freeze
+
+        STATUS_2 = {
+          joined: '接続',
+          disconnected: '切断'
+        }.freeze
+
         # メールを送信する
         # @param [String] server 対象のサーバー
         # @param [Symbol] status サーバーのステータス
@@ -105,17 +126,16 @@ module RGRB
         # @param [String] message 補足メッセージ
         # @return [String]
         def send(server, status, time, message)
-          data_parts = @connection_datas.clone
-          data_parts[:time] = time.strftime('%Y年%m月%d日 %H:%M:%S')
-          data_parts[:server] = server
-          data_parts[:message] = message
-          data_parts[:rgrb_version] = RGRB::VERSION
-          data_parts[:status1], data_parts[:status2] = case status
-          when :joined
-            ['に参加し', '接続']
-          when :disconnected
-            ['から切断され', '切断']
-          end
+          data_parts = {
+            host: @irc_host,
+            nick: @irc_nick,
+            network: @irc_network,
+            time: time.strftime('%Y年%m月%d日 %H:%M:%S'),
+            message: message,
+            rgrb_version: RGRB::VERSION,
+            status1: STATUS_1[status],
+            status2: STATUS_2[status]
+          }
 
           mail = Mail.new
           mail.delivery_method(:smtp, @mail_config)

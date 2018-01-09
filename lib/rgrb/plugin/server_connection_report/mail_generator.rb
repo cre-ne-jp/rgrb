@@ -155,7 +155,7 @@ module RGRB
         # @param [DateTime] time 接続・切断時間
         # @param [String] message 補足メッセージ
         # @return [MailData]
-        def generate(server, status, time, message)
+        def generate(server, status, time, message = '')
           data_parts = {
             host: @irc_host,
             nick: @irc_nick,

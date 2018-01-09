@@ -1,11 +1,9 @@
 # vim: fileencoding=utf-8
 
 require 'cinch'
-require 'pp'
 
 require 'rgrb/plugin/server_connection_report/constants'
-require 'rgrb/plugin/server_connection_report/generator'
-require 'rgrb/plugin/server_connection_report/common_disposal'
+require 'rgrb/plugin/server_connection_report/irc_adapter_methods'
 
 module RGRB
   module Plugin
@@ -22,7 +20,7 @@ module RGRB
         # ServerConnectionReport::Test の IRC アダプター
         class IrcAdapter
           include Cinch::Plugin
-          include ServerConnectionReport::CommonDisposal
+          include ServerConnectionReport::IrcAdapterMethods
 
           # サーバーがネットワークに参加したときのメッセージを表す正規表現
           NETJOIN_RE =
@@ -35,57 +33,45 @@ module RGRB
           set(plugin_name: 'ServerConnectionReport::Test')
           self.prefix = ''
 
-          # サーバーがネットワークに参加したときのメッセージを表す正規表現
           match(NETJOIN_RE, method: :joined)
-          # サーバーがネットワークから切断されたときのメッセージを表す
-          # 正規表現
           match(NETSPLIT_RE, method: :disconnected)
-          # サーバーへの接続が完了したときに情報を集める
-          listen_to(:'002', method: :connected)
 
+          # サーバーへの接続が完了したときの処理
+          listen_to(:'002', method: :set_connection_info)
+
+          # IRC アダプタを初期化する
           def initialize(*)
             super
 
-            config_data = config[:plugin]
-            @channels_to_send = config_data['ChannelsToSend'] || []
-            @testchannel = config_data['TestChannel'] || '#irc_test'
+            prepare_generators
 
-            @generator = Generator.new
-            @generator.root_path = config[:root_path]
-            @generator.configure(config[:plugin])
+            config_data = config[:plugin]
+            @test_channel = config_data['TestChannel'] || '#irc_test'
           end
 
-          # サーバ接続メッセージを NOTICE する
+          # ネットワークにあるサーバが参加したときの処理
           # @param [Cinch::Message] m メッセージ
           # @param [String] server サーバ
           # @return [void]
+          #
+          # サーバのネットワークへの参加を NOTICE で通知する。
+          # メール送信の設定が行われている場合は、メールの送信も行う。
           def joined(m, server)
-            if m.channel == @testchannel
-              log_incoming(m)
-              sleep 1
-              notice_on_each_channel(@generator.joined(server, m.time))
-            end
+            notice_joined(m, server) if m.channel == @test_channel
           end
 
-          # サーバ切断メッセージを NOTICE する
+          # ネットワークからあるサーバが切断されたときの処理
           # @param [Cinch::Message] m メッセージ
           # @param [String] server サーバ
           # @param [String] comment コメント
           # @return [void]
+          #
+          # サーバのネットワークからの切断を NOTICE で通知する。
+          # メール送信の設定が行われている場合は、メールの送信も行う。
           def disconnected(m, server, comment)
-            if m.channel == @testchannel
-              log_incoming(m)
-              notice_on_each_channel(
-                @generator.disconnected(server, m.time, comment)
-              )
+            if m.channel == @test_channel
+              notice_disconnected(m, server, comment)
             end
-          end
-
-          # サーバーへの接続が完了したとき、情報を集める
-          # @param [Cinch::Message] m メッセージ
-          # @return [void]
-          def connected(m)
-            _connected(m)
           end
         end
       end

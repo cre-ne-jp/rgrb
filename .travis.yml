@@ -3,10 +3,14 @@ language: ruby
 cache: bundler
 bundler_args: --deployment
 rvm:
-  - 2.2.8
+  - 2.2.9
   - 2.3.1
-  - 2.3.5
-  - 2.4.2
+  - 2.3.6
+  - 2.4.3
+  - 2.5.0
+before_install:
+  # https://github.com/travis-ci/travis-ci/issues/8978#issuecomment-354036443
+  - gem update --system
 notifications:
   irc:
     use_notice: true

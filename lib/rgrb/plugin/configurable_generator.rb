@@ -10,7 +10,7 @@ module RGRB
       # @return [String]
       attr_reader :root_path
       # プラグインで使うデータを格納するディレクトリのパス
-      # @retrun [String]
+      # @return [String]
       attr_reader :data_path
 
       # インスタンスの初期化

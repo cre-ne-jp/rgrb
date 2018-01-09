@@ -212,6 +212,27 @@ describe RGRB::Plugin::ServerConnectionReport::MailGenerator do
         end
       end
     end
+
+    describe '#load_mail_template_by_name' do
+      context 'cre' do
+        let(:cre_mail_generator) {
+          mail_generator.data_path = test_data_dir
+          mail_generator.load_mail_template_by_name('cre')
+        }
+
+        it 'self を返す' do
+          expect(cre_mail_generator).to be(mail_generator)
+        end
+
+        it '件名を正しく設定する' do
+          expect(cre_mail_generator.subject).to eq(cre_subject)
+        end
+
+        it '本文を正しく設定する' do
+          expect(cre_mail_generator.body).to eq(cre_body)
+        end
+      end
+    end
   end
 
   describe '#generate' do

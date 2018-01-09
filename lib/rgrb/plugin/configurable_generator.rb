@@ -8,10 +8,12 @@ module RGRB
     module ConfigurableGenerator
       # RGRB のルートパス
       # @return [String]
+      # @note root_path を設定すると、それに合わせて
+      #   data_path も設定される。
       attr_reader :root_path
       # プラグインで使うデータを格納するディレクトリのパス
       # @return [String]
-      attr_reader :data_path
+      attr_accessor :data_path
 
       # インスタンスの初期化
       #

@@ -42,7 +42,6 @@ end
 
 describe RGRB::Plugin::ConfigurableGenerator do
   let(:generator) { RGRB::Plugin::TestPlugin::Generator.new }
-  let(:root_path) { '/home/rgrb' }
 
   describe '#initialize' do
     let(:root_path_from_spec_file) {
@@ -61,23 +60,37 @@ describe RGRB::Plugin::ConfigurableGenerator do
   end
 
   describe '#root_path=' do
-    it '正しく設定される' do
+    let(:root_path) { '/home/rgrb' }
+    let(:data_path) { '/home/rgrb/data/test_plugin' }
+
+    let(:generator_set_root_path) {
       generator.root_path = root_path
-      expect(generator.root_path).to eq(root_path)
+      generator
+    }
+
+    it 'root_path を正しく設定する' do
+      expect(generator_set_root_path.root_path).to eq(root_path)
+    end
+
+    it 'data_path を正しく設定する' do
+      expect(generator_set_root_path.data_path).to eq(data_path)
     end
   end
 
-  describe '@data_path' do
-    let(:data_path) { '/home/rgrb/data/test_plugin' }
+  describe '#data_path=' do
+    let(:data_path) { '/home/rgrb/data2' }
+    let(:generator_set_data_path) {
+      generator.data_path = data_path
+      generator
+    }
 
-    it '正しく設定される' do
-      generator.root_path = root_path
-      expect(generator.data_path).to eq(data_path)
+    it 'data_path を正しく設定する' do
+      expect(generator_set_data_path.data_path).to eq(data_path)
     end
   end
 
   describe '#configure' do
-    it '自身が返る' do
+    it '自身を返す' do
       expect(generator.default_configure).to be(generator)
     end
   end

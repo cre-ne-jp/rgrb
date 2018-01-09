@@ -212,93 +212,93 @@ describe RGRB::Plugin::ServerConnectionReport::MailGenerator do
         end
       end
     end
+  end
 
-    describe '#generate' do
-      let(:cre_mail_generator) {
-        mail_generator.load_mail_template_file(template_cre_path)
-        mail_generator.irc_host = 'irc.cre.jp'
-        mail_generator.irc_nick = 'RGRB'
-        mail_generator.irc_network = "Creator'sNetworkIRC"
+  describe '#generate' do
+    let(:cre_mail_generator) {
+      mail_generator.load_mail_template_file(template_cre_path)
+      mail_generator.irc_host = 'irc.cre.jp'
+      mail_generator.irc_nick = 'RGRB'
+      mail_generator.irc_network = "Creator'sNetworkIRC"
 
-        mail_generator
-      }
+      mail_generator
+    }
 
-      let(:mail_data_joined) {
-        cre_mail_generator.generate(
-          'irc.kazagakure.net',
-          :joined,
-          Time.new(2018, 1, 23, 4, 56, 12, '+09:00'),
-          'ネットワークへの参加'
+    let(:mail_data_joined) {
+      cre_mail_generator.generate(
+        'irc.kazagakure.net',
+        :joined,
+        Time.new(2018, 1, 23, 4, 56, 12, '+09:00'),
+        'ネットワークへの参加'
+      )
+    }
+
+    let(:mail_data_disconnected) {
+      cre_mail_generator.generate(
+        'irc.kazagakure.net',
+        :disconnected,
+        Time.new(2018, 1, 23, 4, 56, 12, '+09:00'),
+        'ネットワークからの切断'
+      )
+    }
+
+    it 'deliver メソッドが存在する' do
+      expect(mail_data_joined.respond_to?(:deliver)).to be(true)
+    end
+
+    it 'from を正しく設定する' do
+      expect(mail_data_joined.from[0]).to eq('rgrb-RGRB@irc.cre.jp')
+      expect(mail_data_joined['from'].display_names[0]).
+        to eq("RGRB on Creator'sNetworkIRC")
+    end
+
+    context 'ネットワークへの参加' do
+      it 'subject を正しく設定する' do
+        expect(mail_data_joined.subject).to eq(
+          'IRC サーバ接続通知 (irc.kazagakure.net)'
         )
-      }
+      end
 
-      let(:mail_data_disconnected) {
-        cre_mail_generator.generate(
-          'irc.kazagakure.net',
-          :disconnected,
-          Time.new(2018, 1, 23, 4, 56, 12, '+09:00'),
-          'ネットワークからの切断'
+      it 'body を正しく設定する' do
+        expect(mail_data_joined.body).to eq(
+          %Q("irc.kazagakure.net" がネットワークに参加しました。\n)
         )
-      }
+      end
+    end
 
-      it 'deliver メソッドが存在する' do
-        expect(mail_data_joined.respond_to?(:deliver)).to be(true)
+    context 'ネットワークからの切断' do
+      it 'subject を正しく設定する' do
+        expect(mail_data_disconnected.subject).to eq(
+          'IRC サーバ切断通知 (irc.kazagakure.net)'
+        )
       end
 
-      it 'from を正しく設定する' do
-        expect(mail_data_joined.from[0]).to eq('rgrb-RGRB@irc.cre.jp')
-        expect(mail_data_joined['from'].display_names[0]).
-          to eq("RGRB on Creator'sNetworkIRC")
+      it 'body を正しく設定する' do
+        expect(mail_data_disconnected.body).to eq(
+          %Q("irc.kazagakure.net" がネットワークから切断されました。\n)
+        )
+      end
+    end
+
+    describe 'パーツの置換' do
+      it 'time を正しく置換する' do
+        cre_mail_generator.body = '%{time}'
+        expect(mail_data_joined.body).to eq('2018年01月23日 04:56:12')
       end
 
-      context 'ネットワークへの参加' do
-        it 'subject を正しく設定する' do
-          expect(mail_data_joined.subject).to eq(
-            'IRC サーバ接続通知 (irc.kazagakure.net)'
-          )
-        end
-
-        it 'body を正しく設定する' do
-          expect(mail_data_joined.body).to eq(
-            %Q("irc.kazagakure.net" がネットワークに参加しました。\n)
-          )
-        end
+      it 'server を正しく置換する' do
+        cre_mail_generator.body = '%{server}'
+        expect(mail_data_joined.body).to eq('irc.kazagakure.net')
       end
 
-      context 'ネットワークからの切断' do
-        it 'subject を正しく設定する' do
-          expect(mail_data_disconnected.subject).to eq(
-            'IRC サーバ切断通知 (irc.kazagakure.net)'
-          )
-        end
-
-        it 'body を正しく設定する' do
-          expect(mail_data_disconnected.body).to eq(
-            %Q("irc.kazagakure.net" がネットワークから切断されました。\n)
-          )
-        end
+      it 'message を正しく置換する' do
+        cre_mail_generator.body = '%{message}'
+        expect(mail_data_joined.body).to eq('ネットワークへの参加')
       end
 
-      describe 'パーツの置換' do
-        it 'time を正しく置換する' do
-          cre_mail_generator.body = '%{time}'
-          expect(mail_data_joined.body).to eq('2018年01月23日 04:56:12')
-        end
-
-        it 'server を正しく置換する' do
-          cre_mail_generator.body = '%{server}'
-          expect(mail_data_joined.body).to eq('irc.kazagakure.net')
-        end
-
-        it 'message を正しく置換する' do
-          cre_mail_generator.body = '%{message}'
-          expect(mail_data_joined.body).to eq('ネットワークへの参加')
-        end
-
-        it 'rgrb_version を正しく置換する' do
-          cre_mail_generator.body = '%{rgrb_version}'
-          expect(mail_data_joined.body).to eq(RGRB::VERSION)
-        end
+      it 'rgrb_version を正しく置換する' do
+        cre_mail_generator.body = '%{rgrb_version}'
+        expect(mail_data_joined.body).to eq(RGRB::VERSION)
       end
     end
   end

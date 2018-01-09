@@ -71,15 +71,11 @@ module RGRB
             end
 
             to_config = mail_config['To']
-            if to_config
-              @to = to_config
-            end
+            @to = to_config if to_config
           end
 
           logger = config_data[:logger]
-          if logger
-            @logger = logger
-          end
+          @logger = logger if logger
 
           self
         end
@@ -172,10 +168,11 @@ module RGRB
           mail.delivery_method(:smtp, @mail_config)
           mail.charset = 'utf-8'
           mail.to      = @to
+
           {
-            from:     '%{nick} on %{network} <rgrb-%{nick}@%{host}>',
-            subject:  @subject,
-            body:     @body
+            from:    '%{nick} on %{network} <rgrb-%{nick}@%{host}>',
+            subject: @subject,
+            body:    @body
           }.each do |key, value|
             mail[key] = value % data_parts
           end
@@ -187,9 +184,9 @@ module RGRB
         # @param [Hash] hash 変換元のハッシュテーブル
         # @return [Hash]
         def symbolize_keys(hash)
-          hash.map { |key, value|
-            [key.to_sym, value]
-          }.to_h
+          hash.
+            map { |key, value| [key.to_sym, value] }.
+            to_h
         end
         private :symbolize_keys
       end

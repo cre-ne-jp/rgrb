@@ -16,5 +16,5 @@ module RGRB
     end
 
   # バージョンとコミットIDを表す文字列を返す
-  VERSION_WITH_COMMIT_ID = COMMIT_ID.empty? ? VERSION_NUMBER : "#{VERSION_NUMBER} (#{COMMIT_ID})"
+  VERSION_WITH_COMMIT_ID = COMMIT_ID.empty? ? VERSION : "#{VERSION} (#{COMMIT_ID})"
 end

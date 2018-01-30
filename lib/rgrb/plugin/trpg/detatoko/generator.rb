@@ -125,7 +125,7 @@ module RGRB
           # ポジションを1つ選ぶ
           # @param [Symbol] type 用途
           # @option type :pc   PC のポジション
-          # @option type :npc  NPC のポジション
+          # @option type :npc  敵 NPC のポジション
           # @option type :dark 悪のポジション
           # @return [String]
           def position(type)

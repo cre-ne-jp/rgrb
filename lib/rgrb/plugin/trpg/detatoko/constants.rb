@@ -1,5 +1,6 @@
 # vim: fileencoding=utf-8
 
+require 'rgrb/plugin/trpg/detatoko/gamedatas'
 
 module RGRB
   module Plugin
@@ -17,10 +18,8 @@ module RGRB
           LCSIDS_RE = /(#{LCSID_RE}(?: +#{LCSID_RE})*)/
           # コマンドのパターンの最後を表す正規表現
           END_RE = /(?:[\s　]|$)/
-          # 使用可能なスタンス
-          STANCES = %w(敵視 宿命 憎悪 雲上 従属 不明)
           # スタンス系統にマッチする正規表現
-          STANCE_RE = /(?:#{STANCES.join('|')}|全部|[・＋\+])+/
+          STANCE_RE = /(?:#{Generator::STANCES.keys.join('|')}|全部|[・＋\+])+/
         end
       end
     end

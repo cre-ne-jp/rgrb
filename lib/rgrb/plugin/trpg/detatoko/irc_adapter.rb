@@ -38,6 +38,8 @@ module RGRB
 
           match(/(|n|d)pp/i, method: :position)
 
+          match(/lt/i, method: :like_things)
+
           match(/cs #{LCSIDS_RE}/io, method: :lcs)
 
           match(/す([あかさたなはまやらわ]+)/i, method: :skill_decision_ja, :prefix => prefix_ja)
@@ -47,6 +49,7 @@ module RGRB
           match(/(|悪への)ラスボス立場/i, method: :ground, :prefix => prefix_ja)
           match(/クラス/i, method: :character_class, :prefix => prefix_ja)
           match(/(|敵|悪)ポジション/i, method: :position, :prefix => prefix_ja)
+          match(/((?:趣味|苦手)|(?:好き|嫌い)なもの)/i, method: :like_things, :prefix => prefix_ja)
 
           def initialize(*args)
             super
@@ -170,6 +173,14 @@ module RGRB
               end
             header = "#{@header}[#{m.user.nick}]<#{insert}ポジション>: "
             message = @generator.position(type)
+            notice_multi_lines([message], m.target, header)
+          end
+
+          # 【好きなもの・趣味】／【苦手なもの・弱点】表を引く
+          def like_things(m)
+            log_incoming(m)
+            header = "#{@header}[#{m.user.nick}]<趣味・弱点>: "
+            message = @generator.like_things
             notice_multi_lines([message], m.target, header)
           end
 

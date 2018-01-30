@@ -148,7 +148,7 @@ module RGRB
 
           # バージョン情報を返すコマンド
           on(:message, '.version') do |m|
-            m.target.send("RGRB #{RGRB::VERSION}", true)
+            m.target.send("RGRB #{RGRB::VERSION_WITH_COMMIT_ID}", true)
           end
         end
 
@@ -173,7 +173,7 @@ module RGRB
 
         OptionParser.new do |opt|
           opt.banner = "使用法: #{opt.program_name} [オプション]"
-          opt.version = RGRB::VERSION
+          opt.version = RGRB::VERSION_WITH_COMMIT_ID
 
           opt.summary_indent = ' ' * 2
           opt.summary_width = 24

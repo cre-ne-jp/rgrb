@@ -177,6 +177,8 @@ module RGRB
           end
 
           # 【好きなもの・趣味】／【苦手なもの・弱点】表を引く
+          # @param [Cinch::Message] m
+          # @return [void]
           def like_things(m)
             log_incoming(m)
             header = "#{@header}[#{m.user.nick}]<趣味・弱点>: "

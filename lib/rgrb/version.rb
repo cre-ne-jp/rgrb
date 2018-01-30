@@ -1,8 +1,8 @@
 # vim: fileencoding=utf-8
 
 module RGRB
-  # RGRB のバージョン番号
-  VERSION_NUMBER = '0.12.1'
+  # RGRB のバージョン
+  VERSION = '0.12.2'
 
   # コミットID取得
   # エラーが発生した場合は、返り値にコミットIDが含まれない。
@@ -16,5 +16,5 @@ module RGRB
     end
 
   # バージョンとコミットIDを表す文字列を返す
-  VERSION = COMMIT_ID.empty? ? VERSION_NUMBER : "#{VERSION_NUMBER} (#{COMMIT_ID})"
+  VERSION_WITH_COMMIT_ID = COMMIT_ID.empty? ? VERSION_NUMBER : "#{VERSION_NUMBER} (#{COMMIT_ID})"
 end

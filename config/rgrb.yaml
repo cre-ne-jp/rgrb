@@ -25,6 +25,10 @@ IRCBot:
   Channels:
     - ''
 
+  # QUIT メッセージ
+  # 空文字列にすると、"Caught <signal>" が設定される
+  QuitMessage: 'bye'
+
 # 使用するプラグインを列挙する。大文字小文字を区別するので注意
 Plugins:
   - DiceRoll

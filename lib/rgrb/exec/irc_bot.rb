@@ -34,7 +34,7 @@ module RGRB
           config, irc_adapters, plugin_options, log_level, logger
         )
 
-        set_signal_handler(bot)
+        set_signal_handler(bot, config.irc_bot['QuitMessage'])
         bot.start
 
         logger.warn('ボットは終了しました')
@@ -227,15 +227,16 @@ module RGRB
 
       # シグナルハンドラを設定する
       # @param [Cinch::Bot] bot IRC ボット
+      # @param [String] quit QUIT メッセージ
       # @return [void]
-      def set_signal_handler(bot)
+      def set_signal_handler(bot, quit)
         # シグナルを捕捉し、ボットを終了させる処理
         # trap 内で普通に bot.quit すると ThreadError が出るので
         # 新しい Thread で包む
         %i(SIGINT SIGTERM).each do |signal|
           Signal.trap(signal) do
             Thread.new(signal) do |sig|
-              bot.quit("Caught #{sig}")
+              bot.quit(quit.empty? ? "Caught #{sig}" : quit)
             end
           end
         end

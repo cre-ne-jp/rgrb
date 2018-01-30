@@ -3,7 +3,7 @@
 require 'cinch'
 
 require 'rgrb/plugin/server_connection_report/constants'
-require 'rgrb/plugin/server_connection_report/common_disposal'
+require 'rgrb/plugin/server_connection_report/irc_adapter_methods'
 
 module RGRB
   module Plugin
@@ -20,7 +20,7 @@ module RGRB
         # ServerConnectionReport::Charybdis の IRC アダプター
         class IrcAdapter
           include Cinch::Plugin
-          include ServerConnectionReport::CommonDisposal
+          include ServerConnectionReport::IrcAdapterMethods
 
           # サーバーがネットワークに参加したときのメッセージを表す正規表現
           NETJOIN_RE =
@@ -34,40 +34,40 @@ module RGRB
           self.prefix = ''
           self.react_on = :notice
 
-          # サーバーがネットワークに参加したときのメッセージを表す正規表現
           match(NETJOIN_RE, method: :joined)
-          # サーバーがネットワークから切断されたときのメッセージを表す
-          # 正規表現
           match(NETSPLIT_RE, method: :disconnected)
-          # サーバーへの接続が完了したときに情報を集める
-          listen_to(:'002', method: :connected)
 
+          # サーバーへの接続が完了したときの処理
+          listen_to(:'002', method: :set_connection_info)
+
+          # IRC アダプタを初期化する
           def initialize(*)
             super
+
+            prepare_generators
           end
 
-          # サーバ接続メッセージを NOTICE する
+          # ネットワークにあるサーバが参加したときの処理
           # @param [Cinch::Message] m メッセージ
           # @param [String] server サーバ
           # @return [void]
+          #
+          # サーバのネットワークへの参加を NOTICE で通知する。
+          # メール送信の設定が行われている場合は、メールの送信も行う。
           def joined(m, server)
-            _joined(m,server)
+            notice_joined(m, server) if m.server
           end
 
-          # サーバ切断メッセージを NOTICE する
+          # ネットワークからあるサーバが切断されたときの処理
           # @param [Cinch::Message] m メッセージ
           # @param [String] server サーバ
           # @param [String] comment コメント
           # @return [void]
+          #
+          # サーバのネットワークからの切断を NOTICE で通知する。
+          # メール送信の設定が行われている場合は、メールの送信も行う。
           def disconnected(m, server, comment)
-            _disconnected(m, server, comment)
-          end
-
-          # サーバーへの接続が完了したとき、情報を集める
-          # @param [Cinch::Message] m メッセージ
-          # @return [void]
-          def connected(m)
-            _connected(m)
+            notice_disconnected(m, server, comment) if m.server
           end
         end
       end

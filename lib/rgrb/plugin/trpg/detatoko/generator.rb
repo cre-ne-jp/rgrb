@@ -148,6 +148,17 @@ module RGRB
             "[#{value.join(',')}] -> #{value.join('')} : #{thing}"
           end
 
+          # ラスボスチャート・クエストチャートを引く
+          # @param [Symbol] type ラスボスか、クエストか
+          # @option :lastboss ラスボスチャート
+          # @option :quest クエストチャート
+          # @return [String]
+          def chart(type)
+            value = @dice_roll_generator.dxx_roll('66')
+            result = CHARTS[type][(value[0] - 1) * 6 + value[1] - 1]
+            "[#{value.join(',')}] -> #{value.join('')} : #{result}"
+          end
+
           # 1行キャラシを出力する
           # @param [Array<String>] ids 対象のキャラシID
           # @return [Hash]

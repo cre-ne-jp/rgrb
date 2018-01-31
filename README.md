@@ -34,6 +34,7 @@ gem install bundler
 * libicu-devel
 * zlib-devel
 * which
+* sqlite-devel
 
 ```bash
 cd /path/to/rgrb

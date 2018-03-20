@@ -10,7 +10,7 @@ gem 'guess_html_encoding'
 gem 'charlock_holmes', '~> 0.7'
 gem 'nokogiri', '~> 1.6'
 gem 'd1lcs'
-gem 'mail', '~> 2.6.3'
+gem 'mail', '~> 2.7'
 
 group :development, :test do
   gem 'pry', '~> 0.10'
@@ -23,7 +23,7 @@ group :test do
   gem 'rake', '~> 12.0'
   gem 'rspec', '~> 3.1'
   gem 'coveralls', require: false
-  gem 'webmock', '~> 2.3'
+  gem 'webmock', '~> 3.3'
 end
 
 # パス設定

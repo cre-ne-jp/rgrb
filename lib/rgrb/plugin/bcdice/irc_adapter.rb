@@ -18,10 +18,8 @@ module RGRB
         include Cinch::Plugin
         include Util::NoticeMultiLines
 
-        # 空白（半角＋全角）を示す正規表現
-        SP_RE = /[\s　]/
         # 空白の連続を示す正規表現
-        SPS_RE = /#{SP_RE}+/o
+        SPACES_RE = /[\s　]+/o
 
         # ダイスコマンドを示す正規表現
         DICE_COMMAND_RE = %r{[-+*/()<>=\[\].@\w]+}
@@ -29,7 +27,7 @@ module RGRB
         GAME_TITLE_RE = /[\x21-\x7E]+/
 
         # BCDice呼び出しの正規表現
-        BCDICE_RE = /#{SPS_RE}(#{DICE_COMMAND_RE})(?:#{SPS_RE}(#{GAME_TITLE_RE}))?\z/o
+        BCDICE_RE = /#{SPACES_RE}(#{DICE_COMMAND_RE})(?:#{SPACES_RE}(#{GAME_TITLE_RE}))?\z/o
 
         set(plugin_name: 'Bcdice')
         self.prefix = '.bcdice'

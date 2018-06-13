@@ -2,6 +2,7 @@
 
 require 'cinch'
 require 'rgrb/plugin/util/notice_multi_lines'
+require 'rgrb/plugin/bcdice/constants'
 
 # NOTE: BCDiceをlibディレクトリに入れれば指定が楽になりそう
 # 例：require 'BCDice/src/cgiDiceBot'
@@ -17,17 +18,6 @@ module RGRB
       class IrcAdapter
         include Cinch::Plugin
         include Util::NoticeMultiLines
-
-        # 空白の連続を示す正規表現
-        SPACES_RE = /[\s　]+/o
-
-        # ダイスコマンドを示す正規表現
-        DICE_COMMAND_RE = %r{[-+*/()<>=\[\].@\w]+}
-        # ゲームタイトルを示す正規表現
-        GAME_TITLE_RE = /[\x21-\x7E]+/
-
-        # BCDice呼び出しの正規表現
-        BCDICE_RE = /#{SPACES_RE}(#{DICE_COMMAND_RE})(?:#{SPACES_RE}(#{GAME_TITLE_RE}))?\z/o
 
         set(plugin_name: 'Bcdice')
         self.prefix = '.bcdice'

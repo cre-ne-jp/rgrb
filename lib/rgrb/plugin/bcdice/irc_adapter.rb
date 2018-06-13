@@ -6,9 +6,9 @@ require 'rgrb/plugin/bcdice/constants'
 
 # NOTE: BCDiceをlibディレクトリに入れれば指定が楽になりそう
 # 例：require 'BCDice/src/cgiDiceBot'
-require 'rgrb/../../vendor/BCDice/src/cgiDiceBot'
-require 'rgrb/../../vendor/BCDice/src/diceBot/DiceBotLoader'
-require 'rgrb/../../vendor/BCDice/src/diceBot/DiceBotLoaderList'
+require 'BCDice/src/cgiDiceBot'
+require 'BCDice/src/diceBot/DiceBotLoader'
+require 'BCDice/src/diceBot/DiceBotLoaderList'
 
 module RGRB
   module Plugin

@@ -26,5 +26,10 @@ group :test do
 end
 
 # パス設定
-lib_path = File.expand_path('lib', File.dirname(__FILE__))
-$LOAD_PATH.unshift lib_path unless $LOAD_PATH.include?(lib_path)
+[
+  'lib',
+  'vendor'
+].each do |lib_name|
+  lib_path = File.expand_path(lib_name, File.dirname(__FILE__))
+  $LOAD_PATH.unshift lib_path unless $LOAD_PATH.include?(lib_path)
+end

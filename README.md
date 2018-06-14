@@ -34,6 +34,7 @@ gem install bundler
 * libicu-devel
 * zlib-devel
 * which
+* sqlite-devel
 
 ```bash
 cd /path/to/rgrb
@@ -133,7 +134,7 @@ ToDo
 制作
 ----
 
-&copy; 2014-2017 [クリエイターズネットワーク](http://www.cre.ne.jp/)技術部
+&copy; 2014-2018 [クリエイターズネットワーク](http://www.cre.ne.jp/)技術部
 
 * 鯉（[@koi-chan](https://github.com/koi-chan)）
 * ocha（[@ochaochaocha3](https://github.com/ochaochaocha3)）

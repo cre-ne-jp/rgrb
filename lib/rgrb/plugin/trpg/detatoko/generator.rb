@@ -125,11 +125,38 @@ module RGRB
           # ポジションを1つ選ぶ
           # @param [Symbol] type 用途
           # @option type :pc   PC のポジション
-          # @option type :npc  NPC のポジション
+          # @option type :npc  敵 NPC のポジション
           # @option type :dark 悪のポジション
           # @return [String]
           def position(type)
             POSITIONS[type].sample
+          end
+
+          # 【好きなもの・趣味】／【苦手なもの・弱点】表を引く
+          # @return [String]
+          def like_things
+            value = @dice_roll_generator.dxx_roll('66')
+            thing = LIKE_THINGS[value[0] - 1][value[1] - 1]
+            if thing === '特定の環境'
+              value << @random.rand(1..6)
+              thing = "#{LIKE_THINGS[6][value[2] - 1]} (#{thing})"
+            else
+              things = thing.split('／')
+              thing = "#{things.sample} (#{thing})" if things.size > 1
+            end
+
+            "[#{value.join(',')}] -> #{value.join('')} : #{thing}"
+          end
+
+          # ラスボスチャート・クエストチャートを引く
+          # @param [Symbol] type ラスボスか、クエストか
+          # @option :lastboss ラスボスチャート
+          # @option :quest クエストチャート
+          # @return [String]
+          def chart(type)
+            value = @dice_roll_generator.dxx_roll('66')
+            result = CHARTS[type][(value[0] - 1) * 6 + value[1] - 1]
+            "[#{value.join(',')}] -> #{value.join('')} : #{result}"
           end
 
           # 1行キャラシを出力する

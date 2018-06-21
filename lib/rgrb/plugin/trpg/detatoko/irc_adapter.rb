@@ -38,6 +38,10 @@ module RGRB
 
           match(/(|n|d)pp/i, method: :position)
 
+          match(/lt/i, method: :like_things)
+
+          match(/(lb|q)c/i, method: :chart)
+
           match(/cs #{LCSIDS_RE}/io, method: :lcs)
 
           match(/す([あかさたなはまやらわ]+)/i, method: :skill_decision_ja, :prefix => prefix_ja)
@@ -47,6 +51,8 @@ module RGRB
           match(/(|悪への)ラスボス立場/i, method: :ground, :prefix => prefix_ja)
           match(/クラス/i, method: :character_class, :prefix => prefix_ja)
           match(/(|敵|悪)ポジション/i, method: :position, :prefix => prefix_ja)
+          match(/((?:趣味|苦手)|(?:好き|嫌い)なもの)/i, method: :like_things, :prefix => prefix_ja)
+          match(/(ラスボス|クエスト)チャート/i, method: :chart, :prefix => prefix_ja)
 
           def initialize(*args)
             super
@@ -170,6 +176,35 @@ module RGRB
               end
             header = "#{@header}[#{m.user.nick}]<#{insert}ポジション>: "
             message = @generator.position(type)
+            notice_multi_lines([message], m.target, header)
+          end
+
+          # 【好きなもの・趣味】／【苦手なもの・弱点】表を引く
+          # @param [Cinch::Message] m
+          # @return [void]
+          def like_things(m)
+            log_incoming(m)
+            header = "#{@header}[#{m.user.nick}]<趣味・弱点>: "
+            message = @generator.like_things
+            notice_multi_lines([message], m.target, header)
+          end
+
+          # ラスボスチャート・クエストチャートを引く
+          # @param [Cinch::Message] m
+          # @param [String] type ラスボスか・クエストか
+          # @return [void]
+          def chart(m, type)
+            log_incoming(m)
+
+            insert, type = case type
+            when 'lb', 'ラスボス'
+              ['ラスボス', :lastboss]
+            when 'q', 'クエスト'
+              ['クエスト', :quest]
+            end
+
+            header = "#{@header}[#{m.user.nick}]<#{insert}チャート>: "
+            message = @generator.chart(type)
             notice_multi_lines([message], m.target, header)
           end
 

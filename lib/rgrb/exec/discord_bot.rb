@@ -129,7 +129,8 @@ module RGRB
         bot = Discordrb::Commands::CommandBot.new(
           token: bot_config['Token'],
           client_id: bot_config['ClientID'],
-          prefix: ''
+          prefix: '',
+          log_mode: log_level
         )
 #        bot.command()
 #            c.plugins.prefix = /^\./

@@ -41,7 +41,7 @@ describe RGRB::Plugin::Bcdice::Generator do
       end
     end
 
-    context('ソード・ワールド2.0、k20') do
+    context('ソード・ワールド2.0') do
       context('k20') do
         subject { generator.bcdice('k20', 'SwordWorld2_0') }
 

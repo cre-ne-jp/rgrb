@@ -31,7 +31,7 @@ describe RGRB::Plugin::Bcdice::Generator do
         subject { generator.bcdice('2d6') }
 
         it 'ゲームシステムとして DiceBot が選ばれる' do
-          expect(subject.game_title).to eq('DiceBot')
+          expect(subject.game_type).to eq('DiceBot')
           expect(subject.game_name).to eq('DiceBot')
         end
 

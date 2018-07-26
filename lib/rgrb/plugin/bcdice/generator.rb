@@ -31,8 +31,7 @@ module RGRB
           # ゲームタイプが指定されていなかったら DiceBot にする
           game_type = specified_game_type || 'DiceBot'
           # ダイスボットを探す
-          dice_bot = DiceBotLoaderList.find(game_type)&.loadDiceBot ||
-            DiceBotLoader.loadUnknownGame(game_type)
+          dice_bot = find_dice_bot(game_type)
           # ダイスボットが見つからなかった場合は中断する
           raise DiceBotNotFound, game_type unless dice_bot
 
@@ -59,6 +58,20 @@ module RGRB
           end
 
           "BCDice Commit ID: #{commit_id}"
+        end
+
+        private
+
+        # ダイスボットを探す
+        # @param [String] game_type ゲームタイプ
+        # @return [DiceBot]
+        def find_dice_bot(game_type)
+          if game_type == 'DiceBot'
+            DiceBot.new
+          else
+            DiceBotLoaderList.find(game_type)&.loadDiceBot ||
+              DiceBotLoader.loadUnknownGame(game_type)
+          end
         end
       end
     end

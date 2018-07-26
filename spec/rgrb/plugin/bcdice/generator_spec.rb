@@ -41,6 +41,15 @@ describe RGRB::Plugin::Bcdice::Generator do
       end
     end
 
+    context('存在しないゲームシステム') do
+      it 'ダイスボットが見つからないことを示すエラーが発生する' do
+        expect { generator.bcdice('2d6', 'not_found') }.to raise_error(
+          RGRB::Plugin::Bcdice::DiceBotNotFound,
+          'ゲームシステム「not_found」は見つかりませんでした'
+        )
+      end
+    end
+
     context('ソード・ワールド2.0') do
       context('k20') do
         subject { generator.bcdice('k20', 'SwordWorld2_0') }

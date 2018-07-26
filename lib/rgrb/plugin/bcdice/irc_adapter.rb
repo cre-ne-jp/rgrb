@@ -46,13 +46,7 @@ module RGRB
             begin
               @generator.bcdice(command, specified_game_title)
             rescue => e
-              header = e.respond_to?(:game_name) ?
-                "#{header_common}<#{e.game_name}>" : header_common
-              message = "#{header}: #{e.message}"
-
-              log_notice(m.target, message)
-              m.target.send(message, true)
-
+              notice_bcdice_error(m.target, header_common, e)
               return
             end
 
@@ -72,6 +66,22 @@ module RGRB
 
           log_notice(m.target, message)
           m.target.send(message, true)
+        end
+
+        private
+
+        # BCDice 関連のエラーを NOTICE する
+        # @param [Cinch::Target] target 送信先
+        # @param [String] header_common 共通のヘッダ
+        # @param [StandardError] error エラー
+        # @return [void]
+        def notice_bcdice_error(target, header_common, error)
+          header = error.respond_to?(:game_name) ?
+            "#{header_common}<#{error.game_name}>" : header_common
+          message = "#{header}: #{error.message}"
+
+          log_notice(target, message)
+          target.send(message, true)
         end
       end
     end

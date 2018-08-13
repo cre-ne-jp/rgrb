@@ -179,7 +179,7 @@ module RGRB
             html_encoding =
               GuessHtmlEncoding::HTMLScanner.new(html_code).encoding
             encodings << html_encoding if html_encoding
-          rescue guess_html_encoding_error
+          rescue => guess_html_encoding_error
             logger.debug(
               "GuessHtmlEncoding error: #{guess_html_encoding_error}"
             )
@@ -206,7 +206,7 @@ module RGRB
             begin
               doc = Nokogiri::HTML(html_code, nil, encoding)
               return doc unless encoding_error?(doc)
-            rescue e
+            rescue => e
               logger.debug("Nokogiri::HTML error: #{e}")
             end
           end

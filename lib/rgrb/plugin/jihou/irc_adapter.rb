@@ -57,7 +57,7 @@ module RGRB
           channels.each do |channel_name, message|
             channel = Channel(channel_name)
 
-            if(message == '')
+            if(message.empty?)
               message = JIHOU_MESSAGE % {
                 nick: bot.nick,
                 channel: channel_name,

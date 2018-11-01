@@ -49,6 +49,14 @@ BCDice プラグインを利用する場合は、続けて BCDice 本体をダ�
 git submodule init
 ```
 
+### 開発時のみ必要なライブラリのインストール
+
+開発時は、メール送信テストを行えるようにするため、[mailcatcher](https://github.com/sj26/mailcatcher) をインストールしてください。
+
+```bash
+gem install mailcatcher
+```
+
 設定
 ----
 

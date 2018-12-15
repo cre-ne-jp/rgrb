@@ -34,7 +34,7 @@ module RGRB
           config, discord_adapters, plugin_options, log_level, logger
         )
 
-        #set_signal_handler(bot, config.discord_bot['QuitMessage'])
+        set_signal_handler(bot)
         bot.run
 
         logger.warn('ボットは終了しました')
@@ -122,7 +122,7 @@ module RGRB
       # @param [Hash] plugin_options プラグイン設定
       # @param [Symbol] log_level ログレベル
       # @param [Lumberjack::Logger] logger ロガー
-      # @return [Cinch::Bot]
+      # @return [Discordrb::Commands::CommandBot]
       def new_bot(config, discord_adapters, plugin_options, log_level, logger)
         bot_config = config.discord_bot
 
@@ -218,10 +218,9 @@ module RGRB
       end
 
       # シグナルハンドラを設定する
-      # @param [Cinch::Bot] bot IRC ボット
-      # @param [String] quit QUIT メッセージ
+      # @param [Discordrb::Commands::CommandBot] bot Discord ボット
       # @return [void]
-      def set_signal_handler(bot, quit)
+      def set_signal_handler(bot)
         # シグナルを捕捉し、ボットを終了させる処理
         # trap 内で普通に bot.quit すると ThreadError が出るので
         # 新しい Thread で包む
@@ -229,7 +228,6 @@ module RGRB
           Signal.trap(signal) do
             Thread.new(signal) do |sig|
               bot.stop
-              (quit.empty? ? "Caught #{sig}" : quit)
             end
           end
         end

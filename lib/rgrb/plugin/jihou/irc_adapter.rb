@@ -50,21 +50,24 @@ module RGRB
         end
 
         # 時報をチャンネルに発言する
-        # @param [String] channels 発言するチャンネル
+        # @param [Hash] channels 発言するチャンネル
         # @param [Time] time 現在時刻
         # @return [void]
         def sendmes(channels, time)
-          channels.each { |channel_name|
+          channels.each do |channel_name, message|
             channel = Channel(channel_name)
 
-            message = JIHOU_MESSAGE % {
+            if(message.empty?)
+              message = JIHOU_MESSAGE % {
                 nick: bot.nick,
                 channel: channel_name,
                 time: time.strftime('%Y年%m月%d日 %H時%M分%S秒')
-            }
+              }
+            end
+
             channel.safe_notice(message)
             log_notice(channel, message)
-          }
+          end
         end
       end
     end

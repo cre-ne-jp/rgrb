@@ -23,7 +23,6 @@ group :development, :test do
   gem 'pry', '~> 0.10'
   gem 'yard', '~> 0.8'
   gem 'rubocop', '~> 0.28'
-  gem 'mailcatcher'
 end
 
 group :test do
@@ -34,5 +33,10 @@ group :test do
 end
 
 # パス設定
-lib_path = File.expand_path('lib', File.dirname(__FILE__))
-$LOAD_PATH.unshift lib_path unless $LOAD_PATH.include?(lib_path)
+[
+  'lib',
+  'vendor'
+].each do |lib_name|
+  lib_path = File.expand_path(lib_name, File.dirname(__FILE__))
+  $LOAD_PATH.unshift lib_path unless $LOAD_PATH.include?(lib_path)
+end

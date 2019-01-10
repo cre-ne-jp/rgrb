@@ -281,8 +281,8 @@ describe RGRB::Plugin::ServerConnectionReport::MailGenerator do
       end
 
       it 'body を正しく設定する' do
-        expect(mail_data_joined.body).to eq(
-          %Q("irc.kazagakure.net" がネットワークに参加しました。\n)
+        expect(mail_data_joined.body.raw_source).to eq(
+          %Q("irc.kazagakure.net" がネットワークに参加しました。\r\n)
         )
       end
     end
@@ -295,8 +295,8 @@ describe RGRB::Plugin::ServerConnectionReport::MailGenerator do
       end
 
       it 'body を正しく設定する' do
-        expect(mail_data_disconnected.body).to eq(
-          %Q("irc.kazagakure.net" がネットワークから切断されました。\n)
+        expect(mail_data_disconnected.body.raw_source).to eq(
+          %Q("irc.kazagakure.net" がネットワークから切断されました。\r\n)
         )
       end
     end

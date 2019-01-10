@@ -11,7 +11,7 @@ RGRB は Ruby で実装されている汎用 IRC ボットです。プラグイ�
 
 * Linux または OSX
     * 現在のところ Windows には未対応。
-* Ruby 2.2.2 以降
+* Ruby 2.3 以降
 
 インストール
 ------------
@@ -19,6 +19,8 @@ RGRB は Ruby で実装されている汎用 IRC ボットです。プラグイ�
 [Ruby](http://www.ruby-lang.org/) をインストールしていない場合はインストールしてください。
 
 [Bundler](http://bundler.io/) をインストールしていない場合は以下を実行してください。
+
+BCDice プラグインを使用する場合は、BCDice 本体をインストールするために git コマンドが必要です(リポジトリから手動でインストールすることも出来ますが、面倒です)。[git](https://git-scm.com/) をインストールすることをお勧めします。
 
 ```bash
 gem install bundler
@@ -41,6 +43,20 @@ cd /path/to/rgrb
 bundle install --deployment
 ```
 
+BCDice プラグインを利用する場合は、続けて BCDice 本体をダウンロードするため、以下のコマンドを実行してください。
+
+```bash
+git submodule init
+```
+
+### 開発時のみ必要なライブラリのインストール
+
+開発時は、メール送信テストを行えるようにするため、[mailcatcher](https://github.com/sj26/mailcatcher) をインストールしてください。
+
+```bash
+gem install mailcatcher
+```
+
 設定
 ----
 
@@ -59,6 +75,7 @@ bundle install --deployment
 | [DiceRoll](doc/plugins/dice_roll.md) | ダイスロール |
 | [RandomGenerator](doc/plugins/random_generator.md) | ランダムジェネレータ |
 | [Trpg::Detatoko](doc/plugins/trpg/detatoko.md) | 「でたとこサーガ」専用のダイス・表引きコマンド |
+| [BCDice](doc/plugins/bcdice.md) | [ボーンズ＆カーズ](https://github.com/torgtaitai/BCDice) のダイスコマンドを利用する |
 
 #### 情報検索・引用
 

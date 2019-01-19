@@ -227,7 +227,7 @@ module RGRB
         %i(SIGINT SIGTERM).each do |signal|
           Signal.trap(signal) do
             Thread.new(signal) do |sig|
-              bot.stop
+              bot.stop(true)
             end
           end
         end

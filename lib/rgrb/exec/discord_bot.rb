@@ -140,7 +140,7 @@ module RGRB
 #          loggers.level = log_level
 
         # バージョン情報を返すコマンド
-        bot.command(:'.version') do |event|
+        bot.message(content: '.version') do |event|
           event.send_message("RGRB #{RGRB::VERSION_WITH_COMMIT_ID}")
         end
 

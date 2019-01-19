@@ -141,7 +141,9 @@ module RGRB
 
         # バージョン情報を返すコマンド
         bot.message(content: '.version') do |event|
-          event.send_message("RGRB #{RGRB::VERSION_WITH_COMMIT_ID}")
+          unless event.user.current_bot?
+            event << "#{event.user.mention} RGRB #{RGRB::VERSION_WITH_COMMIT_ID}"
+          end
         end
 
         logger.warn('ボットが生成されました')

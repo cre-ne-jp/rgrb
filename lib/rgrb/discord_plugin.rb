@@ -104,10 +104,12 @@ module RGRB
     # コンストラクタ
     # @param [Discordrb::CommandBot] bot Discordrb のボットインスタンス
     # @param [Hash] options プラグイン設定
+    # @param [] logger ロガー
     # @return [DiscordPlugin]
-    def initialize(bot, options)
+    def initialize(bot, options, logger)
       @bot = bot
       @config = options
+      @logger = logger
 
       __register_matchers
     end
@@ -134,6 +136,14 @@ module RGRB
           self.send(matcher.method, event, *match_data[1..-1])
         end
       end
+    end
+
+    # ログを出力させる
+    # @param [String] message 出力するメッセージ
+    # @param [Symbol] event ログの種類
+    # @param [Symbol] level ログレベル
+    def log(message, event = :debug, level = event)
+      @logger.add(level, message)
     end
   end
 end

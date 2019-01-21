@@ -129,15 +129,20 @@ module RGRB
         bot = Discordrb::Commands::CommandBot.new(
           token: bot_config['Token'],
           client_id: bot_config['ClientID'],
-          prefix: '',
-          log_mode: log_level
+          prefix: ''
         )
-#        bot.command()
-#            c.plugins.prefix = /^\./
-#            c.plugins.plugins = irc_adapters
-#            c.plugins.options = plugin_options
-#
-#          loggers.level = log_level
+
+        # Lumberjack 用のログモードから、
+        # Discordrb 内部処理用のログモードを選択・設定
+        bot.mode = case log_level
+          when :info
+            :verbose
+          when :debug
+            :debug
+          else
+            :normal
+          end
+
         # バージョン情報を返すコマンド
         bot.message(content: '.version') do |event|
           unless event.user.current_bot?
@@ -145,8 +150,9 @@ module RGRB
           end
         end
 
+        # 独自実装のプラグイン機能を読み込む
         discord_adapters.each do |adapter|
-          adapter.new(bot, (plugin_options[adapter] || {}))
+          adapter.new(bot, (plugin_options[adapter] || {}), logger)
         end
 
         logger.warn('ボットが生成されました')

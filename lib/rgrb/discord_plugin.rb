@@ -78,7 +78,7 @@ module RGRB
           use_prefix: true,
           use_suffix: true,
           method: :execute,
-          prefix: nil,
+          prefix: /\./,
           suffix: nil
         }.merge(options)
   

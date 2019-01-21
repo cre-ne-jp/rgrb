@@ -4,8 +4,8 @@ module RGRB
   module DiscordPlugin
     module ClassMethods
       attr_reader :plugin_name
-      attr_reader :prefix
-      attr_reader :suffix
+      attr_accessor :prefix
+      attr_accessor :suffix
       attr_reader :matchers
   
       def plugin_name=(new_name)
@@ -85,8 +85,11 @@ module RGRB
       end
     end
 
-    def initialize(bot)
+    attr_reader :config
+
+    def initialize(bot, options)
       @bot = bot
+      @config = options
 
       __register_matchers
     end

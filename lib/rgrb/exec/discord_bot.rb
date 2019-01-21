@@ -146,7 +146,7 @@ module RGRB
         end
 
         discord_adapters.each do |adapter|
-          adapter.new(bot)
+          adapter.new(bot, (plugin_options[adapter] || {}))
         end
 
         logger.warn('ボットが生成されました')

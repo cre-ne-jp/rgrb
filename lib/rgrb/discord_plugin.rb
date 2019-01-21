@@ -17,7 +17,7 @@ module RGRB
       end
 
       Matcher = Struct.new(
-        :patern,
+        :pattern,
         :use_prefix,
         :use_suffix,
         :method,
@@ -85,7 +85,9 @@ module RGRB
       end
     end
 
-    def initialize(*args)
+    def initialize(bot)
+      @bot = bot
+
       __register_matchers
     end
 
@@ -96,17 +98,16 @@ module RGRB
     private
 
     def __register_matchers
-      puts('call __register_matchers')
       prefix = self.class.prefix
       suffix = self.class.suffix
 
       self.class.matchers.each do |matcher|
         _prefix = matcher.use_prefix ? matcher.prefix || prefix : nil
         _suffix = matcher.use_suffix ? matcher.suffix || suffix : nil
-        pattern = Pattern.new(_prefix, matcher.pattern, _suffix)
+        pattern = /#{_prefix}#{matcher.pattern}#{_suffix}/
 
         @bot.message(content: pattern) do |event|
-          event << "#{event.user.mention} #{self.send(matcher.method, event, pattern)}"
+          self.send(matcher.method, event, pattern)
         end
       end
     end

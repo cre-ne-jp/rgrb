@@ -63,7 +63,7 @@ module RGRB
       # プラグインの Discord アダプタを読み込む
       # @param [Config] config RGRB の設定
       # @param [Lumberjack::Logger] logger ロガー
-      # @return [Array<Cinch::Plugin>] 読み込まれた IRC アダプタの配列
+      # @return [Array<RGRB::DiscordPlugin>] 読み込まれた Discord アダプタの配列
       def load_discord_adapters(config, logger)
         loader = PluginsLoader.new(config)
         discord_adapters = loader.load_each(:DiscordAdapter)
@@ -84,8 +84,8 @@ module RGRB
 
       # 設定から読み込まれたプラグインの設定を抽出する
       # @param [Config] config RGRB の設定
-      # @param [Array<Cinch::Plugin>] loaded_discord_adapters 読み込まれた
-      #   Discord アダプタの配列
+      # @param [Array<RGRB::DiscordPlugin>] loaded_discord_adapters
+      #   読み込まれた Discord アダプタの配列
       # @param [String] root_path RGRB のルートディレクトリの絶対パス
       # @param [Lumberjack::Logger] logger ロガー
       # @return [Hash] プラグイン設定
@@ -118,7 +118,7 @@ module RGRB
 
       # Discord ボットを作り、設定して返す
       # @param [Config] config RGRB の設定
-      # @param [Array<Cinch::Plugin>] discord_adapters Discord アダプタの配列
+      # @param [Array<RGRB::DiscordPlugin>] discord_adapters Discord アダプタの配列
       # @param [Hash] plugin_options プラグイン設定
       # @param [Symbol] log_level ログレベル
       # @param [Lumberjack::Logger] logger ロガー
@@ -138,12 +138,15 @@ module RGRB
 #            c.plugins.options = plugin_options
 #
 #          loggers.level = log_level
-
         # バージョン情報を返すコマンド
         bot.message(content: '.version') do |event|
           unless event.user.current_bot?
             event << "#{event.user.mention} RGRB #{RGRB::VERSION_WITH_COMMIT_ID}"
           end
+        end
+
+        discord_adapters.each do |adapter|
+          adapter.new(bot)
         end
 
         logger.warn('ボットが生成されました')

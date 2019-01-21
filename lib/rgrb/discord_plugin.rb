@@ -56,8 +56,8 @@ module RGRB
       # @option options [Boolean] use_prefix コマンドに接頭辞を使うか
       # @option options [Boolean] use_suffix コマンドに接尾辞を使うか
       # @option options [String] method 処理メソッド名
-      # @option options [String, Regexp] プラグインの設定を上書きする接頭辞
-      # @option options [String, Regexp] プラグインの設定を上書きする接尾辞
+      # @option options [String, Regexp] prefix プラグインの設定を上書きする接頭辞
+      # @option options [String, Regexp] suffix プラグインの設定を上書きする接尾辞
       # @return [Matcher]
       def match(pattern, options)
         options = {
@@ -110,7 +110,8 @@ module RGRB
         pattern = /#{_prefix}#{matcher.pattern}#{_suffix}/
 
         @bot.message(content: pattern) do |event|
-          self.send(matcher.method, event, pattern)
+          match_data = event.message.text.match(pattern)
+          self.send(matcher.method, event, *match_data[1..-1])
         end
       end
     end

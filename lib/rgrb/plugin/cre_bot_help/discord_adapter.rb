@@ -15,7 +15,7 @@ module RGRB
 
         # ヘルプメッセージを返す
         # @return [void]
-        def help(m, pattern)
+        def help(m)
           m.send_message(Generator::HELP_MESSAGE)
         end
       end

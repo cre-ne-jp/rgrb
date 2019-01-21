@@ -42,7 +42,7 @@ module RGRB
       def self.extended(by)
         by.instance_exec do
           self.plugin_name = nil
-          @prefix = nil
+          @prefix = /\./
           @suffix = nil
           @matchers = []
         end
@@ -78,7 +78,7 @@ module RGRB
           use_prefix: true,
           use_suffix: true,
           method: :execute,
-          prefix: /\./,
+          prefix: nil,
           suffix: nil
         }.merge(options)
   

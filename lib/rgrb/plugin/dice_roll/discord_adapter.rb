@@ -4,7 +4,6 @@ require 'rgrb/discord_plugin'
 require 'rgrb/plugin/configurable_adapter'
 require 'rgrb/plugin/dice_roll/constants'
 require 'rgrb/plugin/dice_roll/generator'
-require 'rgrb/plugin/util/logging'
 
 module RGRB
   module Plugin
@@ -13,7 +12,6 @@ module RGRB
       class DiscordAdapter
         include RGRB::DiscordPlugin
         include ConfigurableAdapter
-        include Util::Logging
 
         set(plugin_name: 'DiceRoll')
         self.prefix = /\.roll[\s　]+/

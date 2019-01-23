@@ -133,7 +133,16 @@ module RGRB
 
         @bot.message(content: pattern) do |event|
           match_data = event.message.text.match(pattern)
-          self.send(matcher.method, event, *match_data[1..-1])
+          Thread.new do
+            @logger.debug("[Thread start] For #{self}: #{Thread.current}")
+            begin
+              self.send(matcher.method, event, *match_data[1..-1])
+            rescue => e
+              @logger.exception(e)
+            ensure
+              @logger.debug("[Thread done] For #{self}: #{Thread.current}")
+            end
+          end
         end
       end
     end

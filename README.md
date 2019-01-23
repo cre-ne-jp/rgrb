@@ -117,6 +117,19 @@ bin/rgrb-ircbot -c test # /path/to/rgrb/config/test.yaml を使用する場合
 
 systemd による制御を行なう場合は [systemd](doc/system/systemd.md) を参照してください。
 
+Discord ボットの招待
+--------------------
+
+[開発版の招待リンク](https://discordapp.com/oauth2/authorize?client_id=460671751181828097&scope=bot&permissions=3072&redirect_uri=https%3A%2F%2Fgithub.com%2Fcre-ne-jp%2Frgrb)
+
+上のリンクをクリックすることで、Discord ボットを管理する Discord サーバに招待することが出来ます。
+この場合、ご自身のコンピュータ上で RGRB をインストールしたり、RGRB を起動したりする必要はありません。
+
+Discord ボットの起動
+--------------------
+
+(ToDo: 増補)
+
 開発者向けドキュメントの生成
 ----------------------------
 

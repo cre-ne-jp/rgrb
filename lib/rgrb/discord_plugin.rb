@@ -110,6 +110,7 @@ module RGRB
       @bot = bot
       @config = options
       @logger = logger
+      @thread_group = ThreadGroup.new
 
       __register_matchers
     end
@@ -133,16 +134,17 @@ module RGRB
 
         @bot.message(content: pattern) do |event|
           match_data = event.message.text.match(pattern)
-          Thread.new do
-            @logger.debug("[Thread start] For #{self}: #{Thread.current}")
+          thread = Thread.new do
+            @logger.debug("[Thread start] For #{self}: #{Thread.current} -- #{@thread_group.list.size} in total.")
             begin
               self.send(matcher.method, event, *match_data[1..-1])
             rescue => e
               @logger.exception(e)
             ensure
-              @logger.debug("[Thread done] For #{self}: #{Thread.current}")
+              @logger.debug("[Thread done] For #{self}: #{Thread.current} -- #{@thread_group.list.size - 1} remaining.")
             end
           end
+          @thread_group.add(thread)
         end
       end
     end

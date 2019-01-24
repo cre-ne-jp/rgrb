@@ -154,7 +154,27 @@ module RGRB
     # @param [Symbol] event ログの種類
     # @param [Symbol] level ログレベル
     def log(message, event = :debug, level = event)
+      user = "#{message.author.id}[#{message.author.username}@#{message.author.server.name}(#{message.author.server.region_id})]"
+      channel = "#{message.channel.id}[##{message.channel.name}@#{message.channel.server.name}(#{message.channel.server.region_id})]"
+      _message  = "#{user} #{channel}: #{message.content}"
+
+      message = case event
+      when :incoming
+        ">> #{_message}"
+      when :outgoing
+        "<< #{_message}"
+      else
+        _message
+      end
+
       @logger.add(level, message)
+    end
+
+    def log_incoming(event)
+      log(event, :incoming, :info)
+    end
+    def log_outgoing(event)
+      log(event, :outgoing, :info)
     end
   end
 end

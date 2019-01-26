@@ -25,6 +25,7 @@ module RGRB
 
       # コマンドの条件
       # @param [String, Regexp] pattern 反応条件
+      # @param [Symbol] type 反応メッセージの種類
       # @param [Boolean] use_prefix 接頭辞を使うか
       # @param [Boolean] use_suffix 接尾辞を使うか
       # @param [Symbol] 処理メソッド名
@@ -32,6 +33,7 @@ module RGRB
       # @param [String, Regexp] suffix 接尾辞
       Matcher = Struct.new(
         :pattern,
+        :type,
         :use_prefix,
         :use_suffix,
         :method,
@@ -64,7 +66,7 @@ module RGRB
         end
       end
   
-      # メッセージ応答プラグインの作成
+      # 通常メッセージ応答プラグインの作成
       # @param [String, Regexp] pattern 反応条件
       # @param [Hash] options 処理内容・設定
       # @option options [Boolean] use_prefix コマンドに接頭辞を使うか
@@ -84,6 +86,7 @@ module RGRB
   
         matcher = Matcher.new(
           pattern,
+          :message,
           *options.values_at(
             :use_prefix,
             :use_suffix,
@@ -91,7 +94,42 @@ module RGRB
             :prefix,
             :suffix
           )
-        )
+        ).freeze
+
+        @matchers << matcher
+
+        matcher
+      end
+
+      # メンション応答プラグインの作成
+      # @param [String, Regexp] pattern 反応条件
+      # @param [Hash] options 処理内容・設定
+      # @option options [Boolean] use_prefix コマンドに接頭辞を使うか
+      # @option options [Boolean] use_suffix コマンドに接尾辞を使うか
+      # @option options [String] method 処理メソッド名
+      # @option options [String, Regexp] prefix プラグインの設定を上書きする接頭辞
+      # @option options [String, Regexp] suffix プラグインの設定を上書きする接尾辞
+      # @return [Matcher]
+      def mention(pattern, options)
+        options = {
+          use_prefix: true,
+          use_suffix: true,
+          method: :execute,
+          prefix: nil,
+          suffix: nil
+        }.merge(options)
+
+        matcher = Matcher.new(
+          pattern,
+          :mention,
+          *options.values_at(
+            :use_prefix,
+            :use_suffix,
+            :method,
+            :prefix,
+            :suffix
+          )
+        ).freeze
 
         @matchers << matcher
 
@@ -132,21 +170,39 @@ module RGRB
         _suffix = matcher.use_suffix ? matcher.suffix || suffix : nil
         pattern = /#{_prefix}#{matcher.pattern}#{_suffix}/
 
-        @bot.message(content: pattern) do |event|
-          match_data = event.message.text.match(pattern)
-          thread = Thread.new do
-            @logger.debug("[Thread start] For #{self}: #{Thread.current} -- #{@thread_group.list.size} in total.")
-            begin
-              self.send(matcher.method, event, *match_data[1..-1])
-            rescue => e
-              @logger.exception(e)
-            ensure
-              @logger.debug("[Thread done] For #{self}: #{Thread.current} -- #{@thread_group.list.size - 1} remaining.")
-            end
+        case matcher.type
+        when :message
+          @bot.message(content: pattern) do |event|
+            event_handler(event, pattern, matcher)
           end
-          @thread_group.add(thread)
+        when :mention
+          @bot.mention(content: pattern) do |event|
+            event_handler(event, pattern, matcher)
+          end
+        else
+          @logger.warn("[ERROR] No selected message type: #{matcher.method}")
         end
       end
+    end
+
+    # プラグインを設定する
+    # @param [] event イベント
+    # @param [Regexp] pattern 反応パターン
+    # @param [Matcher] matcher 反応条件設定
+    # @return [void]
+    def event_handler(event, pattern, matcher)
+      match_data = event.message.text.match(pattern)
+      thread = Thread.new do
+        @logger.debug("[Thread start] For #{self}: #{Thread.current} -- #{@thread_group.list.size} in total.")
+        begin
+          self.send(matcher.method, event, *match_data[1..-1])
+        rescue => e
+          @logger.exception(e)
+        ensure
+          @logger.debug("[Thread done] For #{self}: #{Thread.current} -- #{@thread_group.list.size - 1} remaining.")
+        end
+      end
+      @thread_group.add(thread)
     end
 
     # ログを出力させる

@@ -144,7 +144,7 @@ module RGRB
           end
 
         # バージョン情報を返すコマンド
-        bot.message(content: '.version') do |event|
+        bot.message(contains: /^\.version/) do |event|
           unless event.user.current_bot?
             event << "#{event.user.mention} RGRB #{RGRB::VERSION_WITH_COMMIT_ID}"
           end

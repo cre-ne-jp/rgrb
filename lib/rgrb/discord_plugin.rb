@@ -44,7 +44,7 @@ module RGRB
       def self.extended(by)
         by.instance_exec do
           self.plugin_name = nil
-          @prefix = /\./
+          @prefix = /^\./
           @suffix = nil
           @matchers = []
         end
@@ -172,11 +172,11 @@ module RGRB
 
         case matcher.type
         when :message
-          @bot.message(content: pattern) do |event|
+          @bot.message(contains: pattern) do |event|
             event_handler(event, pattern, matcher)
           end
         when :mention
-          @bot.mention(content: pattern) do |event|
+          @bot.mention(contains: pattern) do |event|
             event_handler(event, pattern, matcher)
           end
         else

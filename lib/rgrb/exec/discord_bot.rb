@@ -24,7 +24,7 @@ module RGRB
         config_id = options[:config_id]
         log_level = options[:log_level]
 
-        logger = new_logger(log_level)
+        logger = new_logger(log_level[:plugin])
         config = load_config(config_id, root_path, logger)
         discord_adapters = load_discord_adapters(config, logger)
         plugin_options = extract_plugin_options(
@@ -134,14 +134,7 @@ module RGRB
 
         # Lumberjack 用のログモードから、
         # Discordrb 内部処理用のログモードを選択・設定
-        bot.mode = case log_level
-          when :info
-            :verbose
-          when :debug
-            :debug
-          else
-            :normal
-          end
+        bot.mode = log_level[:base]
 
         # バージョン情報を返すコマンド
         bot.message(contains: /^\.version/) do |event|
@@ -169,10 +162,14 @@ module RGRB
       # @return [Hash]
       def parse_options(argv)
         default_options = {
-          config_id: 'rgrb',
-          log_level: :warn
+          config_id: 'rgrb'
+        }
+        default_log_level = {
+            plugin: :warn,
+            base: :normal
         }
         options = {}
+        log_level = {}
 
         OptionParser.new do |opt|
           opt.banner = "使用法: #{opt.program_name} [オプション]"
@@ -196,21 +193,50 @@ module RGRB
 
           opt.on(
             '-v', '--verbose',
-            'ログを冗長にします'
+            '全てのログを冗長にします'
           ) do
-            options[:log_level] = :info
+            log_level = {plugin: :info, base: :verbose}
           end
 
           opt.on(
             '--debug',
-            'デバッグモード。ログを最も冗長にします。'
+            'デバッグモード。全てのログを最も冗長にします。'
           ) do
-            options[:log_level] = :debug
+            log_level = {plugin: :debug, base: :debug}
+          end
+
+          opt.on(
+            '-p', '--plugin-verbose',
+            'プラグインのみログを冗長にします'
+          ) do
+            log_level[:plugin] = :info
+          end
+
+          opt.on(
+            '-P', '--plugin-debug',
+            'プラグインのログのみデバッグモードにします'
+          ) do
+            log_level[:plugin] = :debug
+          end
+
+          opt.on(
+            '-b', '--base-verbose',
+            '本体のログのみ冗長にします'
+          ) do
+            log_level[:base] = :verbose
+          end
+
+          opt.on(
+            '-B', '--base-debug',
+            '本体のログのみデバッグモードにします'
+          ) do
+            log_level[:base] = :debug
           end
 
           opt.parse(argv)
         end
 
+        options[:log_level] = default_log_level.merge(log_level)
         default_options.merge(options)
       end
 

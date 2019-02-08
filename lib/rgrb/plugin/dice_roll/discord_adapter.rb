@@ -35,7 +35,7 @@ module RGRB
         # @return [void]
         def basic_dice(m, n_dice, max)
           result = @generator.basic_dice(n_dice.to_i, max.to_i)
-          message = "#{m.user.nick} -> #{result}"
+          message = "#{m.user.mention} -> #{result}"
           m.send_message(message)
         end
 
@@ -43,7 +43,7 @@ module RGRB
           return unless @jadice
 
           result = @generator.basic_dice_ja(n_dice, max)
-          message = "#{m.user.nick} -> #{result}"
+          message = "#{m.user.mention} -> #{result}"
           m.send_message(message)
         end
 
@@ -51,7 +51,7 @@ module RGRB
         # @return [void]
         def dxx_dice(m, rolls)
           result = @generator.dxx_dice(rolls)
-          message = "#{m.user.nick} -> #{result}"
+          message = "#{m.user.mention} -> #{result}"
           m.send_message(message)
         end
 
@@ -59,7 +59,7 @@ module RGRB
           return unless @jadice
 
           result = @generator.dxx_dice_ja(rolls)
-          message = "#{m.user.nick} -> #{result}"
+          message = "#{m.user.mention} -> #{result}"
           m.send_message(message)
         end
       end

@@ -81,7 +81,7 @@ gem install mailcatcher
 | プラグイン名 | 内容 | IRC | Discord |
 | ------------ | ---- | --- | ------- |
 | [DiceRoll](doc/plugins/dice_roll.md) | ダイスロール | o | o |
-| [RandomGenerator](doc/plugins/random_generator.md) | ランダムジェネレータ | o | x |
+| [RandomGenerator](doc/plugins/random_generator.md) | ランダムジェネレータ | o | o |
 | [Trpg::Detatoko](doc/plugins/trpg/detatoko.md) | 「でたとこサーガ」専用のダイス・表引きコマンド | o | x |
 | [BCDice](doc/plugins/bcdice.md) | [ボーンズ＆カーズ](https://github.com/torgtaitai/BCDice) のダイスコマンドを利用する | o | x |
 

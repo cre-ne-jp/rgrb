@@ -17,7 +17,7 @@ module RGRB
         # @return [void]
         def help(m)
           log_incoming(m)
-          m.send_message(Generator::HELP_MESSAGE)
+          send_channel(m.channel, Generator::HELP_MESSAGE)
         end
       end
     end

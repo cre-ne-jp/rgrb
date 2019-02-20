@@ -34,33 +34,34 @@ module RGRB
         # 基本的なダイスロールの結果を返す
         # @return [void]
         def basic_dice(m, n_dice, max)
+          log_incoming(m)
           result = @generator.basic_dice(n_dice.to_i, max.to_i)
-          message = "#{m.user.mention} -> #{result}"
-          m.send_message(message)
+          send_channel(m.channel, "#{m.user.mention} -> #{result}")
         end
 
         def basic_dice_ja(m, n_dice, max)
+          log_incoming(m)
           return unless @jadice
 
           result = @generator.basic_dice_ja(n_dice, max)
-          message = "#{m.user.mention} -> #{result}"
-          m.send_message(message)
+          send_channel(m.channel, "#{m.user.mention} -> #{result}")
         end
 
         # d66 など、出目をそのままつなげるダイスロールの結果を返す
         # @return [void]
         def dxx_dice(m, rolls)
+          log_incoming(m)
           result = @generator.dxx_dice(rolls)
-          message = "#{m.user.mention} -> #{result}"
-          m.send_message(message)
+          send_channel(m.channel, "#{m.user.mention} -> #{result}")
         end
 
         def dxx_dice_ja(m, rolls)
+          log_incoming(m)
           return unless @jadice
 
           result = @generator.dxx_dice_ja(rolls)
           message = "#{m.user.mention} -> #{result}"
-          m.send_message(message)
+          send_channel(m.channel, message)
         end
       end
     end

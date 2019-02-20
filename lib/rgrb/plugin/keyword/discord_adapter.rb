@@ -21,11 +21,13 @@ module RGRB
         end
 
         # キーワードで検索する
-        # @param [Cinch::Message] m
+        # @param [Discordrb::Events::MessageEvent] m
         # @param [String] site_code 検索するウェブサイト
         # @param [String] keyword キーワード
         # @return [void]
         def search(m, site_code, keyword)
+          log_incoming(m)
+
           message = case(site_code)
           when 'k'
             @generator.cre_search(keyword)
@@ -33,7 +35,7 @@ module RGRB
             @generator.amazon_search(keyword)
           end
 
-          m.send_message(message)
+          send_channel(m.channel, message)
         end
       end
     end

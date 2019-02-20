@@ -149,6 +149,7 @@ module RGRB
       @config = options
       @logger = logger
       @thread_group = ThreadGroup.new
+      @mutex = Mutex.new
 
       __register_matchers
     end
@@ -193,44 +194,93 @@ module RGRB
     def event_handler(event, pattern, matcher)
       match_data = event.message.text.match(pattern)
       thread = Thread.new do
-        @logger.debug("[Thread start] For #{self}: #{Thread.current} -- #{@thread_group.list.size} in total.")
+        log_debug("[Thread start] For #{self}: #{Thread.current} -- #{@thread_group.list.size} in total.")
         begin
           self.send(matcher.method, event, *match_data[1..-1])
         rescue => e
-          @logger.exception(e)
+          log_exception(e)
         ensure
-          @logger.debug("[Thread done] For #{self}: #{Thread.current} -- #{@thread_group.list.size - 1} remaining.")
+          log_debug("[Thread done] For #{self}: #{Thread.current} -- #{@thread_group.list.size - 1} remaining.")
         end
       end
       @thread_group.add(thread)
     end
 
-    # ログを出力させる
-    # @param [String] message 出力するメッセージ
-    # @param [Symbol] event ログの種類
-    # @param [Symbol] level ログレベル
-    def log(message, event = :debug, level = event)
-      user = "#{message.author.id}[#{message.author.username}@#{message.author.server.name}(#{message.author.server.region_id})]"
-      channel = "#{message.channel.id}[##{message.channel.name}@#{message.channel.server.name}(#{message.channel.server.region_id})]"
-      _message  = "#{user} #{channel}: #{message.content}"
+    # メッセージをチャンネルに送信する
+    # @param [Discordrb::Channel] target 送信先
+    # @param [String, Array] message メッセージ
+    # @return [void]
+    def send_channel(target, message, header = '')
+      message = Array(message) if message.class == String
 
-      message = case event
+      _message = message.map do |line|
+        message = "#{header}#{line}"
+      end.join("\n")
+
+      target.send_message(_message)
+      log_send_channel(target, _message)
+    end
+
+    # ログを出力させる
+    # @param [String] content 出力するイベント
+    # @param [Symbol] type ログの種類
+    # @param [Symbol] level ログレベル
+    # @return [void]
+    def log(content, type = :debug, level = type)
+      message = case type
       when :incoming
-        ">> #{_message}"
+        ">> #{content}"
       when :outgoing
-        "<< #{_message}"
+        "<< #{content}"
       else
-        _message
+        content
       end
 
-      @logger.add(level, message)
+      @mutex.synchronize do
+        message.each_line do |line|
+          @logger.add(level, line)
+        end
+      end
     end
 
+    # ボットへの入力ログを出力する
+    # @param [Discordrb::Events::*] event 出力するイベント
+    # @return [void]
     def log_incoming(event)
-      log(event, :incoming, :info)
+      log("#{format_user(event.author)} #{format_channel(event.channel)}: #{event.content.chomp}", :incoming, :info)
     end
-    def log_outgoing(event)
-      log(event, :outgoing, :info)
+
+    # ボットへからの送信ログを出力する
+    # @param [Discordrb::Events::*] target 送信先
+    # @param [String] message メッセージ
+    # @return [void]
+    def log_send_channel(target, message)
+      log(%Q(<SEND to #{format_channel(target)}> "#{message.chomp}"), :outgoing, :info)
+    end
+
+    def log_debug(message)
+      log(message, :debug)
+    end
+
+    def log_exception(e)
+      #log(e.backtrace.reverse.join("\n"), :exception, :error)
+      log(e.full_message, :exception, :error)
+    end
+
+    private
+
+    # ユーザー情報を整形する
+    # @param [Discordrb::User] author 出力するイベント
+    # @return [String]
+    def format_user(author)
+      user = "#{author.username}[#{author.id}@#{author.server.name}(#{author.server.region_id})]"
+    end
+
+    # チャンネル情報を整形する
+    # @param [Discordrb::Channel] channel 出力するイベント
+    # @return [String]
+    def format_channel(channel)
+      "##{channel.name}[#{channel.id}@#{channel.server.name}(#{channel.server.region_id})]"
     end
   end
 end

@@ -32,7 +32,7 @@ module RGRB
         end
 
         # NOTICE でジェネレート結果を返す
-        # @param [Cinch::Message] m メッセージ
+        # @param [Discordrb::Events::MessageEvent] m メッセージ
         # @param [String] tables_str 表のリスト
         # @return [void]
         def rg(m, tables_str)
@@ -57,7 +57,7 @@ module RGRB
         end
 
         # NOTICE で表の説明を返す
-        # @param [Cinch::Message] m メッセージ
+        # @param [Discordrb::Events::MessageEvent] m メッセージ
         # @param [String] tables_str 表のリスト
         # @return [void]
         def desc(m, tables_str)
@@ -77,7 +77,7 @@ module RGRB
         end
 
         # NOTICE で表の詳細な情報を返す
-        # @param [Cinch::Message] m メッセージ
+        # @param [Discordrb::Events::MessageEvent] m メッセージ
         # @param [String] tables_str 表のリスト
         # @return [void]
         def info(m, tables_str)
@@ -97,7 +97,7 @@ module RGRB
         end
 
         # 表の名前を一覧する
-        # @param [Cinch::Message] m メッセージ
+        # @param [Discordrb::Events::MessageEvent] m メッセージ
         # @return [String]
         def list(m)
           log_incoming(m)

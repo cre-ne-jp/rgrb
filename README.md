@@ -82,7 +82,7 @@ gem install mailcatcher
 | ------------ | ---- | --- | ------- |
 | [DiceRoll](doc/plugins/dice_roll.md) | ダイスロール | o | o |
 | [RandomGenerator](doc/plugins/random_generator.md) | ランダムジェネレータ | o | o |
-| [Trpg::Detatoko](doc/plugins/trpg/detatoko.md) | 「でたとこサーガ」専用のダイス・表引きコマンド | o | x |
+| [Trpg::Detatoko](doc/plugins/trpg/detatoko.md) | 「でたとこサーガ」専用のダイス・表引きコマンド | o | o |
 | [BCDice](doc/plugins/bcdice.md) | [ボーンズ＆カーズ](https://github.com/torgtaitai/BCDice) のダイスコマンドを利用する | o | x |
 
 #### 情報検索・引用
@@ -91,7 +91,7 @@ gem install mailcatcher
 | ------------ | ---- | --- | ------- |
 | [Keyword](doc/plugins/keyword.md) | キーワード検索 | o | o |
 | [OnlineSessionSearch](doc/plugins/online_session_search.md) | [TRPG.NET セッションマッチングシステム](http://session.trpg.net/)から予定されているオンラインセッションの情報を検索する | o | x |
-| [CreTwitterCitation](doc/plugins/cre_twitter_citation.md) | Twitter @cre_ne_jp の引用 | o | x |
+| [CreTwitterCitation](doc/plugins/cre_twitter_citation.md) | Twitter @cre_ne_jp の引用 | o | - |
 | [UrlFetchTitle](doc/plugins/url_fetch_title.md) | 発言された URL のページタイトルを取得する | o | - |
 
 #### ユーティリティ

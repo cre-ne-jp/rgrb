@@ -1,7 +1,6 @@
 source 'https://rubygems.org'
 
 gem 'activesupport', '~> 5.0'
-gem 'cinch'
 gem 'twitter', '> 5.15'
 gem 'lumberjack', '~> 1.0'
 gem 'sysexits', '~> 1.2'
@@ -11,6 +10,14 @@ gem 'charlock_holmes', '~> 0.7'
 gem 'nokogiri', '~> 1.6'
 gem 'd1lcs'
 gem 'mail', '~> 2.7'
+
+group :irc do
+  gem 'cinch'
+end
+
+group :discord do
+  gem 'discordrb'
+end
 
 group :development, :test do
   gem 'pry', '~> 0.10'

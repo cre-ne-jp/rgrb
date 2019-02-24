@@ -1,7 +1,5 @@
 # vim: fileencoding=utf-8
 
-require 'cinch'
-
 module RGRB
   module Plugin
     # 設定できる生成器のアダプター用のモジュール

@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+# vim: fileencoding=utf-8
+
+require 'rubygems'
+require 'bundler/setup'
+
+require 'rgrb/exec/discord_bot'
+
+root_path = File.expand_path('..', File.dirname(__FILE__))
+RGRB::Exec::DiscordBot.run(root_path, ARGV)

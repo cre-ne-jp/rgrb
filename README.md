@@ -68,35 +68,43 @@ gem install mailcatcher
 
 ### プラグイン一覧
 
+#### IRC / Discord 欄の凡例
+
+| 記号 | 意味 |
+| ---- | ---- |
+| o | 実装済み |
+| x | 未実装 |
+| - | 実装予定なし(チャット環境固有の物) |
+
 #### オンラインセッション支援
 
-| プラグイン名 | 内容 |
-| ------------ | ---- |
-| [DiceRoll](doc/plugins/dice_roll.md) | ダイスロール |
-| [RandomGenerator](doc/plugins/random_generator.md) | ランダムジェネレータ |
-| [Trpg::Detatoko](doc/plugins/trpg/detatoko.md) | 「でたとこサーガ」専用のダイス・表引きコマンド |
-| [BCDice](doc/plugins/bcdice.md) | [ボーンズ＆カーズ](https://github.com/torgtaitai/BCDice) のダイスコマンドを利用する |
+| プラグイン名 | 内容 | IRC | Discord |
+| ------------ | ---- | --- | ------- |
+| [DiceRoll](doc/plugins/dice_roll.md) | ダイスロール | o | o |
+| [RandomGenerator](doc/plugins/random_generator.md) | ランダムジェネレータ | o | o |
+| [Trpg::Detatoko](doc/plugins/trpg/detatoko.md) | 「でたとこサーガ」専用のダイス・表引きコマンド | o | o |
+| [BCDice](doc/plugins/bcdice.md) | [ボーンズ＆カーズ](https://github.com/torgtaitai/BCDice) のダイスコマンドを利用する | o | o |
 
 #### 情報検索・引用
 
-| プラグイン名 | 内容 |
-| ------------ | ---- |
-| [Keyword](doc/plugins/keyword.md) | キーワード検索 |
-| [OnlineSessionSearch](doc/plugins/online_session_search.md) | [TRPG.NET セッションマッチングシステム](http://session.trpg.net/)から予定されているオンラインセッションの情報を検索する |
-| [CreTwitterCitation](doc/plugins/cre_twitter_citation.md) | Twitter @cre_ne_jp の引用 |
-| [UrlFetchTitle](doc/plugins/url_fetch_title.md) | 発言された URL のページタイトルを取得する |
+| プラグイン名 | 内容 | IRC | Discord |
+| ------------ | ---- | --- | ------- |
+| [Keyword](doc/plugins/keyword.md) | キーワード検索 | o | o |
+| [OnlineSessionSearch](doc/plugins/online_session_search.md) | [TRPG.NET セッションマッチングシステム](http://session.trpg.net/)から予定されているオンラインセッションの情報を検索する | o | x |
+| [CreTwitterCitation](doc/plugins/cre_twitter_citation.md) | Twitter @cre_ne_jp の引用 | o | - |
+| [UrlFetchTitle](doc/plugins/url_fetch_title.md) | 発言された URL のページタイトルを取得する | o | - |
 
-#### IRC 関連
+#### ユーティリティ
 
-| プラグイン名 | 内容 |
-| ------------ | ---- |
-| [CreBotHelp](doc/plugins/cre_bot_help.md) | クリエイターズネットワークの IRC ボットとしてのヘルプを表示する |
-| [ServerConnectionReport](doc/plugins/server_connection_report.md) | IRC サーバの接続状態の変化を報告する |
-| [Part](doc/plugins/part.md) | チャンネルからの退出 |
-| [KickBack](doc/plugins/kick_back.md) | RGRB が KICK されたとき、そのチャンネルに再度 JOIN する |
-| [Invite](doc/plugins/invite.md) | RGRB が INVITE されたとき、そのチャンネルに JOIN する |
-| [Jihou](doc/plugins/jihou.md) | 毎日決まった時刻になった時、チャンネルに通知する |
-| [Ctcp](doc/plugins/ctcp.md) | CTCP メッセージを受信した時、適切な応答を返す |
+| プラグイン名 | 内容 | IRC | Discord |
+| ------------ | ---- | --- | ------- |
+| [CreBotHelp](doc/plugins/cre_bot_help.md) | クリエイターズネットワークの IRC ボットとしてのヘルプを表示する | o | o |
+| [ServerConnectionReport](doc/plugins/server_connection_report.md) | IRC サーバの接続状態の変化を報告する | o | - |
+| [Part](doc/plugins/part.md) | チャンネルからの退出 | o | - |
+| [KickBack](doc/plugins/kick_back.md) | RGRB が KICK されたとき、そのチャンネルに再度 JOIN する | o | - |
+| [Invite](doc/plugins/invite.md) | RGRB が INVITE されたとき、そのチャンネルに JOIN する | o | - |
+| [Jihou](doc/plugins/jihou.md) | 毎日決まった時刻になった時、チャンネルに通知する | o | x |
+| [Ctcp](doc/plugins/ctcp.md) | CTCP メッセージを受信した時、適切な応答を返す | o | - |
 
 IRC ボットの起動
 ----------------
@@ -116,6 +124,19 @@ bin/rgrb-ircbot -c test # /path/to/rgrb/config/test.yaml を使用する場合
 ```
 
 systemd による制御を行なう場合は [systemd](doc/system/systemd.md) を参照してください。
+
+Discord ボットの招待
+--------------------
+
+[開発版の招待リンク](https://discordapp.com/oauth2/authorize?client_id=460671751181828097&scope=bot&permissions=3072&redirect_uri=https%3A%2F%2Fgithub.com%2Fcre-ne-jp%2Frgrb)
+
+上のリンクをクリックすることで、Discord ボットを管理する Discord サーバに招待することが出来ます。
+この場合、ご自身のコンピュータ上で RGRB をインストールしたり、RGRB を起動したりする必要はありません。
+
+Discord ボットの起動
+--------------------
+
+(ToDo: 増補)
 
 開発者向けドキュメントの生成
 ----------------------------

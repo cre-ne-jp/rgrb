@@ -29,6 +29,14 @@ IRCBot:
   # 空文字列にすると、"Caught <signal>" が設定される
   QuitMessage: 'bye'
 
+# Discord ボットの設定
+Discord:
+  # トークン
+  Token: ''
+
+  # クライアント ID
+  ClientID: ''
+
 # 使用するプラグインを列挙する。大文字小文字を区別するので注意
 Plugins:
   - DiceRoll

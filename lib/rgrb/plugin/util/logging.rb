@@ -4,6 +4,7 @@ module RGRB
   module Plugin
     module Util
       # プラグインのログ記録関連メソッドを集めたモジュール。
+      # IRC アダプター専用
       module Logging
         private
 

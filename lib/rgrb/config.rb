@@ -8,6 +8,9 @@ module RGRB
     # IRC ボットの設定のハッシュ
     # @return [Hash]
     attr_reader :irc_bot
+    # Discord ボットの設定のハッシュ
+    # @return [Hash]
+    attr_reader :discord_bot
     # プラグイン名の配列
     # @return [Array<String>]
     attr_reader :plugins
@@ -51,6 +54,7 @@ module RGRB
     # @return [RGRB::Config]
     def initialize(config_data)
       @irc_bot = config_data['IRCBot']
+      @discord_bot = config_data['DiscordBot']
       @plugins = config_data['Plugins'] || []
       @plugin_config = {}
 

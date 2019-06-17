@@ -1,0 +1,18 @@
+# Discord ボットの設定
+DiscordBot:
+  Token: ''
+  ClientID: ''
+
+# 使用するプラグインを列挙する。大文字小文字を区別するので注意
+Plugins:
+  - DiceRoll
+  - Keyword
+  - RandomGenerator
+  - CreBotHelp
+  - Trpg::Detatoko
+  - Bcdice
+
+Include:
+  - dice_roll
+  - keyword
+  - random_generator

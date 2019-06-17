@@ -128,9 +128,9 @@ systemd による制御を行なう場合は [systemd](doc/system/systemd.md) �
 Discord ボットの招待
 --------------------
 
-[開発版の招待リンク](https://discordapp.com/oauth2/authorize?client_id=460671751181828097&scope=bot&permissions=3072&redirect_uri=https%3A%2F%2Fgithub.com%2Fcre-ne-jp%2Frgrb)
+[招待リンク](https://discordapp.com/api/oauth2/authorize?client_id=590114600650014721&permissions=3072&redirect_uri=https%3A%2F%2Fgithub.com%2Fcre-ne-jp%2Frgrb&scope=bot)
 
-上のリンクをクリックすることで、Discord ボットを管理する Discord サーバに招待することが出来ます。
+上のリンクをクリックすることで、Discord ボットを、ご自身が管理者になっている Discord サーバに招待することが出来ます。
 この場合、ご自身のコンピュータ上で RGRB をインストールしたり、RGRB を起動したりする必要はありません。
 
 Discord ボットの起動

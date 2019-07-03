@@ -21,7 +21,7 @@ end
 
 group :development, :test do
   gem 'pry', '~> 0.10'
-  gem 'yard', '~> 0.8'
+  gem 'yard', '~> 0.9'
   gem 'rubocop', '~> 0.28'
 end
 

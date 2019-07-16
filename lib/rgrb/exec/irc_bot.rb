@@ -100,7 +100,8 @@ module RGRB
 
           plugin_options[adapter] = {
             root_path: root_path,
-            plugin: plugin_config
+            plugin: plugin_config,
+            config_id: config.config_id
           }
 
           logger.warn(

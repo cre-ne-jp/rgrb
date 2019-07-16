@@ -6,6 +6,9 @@ module RGRB
   module Plugin
     # 設定できる出力テキスト生成器のモジュール
     module ConfigurableGenerator
+      # CONFIG_ID
+      # @return [String]
+      attr_reader :config_id
       # RGRB のルートパス
       # @return [String]
       # @note root_path を設定すると、それに合わせて
@@ -23,6 +26,13 @@ module RGRB
         @plugin_name_underscore = class_name_tree[-2].underscore
 
         self.root_path = File.expand_path('../../..', __dir__)
+      end
+
+      # CONFIG_ID を設定する
+      # @param [String] config_id
+      # @return [String] config_id
+      def config_id=(config_id)
+        @config_id = config_id
       end
 
       # RGRB のルートパスを設定する

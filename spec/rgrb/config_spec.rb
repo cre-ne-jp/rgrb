@@ -35,8 +35,15 @@ describe RGRB::Config do
     }
   end
 
+  let(:config_id) { 'rgrb' }
   let(:config) do
-    described_class.new(config_data)
+    described_class.new(config_id, config_data)
+  end
+
+  describe '#id' do
+    it '指定されたIDと等しい' do
+      expect(config.id).to eq(config_id)
+    end
   end
 
   describe '#irc_bot' do
@@ -81,7 +88,13 @@ describe RGRB::Config do
   describe '.#load_yaml_file' do
     let(:config_from_file) do
       root_path = File.expand_path('config_data', File.dirname(__FILE__))
-      described_class.load_yaml_file('rgrb', root_path)
+      described_class.load_yaml_file(config_id, root_path)
+    end
+
+    describe '#id' do
+      it '指定されたIDと等しい' do
+        expect(config_from_file.id).to eq(config_id)
+      end
     end
 
     describe '#irc_bot' do

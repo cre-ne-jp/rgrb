@@ -9,7 +9,11 @@ module RGRB::Plugin; end
 
 describe RGRB::PluginsLoader do
   let(:empty_config) do
-    RGRB::Config.new('IRCBot' => {})
+    config_data = {
+      'IRCBot' => {}
+    }
+
+    RGRB::Config.new('empty_config', config_data)
   end
   let(:empty_plugins_loader) { described_class.new(empty_config) }
 
@@ -26,12 +30,22 @@ describe RGRB::PluginsLoader do
     end
   end
   let(:rgrb_config) do
-    RGRB::Config.new('IRCBot' => {}, 'Plugins' => plugin_names)
+    config_data = {
+      'IRCBot' => {},
+      'Plugins' => plugin_names
+    }
+
+    RGRB::Config.new('rgrb_config', config_data)
   end
   let(:plugins_loader) { described_class.new(rgrb_config) }
 
   let(:wrong_config) do
-    RGRB::Config.new('IRCBot' => {}, 'Plugins' => ['MissingPlugin'])
+    config_data = {
+      'IRCBot' => {},
+      'Plugins' => ['MissingPlugin']
+    }
+
+    RGRB::Config.new('wrong_config', config_data)
   end
   let(:wrong_plugins_loader) do
     described_class.new(wrong_config)

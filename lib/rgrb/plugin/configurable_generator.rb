@@ -8,7 +8,7 @@ module RGRB
     module ConfigurableGenerator
       # CONFIG_ID
       # @return [String]
-      attr_reader :config_id
+      attr_accessor :config_id
       # RGRB のルートパス
       # @return [String]
       # @note root_path を設定すると、それに合わせて

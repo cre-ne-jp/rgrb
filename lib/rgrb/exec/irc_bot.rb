@@ -34,7 +34,7 @@ module RGRB
           config, irc_adapters, plugin_options, log_level, logger
         )
 
-        set_signal_handler(bot, config.irc_bot['QuitMessage'])
+        set_signal_handler(bot, config.irc_bot['QuitMessage'].to_s)
         bot.start
 
         logger.warn('ボットは終了しました')

@@ -124,7 +124,6 @@ module RGRB
           result = "#{m.user.nick} -> #{result}"
 
           message = if secret
-            @generator.config_id = config[:config_id]
             @generator.save_secret_roll(m.target.name, result)
 
             case(m.target.class.to_s)

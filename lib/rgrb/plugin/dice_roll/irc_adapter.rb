@@ -20,8 +20,8 @@ module RGRB
         match(/(#{NUMS_RE})d(#{NUMS_RE})/io, method: :basic_dice)
         match(/d(#{NUM_RE}+)/io, method: :dxx_dice)
         match(/(#{NUMS_RE})d(#{NUMS_RE})/io, method: :basic_dice_secret, prefix: /\.sroll[\s　]+/)
-        match('-open', method: :open_dice, prefix: '.sroll')
         match(/d(#{NUM_RE}+)/io, method: :dxx_dice_secret, prefix: /\.sroll[\s　]+/)
+        match('-open', method: :open_dice, prefix: '.sroll')
 
         match(/(#{KANA_NUMS_RE})の(#{KANA_NUMS_RE})/io, method: :basic_dice_ja, :prefix => '。')
         match(/の(#{KANA_NUM_RE}+)/io, method: :dxx_dice_ja, :prefix => '。')
@@ -30,8 +30,7 @@ module RGRB
           super
 
           config_data = config[:plugin]
-          @jadice = true
-          @jadice = false if config_data['JaDice'] == false
+          @jadice = config_data['JaDice'] == false ? false : true
 
           prepare_generator
         end
@@ -40,51 +39,15 @@ module RGRB
         # @return [void]
         def basic_dice(m, n_dice, max)
           log_incoming(m)
-          result = @generator.basic_dice(n_dice.to_i, max.to_i)
-          message = "#{m.user.nick} -> #{result}"
-          m.target.send(message, true)
-          log_notice(m.target, message)
+          send_result(m, @generator.basic_dice(n_dice.to_i, max.to_i))
         end
 
         # 基本的なダイスロールの結果を返す
         # シークレットロール
         # @return [void]
         def basic_dice_secret(m, n_dice, max)
-          @generator.config_id = config[:config_id]
           log_incoming(m)
-          result = @generator.basic_dice(n_dice.to_i, max.to_i)
-          result = "#{m.user.nick} -> #{result}"
-          @generator.save_secret_roll(m.target.name, result)
-
-          message = ''
-          case(m.target.class.to_s)
-          when('Cinch::Channel')
-            message = "チャンネル #{m.target.name} でのシークレットロール: #{result}"
-            m.user.send(message, true)
-            log_notice(m.user, message)
-
-            message = "#{m.user.nick}: シークレットロールを保存しました"
-          when('Cinch::User')
-            message = 'シークレットロールを保存しました'
-          end
-
-          m.target.send(message, true)
-          log_notice(m.target, message)
-        end
-
-        def open_dice(m)
-          result = @generator.open_dice(m.target.name)
-          messages = if result.empty? 
-            ["#{m.target.name} にはシークレットロールがありません"]
-          else
-            [
-              "#{m.target.name} のシークレットロール: #{result.size} 件",
-              result,
-              "シークレットロールここまで"
-            ].flatten
-          end
-pp messages
-          notice_multi_lines(messages, m.target)
+          send_result(m, @generator.basic_dice(n_dice.to_i, max.to_i), true)
         end
 
         # 日本語版の basic_dice
@@ -93,20 +56,14 @@ pp messages
           log_incoming(m)
           return unless @jadice
 
-          result = @generator.basic_dice_ja(n_dice, max)
-          message = "#{m.user.nick} -> #{result}"
-          m.target.send(message, true)
-          log_notice(m.target, message)
+          send_result(m, @generator.basic_dice_ja(n_dice, max))
         end
 
         # d66 など、出目をそのままつなげるダイスロールの結果を返す
         # @return [void]
         def dxx_dice(m, rolls)
           log_incoming(m)
-          result = @generator.dxx_dice(rolls)
-          message = "#{m.user.nick} -> #{result}"
-          m.target.send(message, true)
-          log_notice(m.target, message)
+          send_result(m, @generator.dxx_dice(rolls))
         end
 
         # d66 など、出目をそのままつなげるダイスロールの結果を返す
@@ -114,10 +71,7 @@ pp messages
         # @return [void]
         def dxx_dice_secret(m, rolls)
           log_incoming(m)
-          result = @generator.dxx_dice(rolls)
-          message = "#{m.user.nick} -> #{result}"
-          m.target.send(message, true)
-          log_notice(m.target, message)
+          send_result(m, @generator.dxx_dice(rolls), true)
         end
 
         # 日本語版の dxx_dice
@@ -126,8 +80,67 @@ pp messages
           log_incoming(m)
           return unless @jadice
 
-          result = @generator.dxx_dice_ja(rolls)
+          send_result(m, @generator.dxx_dice_ja(rolls))
+        end
+
+        # シークレットロールを表示する
+        # @param [Cinch::Message] m
+        # @return [void]
+        def open_dice(m)
+          result = @generator.open_dice(m.target.name)
+          messages = if result.empty?
+              ["#{m.target.name} にはシークレットロール結果がありません"]
+            else
+              [
+                "#{m.target.name} のシークレットロール: #{result.size} 件",
+                result,
+                "シークレットロールここまで"
+              ].flatten
+            end
+          notice_multi_lines(messages, m.target)
+        end
+
+        private
+
+        # ダイスロール結果を整形して IRC に送信する
+        # @param [Cinch::Message] m
+        # @param [String] result ダイスロール結果
+        # @return [void]
+        def send_roll(m, result)
           message = "#{m.user.nick} -> #{result}"
+          m.target.send(message, true)
+          log_notice(m.target, message)
+        end
+
+        # シークレットロールを保存する
+        # @param [Cinch::Message] m
+        # @param [String] result ダイスロール結果
+        # @param [Boolean] secret シークレットダイスか？
+        # @option secret true  シークレットダイス
+        # @option secret false オープンダイス
+        # @return [void]
+        def send_result(m, result, secret = false)
+
+          result = "#{m.user.nick} -> #{result}"
+
+          message = if secret
+            @generator.config_id = config[:config_id]
+            @generator.save_secret_roll(m.target.name, result)
+
+            case(m.target.class.to_s)
+            when('Cinch::Channel')
+              message = "チャンネル #{m.target.name} でのシークレットロール: #{result}"
+              m.user.send(message, true)
+              log_notice(m.user, message)
+
+              "#{m.user.nick}: シークレットロールを保存しました"
+            when('Cinch::User')
+              'シークレットロールを保存しました'
+            end
+          else
+            result
+          end
+
           m.target.send(message, true)
           log_notice(m.target, message)
         end

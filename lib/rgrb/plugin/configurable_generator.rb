@@ -24,8 +24,6 @@ module RGRB
       def initialize
         class_name_tree = self.class.name.split('::')
         @plugin_name_underscore = class_name_tree[-2].underscore
-
-#        self.root_path = File.expand_path('../../..', __dir__)
       end
 
       # RGRB のルートパスを設定する

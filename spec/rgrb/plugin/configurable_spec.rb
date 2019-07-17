@@ -43,22 +43,6 @@ end
 describe RGRB::Plugin::ConfigurableGenerator do
   let(:generator) { RGRB::Plugin::TestPlugin::Generator.new }
 
-  describe '#initialize' do
-    let(:root_path_from_spec_file) {
-      File.expand_path('../../..', __dir__)
-    }
-
-    let(:data_path) { "#{root_path_from_spec_file}/data/test_plugin" }
-
-    it 'root_path を正しく設定する' do
-      expect(generator.root_path).to eq(root_path_from_spec_file)
-    end
-
-    it 'data_path を正しく設定する' do
-      expect(generator.data_path).to eq(data_path)
-    end
-  end
-
   describe '#root_path=' do
     let(:root_path) { '/home/rgrb' }
     let(:data_path) { '/home/rgrb/data/test_plugin' }

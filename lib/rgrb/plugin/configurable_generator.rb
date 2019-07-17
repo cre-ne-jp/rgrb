@@ -28,13 +28,6 @@ module RGRB
         self.root_path = File.expand_path('../../..', __dir__)
       end
 
-      # CONFIG_ID を設定する
-      # @param [String] config_id
-      # @return [String] config_id
-      def config_id=(config_id)
-        @config_id = config_id
-      end
-
       # RGRB のルートパスを設定する
       # @param [String] root_path RGRB のルートパス
       # @return [String] RGRB のルートパス

@@ -3,6 +3,8 @@
 require 'rgrb/plugin/configurable_generator'
 require 'rgrb/plugin/dice_roll/dice_roll_result'
 
+require 'gdbm'
+
 module RGRB
   module Plugin
     # ダイスロールを行うプラグイン
@@ -15,7 +17,10 @@ module RGRB
         EXCESS_DICE_MESSAGE = "ダイスが机から落ちてしまいましたの☆"
 
         def initialize
+          super
           @random = Random.new
+
+          @db_name = "#{@data_path}/#{@config_id}"
         end
 
         # 基本的なダイスロールの結果を返す
@@ -50,6 +55,33 @@ module RGRB
         # dxx_dice の日本語ダイス用ラッパー
         def dxx_dice_ja(rolls_ja)
           dxx_dice("#{ja_to_i(rolls_ja)}")
+        end
+
+        # @param [String] target
+        # @param [String] message
+        def save_secret_roll(target, message)
+          @db_name = "#{@data_path}/#{@config_id}"
+          GDBM.open(@db_name) do |db|
+            store = db.has_key?('secret_dice') ? JSON.parse(db['secret_dice']) : {}
+            store.has_key?(target) ? store[target] << message : store[target] = [message]
+            db['secret_dice'] = JSON.generate(store)
+          end
+        end
+
+        # @param [String] target
+        # @return [Array]
+        def open_dice(target)
+          @db_name = "#{@data_path}/#{@config_id}"
+          result = []
+
+          GDBM.open(@db_name) do |db|
+            store = db.has_key?('secret_dice') ? JSON.parse(db['secret_dice']) : {}
+            result = store[target]
+            store[target] = nil
+            db['secret_dice'] = JSON.generate(store.compact)
+          end
+
+          result.nil? ? [] : result
         end
 
         # ダイスロールの結果を返す

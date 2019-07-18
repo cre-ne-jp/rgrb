@@ -10,15 +10,15 @@ module RGRB
     end
 
     # メッセージを NOTICE し、ログに書き出す
-    # @param [String, Array<String>] messages NOTICE するメッセージ
     # @param [String, Cinch::Target, Array<String>, Array<Cinch::Target>]
     #   targets NOTICE 先
     # @note Cinch::Channel, Cinch::User は、どちらも Cinch::Target の
     #   サブクラスのため、Cinch::Target と同様に扱う。
+    # @param [String, Array<String>] messages NOTICE するメッセージ
     # @param [String] header メッセージの先頭に挿入する文字列
     # @param [Boolean] safe 表示不可能な文字を排除するかどうか
     # @return [void]
-    def send_notice(messages, targets, header = '', safe = false)
+    def send_notice(targets, messages, header = '', safe = false)
       messages = messages.split($/) if messages.kind_of?(String)
       targets =
         case targets

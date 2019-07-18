@@ -19,9 +19,9 @@ module RGRB
     # @param [Boolean] safe 表示不可能な文字を排除するかどうか
     # @return [void]
     def send_notice(messages, targets, header = '', safe = false)
-      messages = messages.split($/) if messages.class == String
+      messages = messages.split($/) if messages.kind_of?(String)
       targets =
-        case targets.class
+        case targets
         when String
           targets.split($/).map do |name|
             Target(name)
@@ -30,7 +30,7 @@ module RGRB
           [targets]
         when Array
           targets.map do |target|
-            case target.class
+            case target
             when String
               Target(target)
             when Cinch::Target, Cinch::Channel, Cinch::User
@@ -46,11 +46,7 @@ module RGRB
       targets.each do |target|
         messages.each do |line|
           message = "#{header}#{line.chomp}"
-          if(safe)
-            target.safe_send(message, true)
-          else
-            target.send(message, true)
-          end
+          safe ? target.safe_send(message, true) : target.send(message, true)
           log_notice(target, message)
         end
       end

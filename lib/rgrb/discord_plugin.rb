@@ -211,7 +211,7 @@ module RGRB
     # @param [String, Array] message メッセージ
     # @return [void]
     def send_channel(target, message, header = '')
-      message = Array(message) if message.class == String
+      message = Array(message) if message.kind_of?(String)
 
       _message = message.map do |line|
         message = "#{header}#{line}"

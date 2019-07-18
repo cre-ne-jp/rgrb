@@ -267,8 +267,6 @@ module RGRB
       log(e.full_message, :exception, :error)
     end
 
-    private
-
     # ユーザー情報を整形する
     # @param [Discordrb::User] author 出力するイベント
     # @return [String]

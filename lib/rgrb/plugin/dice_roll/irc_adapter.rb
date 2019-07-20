@@ -105,22 +105,11 @@ module RGRB
         # ダイスロール結果を整形して IRC に送信する
         # @param [Cinch::Message] m
         # @param [String] result ダイスロール結果
-        # @return [void]
-        def send_roll(m, result)
-          message = "#{m.user.nick} -> #{result}"
-          m.target.send(message, true)
-          log_notice(m.target, message)
-        end
-
-        # シークレットロールを保存する
-        # @param [Cinch::Message] m
-        # @param [String] result ダイスロール結果
         # @param [Boolean] secret シークレットダイスか？
         # @option secret true  シークレットダイス
         # @option secret false オープンダイス
         # @return [void]
         def send_result(m, result, secret = false)
-
           result = "#{m.user.nick} -> #{result}"
 
           message = if secret

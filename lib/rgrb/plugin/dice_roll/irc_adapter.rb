@@ -88,7 +88,7 @@ module RGRB
         # @return [void]
         def open_dice(m)
           result = @generator.open_dice(m.target.name)
-          messages = if result.empty?
+          messages = if result.nil?
               ["#{m.target.name} にはシークレットロール結果がありません"]
             else
               [

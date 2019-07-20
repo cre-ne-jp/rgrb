@@ -4,6 +4,7 @@ require 'rgrb/plugin/configurable_generator'
 require 'rgrb/plugin/dice_roll/dice_roll_result'
 
 require 'gdbm'
+require 'json'
 
 module RGRB
   module Plugin
@@ -20,7 +21,12 @@ module RGRB
           super
           @random = Random.new
 
-          @db_name = "#{@data_path}/#{@config_id}"
+          @db_dir = "#{@data_path}/#{@config_id}"
+          # ToDo: ボット起動時のインスタンス化されるタイミングでは、
+          # @data_path, @config_id が初期化されていない(nil になっている)
+          #prepare_db_dir
+
+          @db_secret_dice = "#{@db_dir}/secret_dice"
         end
 
         # 基本的なダイスロールの結果を返す
@@ -57,31 +63,29 @@ module RGRB
           dxx_dice("#{ja_to_i(rolls_ja)}")
         end
 
-        # @param [String] target
-        # @param [String] message
+        # シークレットロールの結果をデータベースに保存する
+        # @param [String] target ダイスコマンド実行元(チャンネル名・ニックネーム)
+        # @param [String] message ダイスロール実行結果
+        # @return [void]
         def save_secret_roll(target, message)
-          @db_name = "#{@data_path}/#{@config_id}"
-          GDBM.open(@db_name) do |db|
-            store = db.has_key?('secret_dice') ? JSON.parse(db['secret_dice']) : {}
-            store.has_key?(target) ? store[target] << message : store[target] = [message]
-            db['secret_dice'] = JSON.generate(store)
+          @db_secret_dice = "#{@data_path}/#{@config_id}/secret_dice"
+          GDBM.open(@db_secret_dice) do |db|
+            store = db.has_key?(target) ? JSON.parse(db[target]) : []
+            store << message
+            db[target] = JSON.generate(store)
           end
         end
 
         # @param [String] target
-        # @return [Array]
+        # @return [Array, nil]
         def open_dice(target)
-          @db_name = "#{@data_path}/#{@config_id}"
-          result = []
+          @db_secret_dice = "#{@data_path}/#{@config_id}/secret_dice"
 
-          GDBM.open(@db_name) do |db|
-            store = db.has_key?('secret_dice') ? JSON.parse(db['secret_dice']) : {}
-            result = store[target]
-            store[target] = nil
-            db['secret_dice'] = JSON.generate(store.compact)
+          GDBM.open(@db_secret_dice) do |db|
+            if db.has_key?(target)
+              JSON.parse(db.delete(target))
+            end
           end
-
-          result.nil? ? [] : result
         end
 
         # ダイスロールの結果を返す
@@ -102,8 +106,25 @@ module RGRB
           values
         end
 
+        # 日本語ダイスコマンドを数字に変換する
+        # @param [String] japanese 日本語(ア段)
+        # @return [String]
         def ja_to_i(japanese)
           japanese.tr('あかさたなはまやらわ', '1234567890').to_i
+        end
+
+        # データベースディレクトリを準備する
+        # @return [void]
+        def prepare_db_dir
+          unless FileTest.exist?(@db_dir)
+            # 存在しなければ、ディレクトリを作成する
+            Dir.mkdir(@db_dir)
+          else
+            unless FileTest.directory?(@db_dir)
+              # ディレクトリ以外のファイルが存在したらエラー
+              raise RuntimeError
+            end
+          end
         end
       end
     end

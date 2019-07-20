@@ -26,12 +26,12 @@ describe RGRB::PluginsLoader do
     end
   end
   let(:rgrb_config) do
-    RGRB::Config.new('IRCBot' => {}, 'Plugins' => plugin_names)
+    RGRB::Config.new('test', {'IRCBot' => {}, 'Plugins' => plugin_names})
   end
   let(:plugins_loader) { described_class.new(rgrb_config) }
 
   let(:wrong_config) do
-    RGRB::Config.new('IRCBot' => {}, 'Plugins' => ['MissingPlugin'])
+    RGRB::Config.new('test', {'IRCBot' => {}, 'Plugins' => ['MissingPlugin']})
   end
   let(:wrong_plugins_loader) do
     described_class.new(wrong_config)

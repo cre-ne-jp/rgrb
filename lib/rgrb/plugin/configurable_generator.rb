@@ -6,7 +6,7 @@ module RGRB
   module Plugin
     # 設定できる出力テキスト生成器のモジュール
     module ConfigurableGenerator
-      # CONFIG_ID
+      # 設定 ID
       # @return [String]
       attr_accessor :config_id
       # RGRB のルートパス

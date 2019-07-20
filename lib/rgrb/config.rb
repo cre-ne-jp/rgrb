@@ -5,9 +5,9 @@ require 'yaml'
 module RGRB
   # RGRB の設定を表すクラス
   class Config
-    # CONFIG_ID
+    # 設定 ID
     # @return [String]
-    attr_reader :config_id
+    attr_reader :id
     # IRC ボットの設定のハッシュ
     # @return [Hash]
     attr_reader :irc_bot
@@ -40,7 +40,6 @@ module RGRB
       def load_yaml_file(config_id, root_path)
         config_path = config_id_to_path(config_id, root_path)
         config_data = YAML.load_file(config_path)
-        config_data['config_id'] = config_id
 
         ids_to_include = config_data['Include'].dup || []
         ids_to_include.each do |id|
@@ -49,15 +48,16 @@ module RGRB
           config_data.merge!(child_config_data)
         end
 
-        new(config_data)
+        new(config_id, config_data)
       end
     end
 
     # 新しい RGRB::Config インスタンスを返す
+    # @param [String] id 設定 ID
     # @param [Hash] config_data 設定データのハッシュ
     # @return [RGRB::Config]
-    def initialize(config_data)
-      @config_id = config_data['config_id']
+    def initialize(id, config_data)
+      @id = id
       @irc_bot = config_data['IRCBot']
       @discord_bot = config_data['DiscordBot']
       @plugins = config_data['Plugins'] || []

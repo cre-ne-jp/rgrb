@@ -90,14 +90,11 @@ describe RGRB::Plugin::DiceRoll::Generator do
       end
     end
 
-    # 100000d101 の出目に偏りがないことを
+    # 100000d100 の出目に偏りがないことを
     # カイ二乗検定で確かめる
-    #
-    # 面数が 101 なのは、自由度が面数 - 1 で、カイ二乗分布表には
-    # 切りの良い 100 しか載っていないから
     it '出目に偏りがない' do
       rolls = 100_000
-      sides = 101
+      sides = 100
       freq = Array.new(sides, 0)
       values = generator.dice_roll(rolls, sides).values
 
@@ -109,9 +106,9 @@ describe RGRB::Plugin::DiceRoll::Generator do
       expected_count = rolls.to_f / sides
       chi2 = freq.
         map { |count| (count - expected_count)**2 / expected_count }.
-        reduce(0, :+)
+        reduce(0, &:+)
 
-      expect(chi2).to be <= 140.169 # 自由度 100、有意水準 0.5%
+      expect(chi2).to be <= 170.798 # 自由度 99、有意水準 0.001%
     end
   end
 

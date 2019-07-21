@@ -1,16 +1,14 @@
 # vim: fileencoding=utf-8
 
-require 'cinch'
+require 'rgrb/irc_plugin'
 require 'rgrb/plugin/cre_bot_help/generator'
-require 'rgrb/plugin/util/notice_multi_lines'
 
 module RGRB
   module Plugin
     module CreBotHelp
       # CreBotHelp の IRC アダプター
       class IrcAdapter
-        include Cinch::Plugin
-        include Util::NoticeMultiLines
+        include IrcPlugin
 
         set(plugin_name: 'CreBotHelp')
         match(/help/, method: :help)
@@ -19,7 +17,7 @@ module RGRB
         # @return [void]
         def help(m)
           log_incoming(m)
-          notice_multi_messages(Generator::HELP_MESSAGE, m.channel)
+          send_notice(m.channel, Generator::HELP_MESSAGE)
         end
       end
     end

@@ -31,12 +31,13 @@ module RGRB
           session_data_from(url)
         end
 
+        private
+
         def session_data_from(url)
           json = open(url, 'r:UTF-8') { |f| f.read }
           sessions = Session.parse_json(json)
           format(sessions)
         end
-        private :session_data_from
 
         def format(sessions)
           if sessions.empty?
@@ -60,7 +61,6 @@ module RGRB
             end
           end
         end
-        private :format
       end
     end
   end

@@ -1,19 +1,17 @@
 # vim: fileencoding=utf-8
 
-require 'cinch'
+require 'rgrb/irc_plugin'
 require 'rgrb/plugin/configurable_adapter'
 require 'rgrb/plugin/dice_roll/constants'
 require 'rgrb/plugin/dice_roll/generator'
-require 'rgrb/plugin/util/notice_multi_lines'
 
 module RGRB
   module Plugin
     module DiceRoll
       # DiceRoll の IRC アダプター
       class IrcAdapter
-        include Cinch::Plugin
+        include IrcPlugin
         include ConfigurableAdapter
-        include Util::NoticeMultiLines
 
         set(plugin_name: 'DiceRoll')
         self.prefix = /\.roll[\s　]+/
@@ -89,7 +87,7 @@ module RGRB
         def open_dice(m)
           result = @generator.open_dice(m.target.name)
           messages = if result.nil?
-              ["#{m.target.name} にはシークレットロール結果がありません"]
+              "#{m.target.name} にはシークレットロール結果がありません"
             else
               [
                 "#{m.target.name} のシークレットロール: #{result.size} 件",
@@ -97,7 +95,7 @@ module RGRB
                 "シークレットロールここまで"
               ].flatten
             end
-          notice_multi_lines(messages, m.target)
+          send_notice(m.target, messages)
         end
 
         private
@@ -113,24 +111,23 @@ module RGRB
           result = "#{m.user.nick} -> #{result}"
 
           message = if secret
-            @generator.save_secret_roll(m.target.name, result)
-
-            case(m.target)
-            when(Cinch::Channel)
-              message = "チャンネル #{m.target.name} でのシークレットロール: #{result}"
-              m.user.send(message, true)
-              log_notice(m.user, message)
-
-              "#{m.user.nick}: シークレットロールを保存しました"
-            when(Cinch::User)
-              'シークレットロールを保存しました'
+              @generator.save_secret_roll(m.target.name, result)
+  
+              case(m.target)
+              when(Cinch::Channel)
+                message = "チャンネル #{m.target.name} でのシークレットロール: #{result}"
+                m.user.send(message, true)
+                log_notice(m.user, message)
+  
+                "#{m.user.nick}: シークレットロールを保存しました"
+              when(Cinch::User)
+                'シークレットロールを保存しました'
+              end
+            else
+              result
             end
-          else
-            result
-          end
 
-          m.target.send(message, true)
-          log_notice(m.target, message)
+          send_notice(m.target, message)
         end
       end
     end

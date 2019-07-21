@@ -1,19 +1,17 @@
 # vim: fileencoding=utf-8
 
-require 'cinch'
 require 'uri'
+require 'rgrb/irc_plugin'
 require 'rgrb/plugin/configurable_adapter'
 require 'rgrb/plugin/url_fetch_title/generator'
-require 'rgrb/plugin/util/logging'
 
 module RGRB
   module Plugin
     module UrlFetchTitle
       # UrlFetchTitle の IRC アダプター
       class IrcAdapter
-        include Cinch::Plugin
+        include IrcPlugin
         include ConfigurableAdapter
-        include Util::Logging
 
         set(plugin_name: 'UrlFetchTitle')
 
@@ -33,9 +31,7 @@ module RGRB
             log_incoming(m)
 
             urls.each do |url|
-              message = @generator.fetch_title(url)
-              m.target.send(message, true)
-              log_notice(m.target, message)
+              send_notice(m.target, @generator.fetch_title(url))
             end
           end
         end

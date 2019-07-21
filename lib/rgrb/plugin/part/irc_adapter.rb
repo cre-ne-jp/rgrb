@@ -1,8 +1,7 @@
 # vim: fileencoding=utf-8
 
-require 'cinch'
+require 'rgrb/irc_plugin'
 require 'rgrb/plugin/configurable_adapter'
-require 'rgrb/plugin/util/logging'
 
 module RGRB
   module Plugin
@@ -10,8 +9,7 @@ module RGRB
     module Part
       # Part の IRC アダプター
       class IrcAdapter
-        include Cinch::Plugin
-        include Util::Logging
+        include IrcPlugin
         include ConfigurableAdapter
 
         set(plugin_name: 'Part')
@@ -33,12 +31,11 @@ module RGRB
         # @param [String] nick 指定されたニックネーム
         # @return [void]
         def part(m, nick)
-          if !nick || nick.downcase == bot.nick.downcase
-            log_incoming(m)
+          log_incoming(m)
 
+          if !nick || nick.downcase == bot.nick.downcase
             if @part_lock.include?(m.channel)
-              m.target.send(@locked_message, true)
-              log_notice(m.target, @locked_message)
+              send_notice(m.target, @locked_message)
             else
               Channel(m.channel).part(@part_message)
               log_part(m.channel, @part_message)

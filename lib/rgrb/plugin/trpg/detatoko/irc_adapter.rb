@@ -1,7 +1,6 @@
 # vim: fileencoding=utf-8
 
-require 'cinch'
-require 'rgrb/plugin/util/notice_multi_lines'
+require 'rgrb/irc_plugin'
 require 'rgrb/plugin/trpg/detatoko/generator'
 require 'rgrb/plugin/trpg/detatoko/constants'
 
@@ -11,8 +10,7 @@ module RGRB
       module Detatoko
         # Detatoko の IRC アダプター
         class IrcAdapter
-          include Cinch::Plugin
-          include Util::NoticeMultiLines
+          include IrcPlugin
 
           set(plugin_name: 'Trpg::Detatoko')
           self.prefix = '.d'
@@ -70,9 +68,11 @@ module RGRB
           # @return [void]
           def skill_decision(m, skill_rank, calc = '+', solid = 0, flag = 0)
             log_incoming(m)
-            messages = @generator
-              .skill_decision(skill_rank.to_i, calc, solid.to_i, flag.to_i)
-            notice_multi_messages(messages, m.target, "#{@header}[#{m.user.nick}]: ")
+            send_notice(
+              m.target,
+              @generator.skill_decision(skill_rank.to_i, calc, solid.to_i, flag.to_i),
+              "#{@header}[#{m.user.nick}]: "
+            )
           end
 
           # skill_decision のフラグ先行コマンド用ラッパー
@@ -94,8 +94,11 @@ module RGRB
           # @return [void]
           def skill_decision_ja(m, skill_rank_ja)
             log_incoming(m)
-            messages = @generator.skill_decision_ja(skill_rank_ja)
-            notice_multi_messages(messages, m.target, "#{@header}[#{m.user.nick}]: ")
+            send_notice(
+              m.target,
+              @generator.skill_decision_ja(skill_rank_ja),
+              "#{@header}[#{m.user.nick}]: "
+            )
           end
 
           # 烙印(p.63)を得る
@@ -105,9 +108,11 @@ module RGRB
           def stigma(m, tcode)
             log_incoming(m)
             tcode = type_tr(tcode)
-            header = "#{@header}[#{m.user.nick}]<#{type_conv(tcode)}力烙印>: "
-            message = @generator.stigma(tcode)
-            notice_multi_lines([message], m.target, header)
+            send_notice(
+              m.target,
+              @generator.stigma(tcode),
+              "#{@header}[#{m.user.nick}]<#{type_conv(tcode)}力烙印>: "
+            )
           end
 
           # バッドエンド表(p.65)を振る
@@ -117,9 +122,11 @@ module RGRB
           def badend(m, tcode)
             log_incoming(m)
             tcode = type_tr(tcode)
-            header = "#{@header}[#{m.user.nick}]<#{type_conv(tcode)}力バッドエンド>: "
-            message = @generator.badend(tcode)
-            notice_multi_lines([message], m.target, header)
+            send_notice(
+              m.target,
+              @generator.badend(tcode),
+              "#{@header}[#{m.user.nick}]<#{type_conv(tcode)}力バッドエンド>: "
+            )
           end
 
           # スタンス表から引く
@@ -128,9 +135,11 @@ module RGRB
           # @return [void]
           def stance(m, uses)
             log_incoming(m)
-            header = "#{@header}[#{m.user.nick}]<スタンス表>: "
-            message = @generator.stance(uses)
-            notice_multi_lines([message], m.target, header)
+            send_notice(
+              m.target,
+              @generator.stance(uses),
+              "#{@header}[#{m.user.nick}]<スタンス表>: "
+            )
           end
 
           # ラスボス立場表を引く
@@ -140,14 +149,16 @@ module RGRB
           def ground(m, type)
             log_incoming(m)
             insert, type = case type
-            when 'lb', ''
-              ['', :normal]
-            when 'd', '悪への'
-              ['悪への', :dark]
-            end
-            header = "#{@header}[#{m.user.nick}]<#{insert}ラスボス立場>: "
-            message = @generator.ground(type)
-            notice_multi_lines([message], m.target, header)
+              when 'lb', ''
+                ['', :normal]
+              when 'd', '悪への'
+                ['悪への', :dark]
+              end
+            send_notice(
+              m.target,
+              @generator.ground(type),
+              "#{@header}[#{m.user.nick}]<#{insert}ラスボス立場>: "
+            )
           end
 
           # クラスを1つ選ぶ
@@ -155,9 +166,11 @@ module RGRB
           # @return [void]
           def character_class(m)
             log_incoming(m)
-            header = "#{@header}[#{m.user.nick}]<クラス>: "
-            message = @generator.character_class
-            notice_multi_lines([message], m.target, header)
+            send_notice(
+              m.target,
+              @generator.character_class,
+              "#{@header}[#{m.user.nick}]<クラス>: "
+            )
           end
 
           # ポジションを1つ選ぶ
@@ -174,9 +187,11 @@ module RGRB
               when 'd', '悪'
                 ['悪の', :dark]
               end
-            header = "#{@header}[#{m.user.nick}]<#{insert}ポジション>: "
-            message = @generator.position(type)
-            notice_multi_lines([message], m.target, header)
+            send_notice(
+              m.target,
+              @generator.position(type),
+              "#{@header}[#{m.user.nick}]<#{insert}ポジション>: "
+            )
           end
 
           # 【好きなもの・趣味】／【苦手なもの・弱点】表を引く
@@ -184,9 +199,11 @@ module RGRB
           # @return [void]
           def like_things(m)
             log_incoming(m)
-            header = "#{@header}[#{m.user.nick}]<趣味・弱点>: "
-            message = @generator.like_things
-            notice_multi_lines([message], m.target, header)
+            send_notice(
+              m.target,
+              @generator.like_things,
+              "#{@header}[#{m.user.nick}]<趣味・弱点>: "
+            )
           end
 
           # ラスボスチャート・クエストチャートを引く
@@ -197,15 +214,16 @@ module RGRB
             log_incoming(m)
 
             insert, type = case type
-            when 'lb', 'ラスボス'
-              ['ラスボス', :lastboss]
-            when 'q', 'クエスト'
-              ['クエスト', :quest]
-            end
-
-            header = "#{@header}[#{m.user.nick}]<#{insert}チャート>: "
-            message = @generator.chart(type)
-            notice_multi_lines([message], m.target, header)
+              when 'lb', 'ラスボス'
+                ['ラスボス', :lastboss]
+              when 'q', 'クエスト'
+                ['クエスト', :quest]
+              end
+            send_notice(
+              m.target,
+              @generator.chart(type),
+              "#{@header}[#{m.user.nick}]<#{insert}チャート>: "
+            )
           end
 
           # 1行のキャラクターシートを生成する
@@ -225,7 +243,7 @@ module RGRB
             end
             messages.concat(result[:lcs])
 
-            notice_multi_lines(messages, m.target)
+            send_notice(m.target, messages)
           end
 
           private

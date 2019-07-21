@@ -1,9 +1,7 @@
 # vim: fileencoding=utf-8
 
-require 'cinch'
-
+require 'rgrb/irc_plugin'
 require 'rgrb/plugin/configurable_adapter'
-require 'rgrb/plugin/util/notice_multi_lines'
 require 'rgrb/plugin/random_generator/constants'
 require 'rgrb/plugin/random_generator/generator'
 require 'rgrb/plugin/random_generator/table_not_found'
@@ -13,12 +11,9 @@ module RGRB
   module Plugin
     module RandomGenerator
       # RandomGenerator の IRC アダプター
-      #
-      # TODO：RGRB::Plugin::Util::Logging を利用したログ記録
       class IrcAdapter
-        include Cinch::Plugin
+        include IrcPlugin
         include ConfigurableAdapter
-        include Util::NoticeMultiLines
 
         set(plugin_name: 'RandomGenerator')
         match(/rg#{SPACES_RE}#{TABLES_RE}/o, method: :rg)
@@ -42,24 +37,19 @@ module RGRB
         def rg(m, tables_str)
           log_incoming(m)
 
-          header = "rg[#{m.user.nick}]"
-
-          tables_str.split(' ').each do |table|
-            lines =
-              begin
-                "#{@generator.rg(table)} ですわ☆".
-                  split("\n").
-                  map { |line| "<#{table}>: #{line}" }
-              rescue TableNotFound => not_found_error
-                [": #{table_not_found_message(not_found_error)}"]
-              rescue PrivateTable => private_table_error
-                [": #{private_table_message(private_table_error)}"]
-              end
-
-            notice_multi_lines(lines, m.target, header)
-
-            sleep(1)
+          messages = tables_str.split(' ').map do |table|
+            begin
+              "#{@generator.rg(table)} ですわ☆".
+                split($/).
+                map { |line| "<#{table}>: #{line}" }
+            rescue TableNotFound => not_found_error
+              ": #{table_not_found_message(not_found_error)}"
+            rescue PrivateTable => private_table_error
+              ": #{private_table_message(private_table_error)}"
+            end
           end
+
+          send_notice(m.target, messages.flatten, "rg[#{m.user.nick}]")
         end
 
         # NOTICE で表の説明を返す
@@ -69,22 +59,15 @@ module RGRB
         def desc(m, tables_str)
           log_incoming(m)
 
-          header = "rg-desc"
-
-          tables_str.split(' ').each do |table|
-            body =
-              begin
-                "<#{table}>: #{@generator.desc(table)} "
-              rescue TableNotFound => not_found_error
-                ": #{table_not_found_message(not_found_error)}"
-              end
-            message = "#{header}#{body}"
-
-            m.target.send(message, true)
-            log_notice(m.target, message)
-
-            sleep(1)
+          messages = tables_str.split(' ').map do |table|
+            begin
+              "<#{table}>: #{@generator.desc(table)} "
+            rescue TableNotFound => not_found_error
+              ": #{table_not_found_message(not_found_error)}"
+            end
           end
+
+          send_notice(m.target, messages, 'rg-desc')
         end
 
         # NOTICE で表の詳細な情報を返す
@@ -94,41 +77,27 @@ module RGRB
         def info(m, tables_str)
           log_incoming(m)
 
-          header = "rg-info"
-
-          tables_str.split(' ').each do |table|
-            body =
-              begin
-                "<#{table}>: #{@generator.info(table)} "
-              rescue TableNotFound => not_found_error
-                ": #{table_not_found_message(not_found_error)}"
-              end
-            message = "#{header}#{body}"
-
-            m.target.send(message, true)
-            log_notice(m.target, message)
-
-            sleep(1)
+          messages = tables_str.split(' ').map do |table|
+            begin
+              "<#{table}>: #{@generator.info(table)} "
+            rescue TableNotFound => not_found_error
+              ": #{table_not_found_message(not_found_error)}"
+            end
           end
+
+          send_notice(m.target, messages, 'rg-info')
         end
 
         # 表の名前を一覧する
         # @param [Cinch::Message] m メッセージ
         # @return [String]
         def list(m)
-          log(m.raw, :incoming, :info)
-
-          if(@list_reply == '')
-            message = "rg-list: #{@generator.list.join(', ')}"
-          else
-            message = "rg-list: #{@list_reply}"
-          end
-
-          m.target.send(message, true)
-          log_notice(m.target, message)
-
-          sleep(1)
+          log_incoming(m)
+          message = @list_reply.empty? ? @generator.list.join(', ') : @list_reply
+          send_notice(m.target, message, 'rg-list: ')
         end
+
+        private
 
         # 表が見つからなかったときのメッセージを返す
         # @param [TableNotFound] error エラー
@@ -136,7 +105,6 @@ module RGRB
         def table_not_found_message(error)
           "「#{error.table}」なんて表は見つからないのですわっ。"
         end
-        private :table_not_found_message
 
         # 非公開の表を参照したときのメッセージを返す
         # @param [PrivateTable] error エラー
@@ -144,8 +112,6 @@ module RGRB
         def private_table_message(error)
           "表「#{error.table}」からは引けませんわっ。"
         end
-        private :private_table_message
-
       end
     end
   end

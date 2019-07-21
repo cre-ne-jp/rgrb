@@ -1,8 +1,7 @@
 # vim: fileencoding=utf-8
 
-require 'cinch'
+require 'rgrb/irc_plugin'
 require 'rgrb/plugin/configurable_adapter'
-require 'rgrb/plugin/util/logging'
 
 module RGRB
   module Plugin
@@ -10,9 +9,8 @@ module RGRB
     module Jihou
       # Jihou の IRC アダプター
       class IrcAdapter
-        include Cinch::Plugin
+        include IrcPlugin
         include ConfigurableAdapter
-        include Util::Logging
 
         set(plugin_name: 'Jihou')
         listen_to(:connect, method: :connected)
@@ -65,8 +63,7 @@ module RGRB
               }
             end
 
-            channel.safe_notice(message)
-            log_notice(channel, message)
+            send_notice(channel, message, '', true)
           end
         end
       end

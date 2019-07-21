@@ -9,10 +9,14 @@ gem 'guess_html_encoding'
 gem 'charlock_holmes', '~> 0.7'
 gem 'nokogiri', '~> 1.6'
 gem 'd1lcs'
+gem 'json'
 gem 'mail', '~> 2.7'
 
 group :irc do
   gem 'cinch'
+
+  # DiceRollプラグインで使用する
+  gem 'gdbm'
 end
 
 group :discord do

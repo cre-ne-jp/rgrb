@@ -275,14 +275,21 @@ module RGRB
     # @param [Discordrb::User] author 出力するイベント
     # @return [String]
     def format_user(author)
-      user = "#{author.username}[#{author.id}@#{author.server.name}(#{author.server.region_id})]"
+      "#{author.username}[#{author.id}]@#{format_server(author.server)}"
     end
 
     # チャンネル情報を整形する
     # @param [Discordrb::Channel] channel 出力するイベント
     # @return [String]
     def format_channel(channel)
-      "##{channel.name}[#{channel.id}@#{channel.server.name}(#{channel.server.region_id})]"
+      "##{channel.name}[#{channel.id}]@#{format_server(channel.server)}"
+    end
+
+    # サーバー情報を整形する
+    # @param [Discordrb::Server] server 出力するイベント
+    # @return [String]
+    def format_server(server)
+      "#{server.name}[#{server.id}(#{server.region_id})]"
     end
   end
 end

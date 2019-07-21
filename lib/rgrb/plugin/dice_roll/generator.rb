@@ -21,11 +21,15 @@ module RGRB
           super
           @random = Random.new
           @mutex_secret_dice = Mutex.new
+        end
+
+        # プラグインの設定を行う
+        # @return [self]
+        def configure(config_data)
+          super
 
           @db_dir = "#{@data_path}/#{@config_id}"
-          # ToDo: ボット起動時のインスタンス化されるタイミングでは、
-          # @data_path, @config_id が初期化されていない(nil になっている)
-          #prepare_db_dir
+          prepare_db_dir
 
           @db_secret_dice = "#{@db_dir}/secret_dice"
         end
@@ -69,7 +73,6 @@ module RGRB
         # @param [String] message ダイスロール実行結果
         # @return [void]
         def save_secret_roll(target, message)
-          @db_secret_dice = "#{@data_path}/#{@config_id}/secret_dice"
           @mutex_secret_dice.synchronize do
             GDBM.open(@db_secret_dice) do |db|
               store = db.has_key?(target) ? JSON.parse(db[target]) : []
@@ -82,8 +85,6 @@ module RGRB
         # @param [String] target
         # @return [Array, nil]
         def open_dice(target)
-          @db_secret_dice = "#{@data_path}/#{@config_id}/secret_dice"
-
           @mutex_secret_dice.synchronize do
             GDBM.open(@db_secret_dice) do |db|
               if db.has_key?(target)
@@ -112,11 +113,14 @@ module RGRB
         end
 
         # 日本語ダイスコマンドを数字に変換する
+        # Trpg::Detatoko プラグインにて呼び出しているので public メソッド
         # @param [String] japanese 日本語(ア段)
         # @return [String]
         def ja_to_i(japanese)
           japanese.tr('あかさたなはまやらわ', '1234567890').to_i
         end
+
+        private
 
         # データベースディレクトリを準備する
         # @return [void]

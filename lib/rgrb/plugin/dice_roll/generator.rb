@@ -5,6 +5,7 @@ require 'rgrb/plugin/dice_roll/dice_roll_result'
 
 require 'gdbm'
 require 'json'
+require 'fileutils'
 
 module RGRB
   module Plugin
@@ -132,7 +133,7 @@ module RGRB
         def prepare_db_dir
           unless FileTest.exist?(@db_dir)
             # 存在しなければ、ディレクトリを作成する
-            Dir.mkdir(@db_dir)
+            FileUtils.mkdir_p(@db_dir)
           else
             unless FileTest.directory?(@db_dir)
               # ディレクトリ以外のファイルが存在したらエラー

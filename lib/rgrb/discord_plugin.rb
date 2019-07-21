@@ -1,5 +1,7 @@
 # vim: fileencoding=utf-8
 
+require 'rgrb/plugin/configurable_adapter'
+
 module RGRB
   module DiscordPlugin
     module ClassMethods
@@ -139,6 +141,12 @@ module RGRB
 
     attr_reader :config
 
+    # 共通で使用する他のモジュールを読み込む
+    def self.included(by)
+      by.extend(ClassMethods)
+      by.include(Plugin::ConfigurableAdapter)
+    end
+
     # コンストラクタ
     # @param [Discordrb::CommandBot] bot Discordrb のボットインスタンス
     # @param [Hash] options プラグイン設定
@@ -152,10 +160,6 @@ module RGRB
       @mutex = Mutex.new
 
       __register_matchers
-    end
-
-    def self.included(by)
-      by.extend(ClassMethods)
     end
 
     private

@@ -1,7 +1,6 @@
 # vim: fileencoding=utf-8
 
 require 'rgrb/discord_plugin'
-require 'rgrb/plugin/configurable_adapter'
 require 'rgrb/plugin/keyword/generator'
 
 module RGRB
@@ -9,8 +8,7 @@ module RGRB
     module Keyword
       # Keyword の Discord アダプター
       class DiscordAdapter
-        include RGRB::DiscordPlugin
-        include ConfigurableAdapter
+        include DiscordPlugin
 
         set(plugin_name: 'Keyword')
         match(/(k|a)[ 　]+(.+)/, method: :search)

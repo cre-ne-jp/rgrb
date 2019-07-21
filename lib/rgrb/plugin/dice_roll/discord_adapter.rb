@@ -1,7 +1,6 @@
 # vim: fileencoding=utf-8
 
 require 'rgrb/discord_plugin'
-require 'rgrb/plugin/configurable_adapter'
 require 'rgrb/plugin/dice_roll/constants'
 require 'rgrb/plugin/dice_roll/generator'
 
@@ -10,8 +9,7 @@ module RGRB
     module DiceRoll
       # DiceRoll の Discord アダプター
       class DiscordAdapter
-        include RGRB::DiscordPlugin
-        include ConfigurableAdapter
+        include DiscordPlugin
 
         set(plugin_name: 'DiceRoll')
         self.prefix = /\.roll[\s　]+/

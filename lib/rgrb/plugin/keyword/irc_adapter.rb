@@ -1,7 +1,6 @@
 # vim: fileencoding=utf-8
 
 require 'rgrb/irc_plugin'
-require 'rgrb/plugin/configurable_adapter'
 require 'rgrb/plugin/keyword/generator'
 
 module RGRB
@@ -10,7 +9,6 @@ module RGRB
       # Keyword の IRC アダプター
       class IrcAdapter
         include IrcPlugin
-        include ConfigurableAdapter
 
         set(plugin_name: 'Keyword')
         match(/(k|a)[ 　]+(.+)/, method: :search)

@@ -1,12 +1,14 @@
 # vim: fileencoding=utf-8
 
 require 'cinch'
+require 'rgrb/plugin/configurable_adapter'
 
 module RGRB
   module IrcPlugin
     # 共通で使用する他のモジュールを読み込む
     def self.included(by)
       by.include(Cinch::Plugin)
+      by.include(Plugin::ConfigurableAdapter)
     end
 
     # メッセージを NOTICE し、ログに書き出す

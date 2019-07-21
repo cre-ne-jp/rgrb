@@ -1,7 +1,6 @@
 # vim: fileencoding=utf-8
 
 require 'rgrb/irc_plugin'
-require 'rgrb/plugin/configurable_adapter'
 
 module RGRB
   module Plugin
@@ -10,7 +9,6 @@ module RGRB
       # KickBack の IRC アダプター
       class IrcAdapter
         include IrcPlugin
-        include ConfigurableAdapter
 
         set(plugin_name: 'KickBack')
         listen_to(:kick, method: :kick)

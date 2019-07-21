@@ -1,7 +1,6 @@
 # vim: fileencoding=utf-8
 
 require 'rgrb/irc_plugin'
-require 'rgrb/plugin/configurable_adapter'
 require 'rgrb/plugin/random_generator/constants'
 require 'rgrb/plugin/random_generator/generator'
 require 'rgrb/plugin/random_generator/table_not_found'
@@ -13,7 +12,6 @@ module RGRB
       # RandomGenerator の IRC アダプター
       class IrcAdapter
         include IrcPlugin
-        include ConfigurableAdapter
 
         set(plugin_name: 'RandomGenerator')
         match(/rg#{SPACES_RE}#{TABLES_RE}/o, method: :rg)

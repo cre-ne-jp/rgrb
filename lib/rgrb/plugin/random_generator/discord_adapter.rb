@@ -2,7 +2,6 @@
 
 require 'rgrb/discord_plugin'
 
-require 'rgrb/plugin/configurable_adapter'
 require 'rgrb/plugin/random_generator/constants'
 require 'rgrb/plugin/random_generator/generator'
 require 'rgrb/plugin/random_generator/table_not_found'
@@ -13,8 +12,7 @@ module RGRB
     module RandomGenerator
       # RandomGenerator の Discord アダプター
       class DiscordAdapter
-        include RGRB::DiscordPlugin
-        include ConfigurableAdapter
+        include DiscordPlugin
 
         set(plugin_name: 'RandomGenerator')
         match(/rg#{SPACES_RE}#{TABLES_RE}/o, method: :rg)

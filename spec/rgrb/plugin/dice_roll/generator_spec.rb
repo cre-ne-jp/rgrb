@@ -8,6 +8,18 @@ require 'fileutils'
 describe RGRB::Plugin::DiceRoll::Generator do
   let(:generator) { described_class.new }
 
+  let(:data_path_on_test) { File.expand_path('./data', __dir__) }
+
+  let(:generator_set_data_path) {
+    g = generator
+
+    g.config_id = 'test'
+    g.data_path = data_path_on_test
+    g.configure({ 'JaDice' => true })
+
+    g
+  }
+
   describe '#basic_dice' do
     # ダイス数が多すぎるかどうか
     # [dice_roll] ダイスロールを表す文字列。'2d6' 等
@@ -131,18 +143,6 @@ describe RGRB::Plugin::DiceRoll::Generator do
   end
 
   describe 'データベースディレクトリの準備' do
-    let(:data_path_on_test) { File.expand_path('./data', __dir__) }
-
-    let(:generator_set_data_path) {
-      g = generator
-
-      g.config_id = 'test'
-      g.data_path = data_path_on_test
-      g.configure({ 'JaDice' => true })
-
-      g
-    }
-
     before do
       clean_data
     end
@@ -166,12 +166,41 @@ describe RGRB::Plugin::DiceRoll::Generator do
 
       expect { generator_set_data_path }.to raise_error(Errno::ENOTDIR)
     end
+  end
 
-    private
+  describe 'シークレットロール' do
+    let(:channel) { '#test' }
 
-    # テスト用のデータディレクトリ内のファイルを削除する
-    def clean_data
-      FileUtils.rm_rf(Dir.glob("#{data_path_on_test}/*"))
+    before do
+      clean_data
     end
+
+    after do
+      clean_data
+    end
+
+    it '結果を保存できる' do
+      dice_roll_results = [
+        'foo -> 2d6 = [5,3] = 8',
+        'bar -> 2d6 = [3,2] = 5'
+      ]
+
+      dice_roll_results.each do |result|
+        generator_set_data_path.save_secret_roll(channel, result)
+      end
+
+      expect(generator_set_data_path.open_dice(channel)).to eq(dice_roll_results)
+    end
+
+    describe '#open_dice' do
+      it 'シークレットロール未実施時に nil を返す' do
+        expect(generator_set_data_path.open_dice(channel)).to be_nil
+      end
+    end
+  end
+
+  # テスト用のデータディレクトリ内のファイルを削除する
+  def clean_data
+    FileUtils.rm_rf(Dir.glob("#{data_path_on_test}/*"))
   end
 end

@@ -32,6 +32,9 @@ module RGRB
         end
 
         # 基本的なダイスロールの結果を返す
+        # @param [Cinch::Message] m
+        # @param [String] n_dice ダイスの個数
+        # @param [String] max ダイスの面数
         # @return [void]
         def basic_dice(m, n_dice, max)
           log_incoming(m)
@@ -40,6 +43,9 @@ module RGRB
 
         # 基本的なダイスロールの結果を返す
         # シークレットロール
+        # @param [Cinch::Message] m
+        # @param [String] n_dice ダイスの個数
+        # @param [String] max ダイスの面数
         # @return [void]
         def basic_dice_secret(m, n_dice, max)
           log_incoming(m)
@@ -47,6 +53,9 @@ module RGRB
         end
 
         # 日本語版の basic_dice
+        # @param [Cinch::Message] m
+        # @param [String] n_dice ダイスの個数
+        # @param [String] max ダイスの面数
         # @return [void]
         def basic_dice_ja(m, n_dice, max)
           log_incoming(m)
@@ -56,6 +65,8 @@ module RGRB
         end
 
         # d66 など、出目をそのままつなげるダイスロールの結果を返す
+        # @param [Cinch::Message] m
+        # @param [String] rolls ダイスの面数と個数
         # @return [void]
         def dxx_dice(m, rolls)
           log_incoming(m)
@@ -64,6 +75,8 @@ module RGRB
 
         # d66 など、出目をそのままつなげるダイスロールの結果を返す
         # シークレットロール
+        # @param [Cinch::Message] m
+        # @param [String] rolls ダイスの面数と個数
         # @return [void]
         def dxx_dice_secret(m, rolls)
           log_incoming(m)
@@ -71,6 +84,8 @@ module RGRB
         end
 
         # 日本語版の dxx_dice
+        # @param [Cinch::Message] m
+        # @param [String] rolls ダイスの面数と個数
         # @return [void]
         def dxx_dice_ja(m, rolls)
           log_incoming(m)

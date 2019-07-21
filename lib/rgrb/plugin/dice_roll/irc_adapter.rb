@@ -115,14 +115,14 @@ module RGRB
           message = if secret
             @generator.save_secret_roll(m.target.name, result)
 
-            case(m.target.class.to_s)
-            when('Cinch::Channel')
+            case(m.target)
+            when(Cinch::Channel)
               message = "チャンネル #{m.target.name} でのシークレットロール: #{result}"
               m.user.send(message, true)
               log_notice(m.user, message)
 
               "#{m.user.nick}: シークレットロールを保存しました"
-            when('Cinch::User')
+            when(Cinch::User)
               'シークレットロールを保存しました'
             end
           else

@@ -165,6 +165,7 @@ DEPENDENCIES
   gdbm
   guess_html_encoding
   http (> 0.9)
+  json
   lumberjack (~> 1.0)
   mail (~> 2.7)
   nokogiri (~> 1.6)

@@ -3,6 +3,8 @@
 require_relative '../../../spec_helper'
 require 'rgrb/plugin/dice_roll/generator'
 
+require 'fileutils'
+
 describe RGRB::Plugin::DiceRoll::Generator do
   let(:generator) { described_class.new }
 
@@ -125,6 +127,51 @@ describe RGRB::Plugin::DiceRoll::Generator do
           expect( (1..second).include?(values[1]) ).to be(true)
         end
       end
+    end
+  end
+
+  describe 'データベースディレクトリの準備' do
+    let(:data_path_on_test) { File.expand_path('./data', __dir__) }
+
+    let(:generator_set_data_path) {
+      g = generator
+
+      g.config_id = 'test'
+      g.data_path = data_path_on_test
+      g.configure({ 'JaDice' => true })
+
+      g
+    }
+
+    before do
+      clean_data
+    end
+
+    after do
+      clean_data
+    end
+
+    it 'ディレクトリが存在しなければ作成する' do
+      expect(File.directory?("#{data_path_on_test}/test")).to be(false)
+
+      generator_set_data_path
+
+      expect(File.directory?("#{data_path_on_test}/test")).to be(true)
+    end
+
+    it 'ディレクトリ以外のファイルが存在したら例外を発生させる' do
+      expect(File.directory?("#{data_path_on_test}/test")).to be(false)
+
+      FileUtils.touch("#{data_path_on_test}/test")
+
+      expect { generator_set_data_path }.to raise_error(Errno::ENOTDIR)
+    end
+
+    private
+
+    # テスト用のデータディレクトリ内のファイルを削除する
+    def clean_data
+      FileUtils.rm_rf(Dir.glob("#{data_path_on_test}/*"))
     end
   end
 end

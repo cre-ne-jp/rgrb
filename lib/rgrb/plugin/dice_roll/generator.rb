@@ -15,10 +15,15 @@ module RGRB
       # DiceRoll の出力テキスト生成器
       class Generator
         include ConfigurableGenerator
+
+        # ダイス数が多すぎた場合のメッセージ
+        # @return [String]
         EXCESS_DICE_MESSAGE = "ダイスが机から落ちてしまいましたの☆"
 
+        # ジェネレータを初期化する
         def initialize
           super
+
           @random = Random.new
           @mutex_secret_dice = Mutex.new
         end
@@ -131,7 +136,7 @@ module RGRB
           else
             unless FileTest.directory?(@db_dir)
               # ディレクトリ以外のファイルが存在したらエラー
-              raise RuntimeError
+              raise Errno::ENOTDIR, @db_dir
             end
           end
         end

@@ -55,7 +55,7 @@ module RGRB
     end
 
     # 複数の送信先に NOTICE する
-    # 非推奨メソッド。send_notice に統合する。
+    # v1.0.5 より非推奨メソッド。send_notice に統合する。
     #
     # channels_to_send メソッドを定義すること。
     #
@@ -64,6 +64,7 @@ module RGRB
     # @return [void]
     def notice_on_each_channel(message, safe = false)
       send_notice(message, channels_to_send, '', safe)
+      log('IrcPlugin#notice_on_each_channel: deprecated', :warn)
     end
 
     # 入ってきたメッセージをログに残す

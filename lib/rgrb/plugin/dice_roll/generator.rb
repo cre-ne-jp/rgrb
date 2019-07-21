@@ -20,6 +20,7 @@ module RGRB
         def initialize
           super
           @random = Random.new
+          @mutex_secret_dice = Mutex.new
 
           @db_dir = "#{@data_path}/#{@config_id}"
           # ToDo: ボット起動時のインスタンス化されるタイミングでは、
@@ -69,10 +70,12 @@ module RGRB
         # @return [void]
         def save_secret_roll(target, message)
           @db_secret_dice = "#{@data_path}/#{@config_id}/secret_dice"
-          GDBM.open(@db_secret_dice) do |db|
-            store = db.has_key?(target) ? JSON.parse(db[target]) : []
-            store << message
-            db[target] = JSON.generate(store)
+          @mutex_secret_dice.synchronize do
+            GDBM.open(@db_secret_dice) do |db|
+              store = db.has_key?(target) ? JSON.parse(db[target]) : []
+              store << message
+              db[target] = JSON.generate(store)
+            end
           end
         end
 
@@ -81,9 +84,11 @@ module RGRB
         def open_dice(target)
           @db_secret_dice = "#{@data_path}/#{@config_id}/secret_dice"
 
-          GDBM.open(@db_secret_dice) do |db|
-            if db.has_key?(target)
-              JSON.parse(db.delete(target))
+          @mutex_secret_dice.synchronize do
+            GDBM.open(@db_secret_dice) do |db|
+              if db.has_key?(target)
+                JSON.parse(db.delete(target))
+              end
             end
           end
         end

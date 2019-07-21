@@ -33,8 +33,6 @@ module RGRB
           @jadice = config_data['JaDice'] == false ? false : true
 
           prepare_generator
-
-          @mutex = Mutex.new
         end
 
         # 基本的なダイスロールの結果を返す
@@ -89,9 +87,7 @@ module RGRB
         # @param [Cinch::Message] m
         # @return [void]
         def open_dice(m)
-          result = @mutex.synchronize do
-            @generator.open_dice(m.target.name)
-          end
+          result = @generator.open_dice(m.target.name)
           messages = if result.nil?
               ["#{m.target.name} にはシークレットロール結果がありません"]
             else
@@ -117,9 +113,7 @@ module RGRB
           result = "#{m.user.nick} -> #{result}"
 
           message = if secret
-            @mutex.synchronize do
-              @generator.save_secret_roll(m.target.name, result)
-            end
+            @generator.save_secret_roll(m.target.name, result)
 
             case(m.target.class.to_s)
             when('Cinch::Channel')

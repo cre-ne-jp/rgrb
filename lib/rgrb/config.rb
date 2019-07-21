@@ -5,6 +5,9 @@ require 'yaml'
 module RGRB
   # RGRB の設定を表すクラス
   class Config
+    # 設定 ID
+    # @return [String]
+    attr_reader :id
     # IRC ボットの設定のハッシュ
     # @return [Hash]
     attr_reader :irc_bot
@@ -45,14 +48,16 @@ module RGRB
           config_data.merge!(child_config_data)
         end
 
-        new(config_data)
+        new(config_id, config_data)
       end
     end
 
     # 新しい RGRB::Config インスタンスを返す
+    # @param [String] id 設定 ID
     # @param [Hash] config_data 設定データのハッシュ
     # @return [RGRB::Config]
-    def initialize(config_data)
+    def initialize(id, config_data)
+      @id = id
       @irc_bot = config_data['IRCBot']
       @discord_bot = config_data['DiscordBot']
       @plugins = config_data['Plugins'] || []

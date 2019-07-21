@@ -36,7 +36,7 @@ describe RGRB::Config do
   end
 
   let(:config) do
-    described_class.new(config_data)
+    described_class.new('test', config_data)
   end
 
   describe '#irc_bot' do

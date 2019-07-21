@@ -12,6 +12,7 @@ module RGRB
         generator_class = Object.const_get(class_name_tree.join('::'))
         @generator = generator_class.new
 
+        @generator.config_id = config[:config_id]
         @generator.root_path = config[:root_path]
 
         # プラグインをロガーとして使えるよう、設定に含める

@@ -98,6 +98,7 @@ module RGRB
         # @param [Cinch::Message] m
         # @return [void]
         def open_dice(m)
+          log_incoming(m)
           result = @generator.open_dice(m.target.name)
           messages = if result.nil?
               "#{m.target.name} にはシークレットロール結果がありません"
@@ -125,13 +126,9 @@ module RGRB
 
           message = if secret
               @generator.save_secret_roll(m.target.name, result)
-  
               case(m.target)
               when(Cinch::Channel)
-                message = "チャンネル #{m.target.name} でのシークレットロール: #{result}"
-                m.user.send(message, true)
-                log_notice(m.user, message)
-  
+                send_notice(m.user, "チャンネル #{m.target.name} でのシークレットロール: #{result}")
                 "#{m.user.nick}: シークレットロールを保存しました"
               when(Cinch::User)
                 'シークレットロールを保存しました'

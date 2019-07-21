@@ -5,6 +5,7 @@ require 'rgrb/plugin/dice_roll/dice_roll_result'
 
 require 'gdbm'
 require 'json'
+require 'fileutils'
 
 module RGRB
   module Plugin
@@ -15,10 +16,15 @@ module RGRB
       # DiceRoll の出力テキスト生成器
       class Generator
         include ConfigurableGenerator
+
+        # ダイス数が多すぎた場合のメッセージ
+        # @return [String]
         EXCESS_DICE_MESSAGE = "ダイスが机から落ちてしまいましたの☆"
 
+        # ジェネレータを初期化する
         def initialize
           super
+
           @random = Random.new
           @mutex_secret_dice = Mutex.new
         end
@@ -127,11 +133,11 @@ module RGRB
         def prepare_db_dir
           unless FileTest.exist?(@db_dir)
             # 存在しなければ、ディレクトリを作成する
-            Dir.mkdir(@db_dir)
+            FileUtils.mkdir_p(@db_dir)
           else
             unless FileTest.directory?(@db_dir)
               # ディレクトリ以外のファイルが存在したらエラー
-              raise RuntimeError
+              raise Errno::ENOTDIR, @db_dir
             end
           end
         end

@@ -13,6 +13,9 @@ gem 'mail', '~> 2.7'
 
 group :irc do
   gem 'cinch'
+
+  # DiceRollプラグインで使用する
+  gem 'gdbm'
 end
 
 group :discord do

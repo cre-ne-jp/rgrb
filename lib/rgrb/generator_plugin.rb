@@ -25,6 +25,7 @@ module RGRB
     def initialize
       class_name_tree = self.class.name.split('::')
       @plugin_name_underscore = class_name_tree[-2].underscore
+      @logger = Lumberjack::Logger.new($stdout, progname: self.class.to_s)
     end
 
     # RGRB のルートパスを設定する

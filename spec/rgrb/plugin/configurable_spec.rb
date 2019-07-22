@@ -2,14 +2,14 @@
 
 require_relative '../../spec_helper'
 
-require 'rgrb/plugin/configurable_generator'
+require 'rgrb/generator_plugin'
 require 'rgrb/plugin/configurable_adapter'
 
 module RGRB
   module Plugin
     module TestPlugin
       class Generator
-        include ConfigurableGenerator
+        include GeneratorPlugin
 
         attr_reader :logger
         attr_reader :name
@@ -40,7 +40,7 @@ module RGRB
   end
 end
 
-describe RGRB::Plugin::ConfigurableGenerator do
+describe RGRB::GeneratorPlugin do
   let(:generator) { RGRB::Plugin::TestPlugin::Generator.new }
 
   describe '#root_path=' do

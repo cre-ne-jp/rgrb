@@ -180,6 +180,8 @@ module RGRB
           mail
         end
 
+        private
+
         # Hashのキーをシンボルに変えたものを返す
         # @param [Hash] hash 変換元のハッシュテーブル
         # @return [Hash]
@@ -188,7 +190,6 @@ module RGRB
             map { |key, value| [key.to_sym, value] }.
             to_h
         end
-        private :symbolize_keys
       end
     end
   end

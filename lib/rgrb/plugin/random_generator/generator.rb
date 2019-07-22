@@ -94,6 +94,8 @@ module RGRB
           end.keys.sort
         end
 
+        private
+
         # 表から値を取得して返す
         # @param [String] table_name 表名
         # @param [Boolean] root 最初に参照する表の場合 true にする
@@ -105,7 +107,6 @@ module RGRB
 
           @table[table_name].sample(random: @random)
         end
-        private :get_value_from
 
         # 変数を表から取得した値に置換して返す
         # @param [String] str 置換対象の文字列
@@ -143,7 +144,6 @@ module RGRB
 
           str
         end
-        private :replace_var_with_value
 
         # 表のデータを読み込む
         # @param [String] glob_pattern データファイル名のパターン
@@ -164,7 +164,6 @@ module RGRB
             end
           end
         end
-        private :load_data
 
         # 表が存在することを確かめる
         # @return [String] table_name 表名
@@ -175,7 +174,6 @@ module RGRB
 
           true
         end
-        private :check_existence_of
 
         # 表が公開されていることを確かめる
         # @return [String] table_name 表名
@@ -186,7 +184,6 @@ module RGRB
 
           true
         end
-        private :check_permission_of
 
         # 日付の日本語表記を返す
         # @param [Date, DateTime] date 日付
@@ -194,7 +191,6 @@ module RGRB
         def japanese_date(date)
           "#{date.year}年#{date.month}月#{date.day}日"
         end
-        private :japanese_date
       end
     end
   end

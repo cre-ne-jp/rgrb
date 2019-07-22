@@ -41,10 +41,10 @@ module RGRB
           def initialize(*)
             super
 
-            prepare_generators
-
             config_data = config[:plugin]
             @test_channel = config_data['TestChannel'] || '#irc_test'
+
+            prepare_generators
           end
 
           # ネットワークにあるサーバが参加したときの処理

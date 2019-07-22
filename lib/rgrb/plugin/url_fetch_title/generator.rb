@@ -9,8 +9,7 @@ require 'guess_html_encoding'
 require 'charlock_holmes'
 require 'nokogiri'
 require 'rgrb/version'
-require 'rgrb/plugin/configurable_generator'
-require 'rgrb/plugin/use_logger'
+require 'rgrb/generator_plugin'
 
 module RGRB
   module Plugin
@@ -29,14 +28,7 @@ module RGRB
       # @see https://bitbucket.org/mapi/tiarra/src/8c21fe9d660e4f4c85c408c95e3ab379d20c22aa/module/Auto/FetchTitle.pm?at=default&fileviewer=file-view-default Tiarra Auto::FetchTitle
       # @see https://github.com/sparklemotion/mechanize/blob/master/lib/mechanize/page.rb Mechanize::Page
       class Generator
-        include ConfigurableGenerator
-        include UseLogger
-
-        def initialize
-          super
-
-          prepare_default_logger
-        end
+        include GeneratorPlugin
 
         # 設定データを解釈してプラグインの設定を行う
         # @param [Hash] config_data プラグインの設定データ
@@ -60,8 +52,6 @@ module RGRB
           user_agent_format = config_data['UserAgent'] ||
             "RGRB/%s (Creator's Network IRC bot)"
           @user_agent = user_agent_format % RGRB::VERSION
-
-          set_logger(config_data)
 
           self
         end

@@ -1,7 +1,6 @@
 # vim: fileencoding=utf-8
 
-require 'rgrb/plugin/configurable_generator'
-require 'rgrb/plugin/use_logger'
+require 'rgrb/generator_plugin'
 require 'rgrb/plugin/random_generator/constants'
 require 'rgrb/plugin/random_generator/table'
 require 'rgrb/plugin/random_generator/table_not_found'
@@ -13,8 +12,7 @@ module RGRB
     module RandomGenerator
       # RandomGenerator の出力テキスト生成器
       class Generator
-        include ConfigurableGenerator
-        include UseLogger
+        include GeneratorPlugin
 
         # 循環参照と見做される同一表参照回数の閾値
         CIRCULAR_REFERENCE_THRESHOLD = 10
@@ -23,7 +21,6 @@ module RGRB
           super
 
           @random = Random.new
-          prepare_default_logger
         end
 
         # プラグインの設定を行う
@@ -35,7 +32,6 @@ module RGRB
           super
 
           load_data("#{@data_path}/**/*.yaml")
-          set_logger(config_data)
 
           self
         end

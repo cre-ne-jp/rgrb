@@ -14,6 +14,7 @@ module RGRB
 
         @generator.config_id = config[:config_id]
         @generator.root_path = config[:root_path]
+        @generator.logger = config[:logger]
 
         # プラグインをロガーとして使えるよう、設定に含める
         config_data = config[:plugin].merge({ logger: self })

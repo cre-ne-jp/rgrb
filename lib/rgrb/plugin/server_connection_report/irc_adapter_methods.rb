@@ -20,9 +20,7 @@ module RGRB
         # 生成器を準備する
         # @return [self]
         def prepare_generators
-          # プラグインをロガーとして使えるよう、設定に含める
-          config_data = config[:plugin].merge({ logger: self })
-
+          config_data = config[:plugin]
           @channels_to_send = config_data['ChannelsToSend'] || []
 
           @generator = Generator.new
@@ -31,6 +29,7 @@ module RGRB
           if config_data['Mail'] && config_data['MessageTemplate']
             @mail_generator = MailGenerator.new
             @mail_generator.root_path = config[:root_path]
+            @mail_generator.logger = config[:logger]
             @mail_generator.configure(config_data)
             @mail_generator.load_mail_template_by_name(
               config_data['MessageTemplate']

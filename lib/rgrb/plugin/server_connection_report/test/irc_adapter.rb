@@ -47,6 +47,9 @@ module RGRB
 
             config_data = config[:plugin]
             @test_channel = config_data['TestChannel'] || '#irc_test'
+
+            @mail_generator.subject = "[TEST] #{@mail_generator.subject}"
+            @mail_generator.body = "This is TEST mail.\nby #{self.class.to_s}\n\n--\n#{@mail_generator.body}"
           end
 
           # ネットワークにあるサーバが参加したときの処理

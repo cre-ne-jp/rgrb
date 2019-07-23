@@ -1,6 +1,6 @@
 # vim: fileencoding=utf-8
 
-require 'rgrb/irc_plugin'
+require 'rgrb/plugin_base/irc_adapter'
 require 'rgrb/plugin/trpg/detatoko/generator'
 require 'rgrb/plugin/trpg/detatoko/constants'
 
@@ -10,7 +10,7 @@ module RGRB
       module Detatoko
         # Detatoko の IRC アダプター
         class IrcAdapter
-          include IrcPlugin
+          include PluginBase::IrcAdapter
 
           set(plugin_name: 'Trpg::Detatoko')
           self.prefix = '.d'

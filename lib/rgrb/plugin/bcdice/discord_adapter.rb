@@ -1,6 +1,6 @@
 # vim: fileencoding=utf-8
 
-require 'rgrb/discord_plugin'
+require 'rgrb/plugin_base/discord_adapter'
 require 'rgrb/plugin/bcdice/constants'
 require 'rgrb/plugin/bcdice/errors'
 require 'rgrb/plugin/bcdice/generator'
@@ -14,7 +14,7 @@ module RGRB
     module Bcdice
       # Bcdice の Discord アダプター
       class DiscordAdapter
-        include RGRB::DiscordPlugin
+        include PluginBase::DiscordAdapter
 
         set(plugin_name: 'Bcdice')
         self.prefix = '.bcdice'

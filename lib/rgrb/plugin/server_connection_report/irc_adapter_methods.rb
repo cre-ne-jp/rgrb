@@ -1,6 +1,6 @@
 # vim: fileencoding=utf-8
 
-require 'rgrb/irc_plugin'
+require 'rgrb/plugin_base/irc_adapter'
 require 'rgrb/plugin/server_connection_report/generator'
 require 'rgrb/plugin/server_connection_report/mail_generator'
 
@@ -12,7 +12,7 @@ module RGRB
       module IrcAdapterMethods
         # 共通で使用する他のモジュールを読み込む
         def self.included(by)
-          by.include(IrcPlugin)
+          by.include(PluginBase::IrcAdapter)
         end
 
         private

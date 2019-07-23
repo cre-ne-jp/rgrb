@@ -1,6 +1,6 @@
 # vim: fileencoding=utf-8
 
-require 'rgrb/irc_plugin'
+require 'rgrb/plugin_base/irc_adapter'
 require 'rgrb/plugin/bcdice/constants'
 require 'rgrb/plugin/bcdice/errors'
 require 'rgrb/plugin/bcdice/generator'
@@ -14,7 +14,7 @@ module RGRB
     module Bcdice
       # Bcdice の IRC アダプター
       class IrcAdapter
-        include IrcPlugin
+        include PluginBase::IrcAdapter
 
         set(plugin_name: 'Bcdice')
         self.prefix = '.bcdice'

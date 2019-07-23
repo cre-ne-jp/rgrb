@@ -3,7 +3,7 @@
 require 'time'
 require 'cgi/util'
 require 'twitter'
-require 'rgrb/generator_plugin'
+require 'rgrb/plugin_base/generator'
 
 module RGRB
   module Plugin
@@ -11,7 +11,7 @@ module RGRB
     module CreTwitterCitation
       # CreTwitterCitation の出力テキスト生成器
       class Generator
-        include GeneratorPlugin
+        include PluginBase::Generator
 
         # http://t.co/〜 の URL のパターン
         T_CO_PATTERN = %r{(?<!\w)(?=\w)http://t\.co/[0-9A-Za-z]+}

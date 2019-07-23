@@ -1,7 +1,7 @@
 # vim: fileencoding=utf-8
 
 require 'uri'
-require 'rgrb/irc_plugin'
+require 'rgrb/plugin_base/irc_adapter'
 require 'rgrb/plugin/url_fetch_title/generator'
 
 module RGRB
@@ -9,7 +9,7 @@ module RGRB
     module UrlFetchTitle
       # UrlFetchTitle の IRC アダプター
       class IrcAdapter
-        include IrcPlugin
+        include PluginBase::IrcAdapter
 
         set(plugin_name: 'UrlFetchTitle')
 

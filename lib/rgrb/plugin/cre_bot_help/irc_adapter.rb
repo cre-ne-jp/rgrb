@@ -1,6 +1,6 @@
 # vim: fileencoding=utf-8
 
-require 'rgrb/irc_plugin'
+require 'rgrb/plugin_base/irc_adapter'
 require 'rgrb/plugin/cre_bot_help/generator'
 
 module RGRB
@@ -8,7 +8,7 @@ module RGRB
     module CreBotHelp
       # CreBotHelp の IRC アダプター
       class IrcAdapter
-        include IrcPlugin
+        include PluginBase::IrcAdapter
 
         set(plugin_name: 'CreBotHelp')
         match(/help/, method: :help)

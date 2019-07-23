@@ -4,8 +4,9 @@ AllCops:
   Include:
     - '**/Rakefile'
     - '**/config.ru'
-  Exclude:
     - 'bin/**/*'
+    - 'lib/**/*'
+  Exclude:
     - 'vendor/**/*'
     - 'spec/**/*'
 

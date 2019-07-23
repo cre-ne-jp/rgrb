@@ -1,6 +1,6 @@
 # vim: fileencoding=utf-8
 
-require 'rgrb/irc_plugin'
+require 'rgrb/plugin_base/irc_adapter'
 require 'rgrb/plugin/cre_twitter_citation/generator'
 
 module RGRB
@@ -9,7 +9,7 @@ module RGRB
     module CreTwitterCitation
       # CreTwitterCitation の IRC アダプター
       class IrcAdapter
-        include IrcPlugin
+        include PluginBase::IrcAdapter
 
         set(plugin_name: 'CreTwitterCitation')
 

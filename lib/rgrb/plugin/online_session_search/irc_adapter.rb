@@ -1,6 +1,6 @@
 # vim: fileencoding=utf-8
 
-require 'rgrb/irc_plugin'
+require 'rgrb/plugin_base/irc_adapter'
 require 'rgrb/plugin/online_session_search/generator'
 
 module RGRB
@@ -8,7 +8,7 @@ module RGRB
     module OnlineSessionSearch
       # OnlineSessionSearch の IRC アダプター
       class IrcAdapter
-        include IrcPlugin
+        include PluginBase::IrcAdapter
 
         # セッションマッチングシステムの URL
         SESSION_URL = 'http://session.trpg.net/'

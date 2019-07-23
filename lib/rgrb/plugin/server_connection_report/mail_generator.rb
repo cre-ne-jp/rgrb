@@ -2,7 +2,7 @@
 # frozen_string_literal: true
 
 require 'rgrb/version'
-require 'rgrb/generator_plugin'
+require 'rgrb/plugin_base/generator'
 
 require 'stringio'
 require 'mail'
@@ -14,7 +14,7 @@ module RGRB
     module ServerConnectionReport
       # メール生成を司るクラス
       class MailGenerator
-        include GeneratorPlugin
+        include PluginBase::Generator
 
         # メールテンプレートの読み込みに失敗した際に発生するエラー
         class MailTemplateLoadError < StandardError; end

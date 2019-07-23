@@ -1,6 +1,6 @@
 # vim: fileencoding=utf-8
 
-require 'rgrb/generator_plugin'
+require 'rgrb/plugin_base/generator'
 require 'rgrb/plugin/dice_roll/dice_roll_result'
 
 require 'gdbm'
@@ -15,7 +15,7 @@ module RGRB
     module DiceRoll
       # DiceRoll の出力テキスト生成器
       class Generator
-        include GeneratorPlugin
+        include PluginBase::Generator
 
         # ダイス数が多すぎた場合のメッセージ
         # @return [String]

@@ -1,6 +1,6 @@
 # vim: fileencoding=utf-8
 
-require 'rgrb/irc_plugin'
+require 'rgrb/plugin_base/irc_adapter'
 
 module RGRB
   module Plugin
@@ -8,7 +8,7 @@ module RGRB
     module Part
       # Part の IRC アダプター
       class IrcAdapter
-        include IrcPlugin
+        include PluginBase::IrcAdapter
 
         set(plugin_name: 'Part')
         match(/part(?:-(\w+))?$/, method: :part)

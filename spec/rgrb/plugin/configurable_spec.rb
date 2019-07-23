@@ -2,14 +2,14 @@
 
 require_relative '../../spec_helper'
 
-require 'rgrb/generator_plugin'
-require 'rgrb/plugin/configurable_adapter'
+require 'rgrb/plugin_base/generator'
+require 'rgrb/plugin_base/adapter'
 
 module RGRB
   module Plugin
     module TestPlugin
       class Generator
-        include GeneratorPlugin
+        include PluginBase::Generator
 
         attr_reader :logger
         attr_reader :name
@@ -23,7 +23,7 @@ module RGRB
       end
 
       class IrcAdapter
-        include ConfigurableAdapter
+        include PluginBase::Adapter
 
         attr_reader :generator
 
@@ -40,7 +40,7 @@ module RGRB
   end
 end
 
-describe RGRB::GeneratorPlugin do
+describe RGRB::PluginBase::Generator do
   let(:generator) { RGRB::Plugin::TestPlugin::Generator.new }
 
   describe '#root_path=' do
@@ -80,7 +80,7 @@ describe RGRB::GeneratorPlugin do
   end
 end
 
-describe RGRB::Plugin::ConfigurableAdapter do
+describe RGRB::PluginBase::Adapter do
   let(:irc_adapter) { RGRB::Plugin::TestPlugin::IrcAdapter.new }
   let(:send_prepare_generator) { -> { irc_adapter.send(:prepare_generator) } }
   let(:root_path) { '/home/rgrb' }

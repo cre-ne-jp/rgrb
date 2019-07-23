@@ -1,6 +1,6 @@
 # vim: fileencoding=utf-8
 
-require 'rgrb/irc_plugin'
+require 'rgrb/plugin_base/irc_adapter'
 require 'rgrb/plugin/server_connection_report/constants'
 require 'rgrb/plugin/server_connection_report/irc_adapter_methods'
 

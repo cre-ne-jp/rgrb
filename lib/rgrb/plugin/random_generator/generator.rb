@@ -1,6 +1,6 @@
 # vim: fileencoding=utf-8
 
-require 'rgrb/generator_plugin'
+require 'rgrb/plugin_base/generator'
 require 'rgrb/plugin/random_generator/constants'
 require 'rgrb/plugin/random_generator/table'
 require 'rgrb/plugin/random_generator/table_not_found'
@@ -12,7 +12,7 @@ module RGRB
     module RandomGenerator
       # RandomGenerator の出力テキスト生成器
       class Generator
-        include GeneratorPlugin
+        include PluginBase::Generator
 
         # 循環参照と見做される同一表参照回数の閾値
         CIRCULAR_REFERENCE_THRESHOLD = 10

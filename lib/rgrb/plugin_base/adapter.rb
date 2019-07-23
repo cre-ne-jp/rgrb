@@ -1,9 +1,9 @@
 # vim: fileencoding=utf-8
 
 module RGRB
-  module Plugin
-    # 設定できる生成器のアダプター用のモジュール
-    module ConfigurableAdapter
+  module PluginBase
+    # アダプターの共通モジュール
+    module Adapter
       # 生成器を用意し、設定を転送する
       # @return [true]
       def prepare_generator

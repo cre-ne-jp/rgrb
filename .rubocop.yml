@@ -1,3 +1,5 @@
+inherit_from: .rubocop_todo.yml
+
 AllCops:
   Include:
     - '**/Rakefile'
@@ -10,7 +12,7 @@ AllCops:
 Style/AsciiComments:
   Enabled: false
 
-Style/LineLength:
+Metrics/LineLength:
   Max: 76
 
 Style/IfUnlessModifier:

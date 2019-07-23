@@ -4,6 +4,7 @@ require_relative '../../spec_helper'
 
 require 'rgrb/plugin_base/generator'
 require 'rgrb/plugin_base/adapter'
+require 'rgrb/plugin_base/adapter_options'
 
 module RGRB
   module Plugin
@@ -28,12 +29,14 @@ module RGRB
         attr_reader :generator
 
         def config
-          {
-            root_path: '/home/rgrb',
-            plugin: {
+          PluginBase::AdapterOptions.new(
+            'test',
+            '/home/rgrb',
+            {
               'name' => 'RGRB'
-            }
-          }
+            },
+            Lumberjack::Logger.new($stdout, progname: self.class.to_s)
+          )
         end
       end
     end

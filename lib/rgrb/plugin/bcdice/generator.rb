@@ -1,5 +1,6 @@
 # vim: fileencoding=utf-8
 
+require 'rgrb/plugin_base/generator'
 require 'rgrb/plugin/bcdice/constants'
 require 'rgrb/plugin/bcdice/errors'
 
@@ -16,8 +17,15 @@ module RGRB
 
       # Bcdice の出力テキスト生成器
       class Generator
+        include PluginBase::Generator
+
         # 生成器を初期化する
         def initialize
+          super
+
+          @version_and_commit_id = get_version_and_commit_id
+          logger.warn("BCDice を読み込みました: #{bcdice_version}")
+
           @bcdice = CgiDiceBot.new
         end
 
@@ -52,15 +60,26 @@ module RGRB
         # git submodule で組み込んでいる BCDice のバージョンを返す
         # @return [String]
         def bcdice_version
-          bcdice_path = File.expand_path('../../../../vendor/BCDice', __dir__)
-          commit_id = Dir.chdir(bcdice_path) do
-            `git show -s --format=%H`.strip
-          end
-
-          "BCDice Commit ID: #{commit_id}"
+          "BCDice Version: #{@version_and_commit_id}"
         end
 
         private
+
+        # 起動時点での BCDice のコミット ID を取得・保存する
+        # @return [String]
+        def get_version_and_commit_id
+          bcdice_path = File.expand_path('../../../../vendor/BCDice', __dir__)
+          @commit_id =
+            begin
+              Dir.chdir(bcdice_path) do
+                `git show -s --format=%H`.strip
+              end
+            rescue
+                ''
+            end
+
+          @commit_id.empty? ? $bcDiceVersion : "#{$bcDiceVersion} (#{@commit_id})"
+        end
 
         # ダイスボットを探す
         # @param [String] game_type ゲームタイプ

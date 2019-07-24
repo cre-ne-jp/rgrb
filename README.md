@@ -60,9 +60,9 @@ gem install mailcatcher
 設定
 ----
 
-IRC・Discord どちらのボットを使うかによって、設定ファイルのテンプレートが変わります。
-IRC ボット用のテンプレートは [config/irc.yaml](config/irc.yaml) を編集して設定します。
-Discord 用のテンプレートファイルは [config/discord.yaml](config/discord.yaml) です。
+IRC ボット用および Discord ボット用の設定ファイルのテンプレートがそれぞれ同梱されています。
+IRC ボット用のテンプレートは [config/irc.yaml](config/irc.yaml) です。
+Discord ボット用のテンプレートファイルは [config/discord.yaml](config/discord.yaml) です。
 複数の設定を使う場合は、このファイルをコピーして config/ に設置します。
 
 各設定は**設定 ID** によって識別します。設定 ID とは、config/ 以下に設置した YAML ファイルの、config/ を基準とした相対パスから拡張子を除いたものです。例えば config/irc.yaml の場合は `irc` となり、config/trpg/detatoko.yaml の場合は `trpg/detatoko` になります。

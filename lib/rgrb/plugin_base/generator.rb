@@ -19,26 +19,25 @@ module RGRB
       # ロガー
       # @return [Lumberjack::Logger]
       attr_accessor :logger
-  
+
       # インスタンスの初期化
       #
       # 設定関連のメソッドが動作するように変数を設定する。
       def initialize
         class_name_tree = self.class.name.split('::')
         @plugin_name_underscore = class_name_tree[-2].underscore
-        @logger = Lumberjack::Logger.new($stdout, progname: self.class.to_s)
       end
-  
+
       # RGRB のルートパスを設定する
       # @param [String] root_path RGRB のルートパス
       # @return [String] RGRB のルートパス
       def root_path=(root_path)
         @root_path = root_path
         @data_path = "#{root_path}/data/#{@plugin_name_underscore}"
-  
+
         root_path
       end
-  
+
       # 設定データを解釈してプラグインの設定を行う
       #
       # 標準では何も行わない。

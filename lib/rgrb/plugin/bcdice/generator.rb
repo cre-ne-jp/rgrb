@@ -23,7 +23,8 @@ module RGRB
         def initialize
           super
 
-          get_version_and_commit_id
+          @version_and_commit_id = get_version_and_commit_id
+          logger.warn("BCDice を読み込みました: #{bcdice_version}")
 
           @bcdice = CgiDiceBot.new
         end
@@ -65,21 +66,19 @@ module RGRB
         private
 
         # 起動時点での BCDice のコミット ID を取得・保存する
-        # @return [void]
+        # @return [String]
         def get_version_and_commit_id
           bcdice_path = File.expand_path('../../../../vendor/BCDice', __dir__)
           @commit_id =
             begin
               Dir.chdir(bcdice_path) do
                 `git show -s --format=%H`.strip
-              rescue
-                ''
               end
+            rescue
+                ''
             end
-          @version_and_commit_id =
-            @commit_id.empty? ? $bcDiceVersion : "#{$bcDiceVersion} (#{@commit_id})"
 
-          logger.warn(bcdice_version)
+          @commit_id.empty? ? $bcDiceVersion : "#{$bcDiceVersion} (#{@commit_id})"
         end
 
         # ダイスボットを探す

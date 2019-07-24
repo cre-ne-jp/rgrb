@@ -33,10 +33,10 @@ describe RGRB::Plugin::ServerConnectionReport::MailGenerator do
   }
 
   let(:mail_generator) {
-    obj = described_class.new
-    obj.send(:logger=, Lumberjack::Logger.new($stdout, progname: self.class.to_s))
+    g = described_class.new
+    g.logger = Lumberjack::Logger.new($stdout, progname: self.class.to_s)
 
-    obj
+    g
   }
 
   describe '#initialize' do

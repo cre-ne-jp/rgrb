@@ -1,10 +1,10 @@
-汎用 IRC ボット RGRB
+汎用チャットボット RGRB
 ====================
 
 [![Build Status](https://travis-ci.org/cre-ne-jp/rgrb.svg?branch=master)](https://travis-ci.org/cre-ne-jp/rgrb)
 [![Coverage Status](https://coveralls.io/repos/cre-ne-jp/rgrb/badge.svg?branch=master&service=github)](https://coveralls.io/github/cre-ne-jp/rgrb?branch=master)
 
-RGRB は Ruby で実装されている汎用 IRC ボットです。プラグイン方式により柔軟な拡張が可能です。
+RGRB は Ruby で実装されている汎用 IRC/Discord ボットです。プラグイン方式により柔軟な拡張が可能です。
 
 動作環境
 --------
@@ -60,11 +60,14 @@ gem install mailcatcher
 設定
 ----
 
-[config/rgrb.yaml](config/rgrb.yaml) を編集して設定します。複数の設定を使う場合は、このファイルをコピーして config/ に設置します。
+IRC・Discord どちらのボットを使うかによって、設定ファイルのテンプレートが変わります。
+IRC ボット用のテンプレートは [config/irc.yaml](config/irc.yaml) を編集して設定します。
+Discord 用のテンプレートファイルは [config/discord.yaml](config/discord.yaml) です。
+複数の設定を使う場合は、このファイルをコピーして config/ に設置します。
 
-各設定は**設定 ID** によって識別します。設定 ID とは、config/ 以下に設置した YAML ファイルの、config/ を基準とした相対パスから拡張子を除いたものです。例えば config/rgrb.yaml の場合は `rgrb` となり、config/trpg/detatoko.yaml の場合は `trpg/detatoko` になります。
+各設定は**設定 ID** によって識別します。設定 ID とは、config/ 以下に設置した YAML ファイルの、config/ を基準とした相対パスから拡張子を除いたものです。例えば config/irc.yaml の場合は `irc` となり、config/trpg/detatoko.yaml の場合は `trpg/detatoko` になります。
 
-プラグインの設定を別のファイルに書くことも可能です。その場合、親となる設定ファイルの `Include` 節で設定 ID を指定し、子となる設定ファイルを取り込みます。ただし、取り込まれたファイルからさらに他の設定ファイルを取り込むことはできません。具体例は上記の config/rgrb.yaml でご確認ください。
+プラグインの設定を別のファイルに書くことも可能です。その場合、親となる設定ファイルの `Include` 節で設定 ID を指定し、子となる設定ファイルを取り込みます。ただし、取り込まれたファイルからさらに他の設定ファイルを取り込むことはできません。具体例は上記の設定ファイルのテンプレートでご確認ください。
 
 ### プラグイン一覧
 
@@ -73,6 +76,7 @@ gem install mailcatcher
 | 記号 | 意味 |
 | ---- | ---- |
 | o | 実装済み |
+| ! | すべての機能が実装されているわけではない |
 | x | 未実装 |
 | - | 実装予定なし(チャット環境固有の物) |
 

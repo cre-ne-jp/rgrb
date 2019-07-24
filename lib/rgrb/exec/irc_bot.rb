@@ -167,7 +167,7 @@ module RGRB
       # @return [Hash]
       def parse_options(argv)
         default_options = {
-          config_id: 'rgrb',
+          config_id: 'irc',
           log_level: :warn
         }
         options = {}

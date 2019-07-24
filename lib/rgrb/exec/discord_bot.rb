@@ -162,7 +162,7 @@ module RGRB
       # @return [Hash]
       def parse_options(argv)
         default_options = {
-          config_id: 'rgrb'
+          config_id: 'discord'
         }
         default_log_level = {
             plugin: :warn,

@@ -34,27 +34,31 @@ Plugins:
   - DiceRoll
   - RandomGenerator
   - Trpg::Detatoko
+  - Bcdice
   - Keyword
   - OnlineSessionSearch
   - CreTwitterCitation
+  - UrlFetchTitle
   - CreBotHelp
   - ServerConnectionReport::Charybdis
   - Part
   - KickBack
   - Invite
+  - Jihou
   - Ctcp
-  - UrlFetchTitle
 
 # 取り込む設定の ID を列挙する
 # 設定ファイルは config/ 以下に配置する
 # 設定 ID は config/ を基準とした相対パスから拡張子を除いたもの
 Include:
   - dice_roll
+  - random_generator
   - keyword
   - cre_twitter_citation
+  - url_fetch_title
   - server_connection_report/charybdis
   - part
   - kick_back
   - invite
+  - jihou
   - ctcp
-  - url_fetch_title

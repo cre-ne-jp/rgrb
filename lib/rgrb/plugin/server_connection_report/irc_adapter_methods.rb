@@ -35,9 +35,9 @@ module RGRB
               config_data['MessageTemplate']
             )
 
-            warn('メール送信を行います')
+            @logger.warn('メール送信を行います')
           else
-            warn('メール送信を行いません')
+            @logger.warn('メール送信を行いません')
           end
 
           self

@@ -4,6 +4,15 @@ module RGRB
   module PluginBase
     # アダプターの共通モジュール
     module Adapter
+      def initialize(*)
+        super
+
+        @config_id = config.id
+        @root_path = config.root_path
+        @plugin_config = config.plugin
+        @logger = config.logger
+      end
+
       # 生成器を用意し、設定を転送する
       # @return [true]
       def prepare_generator

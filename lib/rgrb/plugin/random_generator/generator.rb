@@ -162,7 +162,7 @@ module RGRB
         end
 
         # 表が存在することを確かめる
-        # @return [String] table_name 表名
+        # @param [String] table_name 表名
         # @return [true] 表が存在する場合
         # @raise [TableNotFound] 表が存在しない場合
         def check_existence_of(table_name)
@@ -172,7 +172,7 @@ module RGRB
         end
 
         # 表が公開されていることを確かめる
-        # @return [String] table_name 表名
+        # @param [String] table_name 表名
         # @return [true] 表が公開されている場合
         # @raise [PrivateTable] 表が公開されていない場合
         def check_permission_of(table_name)

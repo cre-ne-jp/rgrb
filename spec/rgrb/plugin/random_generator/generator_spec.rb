@@ -2,14 +2,16 @@
 
 require_relative '../../../spec_helper'
 require 'date'
+require 'lumberjack'
 require 'rgrb/plugin/random_generator/generator'
 
 describe RGRB::Plugin::RandomGenerator::Generator do
   let(:generator) do
-    obj = described_class.new
-    obj.send(:load_data, "#{__dir__}/data/*.yaml")
+    g = described_class.new
+    g.load_data!("#{__dir__}/data/*.yaml")
+    g.logger = Lumberjack::Logger.new($stdout, progname: self.class.to_s)
 
-    obj
+    g
   end
 
   describe '#desc' do

@@ -33,7 +33,10 @@ describe RGRB::Plugin::ServerConnectionReport::MailGenerator do
   }
 
   let(:mail_generator) {
-    described_class.new.configure(logger: null_logger)
+    g = described_class.new
+    g.logger = Lumberjack::Logger.new($stdout, progname: self.class.to_s)
+
+    g
   }
 
   describe '#initialize' do

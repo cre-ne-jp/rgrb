@@ -31,7 +31,7 @@ module RGRB
         def configure(config_data)
           super
 
-          load_data("#{@data_path}/**/*.yaml")
+          load_data!("#{@data_path}/**/*.yaml")
 
           self
         end
@@ -90,6 +90,26 @@ module RGRB
           end.keys.sort
         end
 
+        # 表のデータを読み込む
+        # @param [String] glob_pattern データファイル名のパターン
+        # @return [void]
+        def load_data!(glob_pattern)
+          # 表を格納するハッシュ
+          @table = {}
+
+          Dir.glob(glob_pattern).each do |path|
+            begin
+              yaml = File.read(path, encoding: 'UTF-8')
+              table = Table.parse_yaml(yaml)
+
+              @table[table.name] = table
+            rescue => e
+              logger.error("データファイル #{path} の読み込みに失敗しました")
+              logger.error(e)
+            end
+          end
+        end
+
         private
 
         # 表から値を取得して返す
@@ -139,26 +159,6 @@ module RGRB
           end
 
           str
-        end
-
-        # 表のデータを読み込む
-        # @param [String] glob_pattern データファイル名のパターン
-        # @return [void]
-        def load_data(glob_pattern)
-          # 表を格納するハッシュ
-          @table = {}
-
-          Dir.glob(glob_pattern).each do |path|
-            begin
-              yaml = File.read(path, encoding: 'UTF-8')
-              table = Table.parse_yaml(yaml)
-
-              @table[table.name] = table
-            rescue => e
-              logger.error("データファイル #{path} の読み込みに失敗しました")
-              logger.error(e)
-            end
-          end
         end
 
         # 表が存在することを確かめる

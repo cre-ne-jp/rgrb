@@ -1,6 +1,7 @@
 # vim: fileencoding=utf-8
 
 require 'd1lcs'
+require 'rgrb/plugin_base/generator'
 require 'rgrb/plugin/dice_roll/generator'
 require 'rgrb/plugin/trpg/detatoko/gamedatas'
 
@@ -11,8 +12,11 @@ module RGRB
       module Detatoko
         # Detatoko の出力テキスト生成器
         class Generator
+          include PluginBase::Generator
 
-          def initialize
+          def initialize(*)
+            super
+
             @random = Random.new
             @dice_roll_generator = DiceRoll::Generator.new
             @d1lcs_title_line = D1lcs.title_line

@@ -25,7 +25,7 @@ module RGRB
         def initialize(*args)
           super
 
-          @generator = Generator.new
+          prepare_generator
         end
 
         # 最近追加されたセッション情報を出力する

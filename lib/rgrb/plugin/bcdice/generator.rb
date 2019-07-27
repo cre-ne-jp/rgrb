@@ -19,14 +19,14 @@ module RGRB
       class Generator
         include PluginBase::Generator
 
-        # 生成器を初期化する
-        def initialize
+        def configure(*)
           super
 
+          @bcdice = CgiDiceBot.new
           @version_and_commit_id = get_version_and_commit_id
           logger.warn("BCDice を読み込みました: #{bcdice_version}")
 
-          @bcdice = CgiDiceBot.new
+          self
         end
 
         # BCDice でダイスを振った結果を返す

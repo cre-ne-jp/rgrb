@@ -23,7 +23,7 @@ module RGRB
           config_data = config[:plugin]
           @channels_to_send = config_data['ChannelsToSend'] || []
 
-          prepare_generator
+          @generator = Generator.new
 
           @mail_generator = nil
           if config_data['Mail'] && config_data['MessageTemplate']

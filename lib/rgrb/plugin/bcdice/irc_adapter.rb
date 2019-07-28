@@ -24,7 +24,7 @@ module RGRB
         def initialize(*args)
           super
 
-          @generator = Generator.new
+          prepare_generator
           @header = 'BCDice'
         end
 

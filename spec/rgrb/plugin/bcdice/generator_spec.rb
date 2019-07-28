@@ -8,15 +8,6 @@ require 'rgrb/plugin/bcdice/errors'
 describe RGRB::Plugin::Bcdice::Generator do
   let(:generator) do
     g = described_class.new
-    g.instance_variable_set(
-      :@bcdice,
-      CgiDiceBot.new
-    )
-    g.instance_variable_set(
-      :@version_and_commit_id,
-      g.send(:get_version_and_commit_id)
-    )
-
     g.logger = Lumberjack::Logger.new($stdout, progname: self.class.to_s)
 
     g

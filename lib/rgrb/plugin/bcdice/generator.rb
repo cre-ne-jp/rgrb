@@ -19,12 +19,20 @@ module RGRB
       class Generator
         include PluginBase::Generator
 
+        # ジェネレータを初期化する
+        def initialize
+          @bcdice = CgiDiceBot.new
+          @version_and_commit_id = get_version_and_commit_id
+        end
+
+        # プラグインがアダプタによって読み込まれた際の設定
+        #
+        # アダプタによってジェネレータが用意されたとき
+        # BCDiceのバージョン情報をログに出力する。
         def configure(*)
           super
 
-          @bcdice = CgiDiceBot.new
-          @version_and_commit_id = get_version_and_commit_id
-          logger.warn("BCDice を読み込みました: #{bcdice_version}")
+          logger.info(bcdice_version)
 
           self
         end

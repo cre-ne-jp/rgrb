@@ -14,11 +14,14 @@ module RGRB
 
         @generator.config_id = config.id
         @generator.root_path = config.root_path
-        @generator.logger = config.logger
 
-        # プラグインをロガーとして使えるよう、設定に含める
-        config_data = config.plugin.merge({ logger: self })
-        @generator.configure(config_data)
+        # TODO: プラグインでのテキスト生成関連のログを専用のロガーで出力できる
+        # ようにする
+        #
+        # 現在はアダプタ自体をロガーとして使う
+        @generator.logger = self
+
+        @generator.configure(config.plugin)
 
         true
       end

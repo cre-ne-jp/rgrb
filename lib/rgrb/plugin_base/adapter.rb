@@ -4,6 +4,8 @@ module RGRB
   module PluginBase
     # アダプターの共通モジュール
     module Adapter
+      private
+
       # 生成器を用意し、設定を転送する
       # @return [true]
       def prepare_generator
@@ -18,14 +20,14 @@ module RGRB
         # TODO: プラグインでのテキスト生成関連のログを専用のロガーで出力できる
         # ようにする
         #
-        # 現在はアダプタ自体をロガーとして使う
-        @generator.logger = self
+        # 注意：アダプタは必ずジェネレータ用のロガーを返す logger_for_generator
+        # メソッドを必ず定義すること。
+        @generator.logger = logger_for_generator
 
         @generator.configure(config.plugin)
 
         true
       end
-      private :prepare_generator
     end
   end
 end

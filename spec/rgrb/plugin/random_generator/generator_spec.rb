@@ -9,7 +9,6 @@ describe RGRB::Plugin::RandomGenerator::Generator do
   let(:generator) do
     g = described_class.new
     g.load_data!("#{__dir__}/data/*.yaml")
-    g.logger = Lumberjack::Logger.new($stdout, progname: self.class.to_s)
 
     g
   end

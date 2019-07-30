@@ -6,12 +6,7 @@ require 'rgrb/plugin/bcdice/generator'
 require 'rgrb/plugin/bcdice/errors'
 
 describe RGRB::Plugin::Bcdice::Generator do
-  let(:generator) do
-    g = described_class.new
-    g.logger = Lumberjack::Logger.new($stdout, progname: self.class.to_s)
-
-    g
-  end
+  let(:generator) { described_class.new }
 
   describe '#bcdice_version' do
     it 'BCDice のバージョンを出力する' do

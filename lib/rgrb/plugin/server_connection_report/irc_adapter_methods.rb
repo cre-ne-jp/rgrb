@@ -29,7 +29,7 @@ module RGRB
           if config_data['Mail'] && config_data['MessageTemplate']
             @mail_generator = MailGenerator.new
             @mail_generator.root_path = config[:root_path]
-            @mail_generator.logger = config[:logger]
+            @mail_generator.logger = self
             @mail_generator.configure(config_data)
             @mail_generator.load_mail_template_by_name(
               config_data['MessageTemplate']

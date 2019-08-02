@@ -11,7 +11,7 @@ module RGRB
         by.include(Cinch::Plugin)
         by.include(Adapter)
       end
-  
+
       # メッセージを NOTICE し、ログに書き出す
       # @param [String, Cinch::Target, Array<String>, Array<Cinch::Target>]
       #   targets NOTICE 先
@@ -45,7 +45,7 @@ module RGRB
           else
             raise ArgumentError
           end
-  
+
         targets.each do |target|
           messages.each do |line|
             message = "#{header}#{line.chomp}"
@@ -54,7 +54,7 @@ module RGRB
           end
         end
       end
-  
+
       # 複数の送信先に NOTICE する
       # v1.0.5 より非推奨メソッド。send_notice に統合する。
       #
@@ -67,14 +67,14 @@ module RGRB
         send_notice(message, channels_to_send, '', safe)
         log('IrcPlugin#notice_on_each_channel: deprecated', :warn)
       end
-  
+
       # 入ってきたメッセージをログに残す
       # @param [Cinch::Message] m メッセージ
       # @return [void]
       def log_incoming(m)
         log(m.raw, :incoming, :info)
       end
-  
+
       # NOTICE をログに残す
       # @param [Cinch::Target] target NOTICE の対象
       # @param [String] message メッセージ
@@ -82,20 +82,28 @@ module RGRB
       def log_notice(target, message)
         log("<NOTICE to #{target.name}> #{message.inspect}", :outgoing, :info)
       end
-  
+
       # JOIN をログに残す
       # @param [Cinch::Channel] channel
       # @return [void]
       def log_join(channel)
         log("<JOIN on #{channel}>", :outgoing, :info)
       end
-  
+
       # PART をログに残す
       # @param [Cinch::Channel] channel
       # @param [String] message 退出メッセージ
       # @return [void]
       def log_part(channel, message)
         log("<PART from #{channel}> #{message.inspect}", :outgoing, :info)
+      end
+
+      private
+
+      # ジェネレータで使うロガーを返す
+      # @return [self]
+      def logger_for_generator
+        self
       end
     end
   end

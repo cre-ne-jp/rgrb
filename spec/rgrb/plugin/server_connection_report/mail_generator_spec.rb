@@ -32,12 +32,7 @@ describe RGRB::Plugin::ServerConnectionReport::MailGenerator do
     }
   }
 
-  let(:mail_generator) {
-    g = described_class.new
-    g.logger = Lumberjack::Logger.new($stdout, progname: self.class.to_s)
-
-    g
-  }
+  let(:mail_generator) { described_class.new }
 
   describe '#initialize' do
     it 'インスタンスを初期化することができる' do

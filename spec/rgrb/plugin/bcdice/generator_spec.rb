@@ -1,7 +1,7 @@
 # vim: fileencoding=utf-8
 
+require 'lumberjack'
 require_relative '../../../spec_helper'
-
 require 'rgrb/plugin/bcdice/generator'
 require 'rgrb/plugin/bcdice/errors'
 
@@ -11,7 +11,7 @@ describe RGRB::Plugin::Bcdice::Generator do
   describe '#bcdice_version' do
     it 'BCDice のバージョンを出力する' do
       expect(generator.bcdice_version).to(
-        match(/\ABCDice Commit ID: [0-9a-f]{40}\z/)
+        match(/\ABCDice Version: [0-9]\.[0-9]{2}\.[0-9]{2} \([0-9a-f]{40}\)\z/)
       )
     end
   end

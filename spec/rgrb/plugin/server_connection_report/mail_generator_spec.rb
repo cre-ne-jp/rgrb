@@ -32,9 +32,7 @@ describe RGRB::Plugin::ServerConnectionReport::MailGenerator do
     }
   }
 
-  let(:mail_generator) {
-    described_class.new.configure(logger: null_logger)
-  }
+  let(:mail_generator) { described_class.new }
 
   describe '#initialize' do
     it 'インスタンスを初期化することができる' do

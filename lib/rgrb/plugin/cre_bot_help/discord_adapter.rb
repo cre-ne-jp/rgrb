@@ -1,6 +1,6 @@
 # vim: fileencoding=utf-8
 
-require 'rgrb/discord_plugin'
+require 'rgrb/plugin_base/discord_adapter'
 require 'rgrb/plugin/cre_bot_help/generator'
 
 module RGRB
@@ -8,7 +8,7 @@ module RGRB
     module CreBotHelp
       # CreBotHelp の Discord アダプター
       class DiscordAdapter
-        include RGRB::DiscordPlugin
+        include PluginBase::DiscordAdapter
 
         set(plugin_name: 'CreBotHelp')
         match(/help/, method: :help)

@@ -4,6 +4,7 @@ require 'uri'
 require 'open-uri'
 require 'json'
 
+require 'rgrb/plugin_base/generator'
 require 'rgrb/plugin/online_session_search/session'
 
 module RGRB
@@ -12,6 +13,8 @@ module RGRB
     module OnlineSessionSearch
       # OnlineSessionSearch の出力テキスト生成器
       class Generator
+        include PluginBase::Generator
+
         # セッションマッチングシステム JSON 形式データの URL
         SESSION_JSON_URL = 'http://session.trpg.net/json.php'
 
@@ -31,12 +34,13 @@ module RGRB
           session_data_from(url)
         end
 
+        private
+
         def session_data_from(url)
           json = open(url, 'r:UTF-8') { |f| f.read }
           sessions = Session.parse_json(json)
           format(sessions)
         end
-        private :session_data_from
 
         def format(sessions)
           if sessions.empty?
@@ -60,7 +64,6 @@ module RGRB
             end
           end
         end
-        private :format
       end
     end
   end

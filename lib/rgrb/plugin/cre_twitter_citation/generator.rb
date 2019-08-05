@@ -3,7 +3,7 @@
 require 'time'
 require 'cgi/util'
 require 'twitter'
-require 'rgrb/plugin/configurable_generator'
+require 'rgrb/plugin_base/generator'
 
 module RGRB
   module Plugin
@@ -11,7 +11,7 @@ module RGRB
     module CreTwitterCitation
       # CreTwitterCitation の出力テキスト生成器
       class Generator
-        include ConfigurableGenerator
+        include PluginBase::Generator
 
         # http://t.co/〜 の URL のパターン
         T_CO_PATTERN = %r{(?<!\w)(?=\w)http://t\.co/[0-9A-Za-z]+}
@@ -62,6 +62,8 @@ module RGRB
           end
         end
 
+        private
+
         # ツイートからメッセージを生成し、返す
         # @param [Twitter::Tweet] tweet ツイート
         # @return [String]
@@ -81,7 +83,6 @@ module RGRB
             "#{created_at_local.strftime('%F %T')}; " \
             "#{tweet.url})"
         end
-        private :tweet_to_message
 
         # 最終引用日時を読み込む
         # @return [Time] 最終引用日時。
@@ -93,7 +94,6 @@ module RGRB
         rescue
           Time.at(0)
         end
-        private :read_last_cited
 
         # 最終引用日時を書き込む
         # @return [void]
@@ -102,7 +102,6 @@ module RGRB
             f.puts(Time.now)
           end
         end
-        private :write_last_cited
 
         # 新しい Twitter クライアントを返す
         # @return [Twitter::REST::Client]
@@ -114,7 +113,6 @@ module RGRB
             config.access_token_secret = @access_token_secret
           end
         end
-        private :new_twitter_client
       end
     end
   end

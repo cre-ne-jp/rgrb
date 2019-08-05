@@ -1,6 +1,7 @@
 # vim: fileencoding=utf-8
 
 require 'd1lcs'
+require 'rgrb/plugin_base/generator'
 require 'rgrb/plugin/dice_roll/generator'
 require 'rgrb/plugin/trpg/detatoko/gamedatas'
 
@@ -11,8 +12,11 @@ module RGRB
       module Detatoko
         # Detatoko の出力テキスト生成器
         class Generator
+          include PluginBase::Generator
 
-          def initialize
+          def initialize(*)
+            super
+
             @random = Random.new
             @dice_roll_generator = DiceRoll::Generator.new
             @d1lcs_title_line = D1lcs.title_line
@@ -185,6 +189,8 @@ module RGRB
             result
           end
 
+          private
+
           # ダイスを振り獲得する烙印を決める
           # @return [Array<Array>]
           def get_stigma
@@ -204,7 +210,6 @@ module RGRB
 
             stigma_number
           end
-          private :get_stigma
 
           # 出目から対応する烙印を決定する
           # @param [Symbol] type 体力・気力のどちらか
@@ -214,7 +219,6 @@ module RGRB
             STIGMAS[type][number - 3] &&
               "#{number}: 【#{STIGMAS[type][number - 3]}】"
           end
-          private :stigma_text
 
           # 出目から対応するバッドエンドを決定する
           # @param [Symbol] type 体力・気力のどちらか
@@ -223,7 +227,6 @@ module RGRB
           def badend_text(type, number)
             "#{number}: 【#{BADENDS[type][number - 2]}】"
           end
-          private :badend_text
 
           # 文字列をスタンスの系統に分ける
           # @param [String] uses 元の文字列
@@ -234,7 +237,6 @@ module RGRB
             separators = /[\+＋・]/
             STANCES.keys & uses.split(separators)
           end
-          private :what_stance_list
 
           # 指定された系統のスタンスをランダムに選ぶ
           # @param [String] type スタンス系統
@@ -243,7 +245,6 @@ module RGRB
             rand = @random.rand(6)
             "#{rand + 1}:【#{STANCES[type][rand]}】"
           end
-          private :stance_select
         end
       end
     end

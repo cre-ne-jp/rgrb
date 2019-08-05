@@ -2,7 +2,7 @@
 # frozen_string_literal: true
 
 require 'rgrb/version'
-require 'rgrb/plugin/configurable_generator'
+require 'rgrb/plugin_base/generator'
 
 require 'stringio'
 require 'mail'
@@ -14,7 +14,7 @@ module RGRB
     module ServerConnectionReport
       # メール生成を司るクラス
       class MailGenerator
-        include ConfigurableGenerator
+        include PluginBase::Generator
 
         # メールテンプレートの読み込みに失敗した際に発生するエラー
         class MailTemplateLoadError < StandardError; end
@@ -53,9 +53,6 @@ module RGRB
 
           @mail_config = {}
           @to = 'root@localhost'
-
-          @logger =
-            Lumberjack::Logger.new($stdout, progname: self.class.to_s)
         end
 
         # 設定データを解釈してプラグインの設定を行う
@@ -73,9 +70,6 @@ module RGRB
             to_config = mail_config['To']
             @to = to_config if to_config
           end
-
-          logger = config_data[:logger]
-          @logger = logger if logger
 
           self
         end
@@ -116,13 +110,13 @@ module RGRB
           begin
             load_mail_template(content)
           rescue => e
-            @logger.error("メールテンプレート #{path} の読み込みに失敗しました")
+            logger.error("メールテンプレート #{path} の読み込みに失敗しました")
 
             # 再送出
             raise e
           end
 
-          @logger.warn("メールテンプレート #{path} の読み込みが完了しました")
+          logger.warn("メールテンプレート #{path} の読み込みが完了しました")
 
           self
         end
@@ -180,6 +174,8 @@ module RGRB
           mail
         end
 
+        private
+
         # Hashのキーをシンボルに変えたものを返す
         # @param [Hash] hash 変換元のハッシュテーブル
         # @return [Hash]
@@ -188,7 +184,6 @@ module RGRB
             map { |key, value| [key.to_sym, value] }.
             to_h
         end
-        private :symbolize_keys
       end
     end
   end

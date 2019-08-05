@@ -1,7 +1,6 @@
 # vim: fileencoding=utf-8
 
-require 'rgrb/plugin/configurable_generator'
-require 'rgrb/plugin/use_logger'
+require 'rgrb/plugin_base/generator'
 require 'rgrb/plugin/random_generator/constants'
 require 'rgrb/plugin/random_generator/table'
 require 'rgrb/plugin/random_generator/table_not_found'
@@ -13,8 +12,7 @@ module RGRB
     module RandomGenerator
       # RandomGenerator の出力テキスト生成器
       class Generator
-        include ConfigurableGenerator
-        include UseLogger
+        include PluginBase::Generator
 
         # 循環参照と見做される同一表参照回数の閾値
         CIRCULAR_REFERENCE_THRESHOLD = 10
@@ -23,7 +21,6 @@ module RGRB
           super
 
           @random = Random.new
-          prepare_default_logger
         end
 
         # プラグインの設定を行う
@@ -34,8 +31,7 @@ module RGRB
         def configure(config_data)
           super
 
-          load_data("#{@data_path}/**/*.yaml")
-          set_logger(config_data)
+          load_data!("#{@data_path}/**/*.yaml")
 
           self
         end
@@ -94,6 +90,28 @@ module RGRB
           end.keys.sort
         end
 
+        # 表のデータを読み込む
+        # @param [String] glob_pattern データファイル名のパターン
+        # @return [void]
+        def load_data!(glob_pattern)
+          # 表を格納するハッシュ
+          @table = {}
+
+          Dir.glob(glob_pattern).each do |path|
+            begin
+              yaml = File.read(path, encoding: 'UTF-8')
+              table = Table.parse_yaml(yaml)
+
+              @table[table.name] = table
+            rescue => e
+              logger.error("データファイル #{path} の読み込みに失敗しました")
+              logger.error(e)
+            end
+          end
+        end
+
+        private
+
         # 表から値を取得して返す
         # @param [String] table_name 表名
         # @param [Boolean] root 最初に参照する表の場合 true にする
@@ -105,7 +123,6 @@ module RGRB
 
           @table[table_name].sample(random: @random)
         end
-        private :get_value_from
 
         # 変数を表から取得した値に置換して返す
         # @param [String] str 置換対象の文字列
@@ -143,31 +160,9 @@ module RGRB
 
           str
         end
-        private :replace_var_with_value
-
-        # 表のデータを読み込む
-        # @param [String] glob_pattern データファイル名のパターン
-        # @return [void]
-        def load_data(glob_pattern)
-          # 表を格納するハッシュ
-          @table = {}
-
-          Dir.glob(glob_pattern).each do |path|
-            begin
-              yaml = File.read(path, encoding: 'UTF-8')
-              table = Table.parse_yaml(yaml)
-
-              @table[table.name] = table
-            rescue => e
-              logger.error("データファイル #{path} の読み込みに失敗しました")
-              logger.error(e)
-            end
-          end
-        end
-        private :load_data
 
         # 表が存在することを確かめる
-        # @return [String] table_name 表名
+        # @param [String] table_name 表名
         # @return [true] 表が存在する場合
         # @raise [TableNotFound] 表が存在しない場合
         def check_existence_of(table_name)
@@ -175,10 +170,9 @@ module RGRB
 
           true
         end
-        private :check_existence_of
 
         # 表が公開されていることを確かめる
-        # @return [String] table_name 表名
+        # @param [String] table_name 表名
         # @return [true] 表が公開されている場合
         # @raise [PrivateTable] 表が公開されていない場合
         def check_permission_of(table_name)
@@ -186,7 +180,6 @@ module RGRB
 
           true
         end
-        private :check_permission_of
 
         # 日付の日本語表記を返す
         # @param [Date, DateTime] date 日付
@@ -194,7 +187,6 @@ module RGRB
         def japanese_date(date)
           "#{date.year}年#{date.month}月#{date.day}日"
         end
-        private :japanese_date
       end
     end
   end

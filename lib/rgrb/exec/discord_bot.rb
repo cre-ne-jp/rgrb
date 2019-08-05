@@ -8,6 +8,7 @@ require 'sysexits'
 require 'rgrb/version'
 require 'rgrb/config'
 require 'rgrb/plugins_loader'
+require 'rgrb/plugin_base/adapter_options'
 
 module RGRB
   module Exec
@@ -98,10 +99,12 @@ module RGRB
           plugin_name = adapter.plugin_name
           plugin_config = config.plugin_config[plugin_name] || {}
 
-          plugin_options[adapter] = {
-            root_path: root_path,
-            plugin: plugin_config
-          }
+          plugin_options[adapter] = PluginBase::AdapterOptions.new(
+            config.id,
+            root_path,
+            plugin_config,
+            logger
+          )
 
           logger.warn(
             "プラグイン #{plugin_name} の設定を読み込みました"

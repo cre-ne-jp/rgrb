@@ -1,19 +1,15 @@
 # vim: fileencoding=utf-8
 
-require 'cinch'
-require 'rgrb/plugin/configurable_adapter'
+require 'rgrb/plugin_base/irc_adapter'
 require 'rgrb/plugin/dice_roll/constants'
 require 'rgrb/plugin/dice_roll/generator'
-require 'rgrb/plugin/util/notice_multi_lines'
 
 module RGRB
   module Plugin
     module DiceRoll
       # DiceRoll の IRC アダプター
       class IrcAdapter
-        include Cinch::Plugin
-        include ConfigurableAdapter
-        include Util::NoticeMultiLines
+        include PluginBase::IrcAdapter
 
         set(plugin_name: 'DiceRoll')
         self.prefix = /\.roll[\s　]+/
@@ -36,6 +32,9 @@ module RGRB
         end
 
         # 基本的なダイスロールの結果を返す
+        # @param [Cinch::Message] m
+        # @param [String] n_dice ダイスの個数
+        # @param [String] max ダイスの面数
         # @return [void]
         def basic_dice(m, n_dice, max)
           log_incoming(m)
@@ -44,6 +43,9 @@ module RGRB
 
         # 基本的なダイスロールの結果を返す
         # シークレットロール
+        # @param [Cinch::Message] m
+        # @param [String] n_dice ダイスの個数
+        # @param [String] max ダイスの面数
         # @return [void]
         def basic_dice_secret(m, n_dice, max)
           log_incoming(m)
@@ -51,6 +53,9 @@ module RGRB
         end
 
         # 日本語版の basic_dice
+        # @param [Cinch::Message] m
+        # @param [String] n_dice ダイスの個数
+        # @param [String] max ダイスの面数
         # @return [void]
         def basic_dice_ja(m, n_dice, max)
           log_incoming(m)
@@ -60,6 +65,8 @@ module RGRB
         end
 
         # d66 など、出目をそのままつなげるダイスロールの結果を返す
+        # @param [Cinch::Message] m
+        # @param [String] rolls ダイスの面数と個数
         # @return [void]
         def dxx_dice(m, rolls)
           log_incoming(m)
@@ -68,6 +75,8 @@ module RGRB
 
         # d66 など、出目をそのままつなげるダイスロールの結果を返す
         # シークレットロール
+        # @param [Cinch::Message] m
+        # @param [String] rolls ダイスの面数と個数
         # @return [void]
         def dxx_dice_secret(m, rolls)
           log_incoming(m)
@@ -75,6 +84,8 @@ module RGRB
         end
 
         # 日本語版の dxx_dice
+        # @param [Cinch::Message] m
+        # @param [String] rolls ダイスの面数と個数
         # @return [void]
         def dxx_dice_ja(m, rolls)
           log_incoming(m)
@@ -87,9 +98,10 @@ module RGRB
         # @param [Cinch::Message] m
         # @return [void]
         def open_dice(m)
+          log_incoming(m)
           result = @generator.open_dice(m.target.name)
           messages = if result.nil?
-              ["#{m.target.name} にはシークレットロール結果がありません"]
+              "#{m.target.name} にはシークレットロール結果がありません"
             else
               [
                 "#{m.target.name} のシークレットロール: #{result.size} 件",
@@ -97,7 +109,7 @@ module RGRB
                 "シークレットロールここまで"
               ].flatten
             end
-          notice_multi_lines(messages, m.target)
+          send_notice(m.target, messages)
         end
 
         private
@@ -113,24 +125,19 @@ module RGRB
           result = "#{m.user.nick} -> #{result}"
 
           message = if secret
-            @generator.save_secret_roll(m.target.name, result)
-
-            case(m.target)
-            when(Cinch::Channel)
-              message = "チャンネル #{m.target.name} でのシークレットロール: #{result}"
-              m.user.send(message, true)
-              log_notice(m.user, message)
-
-              "#{m.user.nick}: シークレットロールを保存しました"
-            when(Cinch::User)
-              'シークレットロールを保存しました'
+              @generator.save_secret_roll(m.target.name, result)
+              case(m.target)
+              when(Cinch::Channel)
+                send_notice(m.user, "チャンネル #{m.target.name} でのシークレットロール: #{result}")
+                "#{m.user.nick}: シークレットロールを保存しました"
+              when(Cinch::User)
+                'シークレットロールを保存しました'
+              end
+            else
+              result
             end
-          else
-            result
-          end
 
-          m.target.send(message, true)
-          log_notice(m.target, message)
+          send_notice(m.target, message)
         end
       end
     end

@@ -1,7 +1,6 @@
 # vim: fileencoding=utf-8
 
-require 'cinch'
-require 'rgrb/plugin/configurable_adapter'
+require 'rgrb/plugin_base/irc_adapter'
 
 module RGRB
   module Plugin
@@ -9,8 +8,7 @@ module RGRB
     module Ctcp
       # Ctcp の IRC アダプター
       class IrcAdapter
-        include Cinch::Plugin
-        include ConfigurableAdapter
+        include PluginBase::IrcAdapter
 
         set(plugin_name: 'Ctcp')
         ctcp(:clientinfo)

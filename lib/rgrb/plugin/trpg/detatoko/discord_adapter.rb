@@ -1,6 +1,6 @@
 # vim: fileencoding=utf-8
 
-require 'rgrb/discord_plugin'
+require 'rgrb/plugin_base/discord_adapter'
 require 'rgrb/plugin/trpg/detatoko/generator'
 require 'rgrb/plugin/trpg/detatoko/constants'
 
@@ -10,7 +10,7 @@ module RGRB
       module Detatoko
         # Detatoko の Discord アダプター
         class DiscordAdapter
-          include RGRB::DiscordPlugin
+          include PluginBase::DiscordAdapter
 
           set(plugin_name: 'Trpg::Detatoko')
           self.prefix = '.d'
@@ -55,7 +55,7 @@ module RGRB
           def initialize(*args)
             super
 
-            @generator = Generator.new
+            prepare_generator
             @header = "でたとこサーガ "
           end
 

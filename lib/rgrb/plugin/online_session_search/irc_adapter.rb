@@ -1,16 +1,14 @@
 # vim: fileencoding=utf-8
 
-require 'cinch'
+require 'rgrb/plugin_base/irc_adapter'
 require 'rgrb/plugin/online_session_search/generator'
-require 'rgrb/plugin/util/notice_multi_lines'
 
 module RGRB
   module Plugin
     module OnlineSessionSearch
       # OnlineSessionSearch の IRC アダプター
       class IrcAdapter
-        include Cinch::Plugin
-        include Util::NoticeMultiLines
+        include PluginBase::IrcAdapter
 
         # セッションマッチングシステムの URL
         SESSION_URL = 'http://session.trpg.net/'
@@ -27,7 +25,7 @@ module RGRB
         def initialize(*args)
           super
 
-          @generator = Generator.new
+          prepare_generator
         end
 
         # 最近追加されたセッション情報を出力する
@@ -44,10 +42,10 @@ module RGRB
           begin
             messages += @generator.latest_schedules(5)
           rescue => e
-            bot.loggers.exception(e)
+            exception(e)
             messages << GET_ERROR_MESSAGE
           end
-          notice_multi_lines(messages, m.target)
+          send_notice(m.target, messages, '', true)
         end
 
         # オンラインセッションを検索する
@@ -65,10 +63,10 @@ module RGRB
           begin
             messages += @generator.search(str, 5)
           rescue => e
-            bot.loggers.exception(e)
+            exception(e)
             messages << GET_ERROR_MESSAGE
           end
-          notice_multi_lines(messages, m.target, '', true)
+          send_notice(m.target, messages, '' , true)
         end
       end
     end

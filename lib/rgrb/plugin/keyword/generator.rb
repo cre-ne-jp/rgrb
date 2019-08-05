@@ -1,7 +1,7 @@
 # vim: fileencoding=utf-8
 
 require 'uri'
-require 'rgrb/plugin/configurable_generator'
+require 'rgrb/plugin_base/generator'
 
 module RGRB
   module Plugin
@@ -9,7 +9,7 @@ module RGRB
     module Keyword
       # Keyword の出力テキスト生成器
       class Generator
-        include ConfigurableGenerator
+        include PluginBase::Generator
 
         # cre.jp 検索ページの URL
         CRE_SEARCH_URL = 'http://cre.jp/search/?sw=%s'

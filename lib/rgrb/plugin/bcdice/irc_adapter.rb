@@ -1,8 +1,6 @@
 # vim: fileencoding=utf-8
 
-require 'cinch'
-
-require 'rgrb/plugin/util/notice_multi_lines'
+require 'rgrb/plugin_base/irc_adapter'
 require 'rgrb/plugin/bcdice/constants'
 require 'rgrb/plugin/bcdice/errors'
 require 'rgrb/plugin/bcdice/generator'
@@ -16,8 +14,7 @@ module RGRB
     module Bcdice
       # Bcdice の IRC アダプター
       class IrcAdapter
-        include Cinch::Plugin
-        include Util::NoticeMultiLines
+        include PluginBase::IrcAdapter
 
         set(plugin_name: 'Bcdice')
         self.prefix = '.bcdice'
@@ -27,7 +24,7 @@ module RGRB
         def initialize(*args)
           super
 
-          @generator = Generator.new
+          prepare_generator
           @header = 'BCDice'
         end
 
@@ -53,7 +50,7 @@ module RGRB
           # ゲームシステム名を含むヘッダ
           header = "#{header_common}<#{result.game_name}>: "
 
-          notice_multi_lines(result.message_lines, m.target, header)
+          send_notice(m.target, result.message_lines, header)
         end
 
         # git submodule で組み込んでいる BCDice のバージョンを出力する
@@ -61,11 +58,7 @@ module RGRB
         # @return [void]
         def version(m)
           log_incoming(m)
-
-          message = @generator.bcdice_version
-
-          log_notice(m.target, message)
-          m.target.send(message, true)
+          send_notice(m.target, @generator.bcdice_version)
         end
 
         private
@@ -78,10 +71,8 @@ module RGRB
         def notice_bcdice_error(target, header_common, error)
           header = error.respond_to?(:game_name) ?
             "#{header_common}<#{error.game_name}>" : header_common
-          message = "#{header}: #{error.message}"
 
-          log_notice(target, message)
-          target.send(message, true)
+          send_notice(target, error.message, "#{header}: ")
         end
       end
     end

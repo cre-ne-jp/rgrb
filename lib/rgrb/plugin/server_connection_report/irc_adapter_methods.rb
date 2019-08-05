@@ -1,6 +1,6 @@
 # vim: fileencoding=utf-8
 
-require 'rgrb/plugin/util/notice_on_each_channel'
+require 'rgrb/plugin_base/irc_adapter'
 require 'rgrb/plugin/server_connection_report/generator'
 require 'rgrb/plugin/server_connection_report/mail_generator'
 
@@ -8,25 +8,19 @@ module RGRB
   module Plugin
     module ServerConnectionReport
       # サーバリレー監視プラグイン アダプター共通メソッドモジュール。
-      #
-      # @note このモジュールを include するクラスは Cinch::Plugin の
-      #   include も必要。
-      #
       # サーバの接続状態が変化したとき用の各デーモンで共通な処理を記述する。
       module IrcAdapterMethods
-        include Util::NoticeOnEachChannel
-
-        # メッセージを送信するチャンネルのリスト
-        attr_reader :channels_to_send
+        # 共通で使用する他のモジュールを読み込む
+        def self.included(by)
+          by.include(PluginBase::IrcAdapter)
+        end
 
         private
 
         # 生成器を準備する
         # @return [self]
         def prepare_generators
-          # プラグインをロガーとして使えるよう、設定に含める
-          config_data = config[:plugin].merge({ logger: self })
-
+          config_data = config[:plugin]
           @channels_to_send = config_data['ChannelsToSend'] || []
 
           @generator = Generator.new
@@ -35,6 +29,7 @@ module RGRB
           if config_data['Mail'] && config_data['MessageTemplate']
             @mail_generator = MailGenerator.new
             @mail_generator.root_path = config[:root_path]
+            @mail_generator.logger = self
             @mail_generator.configure(config_data)
             @mail_generator.load_mail_template_by_name(
               config_data['MessageTemplate']
@@ -58,7 +53,7 @@ module RGRB
         def notice_joined(m, server)
           log_incoming(m)
           sleep 1
-          notice_on_each_channel(@generator.joined(server))
+          send_notice(@channels_to_send, @generator.joined(server))
 
           if @mail_generator
             mail = @mail_generator.generate(
@@ -82,7 +77,7 @@ module RGRB
         # メール送信の設定が行われている場合は、メールの送信も行う。
         def notice_disconnected(m, server, comment)
           log_incoming(m)
-          notice_on_each_channel(@generator.disconnected(server, comment))
+          send_notice(@channels_to_send, @generator.disconnected(server, comment))
 
           if @mail_generator
             mail = @mail_generator.generate(

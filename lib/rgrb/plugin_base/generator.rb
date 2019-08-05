@@ -1,11 +1,17 @@
 # vim: fileencoding=utf-8
 
 require 'active_support/core_ext/string/inflections'
+require 'lumberjack'
 
 module RGRB
-  module Plugin
-    # 設定できる出力テキスト生成器のモジュール
-    module ConfigurableGenerator
+  module PluginBase
+    module Generator
+      # 既定のロガー
+      # @return [Lumberjack::Logger]
+      DEFAULT_LOGGER = Lumberjack::Logger.new(
+        $stdout, progname: File.basename($PROGRAM_NAME)
+      )
+
       # 設定 ID
       # @return [String]
       attr_accessor :config_id
@@ -17,6 +23,9 @@ module RGRB
       # プラグインで使うデータを格納するディレクトリのパス
       # @return [String]
       attr_accessor :data_path
+      # ロガー
+      # @return [Lumberjack::Logger]
+      attr_accessor :logger
 
       # インスタンスの初期化
       #
@@ -24,6 +33,7 @@ module RGRB
       def initialize
         class_name_tree = self.class.name.split('::')
         @plugin_name_underscore = class_name_tree[-2].underscore
+        @logger = DEFAULT_LOGGER
       end
 
       # RGRB のルートパスを設定する

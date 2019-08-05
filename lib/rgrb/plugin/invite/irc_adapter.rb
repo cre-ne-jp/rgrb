@@ -1,8 +1,6 @@
 # vim: fileencoding=utf-8
 
-require 'cinch'
-require 'rgrb/plugin/configurable_adapter'
-require 'rgrb/plugin/util/notice_multi_lines'
+require 'rgrb/plugin_base/irc_adapter'
 
 module RGRB
   module Plugin
@@ -10,9 +8,7 @@ module RGRB
     module Invite
       # Invite の IRC アダプター
       class IrcAdapter
-        include Cinch::Plugin
-        include ConfigurableAdapter
-        include Util::NoticeMultiLines
+        include PluginBase::IrcAdapter
 
         set(plugin_name: 'Invite')
         listen_to(:invite, method: :invite)
@@ -29,9 +25,10 @@ module RGRB
         # @param [Cinch::Message] m 送信されたメッセージ
         # @return [void]
         def invite(m)
+          log_incoming(m)
           Channel(m.channel).join
           log_join(m.channel)
-          notice_multi_lines(@join_message, m.channel)
+          send_notice(m.channel, @join_message)
         end
       end
     end

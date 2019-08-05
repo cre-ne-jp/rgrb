@@ -1,7 +1,6 @@
 # vim: fileencoding=utf-8
 
-require 'cinch'
-
+require 'rgrb/plugin_base/irc_adapter'
 require 'rgrb/plugin/server_connection_report/constants'
 require 'rgrb/plugin/server_connection_report/irc_adapter_methods'
 
@@ -19,7 +18,6 @@ module RGRB
       module Test
         # ServerConnectionReport::Test の IRC アダプター
         class IrcAdapter
-          include Cinch::Plugin
           include ServerConnectionReport::IrcAdapterMethods
 
           # サーバーがネットワークに参加したときのメッセージを表す正規表現
@@ -43,10 +41,10 @@ module RGRB
           def initialize(*)
             super
 
-            prepare_generators
-
             config_data = config[:plugin]
             @test_channel = config_data['TestChannel'] || '#irc_test'
+
+            prepare_generators
 
             @mail_generator.subject = "[TEST] #{@mail_generator.subject}"
             @mail_generator.body = "This is TEST mail.\nby #{self.class.to_s}\n\n--\n#{@mail_generator.body}"

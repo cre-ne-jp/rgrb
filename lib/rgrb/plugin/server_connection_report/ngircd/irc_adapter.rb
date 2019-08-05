@@ -1,11 +1,8 @@
 # vim: fileencoding=utf-8
 
-require 'cinch'
-
-require 'rgrb/plugin/util/notice_on_each_channel'
-require 'rgrb/plugin/util/logging'
+require 'rgrb/plugin_base/irc_adapter'
 require 'rgrb/plugin/server_connection_report/constants'
-require 'rgrb/plugin/server_connection_report/generator'
+require 'rgrb/plugin/server_connection_report/irc_adapter_methods'
 
 module RGRB
   module Plugin
@@ -14,8 +11,7 @@ module RGRB
       module Ngircd
         # ServerConnectionReport::Ngircd の IRC アダプター
         class IrcAdapter
-          include Cinch::Plugin
-          include Util::NoticeOnEachChannel
+          include ServerConnectionReport::IrcAdapterMethods
 
           # メッセージを送信するチャンネルのリスト
           attr_reader :channels_to_send
@@ -38,10 +34,7 @@ module RGRB
           def initialize(*)
             super
 
-            config_data = config[:plugin]
-            @channels_to_send = config_data['ChannelsToSend']
-
-            @generator = Generator.new
+            prepare_generators
           end
 
           # サーバ接続メッセージを NOTICE する
@@ -49,11 +42,7 @@ module RGRB
           # @param [String] server サーバ
           # @return [void]
           def joined(m, server)
-            if m.channel == SERVER_MESSAGE_CHANNEL
-              log_incoming(m)
-              sleep 1
-              notice_on_each_channel(@generator.joined(server))
-            end
+            notice_joined(m, server) if m.channel == SERVER_MESSAGE_CHANNEL
           end
 
           # サーバ切断メッセージを NOTICE する
@@ -61,10 +50,7 @@ module RGRB
           # @param [String] server サーバ
           # @return [void]
           def disconnected(m, server)
-            if m.channel == SERVER_MESSAGE_CHANNEL
-              log_incoming(m)
-              notice_on_each_channel(@generator.disconnected(server))
-            end
+            notice_disconnected(m, server, comment) if m.channel == SERVER_MESSAGE_CHANNEL
           end
         end
       end

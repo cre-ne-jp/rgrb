@@ -1,6 +1,6 @@
 # vim: fileencoding=utf-8
 
-require 'cinch'
+require 'rgrb/plugin_base/irc_adapter'
 require 'rgrb/plugin/cre_bot_help/generator'
 
 module RGRB
@@ -8,7 +8,7 @@ module RGRB
     module CreBotHelp
       # CreBotHelp の IRC アダプター
       class IrcAdapter
-        include Cinch::Plugin
+        include PluginBase::IrcAdapter
 
         set(plugin_name: 'CreBotHelp')
         match(/help/, method: :help)
@@ -16,7 +16,8 @@ module RGRB
         # ヘルプメッセージを返す
         # @return [void]
         def help(m)
-          m.target.send(Generator::HELP_MESSAGE, true)
+          log_incoming(m)
+          send_notice(m.channel, Generator::HELP_MESSAGE)
         end
       end
     end

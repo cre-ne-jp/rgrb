@@ -4,4 +4,5 @@
 !doc/plugins
 /vendor/
 /data/cre_twitter_citation/last_cited.txt
+/data/dice_roll/*
 !.editorconfig

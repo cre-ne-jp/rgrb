@@ -3,8 +3,22 @@
 require_relative '../../../spec_helper'
 require 'rgrb/plugin/dice_roll/generator'
 
+require 'fileutils'
+
 describe RGRB::Plugin::DiceRoll::Generator do
   let(:generator) { described_class.new }
+
+  let(:data_path_on_test) { File.expand_path('./data', __dir__) }
+
+  let(:generator_set_data_path) {
+    g = generator
+
+    g.config_id = 'test'
+    g.data_path = data_path_on_test
+    g.configure({ 'JaDice' => true })
+
+    g
+  }
 
   describe '#basic_dice' do
     # ダイス数が多すぎるかどうか
@@ -90,14 +104,11 @@ describe RGRB::Plugin::DiceRoll::Generator do
       end
     end
 
-    # 100000d101 の出目に偏りがないことを
+    # 100000d100 の出目に偏りがないことを
     # カイ二乗検定で確かめる
-    #
-    # 面数が 101 なのは、自由度が面数 - 1 で、カイ二乗分布表には
-    # 切りの良い 100 しか載っていないから
     it '出目に偏りがない' do
       rolls = 100_000
-      sides = 101
+      sides = 100
       freq = Array.new(sides, 0)
       values = generator.dice_roll(rolls, sides).values
 
@@ -109,9 +120,9 @@ describe RGRB::Plugin::DiceRoll::Generator do
       expected_count = rolls.to_f / sides
       chi2 = freq.
         map { |count| (count - expected_count)**2 / expected_count }.
-        reduce(0, :+)
+        reduce(0, &:+)
 
-      expect(chi2).to be <= 140.169 # 自由度 100、有意水準 0.5%
+      expect(chi2).to be <= 170.798 # 自由度 99、有意水準 0.001%
     end
   end
 
@@ -126,5 +137,67 @@ describe RGRB::Plugin::DiceRoll::Generator do
         end
       end
     end
+  end
+
+  describe 'データベースディレクトリの準備' do
+    before do
+      clean_data
+    end
+
+    after do
+      clean_data
+    end
+
+    it 'ディレクトリが存在しなければ作成する' do
+      expect(File.directory?("#{data_path_on_test}/test")).to be(false)
+
+      generator_set_data_path
+
+      expect(File.directory?("#{data_path_on_test}/test")).to be(true)
+    end
+
+    it 'ディレクトリ以外のファイルが存在したら例外を発生させる' do
+      expect(File.directory?("#{data_path_on_test}/test")).to be(false)
+
+      FileUtils.touch("#{data_path_on_test}/test")
+
+      expect { generator_set_data_path }.to raise_error(Errno::ENOTDIR)
+    end
+  end
+
+  describe 'シークレットロール' do
+    let(:channel) { '#test' }
+
+    before do
+      clean_data
+    end
+
+    after do
+      clean_data
+    end
+
+    it '結果を保存できる' do
+      dice_roll_results = [
+        'foo -> 2d6 = [5,3] = 8',
+        'bar -> 2d6 = [3,2] = 5'
+      ]
+
+      dice_roll_results.each do |result|
+        generator_set_data_path.save_secret_roll(channel, result)
+      end
+
+      expect(generator_set_data_path.open_dice(channel)).to eq(dice_roll_results)
+    end
+
+    describe '#open_dice' do
+      it 'シークレットロール未実施時に nil を返す' do
+        expect(generator_set_data_path.open_dice(channel)).to be_nil
+      end
+    end
+  end
+
+  # テスト用のデータディレクトリ内のファイルを削除する
+  def clean_data
+    FileUtils.rm_rf(Dir.glob("#{data_path_on_test}/*"))
   end
 end

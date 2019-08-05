@@ -1,6 +1,6 @@
 # vim: fileencoding=utf-8
 
-require 'cinch'
+require 'rgrb/plugin_base/irc_adapter'
 require 'rgrb/plugin/keyword/generator'
 
 module RGRB
@@ -8,28 +8,32 @@ module RGRB
     module Keyword
       # Keyword の IRC アダプター
       class IrcAdapter
-        include Cinch::Plugin
+        include PluginBase::IrcAdapter
 
         set(plugin_name: 'Keyword')
-        match(/k[ 　]+(.+)/, method: :cre_search)
-        match(/a[ 　]+(.+)/, method: :amazon_search)
+        match(/(k|a)[ 　]+(.+)/, method: :search)
 
         def initialize(*args)
           super
-
-          @generator = Generator.new
+          prepare_generator
         end
 
-        # NOTICE で cre.jp 検索ページを返す
+        # キーワードで検索する
+        # @param [Cinch::Message] m
+        # @param [String] site_code 検索するウェブサイト
+        # @param [String] keyword キーワード
         # @return [void]
-        def cre_search(m, keyword)
-          m.target.send(@generator.cre_search(keyword), true)
-        end
+        def search(m, site_code, keyword)
+          log_incoming(m)
 
-        # NOTICE で Amazon.co.jp 検索ページを返す
-        # @return [void]
-        def amazon_search(m, keyword)
-          m.target.send(@generator.amazon_search(keyword), true)
+          message = case(site_code)
+          when 'k'
+            @generator.cre_search(keyword)
+          when 'a'
+            @generator.amazon_search(keyword)
+          end
+
+          send_notice(m.target, message)
         end
       end
     end

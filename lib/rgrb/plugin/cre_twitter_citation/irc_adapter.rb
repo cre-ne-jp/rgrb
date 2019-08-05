@@ -1,7 +1,6 @@
 # vim: fileencoding=utf-8
 
-require 'cinch'
-require 'rgrb/plugin/configurable_adapter'
+require 'rgrb/plugin_base/irc_adapter'
 require 'rgrb/plugin/cre_twitter_citation/generator'
 
 module RGRB
@@ -10,8 +9,7 @@ module RGRB
     module CreTwitterCitation
       # CreTwitterCitation の IRC アダプター
       class IrcAdapter
-        include Cinch::Plugin
-        include ConfigurableAdapter
+        include PluginBase::IrcAdapter
 
         set(plugin_name: 'CreTwitterCitation')
 
@@ -29,12 +27,7 @@ module RGRB
         # ツイートを引用し、NOTICE する
         # @return [void]
         def cite_from_twitter
-          @generator.cite_from_twitter.each do |message|
-            @channels_to_send.each do |channel_name|
-              Channel(channel_name).safe_send(message, true)
-              sleep(1)
-            end
-          end
+          send_notice(@channels_to_send, @generator.cite_from_twitter, '', true)
         end
       end
     end

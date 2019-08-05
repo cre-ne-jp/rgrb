@@ -1,6 +1,9 @@
 # vim: fileencoding=utf-8
 
-require 'rgrb/plugin/dice_roll/generator.rb'
+require 'd1lcs'
+require 'rgrb/plugin_base/generator'
+require 'rgrb/plugin/dice_roll/generator'
+require 'rgrb/plugin/trpg/detatoko/gamedatas'
 
 module RGRB
   module Plugin
@@ -9,18 +12,21 @@ module RGRB
       module Detatoko
         # Detatoko の出力テキスト生成器
         class Generator
+          include PluginBase::Generator
 
-          def initialize
+          def initialize(*)
+            super
+
             @random = Random.new
-            @stances = [ '敵視', '宿命', '憎悪', '雲上', '従属', '不明' ]
             @dice_roll_generator = DiceRoll::Generator.new
+            @d1lcs_title_line = D1lcs.title_line
           end
 
           # スキルランクから判定値を算出します
-          # @param [Fixnum] skill_rank スキルランク
+          # @param [Integer] skill_rank スキルランク
           # @param [String] calc 計算記号
-          # @param [Fixnum] solid 追加ダメージ(固定値)
-          # @param [Fixnum] flag フラグ
+          # @param [Integer] solid 追加ダメージ(固定値)
+          # @param [Integer] flag フラグ
           # @return [String]
           def skill_decision(skill_rank, calc, solid, flag)
             header = "スキルランク = #{skill_rank} -> "
@@ -56,8 +62,15 @@ module RGRB
             message
           end
 
+          # skill_decision の日本語コマンド用ラッパー
+          # @param [String] skill_rank_ja ひらがな表現のスキルランク
+          # @return [String]
+          def skill_decision_ja(skill_rank_ja)
+            skill_decision(@dice_roll_generator.ja_to_i(skill_rank_ja), '+', 0, 0)
+          end
+
           # 烙印を得る
-          # @param [String] type 体力・気力烙印のどちらか
+          # @param [Symbol] type 体力・気力烙印のどちらか
           # @return [String]
           def stigma(type)
             stigma = get_stigma
@@ -75,24 +88,112 @@ module RGRB
           end
 
           # バッドエンド表を振る
-          # @param [String] type 体力・気力のどちらか
+          # @param [Symbol] type 体力・気力のどちらか
+          # @return [String]
           def badend(type)
             result = @dice_roll_generator.dice_roll(2, 6)
             "#{result.sw2_dll_format} -> #{badend_text(type, result.sum)}"
           end
 
           # スタンス表を振る
-          # @param [String] uses
+          # @param [String] uses 列挙された使用するスタンス系統
+          # @return [String]
           def stance(uses)
+            uses = '' if /全部/ =~ uses
             use_list = what_stance_list(uses)
             stance_type = use_list.sample
             "候補:[#{use_list.join(',')}] -> " \
               "系統:【#{stance_type}】 #{stance_select(stance_type)}"
           end
 
+          # ラスボス立場表を振る
+          # @param [Symbol] type 通常の立場表か、悪への立場表か
+          # @option :normal 通常の立場表
+          # @option :dark   悪へのラスボス立場表
+          # @return [String]
+          def ground(type = :normal)
+            result = @dice_roll_generator.dice_roll(2, 6)
+            number = result.sum
+
+            "#{result.sw2_dll_format} -> " \
+              "#{number}: 【#{GROUNDS[type][number - 2]}】"
+          end
+
+          # クラスを1つ選ぶ
+          # @return [String]
+          def character_class
+            result = CLASSES.to_a.sample
+            "%02d -> #{result[0]}" % result[1]
+          end
+
+          # ポジションを1つ選ぶ
+          # @param [Symbol] type 用途
+          # @option type :pc   PC のポジション
+          # @option type :npc  敵 NPC のポジション
+          # @option type :dark 悪のポジション
+          # @return [String]
+          def position(type)
+            POSITIONS[type].sample
+          end
+
+          # 【好きなもの・趣味】／【苦手なもの・弱点】表を引く
+          # @return [String]
+          def like_things
+            value = @dice_roll_generator.dxx_roll('66')
+            thing = LIKE_THINGS[value[0] - 1][value[1] - 1]
+            if thing === '特定の環境'
+              value << @random.rand(1..6)
+              thing = "#{LIKE_THINGS[6][value[2] - 1]} (#{thing})"
+            else
+              things = thing.split('／')
+              thing = "#{things.sample} (#{thing})" if things.size > 1
+            end
+
+            "[#{value.join(',')}] -> #{value.join('')} : #{thing}"
+          end
+
+          # ラスボスチャート・クエストチャートを引く
+          # @param [Symbol] type ラスボスか、クエストか
+          # @option :lastboss ラスボスチャート
+          # @option :quest クエストチャート
+          # @return [String]
+          def chart(type)
+            value = @dice_roll_generator.dxx_roll('66')
+            result = CHARTS[type][(value[0] - 1) * 6 + value[1] - 1]
+            "[#{value.join(',')}] -> #{value.join('')} : #{result}"
+          end
+
+          # 1行キャラシを出力する
+          # @param [Array<String>] ids 対象のキャラシID
+          # @return [Hash]
+          # @option return [Array<String>] :lcs キャラクターシート
+          # @option return [Array<String>] :errors 発生したエラー
+          def lcs(ids)
+            result = { :lcs => [nil], :errors => [] }
+            ids.each { |id|
+              case id
+              when 'title'
+                result[:lcs][0] = @d1lcs_title_line
+              else
+                cs = D1lcs::Element.new(id)
+                if(cs.error != nil)
+                  result[:errors] << cs.error
+                else
+                  result[:lcs] << cs.chara_sheet_line
+                end
+              end
+            }
+
+            result[:lcs].compact!
+
+            result
+          end
+
+          private
+
           # ダイスを振り獲得する烙印を決める
           # @return [Array<Array>]
-          def get_stigma()
+          def get_stigma
             stigma_number = []
             time = 1
             second = false
@@ -102,90 +203,48 @@ module RGRB
               dice = @dice_roll_generator.dice_roll(2, 6)
               stigma_number << dice.values
               if dice.sum == 2 and !second
-                  second = true
-                  time += 2
+                second = true
+                time += 2
               end
             end
 
             stigma_number
           end
-          private :get_stigma
 
           # 出目から対応する烙印を決定する
-          # @param [String] type 体力・気力のどちらか
-          # @param [Fixnum] number ダイスの出目
+          # @param [Symbol] type 体力・気力のどちらか
+          # @param [Integer] number ダイスの出目
           # @return [String]
           def stigma_text(type, number)
-            case type
-            when 'v'
-              stigmas = [
-                '痛手', '流血', '衰弱', '苦悶', '衝撃',
-                '疲労', '怒号', '負傷', '軽傷', nil
-              ]
-            when 'm'
-              stigmas = [
-                '絶望', '号泣', '後悔', '恐怖', '葛藤',
-                '憎悪', '呆然', '迷い', '悪夢', nil
-              ]
-            end
-
-            stigmas[number - 3] && "#{number}:【#{stigmas[number - 3]}】"
+            STIGMAS[type][number - 3] &&
+              "#{number}: 【#{STIGMAS[type][number - 3]}】"
           end
-          private :stigma_text
 
           # 出目から対応するバッドエンドを決定する
-          # @param [String] type 体力・気力のどちらか
-          # @param [Fixnum] number ダイスの出目
+          # @param [Symbol] type 体力・気力のどちらか
+          # @param [Integer] number ダイスの出目
           # @return [String]
           def badend_text(type, number)
-            case type
-            when 'v'
-              badends = [
-                '死亡', '命乞', '忘却', '悲劇', '暴走', '転落',
-                '虜囚', '逃走', '重症', '気絶', 'なし'
-              ]
-            when 'm'
-              badends = [
-                '自害', '堕落', '隷属', '裏切', '暴走', '呪い',
-                '虜囚', '逃走', '放心', '気絶', 'なし'
-              ]
-            end
-            "#{number}:【#{badends[number - 2]}】"
+            "#{number}: 【#{BADENDS[type][number - 2]}】"
           end
-          private :badend_text
 
           # 文字列をスタンスの系統に分ける
           # @param [String] uses 元の文字列
           # @return [Array<String>] 使用するスタンス系統のリスト
           def what_stance_list(uses)
-            return @stances.dup if uses.empty?
+            return STANCES.keys if uses.empty?
 
             separators = /[\+＋・]/
-            @stances & uses.split(separators)
+            STANCES.keys & uses.split(separators)
           end
-          private :what_stance_list
 
           # 指定された系統のスタンスをランダムに選ぶ
+          # @param [String] type スタンス系統
+          # @return [String]
           def stance_select(type)
-            stance = case type
-            when '敵視'
-              ['邪魔', '好敵手', '標的', '使命', '異世界召喚', '討伐者']
-            when '宿命'
-              ['救済', '神託', 'あの人は今', '風来坊', '自己投影', '嵐の予兆']
-            when '憎悪'
-              ['暗い目', '悪を憎む', '劣等感', '怨念', '裏切り', '復讐']
-            when '雲上'
-              ['怯え', '小市民', '懊悩', '嘆願', '世捨て人', '誰それ?']
-            when '従属'
-              ['隷従', '呪縛', '勘違い', '弱肉強食', '居場所', '心酔']
-            when '不明'
-              ['野心の炎', '大いなる御方', '戯れ', '好奇心', '天秤', '超越']
-            end
-
             rand = @random.rand(6)
-            "#{rand + 1}:【#{stance[rand]}】"
+            "#{rand + 1}:【#{STANCES[type][rand]}】"
           end
-          private :stance_select
         end
       end
     end

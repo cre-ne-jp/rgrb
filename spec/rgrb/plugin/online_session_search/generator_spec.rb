@@ -92,7 +92,8 @@ describe RGRB::Plugin::OnlineSessionSearch::Generator do
       end
 
       it do
-        expect { generator.send(:session_data_from, url) }.to raise_error
+        expect { generator.send(:session_data_from, url) }.
+          to raise_error(StandardError)
       end
     end
 

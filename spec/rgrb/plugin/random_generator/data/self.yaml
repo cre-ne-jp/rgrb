@@ -1,4 +1,4 @@
 Name: self
 Description: 循環参照を起こす表
 Body:
-  - "%%self%%"
+  - "!%%self%%"

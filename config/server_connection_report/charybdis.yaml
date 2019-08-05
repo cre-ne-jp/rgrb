@@ -1,0 +1,32 @@
+# Charybdis 用サーバーリレー監視プラグインの設定
+ServerConnectionReport::Charybdis:
+  # NOTICE を行うチャンネルの一覧
+  ChannelsToSend:
+    - '#irc_test'
+
+  # 反応すべきメッセージの送信者の一覧
+  AllowedSenders:
+    - irc.cre.jp
+    - irc.r-roman.net
+    - services.cre.jp
+    - irc.egotex.net
+    - t-net.xyz
+    - irc.sougetu.net
+    - irc.kazagakure.net
+
+  # 送信するメールのテンプレートファイルID
+  # data/server_connection_report/ に保存したテキストファイル(.txt)の
+  # ファイル名部を指定する
+  MessageTemplate: 'cre'
+
+  # 送信設定
+  Mail:
+    To:
+      - 'admin@example.net'
+    SMTP:
+      address: 'localhost'
+      port: 25
+      domain: 'example.net'
+      authentication: false
+      ssl: false
+      enable_starttls_auto: false

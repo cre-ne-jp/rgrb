@@ -1,0 +1,33 @@
+Name: alphabet
+Description: "アルファベット26字から一つ選びます。"
+Added: 2015-04-17
+Access: public
+License: NONE
+Author: koi-chan
+Body:
+  - "A"
+  - "B"
+  - "C"
+  - "D"
+  - "E"
+  - "F"
+  - "G"
+  - "H"
+  - "I"
+  - "J"
+  - "K"
+  - "L"
+  - "M"
+  - "N"
+  - "O"
+  - "P"
+  - "Q"
+  - "R"
+  - "S"
+  - "T"
+  - "U"
+  - "V"
+  - "W"
+  - "X"
+  - "Y"
+  - "Z"

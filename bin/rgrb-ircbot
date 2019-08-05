@@ -6,5 +6,5 @@ require 'bundler/setup'
 
 require 'rgrb/exec/irc_bot'
 
-rgrb_root_path = File.expand_path('..', File.dirname(__FILE__))
-RGRB::Exec::IRCBot.new(rgrb_root_path, ARGV).execute
+root_path = File.expand_path('..', File.dirname(__FILE__))
+RGRB::Exec::IRCBot.run(root_path, ARGV)

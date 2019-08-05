@@ -1,0 +1,64 @@
+# IRC ボットの設定
+IRCBot:
+  # 接続する IRC サーバーのホスト名
+  Host: irc.example.net
+
+  # 接続するポート
+  Port: 6667
+
+  # パスワード。必要なければ null
+  Password: pa$$word
+
+  # エンコーディング
+  Encoding: UTF-8
+
+  # ニックネーム
+  Nick: rgrb_cinch
+
+  # 接続時のユーザー名
+  User: rgrb
+
+  # リアルネーム
+  RealName: 汎用ボット RGRB
+
+  # JOIN するチャンネルの一覧
+  Channels:
+    - ''
+
+  # QUIT メッセージ
+  # 空文字列にすると、"Caught <signal>" が設定される
+  QuitMessage: 'bye'
+
+# 使用するプラグインを列挙する。大文字小文字を区別するので注意
+Plugins:
+  - DiceRoll
+  - RandomGenerator
+  - Trpg::Detatoko
+  - Bcdice
+  - Keyword
+  - OnlineSessionSearch
+  - CreTwitterCitation
+  - UrlFetchTitle
+  - CreBotHelp
+  - ServerConnectionReport::Charybdis
+  - Part
+  - KickBack
+  - Invite
+  - Jihou
+  - Ctcp
+
+# 取り込む設定の ID を列挙する
+# 設定ファイルは config/ 以下に配置する
+# 設定 ID は config/ を基準とした相対パスから拡張子を除いたもの
+Include:
+  - dice_roll
+  - random_generator
+  - keyword
+  - cre_twitter_citation
+  - url_fetch_title
+  - server_connection_report/charybdis
+  - part
+  - kick_back
+  - invite
+  - jihou
+  - ctcp

@@ -1,0 +1,4 @@
+# CTCP 応答プラグインの設定
+Ctcp:
+  # USERINFO のメッセージ
+  UserInfo: 'RGRB 稼働中'

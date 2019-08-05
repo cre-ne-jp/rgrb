@@ -1,7 +1,6 @@
 # vim: fileencoding=utf-8
 
-require 'cinch'
-require 'rgrb/plugin/configurable_adapter'
+require 'rgrb/plugin_base/irc_adapter'
 
 module RGRB
   module Plugin
@@ -9,8 +8,7 @@ module RGRB
     module KickBack
       # KickBack の IRC アダプター
       class IrcAdapter
-        include Cinch::Plugin
-        include ConfigurableAdapter
+        include PluginBase::IrcAdapter
 
         set(plugin_name: 'KickBack')
         listen_to(:kick, method: :kick)
@@ -27,11 +25,12 @@ module RGRB
         # @param [Cinch::Message] m 送信されたメッセージ
         # @return [void]
         def kick(m)
+          log_incoming(m)
+
           if m.params[1].downcase == bot.nick.downcase
-            log(m.raw, :incoming, :info)
             Channel(m.channel).join
-            m.target.send(@join_message, true)
-            log("<JOIN on #{m.channel}> #{@join_message}", :outgoing, :info)
+            log_join(m.channel)
+            send_notice(m.target, @join_message)
           end
         end
       end

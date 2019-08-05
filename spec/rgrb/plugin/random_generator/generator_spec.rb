@@ -1,14 +1,66 @@
 # vim: fileencoding=utf-8
 
 require_relative '../../../spec_helper'
+require 'date'
+require 'lumberjack'
 require 'rgrb/plugin/random_generator/generator'
 
 describe RGRB::Plugin::RandomGenerator::Generator do
   let(:generator) do
-    obj = described_class.new
-    obj.send(:load_data, "#{__dir__}/data/*.yaml")
+    g = described_class.new
+    g.load_data!("#{__dir__}/data/*.yaml")
 
-    obj
+    g
+  end
+
+  describe '#desc' do
+    context 'hiragana' do
+      subject { generator.desc('hiragana') }
+      it { should eq('ひらがな46文字の中から一つ選びます。') }
+    end
+
+    context 'HA06event' do
+      subject { generator.desc('HA06event') }
+      it { should eq('語り部「狭間さまよえるもの達：現代オカルトファンタジー」で物語のきっかけとなる事件を作ります。') }
+    end
+
+    context '存在しない表の名前が指定された場合' do
+      it 'TableNotFound エラーが発生する' do
+        expect { generator.desc('none') }.
+          to raise_error(RGRB::Plugin::RandomGenerator::TableNotFound)
+      end
+    end
+  end
+
+  describe '#japanese_date (private)' do
+    context '2014-12-31' do
+      subject { generator.send(:japanese_date, Date.new(2014, 12, 31)) }
+      it { should eq('2014年12月31日') }
+    end
+
+    context '2015-04-01' do
+      subject { generator.send(:japanese_date, Date.new(2015, 4, 1)) }
+      it { should eq('2015年4月1日') }
+    end
+  end
+
+  describe '#info' do
+    context 'hiragana' do
+      subject { generator.info('hiragana') }
+      it { should eq('「hiragana」の作者は sf さんで、2014年12月15日 に追加されましたの。最後に更新されたのは 2014年12月20日 ですわ。ひらがな46文字の中から一つ選びます。') }
+    end
+
+    context 'hiragana-no-modified' do
+      subject { generator.info('hiragana-no-modified') }
+      it { should eq('「hiragana-no-modified」の作者は ocha さんで、2015年4月6日 に追加されましたの。ひらがな46文字の中から一つ選びます。') }
+    end
+
+    context '存在しない表の名前が指定された場合' do
+      it 'TableNotFound エラーが発生する' do
+        expect { generator.info('none') }.
+          to raise_error(RGRB::Plugin::RandomGenerator::TableNotFound)
+      end
+    end
   end
 
   describe '#get_value_from (private)' do
@@ -53,33 +105,13 @@ describe RGRB::Plugin::RandomGenerator::Generator do
     end
 
     context 'hiraganarand' do
-      # 要素数 10 の表から 100000 回取得したときに偏りが
-      # ないことをカイ二乗検定で確かめる
-      it '各値が偏りなく出る' do
+      it '100 回取り出したとき、値がすべて同じではない' do
         table = 'hiraganarand'
-        data = generator.
-          instance_variable_get(:@table)['hiraganarand'].
-          instance_variable_get(:@values)
-        freq = {}
-
-        # 頻度を入れるハッシュを初期化する
-        data.each do |value|
-          freq[value] = 0
+        results = Array.new(100) do
+          generator.send(:get_value_from, table)
         end
 
-        n_gets = 100_000
-        n_gets.times do
-          freq[generator.send(:get_value_from, table)] += 1
-        end
-
-        # カイ二乗値を求める
-        expected_count = n_gets.to_f / data.length
-        chi2 = freq.
-          each_value.
-          map { |count| (count - expected_count)**2 / expected_count }.
-          reduce(0, :+)
-
-        expect(chi2).to be <= 23.5894 # 自由度 9、有意水準 0.5%
+        expect(results.uniq.length).to be > 1
       end
     end
   end
@@ -139,9 +171,9 @@ describe RGRB::Plugin::RandomGenerator::Generator do
 
     context '循環参照' do
       include_examples(
-        'raise error',
+        'correctly replaced',
         'self',
-        RGRB::Plugin::RandomGenerator::CircularReference
+        '!!!!!!!!!!(...)'
       )
     end
   end

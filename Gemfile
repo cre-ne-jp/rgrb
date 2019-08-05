@@ -1,9 +1,27 @@
 source 'https://rubygems.org'
 
-gem 'activesupport', '~> 4.2'
-gem 'cinch', '~> 2.1'
-gem 'twitter', '~> 5.11'
+gem 'activesupport', '~> 5.0'
+gem 'twitter', '> 5.15'
+gem 'lumberjack', '~> 1.0'
 gem 'sysexits', '~> 1.2'
+gem 'http', '> 0.9'
+gem 'guess_html_encoding'
+gem 'charlock_holmes', '~> 0.7'
+gem 'nokogiri', '~> 1.6'
+gem 'd1lcs'
+gem 'json'
+gem 'mail', '~> 2.7'
+
+group :irc do
+  gem 'cinch'
+
+  # DiceRollプラグインで使用する
+  gem 'gdbm'
+end
+
+group :discord do
+  gem 'discordrb'
+end
 
 group :development, :test do
   gem 'pry', '~> 0.10'
@@ -12,12 +30,17 @@ group :development, :test do
 end
 
 group :test do
-  gem 'rake', '~> 10.4'
+  gem 'rake', '~> 12.0'
   gem 'rspec', '~> 3.1'
   gem 'coveralls', require: false
-  gem 'webmock', '~> 1.20'
+  gem 'webmock', '~> 3.3'
 end
 
 # パス設定
-lib_path = File.expand_path('lib', File.dirname(__FILE__))
-$LOAD_PATH.unshift lib_path unless $LOAD_PATH.include?(lib_path)
+[
+  'lib',
+  'vendor'
+].each do |lib_name|
+  lib_path = File.expand_path(lib_name, File.dirname(__FILE__))
+  $LOAD_PATH.unshift lib_path unless $LOAD_PATH.include?(lib_path)
+end

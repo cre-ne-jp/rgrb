@@ -5,6 +5,8 @@ require_relative '../../spec_helper'
 require 'rgrb/plugin_base/generator'
 require 'rgrb/plugin_base/adapter'
 require 'rgrb/plugin_base/adapter_options'
+require 'rgrb/plugin_base/irc_adapter'
+require 'rgrb/plugin_base/discord_adapter'
 
 module RGRB
   module Plugin
@@ -19,14 +21,21 @@ module RGRB
 
         def configure(config_data)
           @name = config_data['name']
-          @logger = config_data[:logger]
         end
       end
 
       class IrcAdapter
-        include PluginBase::Adapter
+        include PluginBase::IrcAdapter
 
         attr_reader :generator
+
+        def initialize(*)
+          # 何もしない
+        end
+
+        def call_prepare_generator
+          prepare_generator
+        end
 
         def config
           PluginBase::AdapterOptions.new(
@@ -35,7 +44,35 @@ module RGRB
             {
               'name' => 'RGRB'
             },
-            Lumberjack::Logger.new($stdout, progname: self.class.to_s)
+            nil
+          )
+        end
+      end
+
+      class DiscordAdapter
+        include PluginBase::DiscordAdapter
+
+        attr_reader :generator
+        attr_reader :logger
+
+        def initialize(*)
+          @logger = Lumberjack::Logger.new(
+            $stdout, progname: File.basename($PROGRAM_NAME)
+          )
+        end
+
+        def call_prepare_generator
+          prepare_generator
+        end
+
+        def config
+          PluginBase::AdapterOptions.new(
+            'test',
+            '/home/rgrb',
+            {
+              'name' => 'RGRB'
+            },
+            nil
           )
         end
       end
@@ -83,34 +120,64 @@ describe RGRB::PluginBase::Generator do
   end
 end
 
-describe RGRB::PluginBase::Adapter do
+describe RGRB::PluginBase::IrcAdapter do
   let(:irc_adapter) { RGRB::Plugin::TestPlugin::IrcAdapter.new }
-  let(:send_prepare_generator) { -> { irc_adapter.send(:prepare_generator) } }
   let(:root_path) { '/home/rgrb' }
 
   describe '#prepare_generator (private)' do
     it 'true が返る' do
-      expect(send_prepare_generator.call).to be(true)
+      expect(irc_adapter.call_prepare_generator).to be(true)
     end
 
     it '@generator のクラスが正しい' do
-      send_prepare_generator.call
+      irc_adapter.call_prepare_generator
       expect(irc_adapter.generator.class).to be(RGRB::Plugin::TestPlugin::Generator)
     end
 
     it '@generator.root_path= で正しく設定される' do
-      send_prepare_generator.call
+      irc_adapter.call_prepare_generator
       expect(irc_adapter.generator.root_path).to eq(root_path)
     end
 
     it 'プラグインの設定が反映される' do
-      send_prepare_generator.call
+      irc_adapter.call_prepare_generator
       expect(irc_adapter.generator.name).to eq('RGRB')
     end
 
     it 'ロガーが正しく設定される' do
-      send_prepare_generator.call
+      irc_adapter.call_prepare_generator
       expect(irc_adapter.generator.logger).to be(irc_adapter)
+    end
+  end
+end
+
+describe RGRB::PluginBase::DiscordAdapter do
+  let(:discord_adapter) { RGRB::Plugin::TestPlugin::DiscordAdapter.new }
+  let(:root_path) { '/home/rgrb' }
+
+  describe '#prepare_generator (private)' do
+    it 'true が返る' do
+      expect(discord_adapter.call_prepare_generator).to be(true)
+    end
+
+    it '@generator のクラスが正しい' do
+      discord_adapter.call_prepare_generator
+      expect(discord_adapter.generator.class).to be(RGRB::Plugin::TestPlugin::Generator)
+    end
+
+    it '@generator.root_path= で正しく設定される' do
+      discord_adapter.call_prepare_generator
+      expect(discord_adapter.generator.root_path).to eq(root_path)
+    end
+
+    it 'プラグインの設定が反映される' do
+      discord_adapter.call_prepare_generator
+      expect(discord_adapter.generator.name).to eq('RGRB')
+    end
+
+    it 'ロガーが正しく設定される' do
+      discord_adapter.call_prepare_generator
+      expect(discord_adapter.generator.logger).to be(discord_adapter.logger)
     end
   end
 end

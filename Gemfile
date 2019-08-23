@@ -1,10 +1,10 @@
 source 'https://rubygems.org'
 
 gem 'activesupport', '~> 5.0'
-gem 'twitter', '> 5.15'
+gem 'twitter', '~> 6.2'
 gem 'lumberjack', '~> 1.0'
 gem 'sysexits', '~> 1.2'
-gem 'http', '> 0.9'
+gem 'http', '> 3.0'
 gem 'guess_html_encoding'
 gem 'charlock_holmes', '~> 0.7'
 gem 'nokogiri', '~> 1.6'

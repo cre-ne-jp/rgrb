@@ -2,7 +2,7 @@
 
 module RGRB
   # RGRB のバージョン
-  VERSION = '1.1.1'
+  VERSION = '1.1.2'
 
   # コミットID取得
   # エラーが発生した場合は、返り値にコミットIDが含まれない。

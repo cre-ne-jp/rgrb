@@ -20,6 +20,7 @@ module RGRB
         # ダイス数が多すぎた場合のメッセージ
         # @return [String]
         EXCESS_DICE_MESSAGE = "ダイスが机から落ちてしまいましたの☆"
+        EXCESS_TRACK_DICE_MESSAGE = "ダイスが荷台から落ちてしまいましたの☆"
 
         # ジェネレータを初期化する
         def initialize
@@ -38,6 +39,8 @@ module RGRB
           prepare_db_dir
 
           @db_secret_dice = "#{@db_dir}/secret_dice"
+
+          @fall_off_track = config_data['FallOffTrack'].to_i || 100
         end
 
         # 基本的なダイスロールの結果を返す
@@ -46,7 +49,7 @@ module RGRB
         # @return [String]
         def basic_dice(rolls, sides)
           if rolls > 100
-            "#{rolls}d#{sides}: #{EXCESS_DICE_MESSAGE}"
+            "#{rolls}d#{sides}: #{excess_message}"
           else
             dice_roll(rolls, sides).dice_roll_format
           end
@@ -62,7 +65,7 @@ module RGRB
         # @return [String]
         def dxx_dice(rolls)
           if rolls.size > 20
-            "d#{rolls}: #{EXCESS_DICE_MESSAGE}"
+            "d#{rolls}: #{excess_message}"
           else
             values = dxx_roll(rolls)
             "d#{rolls} = [#{values.join(',')}] = #{values.join('')}"
@@ -88,6 +91,7 @@ module RGRB
           end
         end
 
+        # シークレットダイスの結果をまとめて公開し、削除する
         # @param [String] target
         # @return [Array, nil]
         def open_dice(target)
@@ -139,6 +143,16 @@ module RGRB
               # ディレクトリ以外のファイルが存在したらエラー
               raise Errno::ENOTDIR, @db_dir
             end
+          end
+        end
+
+        # 振るダイスの量が多すぎるときのエラーメッセージを返す
+        # @return [String]
+        def excess_message
+          if (1..1000) === @fall_off_track && @random.rand(0..1000) % @fall_off_track == 0
+            EXCESS_TRACK_DICE_MESSAGE
+          else
+            EXCESS_DICE_MESSAGE
           end
         end
       end

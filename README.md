@@ -37,6 +37,7 @@ gem install bundler
 * zlib-devel
 * which
 * sqlite-devel
+* gdbm-devel
 
 ```bash
 cd /path/to/rgrb

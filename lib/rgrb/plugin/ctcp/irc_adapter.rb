@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # vim: fileencoding=utf-8
 
 require 'rgrb/plugin_base/irc_adapter'
@@ -11,23 +12,25 @@ module RGRB
         include PluginBase::IrcAdapter
 
         set(plugin_name: 'Ctcp')
-        ctcp(:clientinfo)
-        ctcp(:version)
-        ctcp(:time)
-        ctcp(:ping)
-        ctcp(:userinfo)
-        ctcp(:source)
+
+        # 利用可能な CTCP コマンド
+        AVAILABLE_COMMANDS = %w(CLIENTINFO VERSION TIME PING USERINFO SOURCE)
+          .sort
+          .freeze
+
+        AVAILABLE_COMMANDS.each do |command|
+          ctcp(command)
+        end
 
         def initialize(*args)
           super
 
           config_data = config[:plugin] || {}
           @userinfo = config_data['UserInfo'] || 'RGRB 稼働中'
-          @valid_cmd = %w(CLIENTINFO VERSION TIME PING USERINFO SOURCE).sort
         end
 
         def ctcp_clientinfo(m)
-          ctcp_reply(m, @valid_cmd.join(' '))
+          ctcp_reply(m, AVAILABLE_COMMANDS.join(' '))
         end
 
         def ctcp_version(m)

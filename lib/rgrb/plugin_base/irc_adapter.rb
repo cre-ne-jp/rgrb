@@ -23,33 +23,18 @@ module RGRB
       # @return [void]
       def send_notice(targets, messages, header = '', safe = false)
         messages = messages.split($/) if messages.kind_of?(String)
-        targets =
-          case targets
-          when String
-            targets.split($/).map do |name|
-              Target(name)
-            end
-          when Cinch::Target, Cinch::Channel, Cinch::User
-            [targets]
-          when Array
-            targets.map do |target|
-              case target
-              when String
-                Target(target)
-              when Cinch::Target, Cinch::Channel, Cinch::User
-                target
-              else
-                raise ArgumentError
-              end
-            end
-          else
-            raise ArgumentError
-          end
+        targets = to_cinch_target_array(targets)
 
         targets.each do |target|
           messages.each do |line|
             message = "#{header}#{line.chomp}"
-            safe ? target.safe_send(message, true) : target.send(message, true)
+
+            if safe
+              target.safe_send(message, true)
+            else
+              target.send(message, true)
+            end
+
             log_notice(target, message)
           end
         end
@@ -104,6 +89,41 @@ module RGRB
       # @return [self]
       def logger_for_generator
         self
+      end
+
+      # メッセージの送信先を Cinch::Target の配列に変換する
+      # @param [String, Cinch::Target, Array<String>, Array<Cinch::Target>]
+      #   targets 送信先
+      # @return [Array<Cinch::Target>]
+      # @note Cinch::Channel, Cinch::User は、どちらも Cinch::Target の
+      #   サブクラスのため、Cinch::Target と同様に扱う。
+      def to_cinch_target_array(targets)
+        case targets
+        when String
+          targets.split($/).map { |name| Target(name) }
+        when Cinch::Target, Cinch::Channel, Cinch::User
+          [targets]
+        when Array
+          targets.map { |target| to_cinch_target(target) }
+        else
+          raise TypeError, targets.to_s
+        end
+      end
+
+      # メッセージの送信先を Cinch::Target に変換する
+      # @param [String, Cinch::Target] 送信先
+      # @return [Cinch::Target]
+      # @note Cinch::Channel, Cinch::User は、どちらも Cinch::Target の
+      #   サブクラスのため、Cinch::Target と同様に扱う。
+      def to_cinch_target(target)
+        case target
+        when String
+          Target(target)
+        when Cinch::Target, Cinch::Channel, Cinch::User
+          target
+        else
+          raise TypeError, target.to_s
+        end
       end
     end
   end

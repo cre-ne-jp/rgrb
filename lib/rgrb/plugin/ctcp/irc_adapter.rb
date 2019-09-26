@@ -27,27 +27,41 @@ module RGRB
         end
 
         def ctcp_clientinfo(m)
-          m.ctcp_reply(@valid_cmd.join(' '))
+          ctcp_reply(m, @valid_cmd.join(' '))
         end
 
         def ctcp_version(m)
-          m.ctcp_reply("RGRB #{RGRB::VERSION}")
+          ctcp_reply(m, "RGRB #{RGRB::VERSION_WITH_COMMIT_ID}")
         end
 
         def ctcp_time(m)
-          m.ctcp_reply(Time.now.strftime('%a %b %d %T %Y %Z'))
+          ctcp_reply(m, Time.now.strftime('%a, %d %b %Y %T %z'))
         end
 
         def ctcp_ping(m)
-          m.ctcp_reply(m.ctcp_args.join(' '))
+          ctcp_reply(m, m.ctcp_args.join(' '))
         end
 
         def ctcp_userinfo(m)
-          m.ctcp_reply(@userinfo)
+          ctcp_reply(m, @userinfo)
         end
 
         def ctcp_source(m)
-          m.ctcp_reply('https://github.com/cre-ne-jp/rgrb')
+          ctcp_reply(m, 'https://github.com/cre-ne-jp/rgrb')
+        end
+
+        private
+
+        # CTCP 応答を返す
+        # @param [Cinch::Message] m
+        # @param [String] message 送信メッセージ
+        # @return [void]
+        def ctcp_reply(m, message)
+          log_incoming(m)
+          return if m.target.name == bot.nick
+
+          m.ctcp_reply(message)
+          log("<CTCP-reply to #{m.target.name}> #{message.inspect}", :outgoing, :info)
         end
       end
     end

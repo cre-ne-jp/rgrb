@@ -3,6 +3,8 @@
 
 require 'rgrb/plugin_base/irc_adapter'
 
+require 'time'
+
 module RGRB
   module Plugin
     # CTCP 応答プラグイン
@@ -51,7 +53,7 @@ module RGRB
         # @return [void]
         # @see https://tools.ietf.org/id/draft-oakley-irc-ctcp-01.html#time
         def ctcp_time(m)
-          ctcp_reply(m, Time.now.strftime('%a, %d %b %Y %T %z'))
+          ctcp_reply(m, Time.now.rfc2822)
         end
 
         # クエリと同じパラメータを返す

@@ -2,6 +2,8 @@
 
 require 'rgrb/plugin_base/irc_adapter'
 
+require 'time'
+
 module RGRB
   module Plugin
     # CTCP 応答プラグイン
@@ -35,7 +37,7 @@ module RGRB
         end
 
         def ctcp_time(m)
-          ctcp_reply(m, Time.now.strftime('%a, %d %b %Y %T %z'))
+          ctcp_reply(m, Time.now.rfc2822)
         end
 
         def ctcp_ping(m)

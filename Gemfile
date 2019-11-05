@@ -13,7 +13,7 @@ gem 'json'
 gem 'mail', '~> 2.7'
 
 group :irc do
-  gem 'cinch'
+  gem 'grinch'
 
   # DiceRollプラグインで使用する
   gem 'gdbm'

@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'activesupport', '~> 5.0'
+gem 'activesupport', '~> 6.0'
 gem 'twitter', '~> 6.2'
 gem 'lumberjack', '~> 1.0'
 gem 'sysexits', '~> 1.2'
@@ -30,7 +30,7 @@ group :development, :test do
 end
 
 group :test do
-  gem 'rake', '~> 12.0'
+  gem 'rake', '~> 13.0'
   gem 'rspec', '~> 3.1'
   gem 'coveralls', require: false
   gem 'webmock', '~> 3.3'

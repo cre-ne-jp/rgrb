@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'activesupport', '~> 5.0'
+gem 'activesupport', '~> 6.0'
 gem 'twitter', '~> 6.2'
 gem 'lumberjack', '~> 1.0'
 gem 'sysexits', '~> 1.2'

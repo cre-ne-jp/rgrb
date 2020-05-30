@@ -12,7 +12,7 @@ module RGRB
         include PluginBase::Generator
 
         # cre.jp 検索ページの URL
-        # %s が与えられたキーワードを URL エンコードした物に置換される
+        # %s には、URL エンコードされたキーワードが入る
         CRE_SEARCH_URL = 'https://log.irc.cre.jp/keywords/%s'
 
         # 新しい Keyword::Generator インスタンスを返す

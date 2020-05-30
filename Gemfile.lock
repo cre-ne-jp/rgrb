@@ -40,7 +40,6 @@ GEM
     event_emitter (0.2.6)
     ffi (1.12.2)
     gdbm (2.1.0)
-    grinch (1.0.1)
     guess_html_encoding (0.0.11)
     hashdiff (1.0.1)
     http (3.3.0)
@@ -59,6 +58,7 @@ GEM
     lumberjack (1.2.5)
     mail (2.7.1)
       mini_mime (>= 0.1.1)
+    mcinch (2.4.1)
     memoizable (0.4.2)
       thread_safe (~> 0.3, >= 0.3.1)
     method_source (1.0.0)
@@ -169,12 +169,12 @@ DEPENDENCIES
   d1lcs
   discordrb
   gdbm
-  grinch
   guess_html_encoding
   http (> 3.0)
   json
   lumberjack (~> 1.0)
   mail (~> 2.7)
+  mcinch
   nokogiri (~> 1.6)
   pry (~> 0.10)
   rake (~> 13.0)

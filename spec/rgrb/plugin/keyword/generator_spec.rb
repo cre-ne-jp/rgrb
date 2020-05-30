@@ -11,7 +11,7 @@ describe RGRB::Plugin::Keyword::Generator do
   end
 
   describe '#cre_search' do
-    let(:base_url) { 'http://cre.jp/search/?sw=' }
+    let(:base_url) { 'https://log.irc.cre.jp/keywords/' }
 
     shared_examples 'a Cre search' do
       let(:expected_message) do

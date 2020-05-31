@@ -234,13 +234,9 @@ module RGRB
       # @return [void]
       def set_signal_handler(bot, quit)
         # シグナルを捕捉し、ボットを終了させる処理
-        # trap 内で普通に bot.quit すると ThreadError が出るので
-        # 新しい Thread で包む
         %i(SIGINT SIGTERM).each do |signal|
           Signal.trap(signal) do
-            Thread.new(signal) do |sig|
-              bot.quit(quit.empty? ? "Caught #{sig}" : quit)
-            end
+            bot.quit(quit.empty? ? "Caught #{signal}" : quit)
           end
         end
       end

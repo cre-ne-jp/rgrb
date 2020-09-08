@@ -64,8 +64,7 @@ module RGRB
           body =
             begin
               response = HTTP.
-                timeout(:global,
-                        write: @write_timeout,
+                timeout(write: @write_timeout,
                         connect: @connect_timeout,
                         read: @read_timeout).
                 get(url,

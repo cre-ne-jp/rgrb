@@ -5,10 +5,6 @@ require 'rgrb/plugin/bcdice/constants'
 require 'rgrb/plugin/bcdice/errors'
 require 'rgrb/plugin/bcdice/generator'
 
-require 'BCDice/src/cgiDiceBot'
-require 'BCDice/src/diceBot/DiceBotLoader'
-require 'BCDice/src/diceBot/DiceBotLoaderList'
-
 module RGRB
   module Plugin
     module Bcdice

@@ -43,7 +43,10 @@ module RGRB
         # @return [BcdiceResult]
         # @raise [DiceBotNotFound] ダイスボットが見つからなかった場合
         # @raise [InvalidCommandError] 無効なコマンドが指定された場合
-        def bcdice(command, specified_game_type = 'DiceBot')
+        def bcdice(command, specified_game_type = nil)
+          # アダプターは通常、常に引数を2つ与えてこのメソッドを呼ぶ
+          # そのため、デフォルト引数値では game_type を設定できない
+          game_type = specified_game_type || 'DiceBot'
           # ダイスボットを探す
           dice_bot = @game_systems[game_type]
           # ダイスボットが見つからなかった場合は中断する
@@ -59,8 +62,6 @@ module RGRB
             dice_bot::NAME
           )
         end
-
-        private
 
         # git submodule で組み込んでいる BCDice のバージョンを返す
         # @return [String]

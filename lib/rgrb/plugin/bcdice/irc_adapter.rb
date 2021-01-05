@@ -38,7 +38,7 @@ module RGRB
           result =
             begin
               @generator.bcdice(command, specified_game_title)
-            rescue => e
+            rescue DiceBotNotFound, InvalidCommandError => e
               notice_bcdice_error(m.target, header_common, e)
               return
             end

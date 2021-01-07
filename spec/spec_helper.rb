@@ -1,5 +1,9 @@
 require 'simplecov'
-SimpleCov.start
+
+SimpleCov.start do
+  enable_coverage(:branch)
+  add_filter('/spec/')
+end
 
 require 'webmock/rspec'
 

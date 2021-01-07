@@ -22,6 +22,10 @@ jobs:
     env:
       CC_TEST_REPORTER_ID: 8310d94ccb41382dfbe0d2fed241c565b33ca01cea938449c4ba0b62500d01e2
     steps:
+      - name: Install packages
+        run: |
+          sudo apt update -qy
+          sudo apt install libgdbm5 libgdbm-dev
       - uses: actions/checkout@v2
         with:
           submodules: recursive

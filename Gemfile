@@ -32,7 +32,7 @@ end
 group :test do
   gem 'rake', '~> 13.0'
   gem 'rspec', '~> 3.1'
-  gem 'coveralls', require: false
+  gem 'simplecov', '~> 0.21', require: false
   gem 'webmock', '~> 3.3'
 end
 

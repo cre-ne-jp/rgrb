@@ -1,7 +1,7 @@
-require 'webmock/rspec'
-require 'coveralls'
+require 'simplecov'
+SimpleCov.start
 
-Coveralls.wear!
+require 'webmock/rspec'
 
 RSpec.configure do |config|
   config.color = true

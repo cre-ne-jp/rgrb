@@ -1,0 +1,40 @@
+name: Test
+
+on:
+  push:
+    paths-ignore:
+      - README.md
+  pull_request: {}
+
+jobs:
+  test:
+    name: Test RGRB
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby:
+          - 2.5
+          - 2.6
+          - 2.7
+          - 3.0
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[skip ci]') && !contains(github.event.head_commit.message, '[ci skip]')"
+    env:
+      CC_TEST_REPORTER_ID: 8310d94ccb41382dfbe0d2fed241c565b33ca01cea938449c4ba0b62500d01e2
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+
+          # runs 'bundle install' and caches installed gems automatically
+          bundler-cache: true
+      - name: Setup Code Climate Test Reporter
+        run: |
+          wget https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 -O ./cc-test-reporter
+          chmod +x ./cc-test-reporter
+      - name: Run tests and report the result to Code Climate
+        run: |
+          GIT_BRANCH=$GITHUB_REF GIT_COMMIT_SHA=$GITHUB_SHA ./cc-test-reporter before-build
+          bundle exec rake spec
+          GIT_BRANCH=$GITHUB_REF GIT_COMMIT_SHA=$GITHUB_SHA ./cc-test-reporter after-build -t simplecov --exit-code $?

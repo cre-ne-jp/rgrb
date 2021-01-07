@@ -18,13 +18,6 @@ module RGRB
       class Generator
         include PluginBase::Generator
 
-        # ジェネレータを初期化する
-        def initialize
-          @game_systems = BCDice.all_game_systems.to_h do |gs|
-            [gs::ID, gs]
-          end
-        end
-
         # プラグインがアダプタによって読み込まれた際の設定
         #
         # アダプタによってジェネレータが用意されたとき
@@ -48,11 +41,11 @@ module RGRB
           # そのため、デフォルト引数値では game_type を設定できない
           game_type = specified_game_type || 'DiceBot'
           # ダイスボットを探す
-          dice_bot = @game_systems[game_type]
+          dice_bot = BCDice.game_system_class(game_type)
           # ダイスボットが見つからなかった場合は中断する
           raise DiceBotNotFound, game_type unless dice_bot
 
-          result = dice_bot.new(command).eval
+          result = dice_bot.eval(command)
           # 結果が返ってこなかった場合は中断する
           raise InvalidCommandError.new(command, dice_bot) unless result
 

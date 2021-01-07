@@ -12,7 +12,7 @@ module RGRB
     # BCDice のラッパープラグイン
     module Bcdice
       # BCDice の呼び出し結果
-      BcdiceResult = Struct.new(:message_lines, :game_name)
+      BcdiceResult = Struct.new(:message, :game_name)
 
       # Bcdice の出力テキスト生成器
       class Generator

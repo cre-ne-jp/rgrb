@@ -46,7 +46,7 @@ module RGRB
           # ゲームシステム名を含むヘッダ
           header = "#{header_common}<#{result.game_name}>: "
 
-          send_notice(m.target, result.message_lines, header)
+          send_notice(m.target, result.message, header)
         end
 
         # git submodule で組み込んでいる BCDice のバージョンを出力する

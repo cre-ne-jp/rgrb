@@ -1,8 +1,9 @@
 汎用チャットボット RGRB
 ====================
 
-[![Build Status](https://travis-ci.org/cre-ne-jp/rgrb.svg?branch=master)](https://travis-ci.org/cre-ne-jp/rgrb)
-[![Coverage Status](https://coveralls.io/repos/cre-ne-jp/rgrb/badge.svg?branch=master&service=github)](https://coveralls.io/github/cre-ne-jp/rgrb?branch=master)
+![Test](https://github.com/cre-ne-jp/rgrb/workflows/Test/badge.svg)
+[![Maintainability](https://api.codeclimate.com/v1/badges/ee60ffa7fe19fbb3147b/maintainability)](https://codeclimate.com/github/cre-ne-jp/rgrb/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/ee60ffa7fe19fbb3147b/test_coverage)](https://codeclimate.com/github/cre-ne-jp/rgrb/test_coverage)
 
 RGRB は Ruby で実装されている汎用 IRC/Discord ボットです。プラグイン方式により柔軟な拡張が可能です。
 

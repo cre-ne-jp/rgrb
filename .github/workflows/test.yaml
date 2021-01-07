@@ -23,6 +23,8 @@ jobs:
       CC_TEST_REPORTER_ID: 8310d94ccb41382dfbe0d2fed241c565b33ca01cea938449c4ba0b62500d01e2
     steps:
       - uses: actions/checkout@v2
+        with:
+          submodules: recursive
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby }}

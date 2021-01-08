@@ -11,7 +11,7 @@ describe RGRB::Plugin::Bcdice::Generator do
   describe '#bcdice_version' do
     it 'BCDice のバージョンを出力する' do
       expect(generator.bcdice_version).to(
-        match(/\ABCDice Version: [0-9]\.[0-9]{2}\.[0-9]{2}\z/)
+        match(/\ABCDice Version: \d+\.\d+\.\d+/)
       )
     end
   end

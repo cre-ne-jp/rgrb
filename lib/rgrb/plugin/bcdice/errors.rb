@@ -21,8 +21,6 @@ module RGRB
       class InvalidCommandError < StandardError
         # @return [String] 指定されたコマンド
         attr_reader :command
-        # @return [String] ゲームタイプ
-        attr_reader :game_type
         # @return [String] ゲームシステム名
         attr_reader :game_name
 
@@ -33,8 +31,7 @@ module RGRB
           super("コマンド「#{command}」は無効です")
 
           @command = command
-          @game_type = dice_bot.gameType
-          @game_name = dice_bot.gameName
+          @game_name = dice_bot::NAME
         end
       end
     end

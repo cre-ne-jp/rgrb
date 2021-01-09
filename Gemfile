@@ -11,6 +11,7 @@ gem 'nokogiri', '~> 1.6'
 gem 'd1lcs'
 gem 'json'
 gem 'mail', '~> 2.7'
+gem 'bcdice'
 
 group :irc do
   gem 'mcinch'

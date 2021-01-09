@@ -11,7 +11,7 @@ describe RGRB::Plugin::Bcdice::Generator do
   describe '#bcdice_version' do
     it 'BCDice のバージョンを出力する' do
       expect(generator.bcdice_version).to(
-        match(/\ABCDice Version: [0-9]\.[0-9]{2}\.[0-9]{2} \([0-9a-f]{40}\)\z/)
+        match(/\ABCDice Version: \d+\.\d+\.\d+/)
       )
     end
   end
@@ -31,12 +31,11 @@ describe RGRB::Plugin::Bcdice::Generator do
         subject { generator.bcdice('2d6') }
 
         it 'ゲームシステムとして DiceBot が選ばれる' do
-          expect(subject.game_type).to eq('DiceBot')
           expect(subject.game_name).to eq('DiceBot')
         end
 
         it '2d6 の結果が返る' do
-          expect(subject.message_lines[0].start_with?('(2D6) ＞ ')).to be(true)
+          expect(subject.message.start_with?('(2D6) ＞ ')).to be(true)
         end
       end
     end
@@ -52,15 +51,14 @@ describe RGRB::Plugin::Bcdice::Generator do
 
     context('ソード・ワールド2.0') do
       context('k20') do
-        subject { generator.bcdice('k20', 'SwordWorld2_0') }
+        subject { generator.bcdice('k20', 'SwordWorld2.0') }
 
         it 'ゲームシステムとして「ソード・ワールド2.0」が選ばれる' do
-          expect(subject.game_type).to eq('SwordWorld2.0')
           expect(subject.game_name).to eq('ソードワールド2.0')
         end
 
         it 'k20 の結果が返る' do
-          expect(subject.message_lines[0].start_with?('KeyNo.20c')).to be(true)
+          expect(subject.message.start_with?('KeyNo.20c')).to be(true)
         end
       end
     end

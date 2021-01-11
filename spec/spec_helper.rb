@@ -1,7 +1,11 @@
-require 'webmock/rspec'
-require 'coveralls'
+require 'simplecov'
 
-Coveralls.wear!
+SimpleCov.start do
+  enable_coverage(:branch)
+  add_filter('/spec/')
+end
+
+require 'webmock/rspec'
 
 RSpec.configure do |config|
   config.color = true

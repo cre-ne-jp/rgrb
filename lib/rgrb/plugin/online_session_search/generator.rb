@@ -37,7 +37,7 @@ module RGRB
         private
 
         def session_data_from(url)
-          json = open(url, 'r:UTF-8') { |f| f.read }
+          json = OpenURI.open_uri(url, 'r:UTF-8') { |f| f.read }
           sessions = Session.parse_json(json)
           format(sessions)
         end

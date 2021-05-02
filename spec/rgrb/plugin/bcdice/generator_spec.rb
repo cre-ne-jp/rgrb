@@ -97,4 +97,30 @@ describe RGRB::Plugin::Bcdice::Generator do
       end
     end
   end
+
+  describe '#bcdice_search_name' do
+    context('存在しないゲームシステム') do
+      it 'ダイスボットが見つからないことを示すエラーメッセージを返す' do
+        expect(generator.bcdice_search_name('not_found')).to(
+          eq('BCDice ゲームシステム検索結果 (名称: not_found): 見つかりませんでした')
+        )
+      end
+    end
+
+    context('DICEBOT') do
+      it '名称にキーワードが含まれるゲームシステムの一覧を文字列で返す' do
+        expect(generator.bcdice_search_name('DICEBOT')).to(
+          eq('BCDice ゲームシステム検索結果 (名称: DICEBOT): DiceBot (DiceBot)')
+        )
+      end
+    end
+
+    context('ソード') do
+      it '名称にキーワードが含まれるゲームシステムの一覧を文字列で返す' do
+        expect(generator.bcdice_search_name('ソード')).to(
+          match(/\ABCDice ゲームシステム検索結果 \(名称: ソード\): [.\w]+ \([^)]+\)(?:, [.\w]+ \([^)]+\))*\z/)
+        )
+      end
+    end
+  end
 end

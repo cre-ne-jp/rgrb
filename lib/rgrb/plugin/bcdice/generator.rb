@@ -93,6 +93,24 @@ module RGRB
             "#{header}: #{body}"
           end
         end
+
+        # BCDiceのゲームシステムを名称で探す
+        # @param [String] keyword キーワード
+        # @return [String] 検索結果
+        def bcdice_search_name(keyword)
+          header = "BCDice ゲームシステム検索結果 (名称: #{keyword})"
+
+          found_systems = @game_system_text_pairs.select { |c, _|
+            c::NAME.downcase.include?(keyword.downcase)
+          }
+
+          if found_systems.empty?
+            "#{header}: 見つかりませんでした"
+          else
+            body = found_systems.map { |_, t| t }.join(', ')
+            "#{header}: #{body}"
+          end
+        end
       end
     end
   end

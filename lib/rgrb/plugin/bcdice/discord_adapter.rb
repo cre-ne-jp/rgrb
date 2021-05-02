@@ -19,6 +19,7 @@ module RGRB
         match(/-version/, method: :version)
         match(/-systems/, method: :systems)
         match(/-search-id ([^\s　]+)/, method: :search_id)
+        match(/-search-name (.+)/, method: :search_name)
 
         def initialize(*args)
           super
@@ -78,6 +79,15 @@ module RGRB
         def search_id(m, keyword)
           log_incoming(m)
           send_channel(m.channel, @generator.bcdice_search_id(keyword))
+        end
+
+        # BCDiceのゲームシステムを名称で探す
+        # @param [Cinch::Message] m
+        # @param [String] keyword キーワード
+        # @return [void]
+        def search_name(m, keyword)
+          log_incoming(m)
+          send_channel(m.channel, @generator.bcdice_search_name(keyword))
         end
 
         private

@@ -19,6 +19,13 @@ module RGRB
       class Generator
         include PluginBase::Generator
 
+        def initialize
+          sorted_game_systems = BCDice.all_game_systems.sort_by { |c| c::ID }
+          @game_system_text_pairs = sorted_game_systems.map { |c|
+            [c, "#{c::ID} (#{c::NAME})"]
+          }
+        end
+
         # プラグインがアダプタによって読み込まれた際の設定
         #
         # アダプタによってジェネレータが用意されたとき
@@ -64,9 +71,27 @@ module RGRB
         end
 
         # BCDice公式サイトのゲームシステム一覧のURLを返す
-        # @return [Striing]
+        # @return [String]
         def bcdice_systems
           "BCDice ゲームシステム一覧 https://bcdice.org/systems/"
+        end
+
+        # BCDiceのゲームシステムをIDで探す
+        # @param [String] keyword キーワード
+        # @return [String] 検索結果
+        def bcdice_search_id(keyword)
+          header = "BCDice ゲームシステム検索結果 (ID: #{keyword})"
+
+          found_systems = @game_system_text_pairs.select { |c, _|
+            c::ID.downcase.include?(keyword.downcase)
+          }
+
+          if found_systems.empty?
+            "#{header}: 見つかりませんでした"
+          else
+            body = found_systems.map { |_, t| t }.join(', ')
+            "#{header}: #{body}"
+          end
         end
       end
     end

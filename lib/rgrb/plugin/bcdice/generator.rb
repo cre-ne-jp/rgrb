@@ -148,15 +148,22 @@ module RGRB
         end
 
         # BCDiceのゲームシステムを名称で探す
-        # @param [String] keyword キーワード
+        # @param [String] keywords_text キーワードのテキスト（空白区切り）
         # @param [Proc] formatter 検索結果のフォーマッタ
         # @return [GameSystemSearchResult] 検索結果
-        def bcdice_search_name(keyword, formatter = GameSystemListFormatter::PLAIN_TEXT)
-          found_systems = @game_systems.select { |c|
-            c::NAME.downcase.include?(keyword.downcase)
+        def bcdice_search_name(keywords_text, formatter = GameSystemListFormatter::PLAIN_TEXT)
+          keywords = keywords_text.split(/[\s　]+/).reject(&:empty?)
+          found_systems = keywords.reduce(@game_systems) { |acc, k|
+            selected = acc.select { |c| c::NAME.downcase.include?(k.downcase) }
+
+            if selected.empty?
+              break selected
+            else
+              selected
+            end
           }
 
-          message = formatter['名称', keyword, found_systems]
+          message = formatter['名称', keywords.join(' '), found_systems]
 
           GameSystemSearchResult.new(message, found_systems)
         end

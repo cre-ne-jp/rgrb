@@ -210,5 +210,39 @@ describe RGRB::Plugin::Bcdice::Generator do
         end
       end
     end
+
+    describe '絞り込み検索' do
+      shared_examples '絞り込み検索' do
+        it '絞り込み検索ができる' do
+          keyword1 = keywords_text.split(/[\s　]+/, 2).first
+          result1 = generator.bcdice_search_name(keyword1)
+          n1 = result1.game_systems.length
+          expect(n1).to be > 0
+
+          result2 = generator.bcdice_search_name(keywords_text)
+          n2 = result2.game_systems.length
+          expect(n2).to be > 0
+          expect(n2).to be < n1
+        end
+      end
+
+      context 'TRPG クトゥルフ' do
+        include_examples '絞り込み検索' do
+          let(:keywords_text) { 'TRPG クトゥルフ' }
+        end
+      end
+
+      context 'TRPG　クトゥルフ' do
+        include_examples '絞り込み検索' do
+          let(:keywords_text) { 'TRPG　クトゥルフ' }
+        end
+      end
+
+      context 'TRPG　クトゥルフ 新' do
+        include_examples '絞り込み検索' do
+          let(:keywords_text) { 'TRPG　クトゥルフ 新' }
+        end
+      end
+    end
   end
 end

@@ -78,7 +78,12 @@ module RGRB
         # @return [void]
         def search_id(m, keyword)
           log_incoming(m)
-          send_channel(m.channel, @generator.bcdice_search_id(keyword))
+
+          message = @generator.bcdice_search_id(
+            keyword,
+            GameSystemListFormatter::MARKDOWN
+          )
+          send_channel(m.channel, message)
         end
 
         # BCDiceのゲームシステムを名称で探す
@@ -87,7 +92,12 @@ module RGRB
         # @return [void]
         def search_name(m, keyword)
           log_incoming(m)
-          send_channel(m.channel, @generator.bcdice_search_name(keyword))
+
+          message = @generator.bcdice_search_name(
+            keyword,
+            GameSystemListFormatter::MARKDOWN
+          )
+          send_channel(m.channel, message)
         end
 
         private

@@ -18,7 +18,9 @@ module RGRB
       # ゲームシステム検索結果のフォーマッタを格納するモジュール
       module GameSystemListFormatter
         # プレーンテキストで出力するフォーマッタ
-        PLAIN_TEXT = ->(header, game_systems) {
+        PLAIN_TEXT = ->(criterion, keyword, game_systems) {
+          header = "BCDice ゲームシステム検索結果 (#{criterion}: #{keyword})"
+
           if game_systems.empty?
             "#{header}: 見つかりませんでした"
           else
@@ -31,9 +33,35 @@ module RGRB
         }
 
         # Markdownで出力するフォーマッタ
-        MARKDOWN = ->(header, game_systems) {
-          ""
+        MARKDOWN = ->(criterion, keyword, game_systems) {
+          escaped_criterion = escape_markdown_chars(criterion)
+          escaped_keyword = escape_markdown_chars(keyword)
+          header = "**BCDice ゲームシステム検索結果 " \
+                   "(#{escaped_criterion}: *#{escaped_keyword}*)**"
+
+          if game_systems.empty?
+            "#{header}\n見つかりませんでした"
+          else
+            body_lines = game_systems.map { |c|
+              escaped_id = escape_markdown_chars(c::ID)
+              escaped_name = escape_markdown_chars(c::NAME)
+
+              "* #{escaped_id} (#{escaped_name})"
+            }
+
+            ([header] + body_lines).join("\n")
+          end
         }
+
+        module_function
+
+        # Markdownの特殊文字をエスケープする
+        # @param [String] s
+        # @return [String]
+        # @see https://www.markdownguide.org/basic-syntax/#escaping-characters
+        def escape_markdown_chars(s)
+          s.gsub(/[-\\`*_{}\[\]<>()#+.!|]/) { "\\#{Regexp.last_match(0)}" }
+        end
       end
 
       # Bcdice の出力テキスト生成器
@@ -99,12 +127,11 @@ module RGRB
         # @param [Proc] formatter 検索結果のフォーマッタ
         # @return [String] 検索結果
         def bcdice_search_id(keyword, formatter = GameSystemListFormatter::PLAIN_TEXT)
-          header = "BCDice ゲームシステム検索結果 (ID: #{keyword})"
           found_systems = @game_systems.select { |c|
             c::ID.downcase.include?(keyword.downcase)
           }
 
-          formatter[header, found_systems]
+          formatter['ID', keyword, found_systems]
         end
 
         # BCDiceのゲームシステムを名称で探す
@@ -112,12 +139,11 @@ module RGRB
         # @param [Proc] formatter 検索結果のフォーマッタ
         # @return [String] 検索結果
         def bcdice_search_name(keyword, formatter = GameSystemListFormatter::PLAIN_TEXT)
-          header = "BCDice ゲームシステム検索結果 (名称: #{keyword})"
           found_systems = @game_systems.select { |c|
             c::NAME.downcase.include?(keyword.downcase)
           }
 
-          formatter[header, found_systems]
+          formatter['名称', keyword, found_systems]
         end
       end
     end

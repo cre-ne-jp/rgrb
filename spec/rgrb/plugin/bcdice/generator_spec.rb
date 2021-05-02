@@ -81,6 +81,19 @@ describe RGRB::Plugin::Bcdice::Generator do
           )
         end
       end
+
+      context('Markdown') do
+        it 'ダイスボットが見つからないことを示すエラーメッセージを返す' do
+          message = generator.bcdice_search_id(
+            'not_f**nd',
+            RGRB::Plugin::Bcdice::GameSystemListFormatter::MARKDOWN
+          )
+          expect(message).to eq <<~MD.chomp
+            **BCDice ゲームシステム検索結果 (ID: *not\\_f\\*\\*nd*)**
+            見つかりませんでした
+          MD
+        end
+      end
     end
 
     context('DICEBOT') do
@@ -91,6 +104,19 @@ describe RGRB::Plugin::Bcdice::Generator do
           )
         end
       end
+
+      context('Markdown') do
+        it 'IDにキーワードが含まれるゲームシステムの一覧を文字列で返す' do
+          message = generator.bcdice_search_id(
+            'DICEBOT',
+            RGRB::Plugin::Bcdice::GameSystemListFormatter::MARKDOWN
+          )
+          expect(message).to eq <<~MD.chomp
+            **BCDice ゲームシステム検索結果 (ID: *DICEBOT*)**
+            * DiceBot (DiceBot)
+          MD
+        end
+      end
     end
 
     context('sword') do
@@ -98,6 +124,18 @@ describe RGRB::Plugin::Bcdice::Generator do
         it 'IDにキーワードが含まれるゲームシステムの一覧を文字列で返す' do
           expect(generator.bcdice_search_id('sword')).to(
             match(/\ABCDice ゲームシステム検索結果 \(ID: sword\): [.\w]+ \([^)]+\)(?:, [.\w]+ \([^)]+\))*\z/)
+          )
+        end
+      end
+
+      context('Markdown') do
+        it 'IDにキーワードが含まれるゲームシステムの一覧を文字列で返す' do
+          message = generator.bcdice_search_id(
+            'sword',
+            RGRB::Plugin::Bcdice::GameSystemListFormatter::MARKDOWN
+          )
+          expect(message).to(
+            match(/\A\*\*BCDice ゲームシステム検索結果 \(ID: \*sword\*\)\*\*\n\* [.\w\\]+ \([^)]+\)(?:\n\* [.\w\\]+ \([^)]+\))*\z/)
           )
         end
       end
@@ -113,6 +151,19 @@ describe RGRB::Plugin::Bcdice::Generator do
           )
         end
       end
+
+      context('Markdown') do
+        it 'ダイスボットが見つからないことを示すエラーメッセージを返す' do
+          message = generator.bcdice_search_name(
+            'not_f**nd',
+            RGRB::Plugin::Bcdice::GameSystemListFormatter::MARKDOWN
+          )
+          expect(message).to eq <<~MD.chomp
+            **BCDice ゲームシステム検索結果 (名称: *not\\_f\\*\\*nd*)**
+            見つかりませんでした
+          MD
+        end
+      end
     end
 
     context('DICEBOT') do
@@ -123,6 +174,19 @@ describe RGRB::Plugin::Bcdice::Generator do
           )
         end
       end
+
+      context('Markdown') do
+        it '名称にキーワードが含まれるゲームシステムの一覧を文字列で返す' do
+          message = generator.bcdice_search_name(
+            'DICEBOT',
+            RGRB::Plugin::Bcdice::GameSystemListFormatter::MARKDOWN
+          )
+          expect(message).to eq <<~MD.chomp
+            **BCDice ゲームシステム検索結果 (名称: *DICEBOT*)**
+            * DiceBot (DiceBot)
+          MD
+        end
+      end
     end
 
     context('ソード') do
@@ -130,6 +194,18 @@ describe RGRB::Plugin::Bcdice::Generator do
         it '名称にキーワードが含まれるゲームシステムの一覧を文字列で返す' do
           expect(generator.bcdice_search_name('ソード')).to(
             match(/\ABCDice ゲームシステム検索結果 \(名称: ソード\): [.\w]+ \([^)]+\)(?:, [.\w]+ \([^)]+\))*\z/)
+          )
+        end
+      end
+
+      context('Markdown') do
+        it '名称にキーワードが含まれるゲームシステムの一覧を文字列で返す' do
+          message = generator.bcdice_search_name(
+            'ソード',
+            RGRB::Plugin::Bcdice::GameSystemListFormatter::MARKDOWN
+          )
+          expect(message).to(
+            match(/\A\*\*BCDice ゲームシステム検索結果 \(名称: \*ソード\*\)\*\*\n\* [.\w\\]+ \([^)]+\)(?:\n\* [.\w\\]+ \([^)]+\))*\z/)
           )
         end
       end

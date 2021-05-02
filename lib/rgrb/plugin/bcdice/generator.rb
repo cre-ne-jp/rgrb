@@ -1,4 +1,5 @@
 # vim: fileencoding=utf-8
+# frozen_string_literal: true
 
 require 'bcdice'
 require 'bcdice/game_system'
@@ -60,6 +61,12 @@ module RGRB
         # @return [String]
         def bcdice_version
           "BCDice Version: #{BCDice::VERSION}"
+        end
+
+        # BCDice公式サイトのゲームシステム一覧のURLを返す
+        # @return [Striing]
+        def bcdice_systems
+          "BCDice ゲームシステム一覧 https://bcdice.org/systems/"
         end
       end
     end

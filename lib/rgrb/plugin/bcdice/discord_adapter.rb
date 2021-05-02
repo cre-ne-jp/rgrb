@@ -14,8 +14,10 @@ module RGRB
 
         set(plugin_name: 'Bcdice')
         self.prefix = '.bcdice'
+
         match(BCDICE_RE, method: :bcdice)
         match(/-version/, method: :version)
+        match(/-systems/, method: :systems)
 
         def initialize(*args)
           super
@@ -58,6 +60,14 @@ module RGRB
           message = @generator.bcdice_version
 
           send_channel(m.channel, message)
+        end
+
+        # BCDice公式サイトのゲームシステム一覧のURLを出力する
+        # @param [Cinch::Message] m
+        # @return [void]
+        def systems(m)
+          log_incoming(m)
+          send_channel(m.channel, @generator.bcdice_systems)
         end
 
         private

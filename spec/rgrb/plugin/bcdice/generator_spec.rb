@@ -63,4 +63,12 @@ describe RGRB::Plugin::Bcdice::Generator do
       end
     end
   end
+
+  describe '#bcdice_systems' do
+    it 'BCDice公式サイトのゲームシステム一覧のURLを返す' do
+      expect(generator.bcdice_systems).to(
+        match(/\ABCDice ゲームシステム一覧/)
+      )
+    end
+  end
 end

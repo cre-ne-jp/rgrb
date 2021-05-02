@@ -15,15 +15,33 @@ module RGRB
       # BCDice の呼び出し結果
       BcdiceResult = Struct.new(:message, :game_name)
 
+      # ゲームシステム検索結果のフォーマッタを格納するモジュール
+      module GameSystemListFormatter
+        # プレーンテキストで出力するフォーマッタ
+        PLAIN_TEXT = ->(header, game_systems) {
+          if game_systems.empty?
+            "#{header}: 見つかりませんでした"
+          else
+            body = game_systems
+                   .map { |c| "#{c::ID} (#{c::NAME})" }
+                   .join(', ')
+
+            "#{header}: #{body}"
+          end
+        }
+
+        # Markdownで出力するフォーマッタ
+        MARKDOWN = ->(header, game_systems) {
+          ""
+        }
+      end
+
       # Bcdice の出力テキスト生成器
       class Generator
         include PluginBase::Generator
 
         def initialize
-          sorted_game_systems = BCDice.all_game_systems.sort_by { |c| c::ID }
-          @game_system_text_pairs = sorted_game_systems.map { |c|
-            [c, "#{c::ID} (#{c::NAME})"]
-          }
+          @game_systems = BCDice.all_game_systems.sort_by { |c| c::ID }
         end
 
         # プラグインがアダプタによって読み込まれた際の設定
@@ -78,38 +96,28 @@ module RGRB
 
         # BCDiceのゲームシステムをIDで探す
         # @param [String] keyword キーワード
+        # @param [Proc] formatter 検索結果のフォーマッタ
         # @return [String] 検索結果
-        def bcdice_search_id(keyword)
+        def bcdice_search_id(keyword, formatter = GameSystemListFormatter::PLAIN_TEXT)
           header = "BCDice ゲームシステム検索結果 (ID: #{keyword})"
-
-          found_systems = @game_system_text_pairs.select { |c, _|
+          found_systems = @game_systems.select { |c|
             c::ID.downcase.include?(keyword.downcase)
           }
 
-          if found_systems.empty?
-            "#{header}: 見つかりませんでした"
-          else
-            body = found_systems.map { |_, t| t }.join(', ')
-            "#{header}: #{body}"
-          end
+          formatter[header, found_systems]
         end
 
         # BCDiceのゲームシステムを名称で探す
         # @param [String] keyword キーワード
+        # @param [Proc] formatter 検索結果のフォーマッタ
         # @return [String] 検索結果
-        def bcdice_search_name(keyword)
+        def bcdice_search_name(keyword, formatter = GameSystemListFormatter::PLAIN_TEXT)
           header = "BCDice ゲームシステム検索結果 (名称: #{keyword})"
-
-          found_systems = @game_system_text_pairs.select { |c, _|
+          found_systems = @game_systems.select { |c|
             c::NAME.downcase.include?(keyword.downcase)
           }
 
-          if found_systems.empty?
-            "#{header}: 見つかりませんでした"
-          else
-            body = found_systems.map { |_, t| t }.join(', ')
-            "#{header}: #{body}"
-          end
+          formatter[header, found_systems]
         end
       end
     end

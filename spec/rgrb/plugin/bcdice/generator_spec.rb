@@ -54,7 +54,7 @@ describe RGRB::Plugin::Bcdice::Generator do
         subject { generator.bcdice('k20', 'SwordWorld2.0') }
 
         it 'ゲームシステムとして「ソード・ワールド2.0」が選ばれる' do
-          expect(subject.game_name).to eq('ソードワールド2.0')
+          expect(subject.game_name).to eq('ソード・ワールド2.0')
         end
 
         it 'k20 の結果が返る' do

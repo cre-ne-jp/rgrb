@@ -18,8 +18,8 @@ module RGRB
         match(BCDICE_RE, method: :bcdice)
         match(/-version/, method: :version)
         match(/-systems/, method: :systems)
-        match(/-search-id ([^\s　]+)/, method: :search_id)
-        match(/-search-name (.+)/, method: :search_name)
+        match(/-search-id[\s　]+([^\s　]+)/, method: :search_id)
+        match(/-search-name[\s　]+(.+)/, method: :search_name)
 
         def initialize(*args)
           super

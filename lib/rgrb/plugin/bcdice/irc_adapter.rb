@@ -75,8 +75,12 @@ module RGRB
         # @return [void]
         def search_id(m, keyword)
           log_incoming(m)
-          send_notice(m.target,
-                      @generator.bcdice_search_id(keyword).message)
+
+          message = @generator.bcdice_search_id(
+            keyword,
+            GameSystemListFormatter::IRC_MESSAGE
+          ).message
+          send_notice(m.target, message)
         end
 
         # BCDiceのゲームシステムを名称で探す
@@ -85,8 +89,12 @@ module RGRB
         # @return [void]
         def search_name(m, keyword)
           log_incoming(m)
-          send_notice(m.target,
-                      @generator.bcdice_search_name(keyword).message)
+
+          message = @generator.bcdice_search_name(
+            keyword,
+            GameSystemListFormatter::IRC_MESSAGE
+          ).message
+          send_notice(m.target, message)
         end
 
         private

@@ -29,8 +29,9 @@ module RGRB
       # ゲームシステム検索結果のフォーマッタを格納するモジュール
       module GameSystemListFormatter
         # プレーンテキストで出力するフォーマッタ
-        PLAIN_TEXT = ->(criterion, keyword, game_systems) {
-          header = "BCDice ゲームシステム検索結果 (#{criterion}: #{keyword})"
+        PLAIN_TEXT = ->(criterion, keywords, game_systems) {
+          keywords_text = keywords.join(' ')
+          header = "BCDice ゲームシステム検索結果 (#{criterion}: #{keywords_text})"
 
           if game_systems.empty?
             "#{header}: 見つかりませんでした"
@@ -43,12 +44,41 @@ module RGRB
           end
         }
 
+        # mIRC制御文字：太字（^B）
+        MIRC_BOLD = "\x02"
+        # mIRC制御文字：下線（^U）
+        MIRC_UNDERLINE = "\x1F"
+        # mIRC制御文字：リセット（^O）
+        MIRC_RESET = "\x0F"
+
+        # mIRC制御文字を含むIRCメッセージを出力するフォーマッタ
+        IRC_MESSAGE = ->(criterion, keywords, game_systems) {
+          keywords_text = keywords
+                          .map { |k| "#{MIRC_UNDERLINE}#{k}#{MIRC_RESET}" }
+                          .join(' ')
+          header = "BCDice ゲームシステム検索結果 (#{criterion}: #{keywords_text})"
+
+          if game_systems.empty?
+            "#{header}: 見つかりませんでした"
+          else
+            body = game_systems
+                   .map { |c| "#{MIRC_BOLD}#{c::ID}#{MIRC_RESET} (#{c::NAME})" }
+                   .join(', ')
+
+            "#{header}: #{body}"
+          end
+        }
+
         # Markdownで出力するフォーマッタ
-        MARKDOWN = ->(criterion, keyword, game_systems) {
+        MARKDOWN = ->(criterion, keywords, game_systems) {
           escaped_criterion = escape_markdown_chars(criterion)
-          escaped_keyword = escape_markdown_chars(keyword)
+
+          keywords_text = keywords
+                          .map { |k| "*#{escape_markdown_chars(k)}*" }
+                          .join(' ')
+
           header = "**BCDice ゲームシステム検索結果 " \
-                   "(#{escaped_criterion}: *#{escaped_keyword}*)**"
+                   "(#{escaped_criterion}: #{keywords_text})**"
 
           if game_systems.empty?
             "#{header}\n見つかりませんでした"
@@ -142,7 +172,7 @@ module RGRB
             c::ID.downcase.include?(keyword.downcase)
           }
 
-          message = formatter['ID', keyword, found_systems]
+          message = formatter['ID', [keyword], found_systems]
 
           GameSystemSearchResult.new(message, found_systems)
         end
@@ -163,7 +193,7 @@ module RGRB
             end
           }
 
-          message = formatter['名称', keywords.join(' '), found_systems]
+          message = formatter['名称', keywords, found_systems]
 
           GameSystemSearchResult.new(message, found_systems)
         end

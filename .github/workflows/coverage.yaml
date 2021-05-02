@@ -17,7 +17,7 @@ jobs:
       - name: Install packages
         run: |
           sudo apt update -qy
-          sudo apt install libgdbm5 libgdbm-dev
+          sudo apt install libgdbm6 libgdbm-dev
       - uses: actions/checkout@v2
         with:
           submodules: recursive

@@ -82,7 +82,7 @@ module RGRB
           message = @generator.bcdice_search_id(
             keyword,
             GameSystemListFormatter::MARKDOWN
-          )
+          ).message
           send_channel(m.channel, message)
         end
 
@@ -96,7 +96,7 @@ module RGRB
           message = @generator.bcdice_search_name(
             keyword,
             GameSystemListFormatter::MARKDOWN
-          )
+          ).message
           send_channel(m.channel, message)
         end
 

@@ -13,7 +13,18 @@ module RGRB
     # BCDice のラッパープラグイン
     module Bcdice
       # BCDice の呼び出し結果
+      # @!attribute message
+      #   @return [String] 結果のメッセージ
+      # @!attribute game_name
+      #   @return [String] ゲームシステム名
       BcdiceResult = Struct.new(:message, :game_name)
+
+      # ゲームシステム検索結果
+      # @!attribute message
+      #   @return [String] 結果のメッセージ
+      # @!attribute game_systems
+      #   @return [Array<BCDice::Base>] 該当するゲームシステムの配列
+      GameSystemSearchResult = Struct.new(:message, :game_systems)
 
       # ゲームシステム検索結果のフォーマッタを格納するモジュール
       module GameSystemListFormatter
@@ -125,25 +136,29 @@ module RGRB
         # BCDiceのゲームシステムをIDで探す
         # @param [String] keyword キーワード
         # @param [Proc] formatter 検索結果のフォーマッタ
-        # @return [String] 検索結果
+        # @return [GameSystemSearchResult] 検索結果
         def bcdice_search_id(keyword, formatter = GameSystemListFormatter::PLAIN_TEXT)
           found_systems = @game_systems.select { |c|
             c::ID.downcase.include?(keyword.downcase)
           }
 
-          formatter['ID', keyword, found_systems]
+          message = formatter['ID', keyword, found_systems]
+
+          GameSystemSearchResult.new(message, found_systems)
         end
 
         # BCDiceのゲームシステムを名称で探す
         # @param [String] keyword キーワード
         # @param [Proc] formatter 検索結果のフォーマッタ
-        # @return [String] 検索結果
+        # @return [GameSystemSearchResult] 検索結果
         def bcdice_search_name(keyword, formatter = GameSystemListFormatter::PLAIN_TEXT)
           found_systems = @game_systems.select { |c|
             c::NAME.downcase.include?(keyword.downcase)
           }
 
-          formatter['名称', keyword, found_systems]
+          message = formatter['名称', keyword, found_systems]
+
+          GameSystemSearchResult.new(message, found_systems)
         end
       end
     end

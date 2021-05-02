@@ -75,7 +75,8 @@ module RGRB
         # @return [void]
         def search_id(m, keyword)
           log_incoming(m)
-          send_notice(m.target, @generator.bcdice_search_id(keyword))
+          send_notice(m.target,
+                      @generator.bcdice_search_id(keyword).message)
         end
 
         # BCDiceのゲームシステムを名称で探す
@@ -84,7 +85,8 @@ module RGRB
         # @return [void]
         def search_name(m, keyword)
           log_incoming(m)
-          send_notice(m.target, @generator.bcdice_search_name(keyword))
+          send_notice(m.target,
+                      @generator.bcdice_search_name(keyword).message)
         end
 
         private

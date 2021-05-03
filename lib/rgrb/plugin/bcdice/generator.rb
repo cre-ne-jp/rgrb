@@ -1,6 +1,8 @@
 # vim: fileencoding=utf-8
 # frozen_string_literal: true
 
+require 'cinch/formatting'
+
 require 'bcdice'
 require 'bcdice/game_system'
 
@@ -44,17 +46,10 @@ module RGRB
           end
         }
 
-        # mIRC制御文字：太字（^B）
-        MIRC_BOLD = "\x02"
-        # mIRC制御文字：下線（^U）
-        MIRC_UNDERLINE = "\x1F"
-        # mIRC制御文字：リセット（^O）
-        MIRC_RESET = "\x0F"
-
         # mIRC制御文字を含むIRCメッセージを出力するフォーマッタ
         IRC_MESSAGE = ->(criterion, keywords, game_systems) {
           keywords_text = keywords
-                          .map { |k| "#{MIRC_UNDERLINE}#{k}#{MIRC_RESET}" }
+                          .map { |k| Cinch::Formatting.format(:underline, k) }
                           .join(' ')
           header = "BCDice ゲームシステム検索結果 (#{criterion}: #{keywords_text})"
 
@@ -62,7 +57,7 @@ module RGRB
             "#{header}: 見つかりませんでした"
           else
             body = game_systems
-                   .map { |c| "#{MIRC_BOLD}#{c::ID}#{MIRC_RESET} (#{c::NAME})" }
+                   .map { |c| "#{Cinch::Formatting.format(:bold, c::ID)} (#{c::NAME})" }
                    .join(', ')
 
             "#{header}: #{body}"

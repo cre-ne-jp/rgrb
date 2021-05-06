@@ -14,8 +14,12 @@ module RGRB
 
         set(plugin_name: 'Bcdice')
         self.prefix = '.bcdice'
+
         match(BCDICE_RE, method: :bcdice)
         match(/-version/, method: :version)
+        match(/-systems/, method: :systems)
+        match(/-search-id[\s　]+([^\s　]+)/, method: :search_id)
+        match(/-search-name[\s　]+(.+)/, method: :search_name)
 
         def initialize(*args)
           super
@@ -55,6 +59,42 @@ module RGRB
         def version(m)
           log_incoming(m)
           send_notice(m.target, @generator.bcdice_version)
+        end
+
+        # BCDice公式サイトのゲームシステム一覧のURLを出力する
+        # @param [Cinch::Message] m
+        # @return [void]
+        def systems(m)
+          log_incoming(m)
+          send_notice(m.target, @generator.bcdice_systems)
+        end
+
+        # BCDiceのゲームシステムをIDで探す
+        # @param [Cinch::Message] m
+        # @param [String] keyword キーワード
+        # @return [void]
+        def search_id(m, keyword)
+          log_incoming(m)
+
+          message = @generator.bcdice_search_id(
+            keyword,
+            GameSystemListFormatter::IRC_MESSAGE
+          ).message
+          send_notice(m.target, message)
+        end
+
+        # BCDiceのゲームシステムを名称で探す
+        # @param [Cinch::Message] m
+        # @param [String] keyword キーワード
+        # @return [void]
+        def search_name(m, keyword)
+          log_incoming(m)
+
+          message = @generator.bcdice_search_name(
+            keyword,
+            GameSystemListFormatter::IRC_MESSAGE
+          ).message
+          send_notice(m.target, message)
         end
 
         private

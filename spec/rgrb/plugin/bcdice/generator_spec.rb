@@ -63,4 +63,325 @@ describe RGRB::Plugin::Bcdice::Generator do
       end
     end
   end
+
+  describe '#bcdice_systems' do
+    it 'BCDice公式サイトのゲームシステム一覧のURLを返す' do
+      expect(generator.bcdice_systems).to(
+        match(/\ABCDice ゲームシステム一覧/)
+      )
+    end
+  end
+
+  describe '#bcdice_search_id' do
+    context('存在しないゲームシステム') do
+      context('プレーンテキスト') do
+        it 'ダイスボットが見つからないことを示すエラーメッセージを返す' do
+          message = generator.bcdice_search_id(
+            'not_found',
+            RGRB::Plugin::Bcdice::GameSystemListFormatter::PLAIN_TEXT
+          ).message
+          expect(generator.bcdice_search_id('not_found').message).to(
+            eq('BCDice ゲームシステム検索結果 (ID: not_found): 見つかりませんでした')
+          )
+        end
+      end
+
+      context('IRCメッセージ') do
+        it 'ダイスボットが見つからないことを示すエラーメッセージを返す' do
+          message = generator.bcdice_search_id(
+            'not_found',
+            RGRB::Plugin::Bcdice::GameSystemListFormatter::IRC_MESSAGE
+          ).message
+          expect(message).to(
+            eq("BCDice ゲームシステム検索結果 (ID: \x1Fnot_found\x0F): 見つかりませんでした")
+          )
+        end
+      end
+
+      context('Markdown') do
+        it 'ダイスボットが見つからないことを示すエラーメッセージを返す' do
+          message = generator.bcdice_search_id(
+            'not_f**nd',
+            RGRB::Plugin::Bcdice::GameSystemListFormatter::MARKDOWN
+          ).message
+          expect(message).to eq <<~MD.chomp
+            **BCDice ゲームシステム検索結果 (ID: *not\\_f\\*\\*nd*)**
+            見つかりませんでした
+          MD
+        end
+      end
+    end
+
+    context('DICEBOT') do
+      context('プレーンテキスト') do
+        it 'IDにキーワードが含まれるゲームシステムの一覧を文字列で返す' do
+          message = generator.bcdice_search_id(
+            'DICEBOT',
+            RGRB::Plugin::Bcdice::GameSystemListFormatter::PLAIN_TEXT
+          ).message
+          expect(message).to(
+            eq('BCDice ゲームシステム検索結果 (ID: DICEBOT): DiceBot (DiceBot)')
+          )
+        end
+      end
+
+      context('IRCメッセージ') do
+        it 'IDにキーワードが含まれるゲームシステムの一覧を文字列で返す' do
+          message = generator.bcdice_search_id(
+            'DICEBOT',
+            RGRB::Plugin::Bcdice::GameSystemListFormatter::IRC_MESSAGE
+          ).message
+          expect(message).to(
+            eq("BCDice ゲームシステム検索結果 (ID: \x1FDICEBOT\x0F): \x02DiceBot\x0F (DiceBot)")
+          )
+        end
+      end
+
+      context('Markdown') do
+        it 'IDにキーワードが含まれるゲームシステムの一覧を文字列で返す' do
+          message = generator.bcdice_search_id(
+            'DICEBOT',
+            RGRB::Plugin::Bcdice::GameSystemListFormatter::MARKDOWN
+          ).message
+          expect(message).to eq <<~MD.chomp
+            **BCDice ゲームシステム検索結果 (ID: *DICEBOT*)**
+            * DiceBot (DiceBot)
+          MD
+        end
+      end
+    end
+
+    context('sword') do
+      context('プレーンテキスト') do
+        it 'IDにキーワードが含まれるゲームシステムの一覧を文字列で返す' do
+          message = generator.bcdice_search_id(
+            'sword',
+            RGRB::Plugin::Bcdice::GameSystemListFormatter::PLAIN_TEXT
+          ).message
+          expect(message).to(
+            match(/\ABCDice ゲームシステム検索結果 \(ID: sword\): [.\w]+ \([^)]+\)(?:, [.\w]+ \([^)]+\))*\z/)
+          )
+        end
+      end
+
+      context('IRCメッセージ') do
+        it 'IDにキーワードが含まれるゲームシステムの一覧を文字列で返す' do
+          message = generator.bcdice_search_id(
+            'sword',
+            RGRB::Plugin::Bcdice::GameSystemListFormatter::IRC_MESSAGE
+          ).message
+          expect(message).to(
+            match(/\ABCDice ゲームシステム検索結果 \(ID: \x1Fsword\x0F\): \x02[.\w]+\x0F \([^)]+\)(?:, \x02[.\w]+\x0F \([^)]+\))*\z/)
+          )
+        end
+      end
+
+      context('Markdown') do
+        it 'IDにキーワードが含まれるゲームシステムの一覧を文字列で返す' do
+          message = generator.bcdice_search_id(
+            'sword',
+            RGRB::Plugin::Bcdice::GameSystemListFormatter::MARKDOWN
+          ).message
+          expect(message).to(
+            match(/\A\*\*BCDice ゲームシステム検索結果 \(ID: \*sword\*\)\*\*\n\* [.\w\\]+ \([^)]+\)(?:\n\* [.\w\\]+ \([^)]+\))*\z/)
+          )
+        end
+      end
+    end
+  end
+
+  describe '#bcdice_search_name' do
+    context('存在しないゲームシステム') do
+      context('プレーンテキスト') do
+        it 'ダイスボットが見つからないことを示すエラーメッセージを返す' do
+          message = generator.bcdice_search_name(
+            'not_found',
+            RGRB::Plugin::Bcdice::GameSystemListFormatter::PLAIN_TEXT
+          ).message
+          expect(message).to(
+            eq('BCDice ゲームシステム検索結果 (名称: not_found): 見つかりませんでした')
+          )
+        end
+      end
+
+      context('IRCメッセージ') do
+        it 'ダイスボットが見つからないことを示すエラーメッセージを返す' do
+          message = generator.bcdice_search_name(
+            'not_found',
+            RGRB::Plugin::Bcdice::GameSystemListFormatter::IRC_MESSAGE
+          ).message
+          expect(message).to(
+            eq("BCDice ゲームシステム検索結果 (名称: \x1Fnot_found\x0F): 見つかりませんでした")
+          )
+        end
+      end
+
+      context('Markdown') do
+        it 'ダイスボットが見つからないことを示すエラーメッセージを返す' do
+          message = generator.bcdice_search_name(
+            'not_f**nd',
+            RGRB::Plugin::Bcdice::GameSystemListFormatter::MARKDOWN
+          ).message
+          expect(message).to eq <<~MD.chomp
+            **BCDice ゲームシステム検索結果 (名称: *not\\_f\\*\\*nd*)**
+            見つかりませんでした
+          MD
+        end
+      end
+    end
+
+    context('DICEBOT') do
+      context('プレーンテキスト') do
+        it '名称にキーワードが含まれるゲームシステムの一覧を文字列で返す' do
+          message = generator.bcdice_search_name(
+            'DICEBOT',
+            RGRB::Plugin::Bcdice::GameSystemListFormatter::PLAIN_TEXT
+          ).message
+          expect(message).to(
+            eq('BCDice ゲームシステム検索結果 (名称: DICEBOT): DiceBot (DiceBot)')
+          )
+        end
+      end
+
+      context('IRCメッセージ') do
+        it '名称にキーワードが含まれるゲームシステムの一覧を文字列で返す' do
+          message = generator.bcdice_search_name(
+            'DICEBOT',
+            RGRB::Plugin::Bcdice::GameSystemListFormatter::IRC_MESSAGE
+          ).message
+          expect(message).to(
+            eq("BCDice ゲームシステム検索結果 (名称: \x1FDICEBOT\x0F): \x02DiceBot\x0F (DiceBot)")
+          )
+        end
+      end
+
+      context('Markdown') do
+        it '名称にキーワードが含まれるゲームシステムの一覧を文字列で返す' do
+          message = generator.bcdice_search_name(
+            'DICEBOT',
+            RGRB::Plugin::Bcdice::GameSystemListFormatter::MARKDOWN
+          ).message
+          expect(message).to eq <<~MD.chomp
+            **BCDice ゲームシステム検索結果 (名称: *DICEBOT*)**
+            * DiceBot (DiceBot)
+          MD
+        end
+      end
+    end
+
+    context('ソード') do
+      context('プレーンテキスト') do
+        it '名称にキーワードが含まれるゲームシステムの一覧を文字列で返す' do
+          message = generator.bcdice_search_name(
+            'ソード',
+            RGRB::Plugin::Bcdice::GameSystemListFormatter::PLAIN_TEXT
+          ).message
+          expect(message).to(
+            match(/\ABCDice ゲームシステム検索結果 \(名称: ソード\): [.\w]+ \([^)]+\)(?:, [.\w]+ \([^)]+\))*\z/)
+          )
+        end
+      end
+
+      context('IRCメッセージ') do
+        it '名称にキーワードが含まれるゲームシステムの一覧を文字列で返す' do
+          message = generator.bcdice_search_name(
+            'ソード',
+            RGRB::Plugin::Bcdice::GameSystemListFormatter::IRC_MESSAGE
+          ).message
+          expect(message).to(
+            match(/\ABCDice ゲームシステム検索結果 \(名称: \x1Fソード\x0F\): \x02[.\w]+\x0F \([^)]+\)(?:, \x02[.\w]+\x0F \([^)]+\))*\z/)
+          )
+        end
+      end
+
+      context('Markdown') do
+        it '名称にキーワードが含まれるゲームシステムの一覧を文字列で返す' do
+          message = generator.bcdice_search_name(
+            'ソード',
+            RGRB::Plugin::Bcdice::GameSystemListFormatter::MARKDOWN
+          ).message
+          expect(message).to(
+            match(/\A\*\*BCDice ゲームシステム検索結果 \(名称: \*ソード\*\)\*\*\n\* [.\w\\]+ \([^)]+\)(?:\n\* [.\w\\]+ \([^)]+\))*\z/)
+          )
+        end
+      end
+    end
+
+    context 'TRPG　クトゥルフ' do
+      context('IRCメッセージ') do
+        it '名称にキーワードが含まれるゲームシステムの一覧を文字列で返す' do
+          message = generator.bcdice_search_name(
+            'TRPG　クトゥルフ',
+            RGRB::Plugin::Bcdice::GameSystemListFormatter::PLAIN_TEXT
+          ).message
+          expect(message).to(
+            # * キーワードは半角空白区切りで表す
+            match(/\ABCDice ゲームシステム検索結果 \(名称: TRPG クトゥルフ\): [.\w]+ \([^)]+\)(?:, [.\w]+ \([^)]+\))*\z/)
+          )
+        end
+      end
+
+      context('IRCメッセージ') do
+        it '名称にキーワードが含まれるゲームシステムの一覧を文字列で返す' do
+          message = generator.bcdice_search_name(
+            'TRPG　クトゥルフ',
+            RGRB::Plugin::Bcdice::GameSystemListFormatter::IRC_MESSAGE
+          ).message
+          expect(message).to(
+            # * キーワードは半角空白区切りで表す
+            # * 各キーワードに下線を引く
+            match(/\ABCDice ゲームシステム検索結果 \(名称: \x1FTRPG\x0F \x1Fクトゥルフ\x0F\): \x02[.\w]+\x0F \([^)]+\)(?:, \x02[.\w]+\x0F \([^)]+\))*\z/)
+          )
+        end
+      end
+
+      context('Markdown') do
+        it '名称にキーワードが含まれるゲームシステムの一覧を文字列で返す' do
+          message = generator.bcdice_search_name(
+            'TRPG　クトゥルフ',
+            RGRB::Plugin::Bcdice::GameSystemListFormatter::MARKDOWN
+          ).message
+          expect(message).to(
+            # * キーワードは半角空白区切りで表す
+            # * 各キーワードを斜体にする
+            match(/\A\*\*BCDice ゲームシステム検索結果 \(名称: \*TRPG\* \*クトゥルフ\*\)\*\*\n\* [.\w\\]+ \([^)]+\)(?:\n\* [.\w\\]+ \([^)]+\))*\z/)
+          )
+        end
+      end
+    end
+
+    describe '絞り込み検索' do
+      shared_examples '絞り込み検索' do
+        it '絞り込み検索ができる' do
+          keyword1 = keywords_text.split(/[\s　]+/, 2).first
+          result1 = generator.bcdice_search_name(keyword1)
+          n1 = result1.game_systems.length
+          expect(n1).to be > 0
+
+          result2 = generator.bcdice_search_name(keywords_text)
+          n2 = result2.game_systems.length
+          expect(n2).to be > 0
+          expect(n2).to be < n1
+        end
+      end
+
+      context 'TRPG クトゥルフ' do
+        include_examples '絞り込み検索' do
+          let(:keywords_text) { 'TRPG クトゥルフ' }
+        end
+      end
+
+      context 'TRPG　クトゥルフ' do
+        include_examples '絞り込み検索' do
+          let(:keywords_text) { 'TRPG　クトゥルフ' }
+        end
+      end
+
+      context 'TRPG　クトゥルフ 新' do
+        include_examples '絞り込み検索' do
+          let(:keywords_text) { 'TRPG　クトゥルフ 新' }
+        end
+      end
+    end
+  end
 end

@@ -21,8 +21,6 @@ RGRB は Ruby で実装されている汎用 IRC/Discord ボットです。プ�
 
 [Bundler](http://bundler.io/) をインストールしていない場合は以下を実行してください。
 
-BCDice プラグインを使用する場合は、BCDice 本体をインストールするために git コマンドが必要です(リポジトリから手動でインストールすることも出来ますが、面倒です)。[git](https://git-scm.com/) をインストールすることをお勧めします。
-
 ```bash
 gem install bundler
 ```

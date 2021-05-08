@@ -43,12 +43,6 @@ cd /path/to/rgrb
 bundle install --deployment
 ```
 
-BCDice プラグインを利用する場合は、続けて BCDice 本体をダウンロードするため、以下のコマンドを実行してください。
-
-```bash
-git submodule init
-```
-
 ### 開発時のみ必要なライブラリのインストール
 
 開発時は、メール送信テストを行えるようにするため、[mailcatcher](https://github.com/sj26/mailcatcher) をインストールしてください。
@@ -161,7 +155,7 @@ ToDo
 ----
 
 * Web インターフェース
-    * http://kataribe.com/cgi/rg.cgi/ のようなもの
+  - http://kataribe.com/cgi/rg.cgi/ のようなもの
 
 連絡先
 ------

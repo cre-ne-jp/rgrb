@@ -1,7 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (6.1.4.1)
+    activesupport (6.1.4.4)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
@@ -19,7 +19,7 @@ GEM
     crack (0.4.5)
       rexml
     d1lcs (0.5.5)
-    diff-lcs (1.4.4)
+    diff-lcs (1.5.0)
     discordrb (3.4.0)
       discordrb-webhooks (~> 3.3.0)
       ffi (>= 1.9.24)
@@ -66,7 +66,7 @@ GEM
       mime-types-data (~> 3.2015)
     mime-types-data (3.2021.1115)
     mini_mime (1.1.2)
-    minitest (5.14.4)
+    minitest (5.15.0)
     multipart-post (2.1.1)
     naught (1.1.0)
     netrc (0.11.0)
@@ -75,7 +75,7 @@ GEM
     opus-ruby (1.0.1)
       ffi
     parallel (1.21.0)
-    parser (3.0.3.1)
+    parser (3.1.0.0)
       ast (~> 2.4.1)
     pry (0.14.1)
       coderay (~> 1.1)
@@ -84,7 +84,7 @@ GEM
     racc (1.6.0)
     rainbow (3.0.0)
     rake (13.0.6)
-    regexp_parser (2.1.1)
+    regexp_parser (2.2.0)
     rest-client (2.1.0)
       http-accept (>= 1.7.0, < 2.0)
       http-cookie (>= 1.0.2, < 2.0)
@@ -113,7 +113,7 @@ GEM
       rubocop-ast (>= 0.6.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 2.0)
-    rubocop-ast (1.14.0)
+    rubocop-ast (1.15.1)
       parser (>= 3.0.1.1)
     ruby-progressbar (1.11.0)
     simple_oauth (0.3.1)
@@ -148,12 +148,12 @@ GEM
       hashdiff (>= 0.4.0, < 2.0.0)
     webrick (1.7.0)
     websocket (1.2.9)
-    websocket-client-simple (0.3.0)
+    websocket-client-simple (0.5.1)
       event_emitter
       websocket
     yard (0.9.27)
       webrick (~> 1.7.0)
-    zeitwerk (2.5.1)
+    zeitwerk (2.5.3)
 
 PLATFORMS
   x86_64-linux

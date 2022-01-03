@@ -13,6 +13,9 @@ gem 'json'
 gem 'mail', '~> 2.7'
 gem 'bcdice'
 
+# ruby 3.1 系列からは組み込み gem ではなくなった
+gem 'net-smtp'
+
 group :irc do
   gem 'mcinch'
 

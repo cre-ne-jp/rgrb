@@ -10,6 +10,7 @@ gem 'charlock_holmes', '~> 0.7'
 gem 'nokogiri', '~> 1.11'
 gem 'd1lcs'
 gem 'json'
+gem 'net-smtp'
 gem 'mail', '~> 2.7'
 gem 'bcdice'
 

@@ -79,7 +79,7 @@ GEM
       net-protocol
       timeout
     netrc (0.11.0)
-    nokogiri (1.13.1-x86_64-linux)
+    nokogiri (1.13.2-x86_64-linux)
       racc (~> 1.4)
     opus-ruby (1.0.1)
       ffi
@@ -182,7 +182,7 @@ DEPENDENCIES
   mail (~> 2.7)
   mcinch
   net-smtp
-  nokogiri (~> 1.11)
+  nokogiri (~> 1.13)
   pry (~> 0.10)
   rake (~> 13.0)
   rspec (~> 3.1)

@@ -86,7 +86,7 @@ module RGRB
                 content_length = response.headers['Content-Length']
                 parts = [
                   mime_type,
-                  content_length && content_length.to_i.to_s(:human_size)
+                  content_length && content_length.to_i.to_fs(:human_size)
                 ].compact
                 "(#{parts.join('; ')})"
               end

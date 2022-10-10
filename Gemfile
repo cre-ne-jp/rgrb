@@ -12,6 +12,7 @@ gem 'd1lcs'
 gem 'json'
 gem 'net-smtp'
 gem 'mail', '~> 2.7'
+gem 'psych', '~> 4.0'
 gem 'bcdice'
 
 # ruby 3.1 系列からは組み込み gem ではなくなった

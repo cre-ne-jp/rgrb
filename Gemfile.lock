@@ -92,6 +92,8 @@ GEM
     pry (0.14.1)
       coderay (~> 1.1)
       method_source (~> 1.0)
+    psych (4.0.6)
+      stringio
     public_suffix (5.0.1)
     racc (1.6.2)
     rainbow (3.1.1)
@@ -135,6 +137,7 @@ GEM
       simplecov_json_formatter (~> 0.1)
     simplecov-html (0.12.3)
     simplecov_json_formatter (0.1.4)
+    stringio (3.0.4)
     sysexits (1.2.0)
     thread_safe (0.3.6)
     timeout (0.3.1)
@@ -186,6 +189,7 @@ DEPENDENCIES
   net-smtp
   nokogiri (~> 1.11)
   pry (~> 0.10)
+  psych (~> 4.0)
   rake (~> 13.0)
   rspec (~> 3.1)
   rubocop (~> 0.28)

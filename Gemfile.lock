@@ -74,7 +74,7 @@ GEM
     net-smtp (0.3.2)
       net-protocol
     netrc (0.11.0)
-    nokogiri (1.13.9-x86_64-linux)
+    nokogiri (1.13.10-x86_64-linux)
       racc (~> 1.4)
     opus-ruby (1.0.1)
       ffi
@@ -85,7 +85,7 @@ GEM
       coderay (~> 1.1)
       method_source (~> 1.0)
     public_suffix (5.0.0)
-    racc (1.6.0)
+    racc (1.6.1)
     rainbow (3.1.1)
     rake (13.0.6)
     regexp_parser (2.6.0)
@@ -177,7 +177,7 @@ DEPENDENCIES
   mail (~> 2.7)
   mcinch
   net-smtp
-  nokogiri (~> 1.11)
+  nokogiri (~> 1.13)
   pry (~> 0.10)
   rake (~> 13.0)
   rspec (~> 3.1)

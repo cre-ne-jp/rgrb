@@ -174,7 +174,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  activesupport (> 6.1)
+  activesupport (~> 7.0)
   bcdice
   charlock_holmes (~> 0.7)
   d1lcs

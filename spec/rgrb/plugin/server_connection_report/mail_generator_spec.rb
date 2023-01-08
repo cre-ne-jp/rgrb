@@ -97,7 +97,7 @@ describe RGRB::Plugin::ServerConnectionReport::MailGenerator do
       }
 
       let(:smtp_config_with_nil_value) {
-        YAML.load(<<-YAML)
+        YAML.load(<<-YAML, permitted_classes: [Date])
         authentication: false
         # YAMLではnilではなくnull
         invalid_key: null

@@ -264,8 +264,8 @@ describe RGRB::Plugin::UrlFetchTitle::Generator do
     end
 
     context '画像ファイル' do
-      let(:url) { 'http://www.cre.ne.jp/wp-content/themes/wsc7/img/cre_banner.jpg' }
-      let(:content_type) { 'image/jpeg' }
+      let(:url) { 'https://www.cre.ne.jp/wp-content/themes/wsc7/img/cre_banner.jpg' }
+      let('content_type') { 'image/jpeg' }
       let(:image_path) do
         File.expand_path('data/cre_banner.jpg', File.dirname(__FILE__))
       end

@@ -35,7 +35,7 @@ module RGRB
         # @param [String] yaml 表を表す YAML 文字列
         # @return [Table]
         def self.parse_yaml(yaml)
-          data = YAML.load(yaml)
+          data = YAML.load(yaml, permitted_classes: [Date])
 
           name = data['Name']
           values = data['Body']

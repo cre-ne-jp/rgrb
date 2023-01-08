@@ -10,9 +10,11 @@ gem 'charlock_holmes', '~> 0.7'
 gem 'nokogiri', '~> 1.11'
 gem 'd1lcs'
 gem 'json'
-gem 'net-smtp'
 gem 'mail', '~> 2.7'
 gem 'bcdice'
+
+# ruby 3.1 系列からは組み込み gem ではなくなった
+gem 'net-smtp'
 
 group :irc do
   gem 'mcinch'

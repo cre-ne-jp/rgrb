@@ -11,7 +11,7 @@ gem 'nokogiri', '~> 1.11'
 gem 'd1lcs'
 gem 'json'
 gem 'mail', '~> 2.7'
-gem 'psych', '~> 4.0'
+gem 'psych', '> 4.0'
 gem 'bcdice'
 
 # ruby 3.1 系列からは組み込み gem ではなくなった
@@ -31,7 +31,7 @@ end
 group :development, :test do
   gem 'pry', '~> 0.10'
   gem 'yard', '~> 0.8'
-  gem 'rubocop', '~> 0.28'
+  gem 'rubocop', '> 0.28'
 end
 
 group :test do

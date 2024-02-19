@@ -211,7 +211,8 @@ module RGRB
             message = error.message
             message.include?('indicate encoding') ||
               message.include?('Invalid char') ||
-              message.include?('input conversion failed')
+              message.include?('input conversion failed') ||
+              message.include?('Unsupported encoding')
           end
         end
       end

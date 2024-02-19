@@ -12,7 +12,7 @@ RGRB は Ruby で実装されている汎用 IRC/Discord ボットです。プ�
 
 * Linux または OSX
     * 現在のところ Windows には未対応。
-* Ruby 2.5 以降
+* Ruby 3.0 以降
 
 インストール
 ------------

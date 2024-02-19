@@ -159,7 +159,7 @@ describe RGRB::Plugin::Bcdice::Generator do
             RGRB::Plugin::Bcdice::GameSystemListFormatter::PLAIN_TEXT
           ).message
           expect(message).to(
-            match(/\ABCDice ゲームシステム検索結果 \(ID: sword\): [.\w]+ \([^)]+\)(?:, [.\w]+ \([^)]+\))*\z/)
+            match(/\ABCDice ゲームシステム検索結果 \(ID: sword\): [.:\w]+ \([^)]+\)(?:, [.:\w]+ \([^)]+\))*\z/)
           )
         end
       end
@@ -171,7 +171,7 @@ describe RGRB::Plugin::Bcdice::Generator do
             RGRB::Plugin::Bcdice::GameSystemListFormatter::IRC_MESSAGE
           ).message
           expect(message).to(
-            match(/\ABCDice ゲームシステム検索結果 \(ID: \x1Fsword\x0F\): \x02[.\w]+\x0F \([^)]+\)(?:, \x02[.\w]+\x0F \([^)]+\))*\z/)
+            match(/\ABCDice ゲームシステム検索結果 \(ID: \x1Fsword\x0F\): \x02[.:\w]+\x0F \([^)]+\)(?:, \x02[.:\w]+\x0F \([^)]+\))*\z/)
           )
         end
       end
@@ -183,7 +183,7 @@ describe RGRB::Plugin::Bcdice::Generator do
             RGRB::Plugin::Bcdice::GameSystemListFormatter::MARKDOWN
           ).message
           expect(message).to(
-            match(/\A\*\*BCDice ゲームシステム検索結果 \(ID: \*sword\*\)\*\*\n\* [.\w\\]+ \([^)]+\)(?:\n\* [.\w\\]+ \([^)]+\))*\z/)
+            match(/\A\*\*BCDice ゲームシステム検索結果 \(ID: \*sword\*\)\*\*\n\* [.:\w\\]+ \([^)]+\)(?:\n\* [.:\w\\]+ \([^)]+\))*\z/)
           )
         end
       end

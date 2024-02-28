@@ -180,7 +180,7 @@ GEM
     websocket-client-simple (0.8.0)
       event_emitter
       websocket
-    yard (0.9.34)
+    yard (0.9.35)
 
 PLATFORMS
   x86_64-linux
@@ -209,7 +209,7 @@ DEPENDENCIES
   sysexits (~> 1.2)
   twitter (~> 7.0)
   webmock (~> 3.3)
-  yard (~> 0.8)
+  yard (~> 0.9)
 
 BUNDLED WITH
    2.5.2

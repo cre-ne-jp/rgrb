@@ -94,7 +94,7 @@ GEM
     net-smtp (0.5.0)
       net-protocol
     netrc (0.11.0)
-    nokogiri (1.16.4-x86_64-linux)
+    nokogiri (1.16.5-x86_64-linux)
       racc (~> 1.4)
     opus-ruby (1.0.1)
       ffi
@@ -197,7 +197,7 @@ DEPENDENCIES
   mail (~> 2.7)
   mcinch
   net-smtp
-  nokogiri (~> 1.11)
+  nokogiri (~> 1.16)
   pry (~> 0.10)
   psych (> 4.0)
   rake (~> 13.0)

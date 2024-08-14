@@ -1,16 +1,17 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (7.1.3.4)
+    activesupport (7.2.0)
       base64
       bigdecimal
-      concurrent-ruby (~> 1.0, >= 1.0.2)
+      concurrent-ruby (~> 1.0, >= 1.3.1)
       connection_pool (>= 2.2.5)
       drb
       i18n (>= 1.6, < 2)
+      logger (>= 1.4.2)
       minitest (>= 5.1)
-      mutex_m
-      tzinfo (~> 2.0)
+      securerandom (>= 0.3)
+      tzinfo (~> 2.0, >= 2.0.5)
     addressable (2.8.7)
       public_suffix (>= 2.0.2, < 7.0)
     ast (2.4.2)
@@ -20,9 +21,9 @@ GEM
       racc (~> 1.7.3)
     bigdecimal (3.1.8)
     buftok (0.2.0)
-    charlock_holmes (0.7.8)
+    charlock_holmes (0.7.9)
     coderay (1.1.3)
-    concurrent-ruby (1.3.3)
+    concurrent-ruby (1.3.4)
     connection_pool (2.4.1)
     crack (1.0.0)
       bigdecimal
@@ -38,7 +39,7 @@ GEM
       websocket-client-simple (>= 0.3.0)
     discordrb-webhooks (3.5.0)
       rest-client (>= 2.0.0)
-    docile (1.4.0)
+    docile (1.4.1)
     domain_name (0.6.20240107)
     drb (2.2.1)
     equalizer (0.0.11)
@@ -49,7 +50,7 @@ GEM
       rake
     gdbm (2.1.0)
     guess_html_encoding (0.0.11)
-    hashdiff (1.1.0)
+    hashdiff (1.1.1)
     http (4.4.1)
       addressable (~> 2.3)
       http-cookie (~> 1.0)
@@ -66,6 +67,7 @@ GEM
       concurrent-ruby (~> 1.0)
     json (2.7.2)
     language_server-protocol (3.17.0.3)
+    logger (1.6.0)
     lumberjack (1.2.10)
     mail (2.8.1)
       mini_mime (>= 0.1.1)
@@ -78,11 +80,10 @@ GEM
     method_source (1.1.0)
     mime-types (3.5.2)
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2024.0604)
+    mime-types-data (3.2024.0806)
     mini_mime (1.1.5)
     minitest (5.24.1)
     multipart-post (2.4.1)
-    mutex_m (0.2.0)
     naught (1.1.0)
     net-imap (0.4.14)
       date
@@ -94,12 +95,12 @@ GEM
     net-smtp (0.5.0)
       net-protocol
     netrc (0.11.0)
-    nokogiri (1.16.6-x86_64-linux)
+    nokogiri (1.16.7-x86_64-linux)
       racc (~> 1.4)
     opus-ruby (1.0.1)
       ffi
-    parallel (1.25.1)
-    parser (3.3.3.0)
+    parallel (1.26.2)
+    parser (3.3.4.2)
       ast (~> 2.4.1)
       racc
     pry (0.14.2)
@@ -107,7 +108,7 @@ GEM
       method_source (~> 1.0)
     psych (5.1.2)
       stringio
-    public_suffix (6.0.0)
+    public_suffix (6.0.1)
     racc (1.7.3)
     rainbow (3.1.1)
     rake (13.2.1)
@@ -117,7 +118,7 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
-    rexml (3.3.1)
+    rexml (3.3.5)
       strscan
     rspec (3.13.0)
       rspec-core (~> 3.13.0)
@@ -132,20 +133,21 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.13.0)
     rspec-support (3.13.1)
-    rubocop (1.64.1)
+    rubocop (1.65.1)
       json (~> 2.3)
       language_server-protocol (>= 3.17.0)
       parallel (~> 1.10)
       parser (>= 3.3.0.2)
       rainbow (>= 2.2.2, < 4.0)
-      regexp_parser (>= 1.8, < 3.0)
+      regexp_parser (>= 2.4, < 3.0)
       rexml (>= 3.2.5, < 4.0)
       rubocop-ast (>= 1.31.1, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 2.4.0, < 3.0)
-    rubocop-ast (1.31.3)
+    rubocop-ast (1.32.0)
       parser (>= 3.3.1.0)
     ruby-progressbar (1.13.0)
+    securerandom (0.3.1)
     simple_oauth (0.3.1)
     simplecov (0.22.0)
       docile (~> 1.1)
@@ -176,7 +178,7 @@ GEM
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
-    websocket (1.2.10)
+    websocket (1.2.11)
     websocket-client-simple (0.8.0)
       event_emitter
       websocket
@@ -212,4 +214,4 @@ DEPENDENCIES
   yard (~> 0.9)
 
 BUNDLED WITH
-   2.5.14
+   2.5.17

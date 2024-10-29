@@ -37,7 +37,6 @@ Plugins:
   - Bcdice
   - Keyword
   - OnlineSessionSearch
-  - CreTwitterCitation
   - UrlFetchTitle
   - CreBotHelp
   - ServerConnectionReport::Charybdis
@@ -55,7 +54,6 @@ Include:
   - dice_roll
   - random_generator
   - keyword
-  - cre_twitter_citation
   - url_fetch_title
   - server_connection_report/charybdis
   - part

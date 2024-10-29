@@ -30,6 +30,7 @@ module RGRB
         # @return [self]
         def configure(config_data)
           @max_posts_per_check = config_data['MaxPostsPerCheck'] || 5
+          @categories = { 0 => 'お知らせ' }
 
           self
         end
@@ -37,7 +38,13 @@ module RGRB
         # 記事を取得し、メッセージの配列として返す
         # @return [Array<String>]
         def cite_from_wordpress
-          posts = get_request
+          uri = 'https://www.cre.ne.jp/wp-json/wp/v2/posts'
+          query = {
+            categories_exclude: '56',
+            after: read_last_cited.strftime('%FT%T'),
+            per_page: @max_posts_per_check
+          }
+          posts = get_from_api(uri, query)
 
           write_last_cited
 
@@ -46,16 +53,12 @@ module RGRB
 
         private
 
-        # WordPress REST API から記事を取得する
+        # WordPress REST API から取得する
         # 並べ替え等も取得時の条件で設定しておく
         # @return [Array]
-        def get_request
-          uri = URI('https://www.cre.ne.jp/wp-json/wp/v2/posts')
-          uri.query = URI.encode_www_form({
-            categories_exclude: '56',
-            after: read_last_cited.strftime('%FT%T'),
-            per_page: @max_posts_per_check
-          })
+        def get_from_api(uri, query = {})
+          uri = URI(uri)
+          uri.query = URI.encode_www_form(query)
 
           res = Net::HTTP.get_response(uri)
           JSON.parse(res.body) if res.is_a?(Net::HTTPSuccess)
@@ -65,9 +68,20 @@ module RGRB
         # @param [Hash] post 記事
         # @return [String]
         def post_to_message(post)
-          "【お知らせ】#{post['title']['rendered']} (" \
+          "【#{category(post['categories'].first)}】" \
+            "#{post['title']['rendered']} (" \
             "#{Time.parse(post['date']).strftime('%F %T')}; " \
             "#{post['link']})"
+        end
+
+        def category(id)
+          @categories[id] || get_unknown_category(id)
+        end
+
+        def get_unknown_category(id)
+          uri = "https://www.cre.ne.jp/wp-json/wp/v2/categories/#{id}"
+          category = get_from_api(uri)
+          @categories[id] = category['name']
         end
 
         # 最終引用日時を読み込む

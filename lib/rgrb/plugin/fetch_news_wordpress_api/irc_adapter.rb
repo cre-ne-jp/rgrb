@@ -21,13 +21,13 @@ module RGRB
           @channels_to_send = config_data['ChannelsToSend']
 
           prepare_generator
-          Timer(@check_interval, method: :cite_from_twitter).start
+          Timer(@check_interval, method: :cite_from_wordpress).start
         end
 
-        # ツイートを引用し、NOTICE する
+        # 記事を取得し、NOTICE する
         # @return [void]
-        def cite_from_twitter
-          send_notice(@channels_to_send, @generator.cite_from_twitter, '', true)
+        def cite_from_wordpress
+          send_notice(@channels_to_send, @generator.cite_from_wordpress, '', true)
         end
       end
     end

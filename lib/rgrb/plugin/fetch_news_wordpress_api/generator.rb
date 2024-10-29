@@ -1,8 +1,9 @@
 # vim: fileencoding=utf-8
 
 require 'time'
-require 'cgi/util'
-require 'twitter'
+require 'uri'
+require 'net/http'
+require 'json'
 require 'rgrb/plugin_base/generator'
 
 module RGRB
@@ -12,9 +13,6 @@ module RGRB
       # 出力テキスト生成器
       class Generator
         include PluginBase::Generator
-
-        # http://t.co/〜 の URL のパターン
-        T_CO_PATTERN = %r{(?<!\w)(?=\w)http://t\.co/[0-9A-Za-z]+}
 
         # RGRB のルートパスを設定する
         # @param [String] root_path RGRB のルートパス
@@ -31,57 +29,45 @@ module RGRB
         # @param [Hash] config_data 設定データのハッシュ
         # @return [self]
         def configure(config_data)
-          twitter_config = config_data['Twitter']
-
-          @max_tweets_per_check = config_data['MaxTweetsPerCheck']
-          @twitter_id = config_data['ID']
-
-          @consumer_key = twitter_config['APIKey']
-          @consumer_secret = twitter_config['APISecret']
-          @access_token = twitter_config['AccessToken']
-          @access_token_secret = twitter_config['AccessTokenSecret']
-
-          @twitter = new_twitter_client
+          @max_posts_per_check = config_data['MaxPostsPerCheck'] || 5
 
           self
         end
 
-        # ツイートを引用し、メッセージの配列として返す
+        # 記事を取得し、メッセージの配列として返す
         # @return [Array<String>]
-        def cite_from_twitter
-          last_cited = read_last_cited
-          uncited_tweets = @twitter.user_timeline(
-            @twitter_id,
-            count: @max_tweets_per_check,
-            include_rts: false
-          ).select { |tweet| tweet.created_at > last_cited }
+        def cite_from_wordpress
+          posts = get_request
+
           write_last_cited
 
-          uncited_tweets.sort_by(&:created_at).map do |tweet|
-            tweet_to_message(tweet)
-          end
+          posts.map { |post| post_to_message(post) }
         end
 
         private
 
-        # ツイートからメッセージを生成し、返す
-        # @param [Twitter::Tweet] tweet ツイート
+        # WordPress REST API から記事を取得する
+        # 並べ替え等も取得時の条件で設定しておく
+        # @return [Array]
+        def get_request
+          uri = URI('https://www.cre.ne.jp/wp-json/wp/v2/posts')
+          uri.query = URI.encode_www_form({
+            categories_exclude: '56',
+            after: read_last_cited.strftime('%FT%T'),
+            per_page: @max_posts_per_check
+          })
+
+          res = Net::HTTP.get_response(uri)
+          JSON.parse(res.body) if res.is_a?(Net::HTTPSuccess)
+        end
+
+        # 記事からメッセージを生成し、返す
+        # @param [Hash] post 記事
         # @return [String]
-        def tweet_to_message(tweet)
-          unescaped_text = CGI.unescapeHTML(tweet.text)
-          url_expanded_text =
-            tweet.uris.reduce(unescaped_text) do |result, uri_info|
-              result.sub(uri_info.uri.to_s, uri_info.expanded_uri.to_s)
-            end
-
-          # 日本時間のツイート時刻を求める
-          # Tweet#created_at は frozen で変更不可なので
-          # dup で複製してから設定する
-          created_at_local = tweet.created_at.dup.localtime('+09:00')
-
-          "【お知らせ】#{url_expanded_text} (" \
-            "#{created_at_local.strftime('%F %T')}; " \
-            "#{tweet.url})"
+        def post_to_message(post)
+          "【お知らせ】#{post['title']['rendered']} (" \
+            "#{Time.parse(post['date']).strftime('%F %T')}; " \
+            "#{post['link']})"
         end
 
         # 最終引用日時を読み込む
@@ -100,17 +86,6 @@ module RGRB
         def write_last_cited
           File.open(@last_cited_path, 'w') do |f|
             f.puts(Time.now)
-          end
-        end
-
-        # 新しい Twitter クライアントを返す
-        # @return [Twitter::REST::Client]
-        def new_twitter_client
-          Twitter::REST::Client.new do |config|
-            config.consumer_key = @consumer_key
-            config.consumer_secret = @consumer_secret
-            config.access_token = @access_token
-            config.access_token_secret = @access_token_secret
           end
         end
       end

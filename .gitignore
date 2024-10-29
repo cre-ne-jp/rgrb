@@ -4,7 +4,6 @@
 /doc/*
 !doc/plugins
 /vendor/
-/data/cre_twitter_citation/last_cited.txt
 /data/fetch_news_wordpress_api/last_cited.txt
 /data/dice_roll/*
 !.editorconfig

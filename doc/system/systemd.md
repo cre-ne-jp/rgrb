@@ -42,5 +42,5 @@ systemd 用サービスファイル
 参考文献
 --------
 
-1. [Linux女子部 systemd徹底入門](http://www.slideshare.net/enakai/linux-27872553)
-2. [systemd.exec](http://www.freedesktop.org/software/systemd/man/systemd.exec.html)
+1. [Linux女子部 systemd徹底入門](https://www.slideshare.net/enakai/linux-27872553)
+2. [systemd.exec](https://www.freedesktop.org/software/systemd/man/systemd.exec.html)

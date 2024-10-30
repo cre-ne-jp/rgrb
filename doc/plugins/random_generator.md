@@ -128,5 +128,5 @@ RandomGenerator
 # ランダムジェネレータプラグインの設定
 RandomGenerator:
   # 表の一覧表示を行うコマンド .rg-list の応答として、実際の一覧ではなくリファレンスなどのURLを出力したいときは以下に文字列を指定する。
-  ListReply: "コマンドリファレンス http://www.cre.ne.jp/services/irc/bots/rgrb/rg-reference をご覧ください"
+  ListReply: "コマンドリファレンス https://www.cre.ne.jp/services/irc/bots/rgrb/rg-reference をご覧ください"
 ```

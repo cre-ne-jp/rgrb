@@ -18,7 +18,7 @@ module RGRB
         # 新しい Keyword::Generator インスタンスを返す
         def initialize
           @amazon_search_url =
-            'http://www.amazon.co.jp/gp/search?' \
+            'https://www.amazon.co.jp/gp/search?' \
             'ie=UTF8&keywords=%s'
         end
 
@@ -28,7 +28,7 @@ module RGRB
         def configure(config_data)
           amazon_associate_id = config_data['AmazonAssociateID'] || ''
           @amazon_search_url =
-            'http://www.amazon.co.jp/gp/search?' \
+            'https://www.amazon.co.jp/gp/search?' \
             "ie=UTF8&tag=#{amazon_associate_id}&keywords=%s"
 
           self

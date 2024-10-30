@@ -23,6 +23,6 @@ CreBotHelp
 ```
 .help
 > クリエイターズネットワーク公式IRCボット
-> ご利用方法: http://www.cre.ne.jp/services/irc/bots
-> リファレンス: http://hiki.trpg.net/wiki/?RoleBot
+> ご利用方法: https://www.cre.ne.jp/services/irc/bots
+> リファレンス: https://hiki.trpg.net/wiki/?RoleBot
 ```

@@ -38,7 +38,7 @@ describe RGRB::Plugin::Keyword::Generator do
   end
 
   describe '#amazon_search' do
-    let(:base_url) { 'http://www.amazon.co.jp/gp/search?ie=UTF8&tag=koubou-22&keywords=' }
+    let(:base_url) { 'https://www.amazon.co.jp/gp/search?ie=UTF8&tag=koubou-22&keywords=' }
 
     shared_examples 'an Amazon search' do
       let(:expected_message) do

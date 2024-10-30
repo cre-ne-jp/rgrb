@@ -17,9 +17,9 @@ RGRB は Ruby で実装されている汎用 IRC/Discord ボットです。プ�
 インストール
 ------------
 
-[Ruby](http://www.ruby-lang.org/) をインストールしていない場合はインストールしてください。
+[Ruby](https://www.ruby-lang.org/) をインストールしていない場合はインストールしてください。
 
-[Bundler](http://bundler.io/) をインストールしていない場合は以下を実行してください。
+[Bundler](https://bundler.io/) をインストールしていない場合は以下を実行してください。
 
 ```bash
 gem install bundler
@@ -139,7 +139,7 @@ Discord ボットの起動
 開発者向けドキュメントの生成
 ----------------------------
 
-[YARD](http://yardoc.org/) を利用してライブラリのドキュメントを [doc/](doc/) 以下に生成することができます。以下を実行してください。
+[YARD](https://yardoc.org/) を利用してライブラリのドキュメントを [doc/](doc/) 以下に生成することができます。以下を実行してください。
 
 ```bash
 cd /path/to/rgrb
@@ -160,7 +160,7 @@ ToDo
 連絡先
 ------
 
-ご意見・ご要望・バグ報告等は、[irc.cre.jp 系 IRC サーバ群](http://www.cre.ne.jp/services/irc)の IRC チャンネル「#cre」や、[GitHub リポジトリ](https://github.com/cre-ne-jp/rgrb)上の「[Issues](https://github.com/cre-ne-jp/rgrb/issues)」・「[Pull Requests](https://github.com/cre-ne-jp/rgrb/pulls)」にて承っております。お気軽にお寄せください。
+ご意見・ご要望・バグ報告等は、[irc.cre.jp 系 IRC サーバ群](https://www.cre.ne.jp/services/irc)の IRC チャンネル「#cre」や、[GitHub リポジトリ](https://github.com/cre-ne-jp/rgrb)上の「[Issues](https://github.com/cre-ne-jp/rgrb/issues)」・「[Pull Requests](https://github.com/cre-ne-jp/rgrb/pulls)」にて承っております。お気軽にお寄せください。
 
 ライセンス
 ----------
@@ -170,7 +170,7 @@ ToDo
 制作
 ----
 
-&copy; 2014- [クリエイターズネットワーク](http://www.cre.ne.jp/)技術部
+&copy; 2014- [クリエイターズネットワーク](https://www.cre.ne.jp/)技術部
 
 * 鯉（[@koi-chan](https://github.com/koi-chan)）
 * ocha（[@ochaochaocha3](https://github.com/ochaochaocha3)）

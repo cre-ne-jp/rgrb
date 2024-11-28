@@ -89,7 +89,6 @@ Discord ボット用のテンプレートファイルは [config/discord.yaml](c
 | ------------ | ---- | --- | ------- |
 | [Keyword](doc/plugins/keyword.md) | キーワード検索 | o | o |
 | [OnlineSessionSearch](doc/plugins/online_session_search.md) | [TRPG.NET セッションマッチングシステム](http://session.trpg.net/)から予定されているオンラインセッションの情報を検索する | o | x |
-| [CreTwitterCitation](doc/plugins/cre_twitter_citation.md) | Twitter @cre_ne_jp の引用 | o | - |
 | [UrlFetchTitle](doc/plugins/url_fetch_title.md) | 発言された URL のページタイトルを取得する | o | - |
 | [FetchNewsWordpressApi](doc/plugins/fetch_news_wordpress_api.md) | [公式WP](https://www.cre.ne.jp/) から新規記事を取得 | o | - |
 

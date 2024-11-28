@@ -23,7 +23,7 @@ jobs:
         run: |
           sudo apt update -qy
           sudo apt install libgdbm6 libgdbm-dev
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
       - uses: ruby/setup-ruby@v1

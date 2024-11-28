@@ -9,8 +9,8 @@ module RGRB
         # ヘルプメッセージ
         HELP_MESSAGE = <<EOS
 クリエイターズネットワーク公式IRCボット
-ご利用方法: http://www.cre.ne.jp/services/irc/bots
-RGRB独自コマンド一覧: http://www.cre.ne.jp/services/irc/bots/rgrb
+ご利用方法: https://www.cre.ne.jp/services/irc/bots
+RGRB独自コマンド一覧: https://www.cre.ne.jp/services/irc/bots/rgrb
 EOS
       end
     end

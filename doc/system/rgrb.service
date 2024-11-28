@@ -1,6 +1,6 @@
 [Unit]
 Description=RGRB - Internet Relay Chat bot
-Documentation=http://www.cre.ne.jp/services/irc/bots/rgrb
+Documentation=https://www.cre.ne.jp/services/irc/bots/rgrb
 After=network.target
 
 [Service]

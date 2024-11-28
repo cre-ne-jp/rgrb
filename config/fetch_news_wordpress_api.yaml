@@ -1,0 +1,13 @@
+# 公式WP (https://www.cre.ne.jp/) 記事引用プラグインの設定
+FetchNewsWordpressApi:
+  # 新規投稿を監視する間隔（秒）
+  # あまり短いとアクセス規制になるので注意
+  # 60 以上を推奨
+  CheckInterval: 300
+
+  # チェックごとに取得する記事の最大数
+  MaxPostsPerCheck: 3
+
+  # NOTICE を行うチャンネルの一覧
+  ChannelsToSend:
+    #- '#cre'

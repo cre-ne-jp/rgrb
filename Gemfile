@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'activesupport', '~> 7.0'
+gem 'activesupport', '~> 8.0'
 gem 'lumberjack', '~> 1.0'
 gem 'sysexits', '~> 1.2'
 gem 'http', '> 3.0'

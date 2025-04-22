@@ -6,7 +6,7 @@ gem 'sysexits', '~> 1.2'
 gem 'http', '> 3.0'
 gem 'guess_html_encoding'
 gem 'charlock_holmes', '~> 0.7'
-gem 'nokogiri', '~> 1.11', force_ruby_platform: true
+gem 'nokogiri', '~> 1.18', force_ruby_platform: true
 gem 'd1lcs'
 gem 'json'
 gem 'mail', '~> 2.7'

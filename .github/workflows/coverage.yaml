@@ -6,6 +6,10 @@ on:
       - README.md
   pull_request: {}
 
+permissions:
+  contents: read
+  id-token: write
+
 jobs:
   test:
     name: "Ruby 3.3: test and coverage measurement"
@@ -27,8 +31,7 @@ jobs:
 
           # runs 'bundle install' and caches installed gems automatically
           bundler-cache: true
-      - uses: paambaati/codeclimate-action@v9.0.0
-        env:
-          CC_TEST_REPORTER_ID: 8310d94ccb41382dfbe0d2fed241c565b33ca01cea938449c4ba0b62500d01e2
+      - uses: qltysh/qlty-action/coverage@v1
         with:
-          coverageCommand: bundle exec rake spec
+          oidc: true
+          files: coverage/.resultset.json

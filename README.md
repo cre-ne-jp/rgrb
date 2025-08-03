@@ -2,8 +2,8 @@
 ====================
 
 ![Test](https://github.com/cre-ne-jp/rgrb/workflows/Test/badge.svg)
-[![Maintainability](https://api.codeclimate.com/v1/badges/ee60ffa7fe19fbb3147b/maintainability)](https://codeclimate.com/github/cre-ne-jp/rgrb/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/ee60ffa7fe19fbb3147b/test_coverage)](https://codeclimate.com/github/cre-ne-jp/rgrb/test_coverage)
+[![Maintainability](https://qlty.sh/gh/cre-ne-jp/projects/rgrb/maintainability.svg)](https://qlty.sh/gh/cre-ne-jp/projects/rgrb)
+[![Code Coverage](https://qlty.sh/gh/cre-ne-jp/projects/rgrb/coverage.svg)](https://qlty.sh/gh/cre-ne-jp/projects/rgrb)
 
 RGRB は Ruby で実装されている汎用 IRC/Discord ボットです。プラグイン方式により柔軟な拡張が可能です。
 

@@ -114,6 +114,7 @@ GEM
       racc (~> 1.4)
     opus-ruby (1.0.1)
       ffi
+    ostruct (0.6.3)
     parallel (1.27.0)
     parser (3.3.10.1)
       ast (~> 2.4.1)
@@ -223,6 +224,7 @@ DEPENDENCIES
   mcinch
   net-smtp
   nokogiri (~> 1.11)
+  ostruct
   pry (~> 0.10)
   psych (> 4.0)
   rake (~> 13.0)

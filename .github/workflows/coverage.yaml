@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   test:
-    name: "Ruby 3.3: test and coverage measurement"
+    name: "Ruby 3.4: test and coverage measurement"
     strategy:
       fail-fast: false
     runs-on: ubuntu-latest
@@ -27,7 +27,7 @@ jobs:
           submodules: recursive
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.3'
+          ruby-version: '3.4'
 
           # runs 'bundle install' and caches installed gems automatically
           bundler-cache: true

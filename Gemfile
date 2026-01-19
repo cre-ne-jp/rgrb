@@ -19,6 +19,10 @@ gem 'net-smtp'
 group :irc do
   gem 'mcinch'
 
+  # ruby 4.0.x から標準添付されなくなった
+  # mcinch が依存する
+  gem 'ostruct'
+
   # DiceRollプラグインで使用する
   gem 'gdbm'
 end

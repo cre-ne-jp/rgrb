@@ -22,7 +22,7 @@ jobs:
         run: |
           sudo apt update -qy
           sudo apt install libgdbm6 libgdbm-dev
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
       - uses: ruby/setup-ruby@v1
@@ -31,7 +31,7 @@ jobs:
 
           # runs 'bundle install' and caches installed gems automatically
           bundler-cache: true
-      - uses: qltysh/qlty-action/coverage@v1
+      - uses: qltysh/qlty-action/coverage@v2
         with:
           oidc: true
           files: coverage/.resultset.json

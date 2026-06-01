@@ -149,7 +149,12 @@ module RGRB
           read_size = 0
 
           while read_size < @read_size_threshold
-            partial_content = body.readpartial
+            begin
+              partial_content = body.readpartial
+            rescue EOFError => e
+              break
+            end
+
             break unless partial_content
 
             content << partial_content

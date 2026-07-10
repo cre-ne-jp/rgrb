@@ -24,7 +24,7 @@ GEM
     bigdecimal (4.1.2)
     charlock_holmes (0.7.9)
     coderay (1.1.3)
-    concurrent-ruby (1.3.6)
+    concurrent-ruby (1.3.7)
     connection_pool (3.0.2)
     crack (1.0.1)
       bigdecimal
@@ -32,14 +32,14 @@ GEM
     d1lcs (0.5.5)
     date (3.5.1)
     diff-lcs (1.6.2)
-    discordrb (3.7.2)
+    discordrb (3.8.0)
       base64 (~> 0.2)
-      discordrb-webhooks (~> 3.7.2)
+      discordrb-webhooks (~> 3.8.0)
       ffi (>= 1.9.24)
       opus-ruby
       rest-client (>= 2.0.0)
       websocket-client-simple (>= 0.9.0)
-    discordrb-webhooks (3.7.2)
+    discordrb-webhooks (3.8.0)
       rest-client (>= 2.0.0)
     docile (1.4.1)
     domain_name (0.6.20240107)
@@ -68,13 +68,13 @@ GEM
     i18n (1.8.11)
       concurrent-ruby (~> 1.0)
     io-console (0.8.2)
-    json (2.19.7)
-    language_server-protocol (3.17.0.5)
+    json (2.20.0)
+    language_server-protocol (3.17.0.6)
     lint_roller (1.1.0)
-    llhttp (0.6.1)
+    llhttp (0.6.2)
     logger (1.7.0)
     lumberjack (1.4.2)
-    mail (2.9.0)
+    mail (2.9.1)
       logger
       mini_mime (>= 0.1.1)
       net-imap
@@ -85,14 +85,14 @@ GEM
     mime-types (3.7.0)
       logger
       mime-types-data (~> 3.2025, >= 3.2025.0507)
-    mime-types-data (3.2026.0414)
+    mime-types-data (3.2026.0701)
     mini_mime (1.1.5)
     mini_portile2 (2.8.9)
     minitest (6.0.6)
       drb (~> 2.0)
       prism (~> 1.5)
     mutex_m (0.3.0)
-    net-imap (0.6.4)
+    net-imap (0.6.4.1)
       date
       net-protocol
     net-pop (0.1.2)
@@ -102,7 +102,7 @@ GEM
     net-smtp (0.5.1)
       net-protocol
     netrc (0.11.0)
-    nokogiri (1.19.3)
+    nokogiri (1.19.4)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
     opus-ruby (1.0.1)
@@ -117,7 +117,7 @@ GEM
       coderay (~> 1.1)
       method_source (~> 1.0)
       reline (>= 0.6.0)
-    psych (5.3.1)
+    psych (5.4.0)
       date
       stringio
     public_suffix (7.0.5)
@@ -146,7 +146,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.13.0)
     rspec-support (3.13.7)
-    rubocop (1.87.0)
+    rubocop (1.88.2)
       json (~> 2.3)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.1.0)
@@ -157,7 +157,7 @@ GEM
       rubocop-ast (>= 1.49.0, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 2.4.0, < 4.0)
-    rubocop-ast (1.49.1)
+    rubocop-ast (1.50.0)
       parser (>= 3.3.7.2)
       prism (~> 1.7)
     ruby-progressbar (1.13.0)
@@ -229,4 +229,4 @@ DEPENDENCIES
   yard (~> 0.9)
 
 BUNDLED WITH
-  4.0.12
+  4.0.15
